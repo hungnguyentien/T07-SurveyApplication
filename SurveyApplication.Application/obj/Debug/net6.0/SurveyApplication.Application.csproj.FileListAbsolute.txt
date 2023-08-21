@@ -1,0 +1,15 @@
+D:\SurveyApplication\SurveyApplication.Application\bin\Debug\net6.0\SurveyApplication.Application.deps.json
+D:\SurveyApplication\SurveyApplication.Application\bin\Debug\net6.0\SurveyApplication.Application.dll
+D:\SurveyApplication\SurveyApplication.Application\bin\Debug\net6.0\SurveyApplication.Application.pdb
+D:\SurveyApplication\SurveyApplication.Application\bin\Debug\net6.0\SurveyApplication.Domain.dll
+D:\SurveyApplication\SurveyApplication.Application\bin\Debug\net6.0\SurveyApplication.Domain.pdb
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\SurveyApplication.Application.csproj.AssemblyReference.cache
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\SurveyApplication.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\SurveyApplication.Application.AssemblyInfoInputs.cache
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\SurveyApplication.Application.AssemblyInfo.cs
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\SurveyApplication.Application.csproj.CoreCompileInputs.cache
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\SurveyApplication.Application.csproj.CopyComplete
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\SurveyApplication.Application.dll
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\refint\SurveyApplication.Application.dll
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\SurveyApplication.Application.pdb
+D:\SurveyApplication\SurveyApplication.Application\obj\Debug\net6.0\ref\SurveyApplication.Application.dll
