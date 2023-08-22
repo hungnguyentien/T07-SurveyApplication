@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SurveyApplication.Application.Persistence.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Application.Contracts.Persistence;
 
 namespace SurveyApplication.Persistence.Repositories
 {

@@ -1,15 +1,12 @@
 ﻿using MediatR;
-using SurveyApplication.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
+using System.ComponentModel.DataAnnotations;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries
 {
     public class GetLoaiHinhDonViDetailRequest : IRequest<LoaiHinhDonViDto>
     {
-        public string? Maloaihinh { get; set; }
+        [Required(ErrorMessage = "Mã loại hình không được để trống")]
+        public string? MaLoaiHinh { get; set; }
     }
 }

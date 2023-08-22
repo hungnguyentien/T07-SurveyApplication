@@ -1,4 +1,5 @@
-﻿using SurveyApplication.Application.Contracts.Persistence;
+﻿using Microsoft.EntityFrameworkCore;
+using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Domain;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,11 @@ namespace SurveyApplication.Persistence.Repositories
         public LoaiHinhDonViRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<LoaiHinhDonVi> GetByMaLoaHinh(string maloaihinh)
+        {
+            return await _dbContext.LoaiHinhDonVis.FirstOrDefaultAsync(x => x.MaLoaiHinh == maloaihinh) ?? new LoaiHinhDonVi();
         }
     }
 }

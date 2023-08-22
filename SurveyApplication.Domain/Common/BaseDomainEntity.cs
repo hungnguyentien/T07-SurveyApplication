@@ -8,6 +8,7 @@ namespace SurveyApplication.Domain.Common
 {
     public abstract class BaseDomainEntity
     {
+        public int Id { get; set; }
         public int? ActiveFlag { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? Created { get; set; }

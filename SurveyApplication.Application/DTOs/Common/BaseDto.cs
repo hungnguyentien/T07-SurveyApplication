@@ -8,6 +8,6 @@ namespace SurveyApplication.Application.DTOs.Common
 {
     public abstract class BaseDto
     {
-        public string? Id { get; set; }
+        public int? Id { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SurveyApplication.Application.DTOs;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Domain;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,6 @@ namespace SurveyApplication.Application.Profiles
         public MappingProfile()
         {
             CreateMap<LoaiHinhDonVi, LoaiHinhDonViDto>().ReverseMap();
-            CreateMap<DonVi, DonViDto>().ReverseMap();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.DTOs;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
 using SurveyApplication.Application.Contracts.Persistence;
 using System;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
 {

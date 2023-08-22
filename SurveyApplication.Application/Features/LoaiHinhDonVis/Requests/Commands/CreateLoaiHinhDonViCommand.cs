@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SurveyApplication.Application.DTOs;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Responses;
 using System;
 using System.Collections.Generic;

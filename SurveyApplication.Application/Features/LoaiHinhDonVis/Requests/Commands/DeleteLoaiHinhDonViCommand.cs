@@ -9,6 +9,6 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Command
 {
     public class DeleteLoaiHinhDonViCommand : IRequest
     {
-        public string? Maloaihinh { get; set; }
+        public string MaLoaiHinh { get; set; }
     }
 }

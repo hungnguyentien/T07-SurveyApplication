@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.DTOs;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
 using SurveyApplication.Application.Contracts.Persistence;
 using System;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
 {
@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
 
         public async Task<LoaiHinhDonViDto> Handle(GetLoaiHinhDonViDetailRequest request, CancellationToken cancellationToken)
         {
-            var loaiHinhDonVis = await _loaiHinhDonViRepository.GetById(request.Maloaihinh);
+            var loaiHinhDonVis = await _loaiHinhDonViRepository.GetByMaLoaHinh(request.MaLoaiHinh);
             return _mapper.Map<LoaiHinhDonViDto>(loaiHinhDonVis);
         }
     }
