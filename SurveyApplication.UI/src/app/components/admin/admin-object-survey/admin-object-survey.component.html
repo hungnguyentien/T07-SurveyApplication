@@ -1,0 +1,91 @@
+<div>
+    <h5>Quản lý đối tượng</h5>
+    <div class="d-flex mt-3">
+        <div>
+            <button data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"></button>
+        </div>
+        <div class="ml-3">
+            <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button" style="background-color: #ea5c5c;"></button>
+        </div>
+    </div>
+    <form class="form-inline mt-4">
+        <div class="form-group  mb-2">
+          <label for="inputPassword2" class="sr-only">Search</label>
+          <input type="text" class="form-control" id="inputPassword2" placeholder="Nhập từ khoá ">
+        </div>
+        <button type="submit" class="btn btn-primary ml-2 mb-2"><i class="pi pi-search"></i></button>
+      </form>
+      
+</div>
+<div class="card mt-3">
+   
+    <p-table 
+    [value]="products" [resizableColumns]="true" 
+    columnResizeMode="expand" 
+    styleClass="p-datatable-gridlines" 
+    [tableStyle]="{'min-width': '50rem'}"
+    dataKey="id"
+    styleClass="p-datatable-gridlines"
+    [rowHover]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [filterDelay]="0"
+    [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th pResizableColumn>Code</th>
+                <th pResizableColumn>Name</th>
+                <th pResizableColumn>Category</th>
+                <th pResizableColumn>Quantity</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>{{product.code}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.category}}</td>
+                <td>{{product.quantity}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+
+<!-- modal -->
+<div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thêm mới loại hình đơn vị</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Mã loại hình:</label>
+              <input type="text" [disabled]="true"class="form-control" id="recipient-name">
+            </div>
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Tên loại hình:</label>
+                <input type="text" class="form-control" id="recipient-name" placeholder="Nhập tên loại hình đơn vị">
+              </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Mô tả:</label>
+              <textarea class="form-control" id="message-text" placeholder="Nhập mô tả"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-primary">Lưu</button>
+        </div>
+      </div>
+    </div>
+  </div>
