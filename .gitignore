@@ -35,3 +35,14 @@
 /SurveyApplication.Persistence/obj/Release/net6.0/SurveyApplication.Persistence.AssemblyInfoInputs.cache
 /Infrastructure/obj/Debug/net6.0/SurveyApplication.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
 /Infrastructure/obj/Debug/net6.0/SurveyApplication.Infrastructure.assets.cache
+/.vs/SurveyApplication/v17/.suo
+/.vs/T07-SurveyApplication/v17/.wsuo
+/.vs/VSWorkspaceState.json
+/SurveyApplication.API/bin/Debug/net6.0
+/SurveyApplication.API/obj
+/Infrastructure/obj
+/SurveyApplication.Application/obj
+/SurveyApplication.Domain/obj/SurveyApplication.Domain.csproj.nuget.dgspec.json
+/SurveyApplication.Domain/obj/project.nuget.cache
+/SurveyApplication.Domain/obj/project.assets.json
+/SurveyApplication.Persistence/obj
