@@ -11,6 +11,6 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Command
 {
     public class CreateLoaiHinhDonViCommand : IRequest<BaseCommandResponse>
     {
-        public LoaiHinhDonViDto? LoaiHinhDonViDto { get; set; }
+        public CreateLoaiHinhDonViDto? LoaiHinhDonViDto { get; set; }
     }
 }

@@ -20,7 +20,13 @@ namespace SurveyApplication.Persistence.Repositories
 
         public async Task<LoaiHinhDonVi> GetByMaLoaHinh(string maloaihinh)
         {
-            return await _dbContext.LoaiHinhDonVis.FirstOrDefaultAsync(x => x.MaLoaiHinh == maloaihinh) ?? new LoaiHinhDonVi();
+            return await _dbContext.LoaiHinhDonVis.AsNoTracking().FirstOrDefaultAsync(x => x.MaLoaiHinh == maloaihinh) ?? new LoaiHinhDonVi();
+        }
+
+        public async Task<bool> ExistsByMaLoaiHinh(string maloaihinh)
+        {
+            var entity = await _dbContext.LoaiHinhDonVis.AsNoTracking().FirstOrDefaultAsync(x => x.MaLoaiHinh == maloaihinh);
+            return entity != null;
         }
     }
 }
