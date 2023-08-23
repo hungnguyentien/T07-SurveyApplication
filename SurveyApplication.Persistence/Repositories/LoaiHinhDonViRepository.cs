@@ -61,5 +61,11 @@ namespace SurveyApplication.Persistence.Repositories
 
             return (items, totalCount);
         }
+
+        public async Task<bool> ExistsByMaLoaiHinh(string maloaihinh)
+        {
+            var entity = await _dbContext.LoaiHinhDonVis.AsNoTracking().FirstOrDefaultAsync(x => x.MaLoaiHinh == maloaihinh);
+            return entity != null;
+        }
     }
 }

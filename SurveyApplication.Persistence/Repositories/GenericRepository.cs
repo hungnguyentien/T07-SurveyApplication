@@ -20,15 +20,10 @@ namespace SurveyApplication.Persistence.Repositories
             return entity;
         }
 
-        public async Task Delete(string id)
+        public async Task Delete(T entity)
         {
-            var entity = await _dbContext.Set<T>().FindAsync(id);
-
-            if (entity != null)
-            {
-                _dbContext.Entry(entity).State = EntityState.Modified;
-                await _dbContext.SaveChangesAsync();
-            }
+            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IReadOnlyList<T>> GetAll()
@@ -36,9 +31,20 @@ namespace SurveyApplication.Persistence.Repositories
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<T> GetById(string id)
+        public async Task<T> GetById(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
+        }
+
+        /// <summary>
+        /// Check tồn tại theo Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> Exists(int id)
+        {
+            var entity = await GetById(id);
+            return entity != null;
         }
 
         public async Task Update(T entity)
@@ -47,16 +53,22 @@ namespace SurveyApplication.Persistence.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<(IReadOnlyList<T> Items, int TotalCount)> Search(Expression<Func<T, bool>> filter, int pageNumber, int pageSize)
+        /// <summary>
+        /// Tìm kiếm và phân trang
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="conditions"></param>
+        /// <param name="orderBy"></param>
+        /// <returns></returns>
+        public async Task<IReadOnlyList<T>> GetByConditions(int pageIndex, int pageSize, Expression<Func<T, bool>> conditions,
+            Expression<Func<T, bool>>? orderBy = null)
         {
-            var query = _dbContext.Set<T>().Where(filter);
-            var totalCount = await query.CountAsync();
+            var result = _dbContext.Set<T>().AsNoTracking().Where(conditions);
+            if (orderBy != null)
+                result = result.OrderBy(orderBy);
 
-            var items = await query.Skip((pageNumber - 1) * pageSize)
-                                   .Take(pageSize)
-                                   .ToListAsync();
-
-            return (items, totalCount);
+            return await result.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
         }
     }
 }

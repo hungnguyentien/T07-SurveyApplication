@@ -8,16 +8,11 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Domain
 {
-    public class CauHoi : BaseDomainEntity
+    public class CauHoiPhu : BaseDomainEntity
     {
         [Required]
         public string MaCauHoi { get; set; }
-        public short LoaiCauHoi { get; set; }
-        public bool? BatBuoc { get; set; }
-        [Required]
-        public string TieuDe { get; set; }
         public string NoiDung { get; set; }
-        public int SoLuongFileToiDa { get; set; }
-        public int KichThuocFile { get; set; }
+        public int IdCauHoi { get; set; }
     }
 }

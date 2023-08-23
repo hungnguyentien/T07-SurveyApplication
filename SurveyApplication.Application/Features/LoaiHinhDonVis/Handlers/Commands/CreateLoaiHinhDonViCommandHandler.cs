@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.DTOs;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
+using SurveyApplication.Application.Exceptions;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands
 {
@@ -26,13 +23,15 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
 
         public async Task<BaseCommandResponse> Handle(CreateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
-            var response = new BaseCommandResponse();
+
+            var validator = new CreateLoaiHinhDonViDtoValidator(_loaiHinhDonViRepository);
+            var validationResult = await validator.ValidateAsync(request.LoaiHinhDonViDto ?? new CreateLoaiHinhDonViDto());
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult);
+
             var loaiHinhDonVi = _mapper.Map<LoaiHinhDonVi>(request.LoaiHinhDonViDto);
             loaiHinhDonVi = await _loaiHinhDonViRepository.Create(loaiHinhDonVi);
-            response.Success = true;
-            response.Message = "Tạo mới thành công";
-            response.Id = loaiHinhDonVi.MaLoaiHinh;
-            return response;
+            return new BaseCommandResponse { Message = "Tạo mới thành công", Id = loaiHinhDonVi.MaLoaiHinh };
         }
     }
 }

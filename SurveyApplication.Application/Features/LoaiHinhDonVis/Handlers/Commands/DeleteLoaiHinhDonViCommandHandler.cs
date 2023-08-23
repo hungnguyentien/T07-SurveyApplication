@@ -23,8 +23,8 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
 
         public async Task<Unit> Handle(DeleteLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
-            var loaiHinhDonVi = await _loaiHinhDonViRepository.GetById(request.MaLoaiHinh);
-            await _loaiHinhDonViRepository.Delete(loaiHinhDonVi.MaLoaiHinh);
+            var loaiHinhDonVi = await _loaiHinhDonViRepository.GetById(request.Id);
+            await _loaiHinhDonViRepository.Delete(loaiHinhDonVi);
             return Unit.Value;
         }
     }

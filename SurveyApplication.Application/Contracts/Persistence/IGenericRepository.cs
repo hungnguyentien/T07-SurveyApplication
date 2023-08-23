@@ -9,11 +9,13 @@ namespace SurveyApplication.Application.Contracts.Persistence
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<T> GetById(string id);
+        Task<T> GetById(int id);
+        Task<bool> Exists(int id);
         Task<IReadOnlyList<T>> GetAll();
         Task<T> Create(T entity);
         Task Update(T entity);
-        Task Delete(string id);
-        Task<(IReadOnlyList<T> Items, int TotalCount)> Search(Expression<Func<T, bool>> filter, int pageNumber, int pageSize);
+        Task Delete(T entity);
+        Task<IReadOnlyList<T>> GetByConditions(int pageIndex, int pageSize, Expression<Func<T, bool>> conditions,
+            Expression<Func<T, bool>>? orderBy = null);
     }
 }

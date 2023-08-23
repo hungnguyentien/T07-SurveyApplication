@@ -23,7 +23,7 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
 
         public async Task<Unit> Handle(UpdateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
-            var loaiHinhDonVi = await _loaiHinhDonViRepository.GetById(request.LoaiHinhDonViDto.Maloaihinh);
+            var loaiHinhDonVi = await _loaiHinhDonViRepository.GetById(request.LoaiHinhDonViDto?.Id ?? 0);
             _mapper.Map(request.LoaiHinhDonViDto, loaiHinhDonVi);
             await _loaiHinhDonViRepository.Update(loaiHinhDonVi);
             return Unit.Value;

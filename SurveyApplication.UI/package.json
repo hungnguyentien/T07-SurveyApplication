@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --open",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -24,6 +24,8 @@
     "primeng": "^16.2.0",
     "rxjs": "~7.8.0",
     "survey-angular": "^1.9.103",
+    "survey-creator-angular": "^1.9.103",
+    "survey-creator-knockout": "^1.9.103",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },
