@@ -18,13 +18,6 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("GetByLoaiHinhDonVi/{id}")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByLoaiHinhDonVi(string id)
-        {
-            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViDetailRequest() { MaLoaiHinh = id });
-            return Ok(leaveAllocations);
-        }
-
         [HttpGet("GetAllLoaiHinhDonVi")]
         public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetAllLoaiHinhDonVi()
         {
@@ -32,8 +25,22 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
+        [HttpGet("GetLoaiHinhDonViByCondition")]
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
+        {
+            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
+            return Ok(leaveAllocations);
+        }
+
+        [HttpGet("GetByLoaiHinhDonVi/{id}")]
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByLoaiHinhDonVi(int id)
+        {
+            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViDetailRequest { Id = id });
+            return Ok(leaveAllocations);
+        }
+
         [HttpPost("CreateLoaiHinhDonVi")]
-        public async Task<ActionResult<LoaiHinhDonViDto>> CreateLoaiHinhDonVi([FromBody] LoaiHinhDonViDto obj)
+        public async Task<ActionResult<LoaiHinhDonViDto>> CreateLoaiHinhDonVi([FromBody] CreateLoaiHinhDonViDto obj)
         {
             var command = new CreateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
             var response = await _mediator.Send(command);
@@ -48,10 +55,10 @@ namespace SurveyApplication.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("DeleteLoaiHinhDonVi/{id}")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(string id)
+        [HttpDelete("DeleteLoaiHinhDonVi/{id}")]
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(int id)
         {
-            var command = new DeleteLoaiHinhDonViCommand { MaLoaiHinh = id };
+            var command = new DeleteLoaiHinhDonViCommand { Id = id };
             await _mediator.Send(command);
             return NoContent();
         }

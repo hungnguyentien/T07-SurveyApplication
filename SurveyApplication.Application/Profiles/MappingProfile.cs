@@ -14,6 +14,7 @@ namespace SurveyApplication.Application.Profiles
         public MappingProfile()
         {
             CreateMap<LoaiHinhDonVi, LoaiHinhDonViDto>().ReverseMap();
+            CreateMap<LoaiHinhDonVi, CreateLoaiHinhDonViDto>().ReverseMap();
         }
     }
 }

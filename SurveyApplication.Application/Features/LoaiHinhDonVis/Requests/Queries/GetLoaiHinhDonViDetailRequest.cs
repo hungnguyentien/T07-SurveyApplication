@@ -6,7 +6,6 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries
 {
     public class GetLoaiHinhDonViDetailRequest : IRequest<LoaiHinhDonViDto>
     {
-        [Required(ErrorMessage = "Mã loại hình không được để trống")]
-        public string? MaLoaiHinh { get; set; }
+        public int Id { get; set; }
     }
 }

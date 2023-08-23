@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
 
         public async Task<LoaiHinhDonViDto> Handle(GetLoaiHinhDonViDetailRequest request, CancellationToken cancellationToken)
         {
-            var loaiHinhDonVis = await _loaiHinhDonViRepository.GetById(request.MaLoaiHinh);
+            var loaiHinhDonVis = await _loaiHinhDonViRepository.GetById(request.Id);
             return _mapper.Map<LoaiHinhDonViDto>(loaiHinhDonVis);
         }
     }

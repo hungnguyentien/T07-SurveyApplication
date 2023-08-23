@@ -37,17 +37,20 @@ namespace SurveyApplication.Persistence
 
         public DbSet<LoaiHinhDonVi> LoaiHinhDonVis { get; set; }
         public DbSet<LoaiCauHoi> LoaiCauHoiVis { get; set; }
-        public DbSet<LinhVucHoatDong>LinhVucHoatDongs { get; set; }
-        public DbSet<GuiEmail>GuiEmails { get; set; }
+        public DbSet<LinhVucHoatDong> LinhVucHoatDongs { get; set; }
+        public DbSet<GuiEmail> GuiEmails { get; set; }
         public DbSet<DotKhaoSat> DotKhaoSats { get; set; }
         public DbSet<CauHoi> CauHois { get; set; }
-        public DbSet<BangKhaoSat> BangKhaoSats { get;set; }
-        public DbSet<NguoiDaiDien>NguoiDaiDiens { get; set; }
-        public DbSet<NguoiDung>NguoiDungs { get; set; }
+        public DbSet<BangKhaoSat> BangKhaoSats { get; set; }
+        public DbSet<NguoiDaiDien> NguoiDaiDiens { get; set; }
+        public DbSet<NguoiDung> NguoiDungs { get; set; }
         public DbSet<NguoiDungVaiTro> NguoiDungVaiTros { get; set; }
         public DbSet<Quyen> Quyens { get; set; }
         public DbSet<VaiTro> VaiTros { get; set; }
         public DbSet<VaiTroQuyen> VaiTroQuyens { get; set; }
-        public DbSet<DonVi>DonVis { get;set; }
+        public DbSet<DonVi> DonVis { get; set; }
+        public DbSet<CauHoiPhu> CauHoiPhus { get; set; }
+        public DbSet<DapAn> DapAns { get; set; }
+        public DbSet<KetQua> KetQuas { get; set; }
     }
 }

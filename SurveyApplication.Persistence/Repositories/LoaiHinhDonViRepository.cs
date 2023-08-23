@@ -49,5 +49,11 @@ namespace SurveyApplication.Persistence.Repositories
             await _dbContext.SaveChangesAsync();
             return await _dbContext.LoaiHinhDonVis.FirstOrDefaultAsync(x => x.MaLoaiHinh == obj.MaLoaiHinh) ?? new LoaiHinhDonVi();
         }
+
+        public async Task<bool> ExistsByMaLoaiHinh(string maloaihinh)
+        {
+            var entity = await _dbContext.LoaiHinhDonVis.AsNoTracking().FirstOrDefaultAsync(x => x.MaLoaiHinh == maloaihinh);
+            return entity != null;
+        }
     }
 }
