@@ -90,3 +90,6 @@
 /.vs/ProjectEvaluation/surveyapplication.metadata.v5.2
 /.vs/ProjectEvaluation/surveyapplication.metadata.v5.2
 /.vs/ProjectEvaluation/surveyapplication.projects.v5.2
+/SurveyApplication.UI/.vs
+/SurveyApplication.UI/node_modules
+/SurveyApplication.UI/.angular/cache/16.2.0

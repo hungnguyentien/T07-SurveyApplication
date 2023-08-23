@@ -9,6 +9,6 @@ namespace SurveyApplication.Application.Contracts.Persistence
 {
     public interface ILoaiHinhDonViRepository : IGenericRepository<LoaiHinhDonVi>
     {
-        Task<LoaiHinhDonVi> GetByMaLoaHinh(string maloaihinh);
+
     }
 }
