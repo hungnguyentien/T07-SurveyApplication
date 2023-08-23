@@ -21,7 +21,7 @@ namespace SurveyApplication.Application.Enums
             [Description("Dạng bảng (văn bản)")]
             MultiTextMatrix = 6,
             [Description("Tải tệp tin")]
-            UploadFile = 6
+            UploadFile = 7
         }
     }
 }
