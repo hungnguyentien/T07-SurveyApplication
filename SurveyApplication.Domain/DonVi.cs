@@ -1,0 +1,22 @@
+﻿using SurveyApplication.Domain.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SurveyApplication.Domain
+{
+    public partial class DonVi : BaseDomainEntity
+    {
+        public Guid MaDonVi { get;set; }    
+        public string? MaLoaiHinh { get;set; }
+        public string? MaLinhVuc { get;set; }
+        public string? TenDonVi { get;set; }
+        public string? DiaChi { get;set; }
+        public string? MaSoThue { get; set; }
+        public string? Email { get;set; }
+        public string? WebSite { get;set; }
+        public string? SoDienThoai { get;set; }
+    }
+}
