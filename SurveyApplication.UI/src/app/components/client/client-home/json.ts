@@ -181,6 +181,8 @@ export const jsonDataFake = {
             maxSize: 102400,
             name: 'question7',
             title: '7. [...]',
+            showCommentArea: true,
+            commentText: 'Ghi chú',
           },
         ],
         title: 'I. Thông tin sử dụng Mã số mã vạch của đơn vị',

@@ -38,11 +38,22 @@ export class ClientHomeComponent implements OnInit {
     survey.applyTheme(themeJson);
     survey.addNavigationItem({
       id: 'sv-nav-clear-page',
-      title: 'Clear Page',
+      title: 'Khai lại từ đầu',
       action: () => {
         survey.currentPage.questions.forEach((question: any) => {
           question.value = undefined;
         });
+      },
+      css: 'nav-button',
+      innerCss: 'sd-btn nav-input',
+    });
+
+    survey.addNavigationItem({
+      id: 'sv-nav-back-page',
+      title: 'Quay lại',
+      action: () => {
+        //TODO quay lại trang trước
+        alert('Comming son!')
       },
       css: 'nav-button',
       innerCss: 'sd-btn nav-input',
