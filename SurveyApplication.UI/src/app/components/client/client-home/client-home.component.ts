@@ -11,7 +11,7 @@ const creatorOptions = {
 
 const defaultJson = {
   title: 'PHẦN 2: THÔNG TIN KHẢO SÁT',
-  completedHtml: '<h3>Thank you for your feedback</h3>',
+  completedHtml: '<h3>Cảm ơn phản hồi của bạn</h3>',
   completedHtmlOnCondition: [
     {
       html: '<h3>Thank you for your feedback</h3> <h4>We are glad that you love our product. Your ideas and suggestions will help us make it even better.</h4>',
@@ -26,55 +26,63 @@ const defaultJson = {
       elements: [
         {
           type: 'boolean',
-          name: 'question1',
-          title:
-            '1. Sử dụng mã GS1 (ví dụ GTIN, GLN) (Đánh dấu “X” vào ô thích hợp):',
+          name: 'Sử dụng mã GS1 (ví dụ GTIN, GLN)',
+          title: '1. Sử dụng mã GS1 (ví dụ GTIN, GLN) (Chọn ô thích hợp):',
+          defaultValue: 'false',
           labelTrue: 'Có',
           labelFalse: 'Không',
         },
         {
           type: 'checkbox',
-          name: 'question2',
+          name: 'Loại hình của đơn vị',
           title: '2. Loại hình của đơn vị',
           choices: [
             {
-              value: 'Item 1',
+              value: 'Doanh nghiệp nhà nước',
+              text: 'a. Doanh nghiệp nhà nước',
+            },
+            {
+              value: 'Doanh nghiệp tư nhân',
               text: 'b. Doanh nghiệp tư nhân',
             },
             {
-              value: 'Item 2',
+              value: 'Hợp tác xã',
               text: 'c. Hợp tác xã',
             },
             {
-              value: 'Item 3',
+              value: 'Cổ phần',
+              text: 'd. Cổ phần',
+            },
+            {
+              value: 'Trách nhiệm hữu hạn',
               text: 'e. Trách nhiệm hữu hạn',
             },
             {
-              value: 'Item 4',
+              value: 'Có vốn đầu tư nước ngoài',
               text: 'f. Có vốn đầu tư nước ngoài',
             },
             {
-              value: 'Item 5',
+              value: 'Công ty liên doanh',
               text: 'g. Công ty liên doanh',
             },
             {
-              value: 'Item 6',
+              value: 'Hộ kinh doanh cá thể',
               text: 'h. Hộ kinh doanh cá thể',
             },
             {
-              value: 'Item 7',
+              value: 'Công ty hợp danh',
               text: 'i. Công ty hợp danh',
             },
           ],
           showOtherItem: true,
+          otherPlaceholder: 'Câu trả lời của bạn',
           noneText: 'h. Hộ kinh doanh cá thể',
           otherText: 'j. Khác',
-          showSelectAllItem: true,
           selectAllText: 'a. Doanh nghiệp nhà nước',
         },
         {
           type: 'comment',
-          name: 'question3',
+          name: 'Liệt kê các sản phẩm đơn vị đang sản xuất',
           title: '3. Liệt kê các sản phẩm đơn vị đang sản xuất',
         },
         {
@@ -198,32 +206,33 @@ export class ClientHomeComponent implements OnInit {
   model!: Model;
   ngOnInit() {
     const creator = new SurveyCreatorModel(creatorOptions);
-    creator.text = window.localStorage.getItem("survey-json") || JSON.stringify(defaultJson);
+    creator.text =
+      window.localStorage.getItem('survey-json') || JSON.stringify(defaultJson);
 
-    creator.saveSurveyFunc = (saveNo: number, callback: Function) => {
-      window.localStorage.setItem("survey-json", creator.text);
-      callback(saveNo, true);
-    };
-    this.surveyCreatorModel = creator;
+    // creator.saveSurveyFunc = (saveNo: number, callback: Function) => {
+    //   window.localStorage.setItem("survey-json", creator.text);
+    //   callback(saveNo, true);
+    // };
+    // this.surveyCreatorModel = creator;
 
-  //   const survey = new Model(defaultJson);
-  //   // You can delete the line below if you do not use a customized theme
-  //   survey.applyTheme(themeJson);
-  //   survey.addNavigationItem({
-  //     id: "sv-nav-clear-page",
-  //     title: "Clear Page",
-  //     action: () => {
-  //         survey.currentPage.questions.forEach((question:any) => {
-  //             question.value = undefined;
-  //         });
-  //     },
-  //     css: "nav-button",
-  //     innerCss: "sd-btn nav-input"
-  // });
-  //   survey.onComplete.add((sender, options) => {
-  //     debugger;
-  //     console.log(JSON.stringify(sender.data, null, 3));
-  //   });
-  //   this.model = survey;
+    const survey = new Model(defaultJson);
+    // You can delete the line below if you do not use a customized theme
+    survey.applyTheme(themeJson);
+    survey.addNavigationItem({
+      id: 'sv-nav-clear-page',
+      title: 'Clear Page',
+      action: () => {
+        survey.currentPage.questions.forEach((question: any) => {
+          question.value = undefined;
+        });
+      },
+      css: 'nav-button',
+      innerCss: 'sd-btn nav-input',
+    });
+    survey.onComplete.add((sender, options) => {
+      debugger;
+      console.log(JSON.stringify(sender.data, null, 3));
+    });
+    this.model = survey;
   }
 }
