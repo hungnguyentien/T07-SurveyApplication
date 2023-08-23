@@ -9,7 +9,7 @@ namespace SurveyApplication.Domain
 {
     public partial class LoaiCauHoi : BaseDomainEntity
     {
-        public Guid MaLoaicauHoi { get; set; }
+        public Guid MaLoaiCauHoi { get; set; }
         public string? TenLoaiCauHoi { get; set;}
     }
 }
