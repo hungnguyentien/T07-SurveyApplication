@@ -11,15 +11,15 @@ namespace SurveyApplication.Domain
     public partial class VaiTroQuyen : BaseDomainEntity
     {
 
-        [Required(ErrorMessage = "Mã quan hệ vai trò với quyền không được để trống")]
+        [Required]
         public int MaVaiTroQuyen { get; set; }
 
 
-        [Required(ErrorMessage = "Mã vai trò không được để trống")]
+        [Required]
         public int? MaVaiTro { get; set; }
 
 
-        [Required(ErrorMessage = "Mã quyền không được để trống")]
+        [Required]
         public int? MaQuyen { get;set; }
 
     }

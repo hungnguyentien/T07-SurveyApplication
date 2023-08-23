@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
 
         public async Task<Unit> Handle(DeleteBangKhaoSatCommand request, CancellationToken cancellationToken)
         {
-            var bangKhaoSatRepository = await _bangKhaoSatRepository.GetById(request.MaBangKhaoSat);
+            var bangKhaoSatRepository = await _bangKhaoSatRepository.GetById(request.Id);
             await _bangKhaoSatRepository.Delete(bangKhaoSatRepository);
             return Unit.Value;
         }

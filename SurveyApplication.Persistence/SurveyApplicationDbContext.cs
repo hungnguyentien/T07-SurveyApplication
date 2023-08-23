@@ -36,7 +36,7 @@ namespace SurveyApplication.Persistence
         }
 
         public DbSet<LoaiHinhDonVi> LoaiHinhDonVis { get; set; }
-        public DbSet<LoaiCauHoi> LoaiCauHoiVis { get; set; }
+        
         public DbSet<LinhVucHoatDong> LinhVucHoatDongs { get; set; }
         public DbSet<GuiEmail> GuiEmails { get; set; }
         public DbSet<DotKhaoSat> DotKhaoSats { get; set; }

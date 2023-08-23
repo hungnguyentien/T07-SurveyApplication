@@ -9,6 +9,6 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands
 {
     public class DeleteBangKhaoSatCommand : IRequest
     {
-        public string MaBangKhaoSat { get; set; }
+        public int Id { get; set; }
     }
 }

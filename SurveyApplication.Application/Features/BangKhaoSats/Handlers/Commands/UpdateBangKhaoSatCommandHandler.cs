@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using System;
@@ -24,9 +25,9 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
 
         public async Task<Unit> Handle(UpdateBangKhaoSatCommand request, CancellationToken cancellationToken)
         {
-            var loaiHinhDonVi = await _bangKhaoSatRepository.GetById(request.BangKhaoSatDto.MaBangKhaoSat);
-            _mapper.Map(request.BangKhaoSatDto, loaiHinhDonVi);
-            await _bangKhaoSatRepository.Update(loaiHinhDonVi);
+            var bangKhaoSat = await _bangKhaoSatRepository.GetById(request.BangKhaoSatDto?.Id ?? 0);
+            _mapper.Map(request.BangKhaoSatDto, bangKhaoSat);
+            await _bangKhaoSatRepository.Update(bangKhaoSat);
             return Unit.Value;
         }
     }

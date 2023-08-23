@@ -3,7 +3,7 @@ using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
-using SurveyApplication.Application.Features.Ba.Requests.Queries;
+using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using System;
 using System.Collections.Generic;
@@ -26,8 +26,8 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
 
         public async Task<BangKhaoSatDto> Handle(GetBangKhaoSatDetailRequest request, CancellationToken cancellationToken)
         {
-            var loaiHinhDonVis = await _loaiHinhDonViRepository.GetById(request.MaLoaiHinh);
-            return _mapper.Map<LoaiHinhDonViDto>(loaiHinhDonVis);
+            var bangKhaoSatRepository = await _bangKhaoSatRepository.GetById(request.Id);
+            return _mapper.Map<BangKhaoSatDto>(bangKhaoSatRepository);
         }
     }
     

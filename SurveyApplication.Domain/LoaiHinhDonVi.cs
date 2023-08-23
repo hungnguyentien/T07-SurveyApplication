@@ -7,13 +7,13 @@ namespace SurveyApplication.Domain
 {
     public partial class LoaiHinhDonVi : BaseDomainEntity
     {
-        [Required(ErrorMessage = "Mã loại hình đơn vị không được để trống")]
+        [Required]
         public string MaLoaiHinh { get; set; } = null!;
 
-        [Required(ErrorMessage = "Tên loại hình đơn vị không được để trống")]
+        [Required]
         public string? TenLoaiHinh { get; set; }
 
-        [Required(ErrorMessage = "Mô tả không được để trống")]
+        [Required]
         public string? MoTa { get; set; }
     }
 }

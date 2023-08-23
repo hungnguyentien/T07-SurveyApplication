@@ -10,16 +10,16 @@ namespace SurveyApplication.Domain
 {
     public partial class GuiEmail : BaseDomainEntity
     {
-        [Required(ErrorMessage = "Mã gửi email không được để trống")]
+        [Required]
         public Guid MaGuiEmail { get; set; }
 
-        [Required(ErrorMessage = "Địa  chỉ nhận không được để trống")]
+        [Required]
         public string? DiaChiNhan { get; set; }
 
-        [Required(ErrorMessage = "Tiêu đề không được để trống")]
+        [Required]
         public string? TieuDe { get; set; }
 
-        [Required(ErrorMessage = "Nội dung không được để trống")]
+        [Required]
         public string? NoiDung { get; set; }
       
     }

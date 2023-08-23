@@ -10,10 +10,10 @@ namespace SurveyApplication.Domain
 {
     public partial class LinhVucHoatDong : BaseDomainEntity
     {
-        [Required(ErrorMessage = "Mã lĩnh vực không được để trống")]
+        [Required]
         public Guid MaLinhVuc { get; set; }
 
-        [Required(ErrorMessage = "Tên lĩnh vực không được để trống")]
+        [Required]
         public string? TenLinhVuc { get; set; }  
     }
 }

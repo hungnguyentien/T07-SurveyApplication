@@ -11,19 +11,19 @@ namespace SurveyApplication.Domain
     public partial class NguoiDung : BaseDomainEntity
     {
 
-        [Required(ErrorMessage = "Mã người dùng không được để trống")]
+        [Required]
         public int MaNguoiDung { get; set; }
 
 
-        [Required(ErrorMessage = "Tên người dùng không được để trống")]
+        [Required]
         public string? TenNguoiDung { get; set; }
 
 
-        [Required(ErrorMessage = "Password không được để trống")]
+        [Required]
         public string? PassWord { get;set; }
 
 
-        [Required(ErrorMessage = "Email không được để trống")]
+        [Required]
         public string? Email { get; set; }
     }
 }

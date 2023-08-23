@@ -9,6 +9,7 @@ namespace SurveyApplication.Domain
 {
     public class KetQua: BaseDomainEntity
     {
+
         public string Data { get; set; }
         public int IdDonVi { get; set; }
         public int IdNguoiDaiDien { get; set; }

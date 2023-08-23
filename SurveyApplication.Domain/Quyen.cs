@@ -11,11 +11,11 @@ namespace SurveyApplication.Domain
     public partial class Quyen : BaseDomainEntity
     {
 
-        [Required(ErrorMessage = "Mã quyền không được để trống")]
+        [Required]
         public int MaQuyen { get; set; }
 
 
-        [Required(ErrorMessage = "Tên quyền không được để trống")]
+        [Required]
         public string? TenQuyen { get; set; }
     }
 }

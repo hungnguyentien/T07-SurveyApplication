@@ -12,7 +12,9 @@ namespace SurveyApplication.Domain
     {
         [Required]
         public string MaCauHoi { get; set; }
+        [Required]
         public string NoiDung { get; set; }
+        [Required]
         public int IdCauHoi { get; set; }
     }
 }

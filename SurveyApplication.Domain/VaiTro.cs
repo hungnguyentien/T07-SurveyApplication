@@ -12,11 +12,11 @@ namespace SurveyApplication.Domain
     {
 
 
-        [Required(ErrorMessage = "Mã vai trò không được để trống")]
+        [Required]
         public int MaVaiTro { get; set; }
 
 
-        [Required(ErrorMessage = "Tên vai trò không được để trống")]
+        [Required]
         public string? TenVaiTro { get; set; }
 
     }
