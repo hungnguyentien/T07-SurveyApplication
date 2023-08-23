@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Contracts.Persistence
 {
-    public interface ILoaiHinhDonViRepository : IGenericRepository<LoaiHinhDonVi>
+    public interface IBangKhaoSatRepository : IGenericRepository<BangKhaoSat>
     {
-
+        
     }
 }

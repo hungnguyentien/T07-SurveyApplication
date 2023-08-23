@@ -1,10 +1,8 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
-using SurveyApplication.Application.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -20,29 +18,42 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/<LoaiHinhDonViController>
-        [HttpGet("GetByLoaiHinhDonVi")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByMaLoaiHinhDonVi(string maLoaiHinh)
+        [HttpGet("GetByLoaiHinhDonVi/{id}")]
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByLoaiHinhDonVi(string id)
         {
-            var result = await _mediator.Send(new GetLoaiHinhDonViDetailRequest { MaLoaiHinh = maLoaiHinh });
-            return Ok(result);
+            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViDetailRequest() { MaLoaiHinh = id });
+            return Ok(leaveAllocations);
         }
 
-        // GET: api/<LoaiHinhDonViController>
-        [HttpGet("GetByConditions")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByConditions(int pageIndex = 1, int pageSize = 10, string? keyword = "")
+        [HttpGet("GetAllLoaiHinhDonVi")]
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetAllLoaiHinhDonVi()
         {
-            var result = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
-            return Ok(result);
+            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViListRequest());
+            return Ok(leaveAllocations);
         }
 
-        // POST api/<CreateLoaiHinhDonVi>
         [HttpPost("CreateLoaiHinhDonVi")]
-        public async Task<ActionResult<BaseCommandResponse>> CreateLoaiHinhDonVi([FromBody] CreateLoaiHinhDonViDto loaiHinhDonVi)
+        public async Task<ActionResult<LoaiHinhDonViDto>> CreateLoaiHinhDonVi([FromBody] LoaiHinhDonViDto obj)
         {
-            var command = new CreateLoaiHinhDonViCommand { LoaiHinhDonViDto = loaiHinhDonVi };
-            var repsonse = await _mediator.Send(command);
-            return Ok(repsonse);
+            var command = new CreateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("UpdateLoaiHinhDonVi")]
+        public async Task<ActionResult<LoaiHinhDonViDto>> UpdateLoaiHinhDonVi([FromBody] LoaiHinhDonViDto obj)
+        {
+            var command = new UpdateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
+            await _mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpGet("DeleteLoaiHinhDonVi/{id}")]
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(string id)
+        {
+            var command = new DeleteLoaiHinhDonViCommand { MaLoaiHinh = id };
+            await _mediator.Send(command);
+            return NoContent();
         }
     }
 }
