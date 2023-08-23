@@ -1,8 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
+using SurveyApplication.Domain;
+using System.Linq.Expressions;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -49,11 +52,18 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("DeleteLoaiHinhDonVi/{id}")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(string id)
+        public async Task<ActionResult<LoaiHinhDonViDto>> DeleteLoaiHinhDonVi(string id)
         {
             var command = new DeleteLoaiHinhDonViCommand { MaLoaiHinh = id };
             await _mediator.Send(command);
             return NoContent();
+        }
+
+        [HttpPost("SearchLoaiHinhDonVi")]
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> Search([FromBody] SearchLoaiHinhDonViRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return Ok(result);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace SurveyApplication.Application.Contracts.Persistence
         Task<IReadOnlyList<T>> GetAll();
         Task<T> Create(T entity);
         Task Update(T entity);
-        Task Delete(T entity);
+        Task Delete(string id);
+        Task<(IReadOnlyList<T> Items, int TotalCount)> Search(Expression<Func<T, bool>> filter, int pageNumber, int pageSize);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.Contracts.Persistence;
+using System.Linq.Expressions;
 
 namespace SurveyApplication.Persistence.Repositories
 {
@@ -19,10 +20,15 @@ namespace SurveyApplication.Persistence.Repositories
             return entity;
         }
 
-        public async Task Delete(T entity)
+        public async Task Delete(string id)
         {
-            _dbContext.Set<T>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            var entity = await _dbContext.Set<T>().FindAsync(id);
+
+            if (entity != null)
+            {
+                _dbContext.Entry(entity).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<IReadOnlyList<T>> GetAll()
@@ -39,6 +45,18 @@ namespace SurveyApplication.Persistence.Repositories
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<(IReadOnlyList<T> Items, int TotalCount)> Search(Expression<Func<T, bool>> filter, int pageNumber, int pageSize)
+        {
+            var query = _dbContext.Set<T>().Where(filter);
+            var totalCount = await query.CountAsync();
+
+            var items = await query.Skip((pageNumber - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToListAsync();
+
+            return (items, totalCount);
         }
     }
 }
