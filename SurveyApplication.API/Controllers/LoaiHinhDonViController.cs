@@ -6,9 +6,9 @@ using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
 
 namespace SurveyApplication.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
+    [Route("api/[controller]")]
     public class LoaiHinhDonViController : Controller
     {
         private readonly IMediator _mediator;
