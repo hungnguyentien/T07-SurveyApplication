@@ -4,8 +4,8 @@ namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi
 {
     public partial class LoaiHinhDonViDto : BaseDto
     {
-        public string Maloaihinh { get; set; } = null!;
-        public string? Tenloaihinh { get; set; }
-        public string? Mota { get; set; }
+        public string MaLoaiHinh { get; set; }
+        public string? TenLoaiHinh { get; set; }
+        public string? MoTa { get; set; }
     }
 }

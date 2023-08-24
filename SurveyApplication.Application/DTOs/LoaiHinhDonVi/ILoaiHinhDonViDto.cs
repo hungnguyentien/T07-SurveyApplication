@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi
 {
-    internal interface ILoaiHinhDonViDto
+    public interface ILoaiHinhDonViDto
     {
+        public string MaLoaiHinh { get; set; }
+        public string? TenLoaiHinh { get; set; }
+        public string? MoTa { get; set; }
     }
 }
