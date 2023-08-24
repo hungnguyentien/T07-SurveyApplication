@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi
 {
-    public class CreateLoaiHinhDonViDto : BaseDto, ILoaiHinhDonViDto
+    public class CreateLoaiHinhDonViDto : ILoaiHinhDonViDto
     {
         public string MaLoaiHinh { get; set; }
         public string? TenLoaiHinh { get; set; }

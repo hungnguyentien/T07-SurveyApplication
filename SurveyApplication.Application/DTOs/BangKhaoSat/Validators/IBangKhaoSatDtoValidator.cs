@@ -23,6 +23,13 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat.Validators
             RuleFor(p => p.MoTa)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
+            RuleFor(p => p.NgayBatDau)
+               .NotEmpty().WithMessage("{PropertyName} is required.")
+               .NotNull();
+
+            RuleFor(p => p.NgayKetThuc)
+               .NotEmpty().WithMessage("{PropertyName} is required.")
+               .NotNull();
         }
     }
 }

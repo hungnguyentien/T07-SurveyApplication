@@ -18,7 +18,7 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat.Validators
 
         public CreateBangKhaoSatDtoValidator(IBangKhaoSatRepository bangKhaoSatRepository)
         {
-            _bangKhaoSatRepository = _bangKhaoSatRepository;
+            _bangKhaoSatRepository = bangKhaoSatRepository;
             Include(new BangKhaoSatDtoValidator(_bangKhaoSatRepository));
         }
     }
