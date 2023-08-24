@@ -1,13 +1,34 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
+
+import { AdminComponent } from './components/admin/admin.component';
+
 const routes: Routes = [
-  { path: '', component: AppComponent },
-  // { path: 'Dashboard', component: DashboardComponent }
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'admin', component: AdminComponent },
+  {
+    path: '',
+    data: {
+      title: 'Default',
+    },
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./layout/teamplate/teamplate.module').then(
+            (x) => x.TeamplateModule
+          ),
+      },
+    ],
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
