@@ -23,15 +23,26 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
 
         public async Task<BaseCommandResponse> Handle(CreateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
-
+            var response = new BaseCommandResponse();
             var validator = new CreateLoaiHinhDonViDtoValidator(_loaiHinhDonViRepository);
             var validationResult = await validator.ValidateAsync(request.LoaiHinhDonViDto ?? new CreateLoaiHinhDonViDto());
+
             if (!validationResult.IsValid)
-                throw new ValidationException(validationResult);
+            {
+                response.Success = false;
+                response.Message = "Tạo mới không thành công";
+                response.Errors = validationResult.Errors.Select(q=> q.ErrorMessage).ToList();
+            }
 
             var loaiHinhDonVi = _mapper.Map<LoaiHinhDonVi>(request.LoaiHinhDonViDto);
+            
             loaiHinhDonVi = await _loaiHinhDonViRepository.Create(loaiHinhDonVi);
-            return new BaseCommandResponse { Message = "Tạo mới thành công", Id = loaiHinhDonVi.MaLoaiHinh };
+
+            response.Success = true;
+            response.Message = "Tạo mới thành công";
+            response.Id = loaiHinhDonVi.MaLoaiHinh;
+
+            return response;
         }
     }
 }

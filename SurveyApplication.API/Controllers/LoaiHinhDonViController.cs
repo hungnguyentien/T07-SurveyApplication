@@ -48,7 +48,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("UpdateLoaiHinhDonVi")]
-        public async Task<ActionResult<LoaiHinhDonViDto>> UpdateLoaiHinhDonVi([FromBody] LoaiHinhDonViDto obj)
+        public async Task<ActionResult<LoaiHinhDonViDto>> UpdateLoaiHinhDonVi([FromBody] UpdateLoaiHinhDonViDto obj)
         {
             var command = new UpdateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
             await _mediator.Send(command);

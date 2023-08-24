@@ -15,7 +15,7 @@ namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators
         public CreateLoaiHinhDonViDtoValidator(ILoaiHinhDonViRepository loaiHinhDonViRepository)
         {
             _loaiHinhDonViRepository = loaiHinhDonViRepository;
-            Include(new LoaiHinhDonViDtoValidator(_loaiHinhDonViRepository));
+            Include(new ILoaiHinhDonViDtoValidator(_loaiHinhDonViRepository));
         }
     }
 }

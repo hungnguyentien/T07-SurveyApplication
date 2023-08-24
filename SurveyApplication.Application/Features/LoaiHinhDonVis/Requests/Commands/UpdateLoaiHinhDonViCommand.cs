@@ -10,6 +10,6 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Command
 {
     public class UpdateLoaiHinhDonViCommand : IRequest<Unit>
     {
-        public LoaiHinhDonViDto? LoaiHinhDonViDto { get; set; }
+        public UpdateLoaiHinhDonViDto? LoaiHinhDonViDto { get; set; }
     }
 }
