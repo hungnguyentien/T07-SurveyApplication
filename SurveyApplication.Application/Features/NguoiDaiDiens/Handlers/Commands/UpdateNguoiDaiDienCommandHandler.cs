@@ -24,9 +24,9 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 
         public async Task<Unit> Handle(UpdateNguoiDaiDienCommand request, CancellationToken cancellationToken)
         {
-            var NguoiDaiDien = await _nguoiDaiDienRepository.GetById(request.NguoiDaiDienDto?.Id ?? 0);
-            _mapper.Map(request.NguoiDaiDienDto, NguoiDaiDien);
-            await _nguoiDaiDienRepository.Update(NguoiDaiDien);
+            //var NguoiDaiDien = await _nguoiDaiDienRepository.GetById(request.NguoiDaiDienDto?.Id ?? 0);
+            //_mapper.Map(request.NguoiDaiDienDto, NguoiDaiDien);
+            //await _nguoiDaiDienRepository.Update(NguoiDaiDien);
             return Unit.Value;
         }
     }

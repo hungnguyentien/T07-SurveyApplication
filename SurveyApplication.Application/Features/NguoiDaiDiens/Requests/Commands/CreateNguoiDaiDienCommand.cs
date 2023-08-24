@@ -11,6 +11,6 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands
 {
     public class CreateNguoiDaiDienCommand : IRequest<BaseCommandResponse>
     {
-        public CreateNguoiDaiDienDto? NguoiDaiDienDto { get; set; }
+        //public CreateNguoiDaiDienDto? NguoiDaiDienDto { get; set; }
     }
 }
