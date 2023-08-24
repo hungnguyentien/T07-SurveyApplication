@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Domain;
 using System;
@@ -15,6 +16,10 @@ namespace SurveyApplication.Application.Profiles
         {
             CreateMap<LoaiHinhDonVi, LoaiHinhDonViDto>().ReverseMap();
             CreateMap<LoaiHinhDonVi, CreateLoaiHinhDonViDto>().ReverseMap();
+
+            CreateMap<BangKhaoSat, BangKhaoSatDto>().ReverseMap();
+            CreateMap<BangKhaoSat, CreateBangKhaoSatDto>().ReverseMap();
+
         }
     }
 }
