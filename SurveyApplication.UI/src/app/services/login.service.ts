@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CONFIGURATION } from '../configs/app.configs';
+import { environment } from '@environments/environment';
 import { Login } from '../models';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -32,7 +32,7 @@ export class LoginserviceService {
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     };
-    return this.http.post(`${CONFIGURATION.token}`, body.toString(), options)
+    return this.http.post(`${environment.apiUrl}`, body.toString(), options)
       .pipe(map(req => {
         // đăng nhập thành công lưu lại token
         if (req) {

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SurveyCreatorModel } from 'survey-creator-core';
 import { Model } from 'survey-core';
 import { themeJson } from './theme';
-import { jsonDataFake } from "./json";
+import { jsonDataFake } from './json';
+
+import { ClientHomeService } from '@app/services';
 
 const creatorOptions = {
   showLogicTab: true,
@@ -19,8 +21,15 @@ const defaultJson = jsonDataFake.config;
 export class ClientHomeComponent implements OnInit {
   surveyCreatorModel!: SurveyCreatorModel;
   model!: Model;
+  bangKhaoSat?: any;
+
+  constructor(private clientHomeService: ClientHomeService) {}
 
   ngOnInit() {
+    this.clientHomeService.getAll().subscribe((rep) => {
+      this.bangKhaoSat = rep;
+    });
+
     const creator = new SurveyCreatorModel(creatorOptions);
     creator.text =
       window.localStorage.getItem('survey-json') || JSON.stringify(defaultJson);
@@ -53,7 +62,7 @@ export class ClientHomeComponent implements OnInit {
       title: 'Quay lại',
       action: () => {
         //TODO quay lại trang trước
-        alert('Comming son!')
+        alert('Comming son!');
       },
       css: 'nav-button',
       innerCss: 'sd-btn nav-input',
