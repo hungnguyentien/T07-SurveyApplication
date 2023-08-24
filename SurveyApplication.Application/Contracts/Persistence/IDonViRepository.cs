@@ -9,6 +9,6 @@ namespace SurveyApplication.Application.Contracts.Persistence
 {
     public interface IDonViRepository : IGenericRepository<DonVi>
     {
-
+        Task<bool> ExistsByMaDonVi(string maDonVi);
     }
 }

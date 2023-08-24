@@ -10,8 +10,6 @@ namespace SurveyApplication.Domain
 {
     public partial class NguoiDaiDien : BaseDomainEntity
     {
-
-            
         public Guid MaNguoiDaiDien { get; set; }
 
         [Required]

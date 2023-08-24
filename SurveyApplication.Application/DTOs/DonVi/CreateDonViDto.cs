@@ -1,13 +1,14 @@
 ﻿using SurveyApplication.Application.DTOs.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.DonVi
 {
-    public partial class DonViDto : BaseDto
+    public class CreateDonViDto :  IDonViDto
     {
         public Guid MaDonVi { get; set; }
         public int? MaLoaiHinh { get; set; }
