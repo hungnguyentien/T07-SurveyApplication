@@ -17,9 +17,6 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat
         public DateTime? NgayBatDau { get; set; }
         public DateTime? NgayKetThuc { get; set; }
 
-        public static implicit operator BangKhaoSatDto(CreateBangKhaoSatDto v)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

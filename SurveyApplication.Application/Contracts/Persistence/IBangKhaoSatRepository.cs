@@ -9,6 +9,6 @@ namespace SurveyApplication.Application.Contracts.Persistence
 {
     public interface IBangKhaoSatRepository : IGenericRepository<BangKhaoSat>
     {
-        
+        Task<bool> ExistsByMaBangKhaoSat(string maBangKhaoSat);
     }
 }

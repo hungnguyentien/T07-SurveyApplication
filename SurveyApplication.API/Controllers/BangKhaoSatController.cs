@@ -39,13 +39,13 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
-        [HttpPost("CreateBangKhaoSat")]
-        public async Task<ActionResult<BangKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateBangKhaoSatDto obj)
-        {
-            var command = new CreateBangKhaoSatCommand { BangKhaoSatDto = obj };
-            var response = await _mediator.Send(command);
-            return Ok(response);
-        }
+        //[HttpPost("CreateBangKhaoSat")]
+        //public async Task<ActionResult<BangKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateBangKhaoSatDto obj)
+        //{
+        //    var command = new CreateBangKhaoSatCommand { BangKhaoSatDto = obj };
+        //    var response = await _mediator.Send(command);
+        //    return Ok(response);
+        //}
 
         [HttpPost("UpdateBangKhaoSat")]
         public async Task<ActionResult<BangKhaoSatDto>> UpdateLoaiHinhDonVi([FromBody] BangKhaoSatDto obj)
