@@ -12,6 +12,6 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands
 {
     public class CreateBangKhaoSatCommand : IRequest<BaseCommandResponse>
     {
-        public BangKhaoSatDto? BangKhaoSatDto { get; set; }
+        public CreateBangKhaoSatDto? BangKhaoSatDto { get; set; }
     }
 }

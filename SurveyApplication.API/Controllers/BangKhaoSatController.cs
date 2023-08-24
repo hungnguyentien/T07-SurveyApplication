@@ -19,36 +19,36 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAllBangKhaoSat")]
-        public async Task<ActionResult<List<BangKhaoSatDto>>> GetAllLoaiHinhDonVi()
+        public async Task<ActionResult<List<BangKhaoSatDto>>> GetAllBangKhaoSat()
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatListRequest());
             return Ok(leaveAllocations);
         }
 
         [HttpGet("GetBangKhaoSatByCondition")]
-        public async Task<ActionResult<List<BangKhaoSatDto>>> GetLoaiHinhDonViByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
+        public async Task<ActionResult<List<BangKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return Ok(leaveAllocations);
         }
 
         [HttpGet("GetByBangKhaoSat/{id}")]
-        public async Task<ActionResult<List<BangKhaoSatDto>>> GetByLoaiHinhDonVi(int id)
+        public async Task<ActionResult<List<BangKhaoSatDto>>> GetByBangKhaoSat(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatDetailRequest { Id = id });
             return Ok(leaveAllocations);
         }
 
-        //[HttpPost("CreateBangKhaoSat")]
-        //public async Task<ActionResult<BangKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateBangKhaoSatDto obj)
-        //{
-        //    var command = new CreateBangKhaoSatCommand { BangKhaoSatDto = obj };
-        //    var response = await _mediator.Send(command);
-        //    return Ok(response);
-        //}
+        [HttpPost("CreateBangKhaoSat")]
+        public async Task<ActionResult<BangKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateBangKhaoSatDto obj)
+        {
+            var command = new CreateBangKhaoSatCommand { BangKhaoSatDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
 
         [HttpPost("UpdateBangKhaoSat")]
-        public async Task<ActionResult<BangKhaoSatDto>> UpdateLoaiHinhDonVi([FromBody] BangKhaoSatDto obj)
+        public async Task<ActionResult<BangKhaoSatDto>> UpdateBangKhaoSat([FromBody] BangKhaoSatDto obj)
         {
             var command = new UpdateBangKhaoSatCommand { BangKhaoSatDto = obj };
             await _mediator.Send(command);
@@ -56,7 +56,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("DeleteBangKhaoSat/{id}")]
-        public async Task<ActionResult<List<BangKhaoSatDto>>> DeleteLoaiHinhDonVi(int id)
+        public async Task<ActionResult<List<BangKhaoSatDto>>> DeleteBangKhaoSat(int id)
         {
             var command = new DeleteBangKhaoSatCommand { Id = id };
             await _mediator.Send(command);
