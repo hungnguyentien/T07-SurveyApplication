@@ -1,5 +1,5 @@
 <div>
-    <h5>Quản lý đối tượng</h5>
+    <h5>Quản lý đơn vị</h5>
     <div class="d-flex mt-3">
         <div>
             <button data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"></button>
@@ -15,7 +15,6 @@
         </div>
         <button type="submit" class="btn btn-primary ml-2 mb-2"><i class="pi pi-search"></i></button>
       </form>
-      
 </div>
 <div class="card mt-3">
    
@@ -30,11 +29,7 @@
     [rows]="10"
     [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
-    [paginator]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [filterDelay]="0"
-    [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-    >
+    [paginator]="true">
         <ng-template pTemplate="header">
             <tr>
                 <th pResizableColumn>Code</th>
@@ -58,27 +53,110 @@
 
 <!-- modal -->
 <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Thêm mới loại hình đơn vị</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Thêm mới đơn vị</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <form>
+            <h6>Thông tin đơn vị </h6>
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Mã loại hình:</label>
-              <input type="text" [disabled]="true"class="form-control" id="recipient-name">
+              <label for="recipient-name" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
+              <input type="text" class="form-control" id="recipient-name">
             </div>
-            <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Tên loại hình:</label>
-                <input type="text" class="form-control" id="recipient-name" placeholder="Nhập tên loại hình đơn vị">
+            <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị: <span style="color: red;">*</span></label>
+                  <select class="custom-select" id="loaihinhdonvi">
+                    <option selected>Chọn loại hình đơn vị</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="loaihinhdonvi" class="col-form-label">Lĩnh vực hoạt động: </label>
+                  <select class="custom-select" id="loaihinhdonvi">
+                    <option selected>Chọn lĩnh vực hoạt động</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="sothue" class="col-form-label">Mã số thuế: </label>
+                  <input type="text" class="form-control" id="sothue">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Website" class="col-form-label">Website:</label>
+                  <input type="text" class="form-control" id="Website">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" id="Email">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="sdt" class="col-form-label">Số điện thoại: <span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" id="sdt">
+                </div>
+            </div>
+            <div class="row">
+              <label for="loaihinhdonvi" class="col-form-label">Địa chỉ: <span style="color: red;">*</span></label>
+              <div class="form-group col-md-3">
+                <select class="custom-select" id="loaihinhdonvi">
+                  <option selected>Chọn Tỉnh/ Thành phố</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
               </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Mô tả:</label>
-              <textarea class="form-control" id="message-text" placeholder="Nhập mô tả"></textarea>
+              <div class="form-group col-md-3">
+                <select class="custom-select" id="loaihinhdonvi">
+                  <option selected>Chọn Quận/ huyện</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <select class="custom-select" id="loaihinhdonvi">
+                  <option selected>Chọn Phường/ xã</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <input type="text" class="form-control" id="sdt" placeholder="Nhập địa chỉ chi tiết">
+              </div>
+            </div>
+            <hr>
+            <h6>Thông tin người đại diện </h6>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="hoten" class="col-form-label">Họ tên: <span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" id="hoten">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="chucvu" class="col-form-label">Chức vụ: <span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" id="chucvu">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" id="Email">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="sdt" class="col-form-label">Số điện thoại: <span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" id="sdt">
+                </div>
+                <div class="col-md-12">
+                  <textarea name="" id="" cols="147" rows="5" placeholder="Nhập mô tả"></textarea>
+                </div>
             </div>
           </form>
         </div>

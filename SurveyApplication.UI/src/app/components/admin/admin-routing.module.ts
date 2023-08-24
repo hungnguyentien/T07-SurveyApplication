@@ -4,6 +4,8 @@ import { AdminComponent } from './admin.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminObjectSurveyComponent } from './admin-object-survey/admin-object-survey.component';
 import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.component';
+import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
+import { QuestionComponent } from './admin-question/question/question.component';
 
 
 const routes: Routes = [
@@ -12,7 +14,10 @@ const routes: Routes = [
     children:[
       { path: '', component: AdminHomeComponent},
       { path: 'doi-tuong-khao-sat', component: AdminObjectSurveyComponent},
-      { path: 'loai-hinh-don-vi', component: AdminUnitTypeComponent}
+      { path: 'loai-hinh-don-vi', component: AdminUnitTypeComponent},
+      { path: 'dot-khao-sat', component: AdminPeriodSurveyComponent},
+      { path: 'question', component: QuestionComponent},
+
     ]
   },
 ];

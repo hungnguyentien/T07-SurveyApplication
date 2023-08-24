@@ -1,11 +1,23 @@
+<p-toast></p-toast>
+<p-confirmDialog #cd [style]="{width: '30vw'}">
+    <ng-template pTemplate="header">
+        <h3>Xác nhận xoá đợt khảo sát</h3>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" class="custom-small-button" label="No" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" class="custom-small-button" label="Yes" (click)="cd.accept()"></button>
+    </ng-template>
+</p-confirmDialog>
+
+
 <div>
-    <h5>Danh sách loại hình đơn vị</h5>
+    <h5>Danh sách đợt khảo sát</h5>
     <div class="d-flex mt-3">
         <div>
             <button data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"></button>
         </div>
         <div class="ml-3">
-            <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button" style="background-color: #ea5c5c;"></button>
+            <button pButton type="button" (click)="confirm1()" icon="pi pi-trash" label="Xoá" class="custom-button" style="background-color: #ea5c5c;"></button>
         </div>
     </div>
     <form class="form-inline mt-4">
@@ -14,8 +26,7 @@
           <input type="text" class="form-control" id="inputPassword2" placeholder="Nhập từ khoá ">
         </div>
         <button type="submit" class="btn btn-primary ml-2 mb-2"><i class="pi pi-search"></i></button>
-      </form>
-      
+    </form>
 </div>
 <div class="card mt-3">
     <p-table
@@ -44,17 +55,27 @@
                 </th>
                 <th  style="min-width: 14rem">
                     <div class="flex justify-content-between align-items-center">
-                        Mã nhóm<p-columnFilter type="text" field="country.name" display="menu" class="ml-auto"></p-columnFilter>
+                        Mã đợt<p-columnFilter type="text" field="country.name" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
-                <th  style="min-width: 16rem">
+                <th  style="min-width: 14rem">
                     <div class="flex justify-content-between align-items-center">
-                        Tên nhóm<p-columnFilter type="text" field="country.name" display="menu" class="ml-auto"></p-columnFilter>
+                        Tên đợt<p-columnFilter type="text" field="country.name" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th style="min-width: 10rem">
                     <div class="flex justify-content-between align-items-center">               
-                        Mô tả<p-columnFilter type="text" field="country.name" display="menu" class="ml-auto"></p-columnFilter>
+                        Loại hình đơn vị khảo sát<p-columnFilter type="text" field="country.name" display="menu" class="ml-auto"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width: 10rem">
+                    <div class="flex justify-content-between align-items-center">               
+                        Thời gian<p-columnFilter type="text" field="country.name" display="menu" class="ml-auto"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width: 10rem">
+                    <div class="flex justify-content-between align-items-center">               
+                        Trạng thái<p-columnFilter type="text" field="country.name" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
             
@@ -85,6 +106,14 @@
                 </td>
              
                 <td>
+                    <span class="p-column-title">Thời gian</span>
+                </td>
+                <td>
+                    <span class="p-column-title">Trạng thái</span>
+                    <span class="ml-1 vertical-align-middle">{{ customer.representative.name }}</span>
+                </td>
+             
+                <td>
                     <span class="p-column-title">Chức năng</span>
                 </td>
                 <td>
@@ -106,27 +135,44 @@
 
 <!-- modal -->
 <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Thêm mới loại hình đơn vị</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Thêm mới đợt khảo sát</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <form>
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Mã loại hình:</label>
-              <input type="text" [disabled]="true"class="form-control" id="recipient-name">
+            <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="recipient-name" class="col-form-label">Mã đợt:</label>
+                  <input type="text" class="form-control" id="recipient-name" placeholder="VB01">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: </label>
+                    <select class="custom-select" id="loaihinhdonvi">
+                      <option selected>Chọn loại hình đơn vị khảo sát</option>
+                      <option value="1">Bộ</option>
+                      <option value="2">Sở</option>
+                      <option value="3">Doanh nghiệp</option>
+                    </select>
+                  </div>
             </div>
             <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Tên loại hình:</label>
-                <input type="text" class="form-control" id="recipient-name" placeholder="Nhập tên loại hình đơn vị">
-              </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Mô tả:</label>
-              <textarea class="form-control" id="message-text" placeholder="Nhập mô tả"></textarea>
+                <label for="recipient-name" class="col-form-label">Tên đợt:</label>
+                <input type="text" class="form-control" id="recipient-name" placeholder="Nhập tên đợt khảo sát">
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="recipient-name" class="col-form-label">Ngày bắt đầu:</label>
+                    <input type="date" class="form-control" id="recipient-name" placeholder="VB01">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="recipient-name" class="col-form-label">Ngày kết thúc:</label>
+                    <input type="date" class="form-control" id="recipient-name" placeholder="VB01">
+                  </div>
             </div>
           </form>
         </div>
