@@ -20,7 +20,12 @@ namespace SurveyApplication.Persistence
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<ILoaiHinhDonViRepository, LoaiHinhDonViRepository>();
-            //services.AddScoped<IDonViRepository, DonViRepository>();
+            services.AddScoped<IBangKhaoSatRepository, BangKhaoSatRepository>();
+
+
+
+
+
 
             return services;
         }
