@@ -10,6 +10,6 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands
 {
     public class UpdateBangKhaoSatCommand : IRequest<Unit>
     { 
-        public BangKhaoSatDto? BangKhaoSatDto { get; set; }
+        public UpdateBangKhaoSatDto? BangKhaoSatDto { get; set; }
     }
 }

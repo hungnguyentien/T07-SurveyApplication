@@ -16,10 +16,11 @@ namespace SurveyApplication.Application.Profiles
         {
             CreateMap<LoaiHinhDonVi, LoaiHinhDonViDto>().ReverseMap();
             CreateMap<LoaiHinhDonVi, CreateLoaiHinhDonViDto>().ReverseMap();
+            CreateMap<LoaiHinhDonVi, UpdateLoaiHinhDonViDto>().ReverseMap();
 
             CreateMap<BangKhaoSat, BangKhaoSatDto>().ReverseMap();
             CreateMap<BangKhaoSat, CreateBangKhaoSatDto>().ReverseMap();
-
+            CreateMap<BangKhaoSat, UpdateBangKhaoSatDto>().ReverseMap();
         }
     }
 }

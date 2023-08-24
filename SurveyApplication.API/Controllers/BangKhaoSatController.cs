@@ -48,7 +48,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("UpdateBangKhaoSat")]
-        public async Task<ActionResult<BangKhaoSatDto>> UpdateBangKhaoSat([FromBody] BangKhaoSatDto obj)
+        public async Task<ActionResult<BangKhaoSatDto>> UpdateBangKhaoSat([FromBody] UpdateBangKhaoSatDto obj)
         {
             var command = new UpdateBangKhaoSatCommand { BangKhaoSatDto = obj };
             await _mediator.Send(command);
