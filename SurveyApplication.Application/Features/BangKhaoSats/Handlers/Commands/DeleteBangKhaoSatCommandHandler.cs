@@ -2,7 +2,6 @@
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;

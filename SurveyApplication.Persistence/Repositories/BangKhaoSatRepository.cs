@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Persistence.Repositories
 {
-
     public class BangKhaoSatRepository : GenericRepository<BangKhaoSat>, IBangKhaoSatRepository
     {
         private readonly SurveyApplicationDbContext _dbContext;
