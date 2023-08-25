@@ -21,39 +21,39 @@ namespace SurveyApplication.Persistence.Repositories
 
         public async Task<GuiEmail> GetById(string id)
         {
-            return await _dbContext.GuiEmails.FirstOrDefaultAsync(x => x.MaGuiEmail.ToString() == id) ?? new GuiEmail();
+            return await _dbContext.GuiEmail.FirstOrDefaultAsync(x => x.MaGuiEmail.ToString() == id) ?? new GuiEmail();
         }
 
         public async Task<List<GuiEmail>> GetAll()
         {
-            return await _dbContext.GuiEmails.ToListAsync();
+            return await _dbContext.GuiEmail.ToListAsync();
         }
 
         public async Task<GuiEmail> Create(GuiEmail obj)
         {
-            await _dbContext.GuiEmails.AddAsync(obj);
+            await _dbContext.GuiEmail.AddAsync(obj);
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.GuiEmails.FirstOrDefaultAsync(x => x.MaGuiEmail == obj.MaGuiEmail) ?? new GuiEmail();
+            return await _dbContext.GuiEmail.FirstOrDefaultAsync(x => x.MaGuiEmail == obj.MaGuiEmail) ?? new GuiEmail();
         }
 
         public async Task<GuiEmail> Update(GuiEmail obj)
         {
             _dbContext.Entry(obj).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.GuiEmails.FirstOrDefaultAsync(x => x.MaGuiEmail == obj.MaGuiEmail) ?? new GuiEmail();
+            return await _dbContext.GuiEmail.FirstOrDefaultAsync(x => x.MaGuiEmail == obj.MaGuiEmail) ?? new GuiEmail();
         }
 
         public async Task<GuiEmail> Delete(string id)
         {
-            var obj = await _dbContext.GuiEmails.FirstOrDefaultAsync(x => x.MaGuiEmail.ToString() == id) ?? new GuiEmail();
+            var obj = await _dbContext.GuiEmail.FirstOrDefaultAsync(x => x.MaGuiEmail.ToString() == id) ?? new GuiEmail();
             obj.ActiveFlag = 0;
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.GuiEmails.FirstOrDefaultAsync(x => x.MaGuiEmail == obj.MaGuiEmail) ?? new GuiEmail();
+            return await _dbContext.GuiEmail.FirstOrDefaultAsync(x => x.MaGuiEmail == obj.MaGuiEmail) ?? new GuiEmail();
         }
 
         public async Task<bool> ExistsByMaGuiEmail(Guid MaGuiEmail)
         {
-            var entity = await _dbContext.GuiEmails.AsNoTracking().FirstOrDefaultAsync(x => x.MaGuiEmail == MaGuiEmail);
+            var entity = await _dbContext.GuiEmail.AsNoTracking().FirstOrDefaultAsync(x => x.MaGuiEmail == MaGuiEmail);
             return entity != null;
         }
     }
