@@ -20,7 +20,7 @@
           <span>Thống kê báo cáo</span></a>
      </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="question">
+      <a class="nav-link" (click)="handlerClick('admin/question')">
         <i class="fa fa-question-circle" aria-hidden="true"></i>
           <span >Quản lý câu hỏi</span></a>
       </li>
@@ -32,8 +32,8 @@
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" routerLink="dot-khao-sat">Quản lý đợt khảo sát</a>
+            <div class="bg-white py-2 collapse-inner rounded" >
+                <a class="collapse-item" (click)="handlerClick('admin/dot-khao-sat')">Quản lý đợt khảo sát</a>
                 <a class="collapse-item" href="utilities-border.html">Quảng lý bảng khảo sát</a>
                 <a class="collapse-item" href="utilities-animation.html">Quản lý gửi email</a>
             </div>
@@ -48,8 +48,8 @@
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" routerLink="doi-tuong-khao-sat">Quản lý đối tượng</a>
-                <a class="collapse-item" routerLink="loai-hinh-don-vi">Quản lý loại hình đơn vị</a>
+                <a class="collapse-item" (click)="handlerClick('admin/quan-ly-don-vi')" >Quản lý đơn vị</a>
+                <a class="collapse-item" (click)="handlerClick('admin/loai-hinh-don-vi')">Quản lý loại hình đơn vị</a>
             </div>
         </div>
     </li>

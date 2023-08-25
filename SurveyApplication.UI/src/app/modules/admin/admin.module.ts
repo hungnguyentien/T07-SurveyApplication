@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [AdminHomeComponent],
@@ -11,7 +12,8 @@ import { AdminHomeComponent } from './admin-home/admin-home.component';
     CommonModule,
     FormsModule,
     DropdownModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    CKEditorModule
   ]
 })
 export class AdminModule { }
