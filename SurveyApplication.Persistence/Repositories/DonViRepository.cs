@@ -9,50 +9,52 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Persistence.Repositories
 {
-    public class NguoiDaiDienRepository : GenericRepository<NguoiDaiDien>, INguoiDaiDienRepository
+
+    public class DonViRepository : GenericRepository<DonVi>, IDonViRepository
     {
         private readonly SurveyApplicationDbContext _dbContext;
 
-        public NguoiDaiDienRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
+        public DonViRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<NguoiDaiDien> GetById(Guid id)
+        public async Task<DonVi> GetById(Guid id)
         {
-            return await _dbContext.NguoiDaiDiens.FirstOrDefaultAsync(x => x.MaNguoiDaiDien == id) ?? new NguoiDaiDien();
+            return await _dbContext.DonVi.FirstOrDefaultAsync(x => x.MaDonVi == id) ?? new DonVi();
         }
 
-        public async Task<List<NguoiDaiDien>> GetAll()
+        public async Task<List<DonVi>> GetAll()
         {
-            return await _dbContext.NguoiDaiDiens.ToListAsync();
+            return await _dbContext.DonVi.ToListAsync();
         }
 
-        public async Task<NguoiDaiDien> Create(NguoiDaiDien obj)
+        public async Task<DonVi> Create(DonVi obj)
         {
-            await _dbContext.NguoiDaiDiens.AddAsync(obj);
+            obj.ActiveFlag = 1;
+            await _dbContext.DonVi.AddAsync(obj);
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.NguoiDaiDiens.FirstOrDefaultAsync(x => x.MaNguoiDaiDien == obj.MaNguoiDaiDien) ?? new NguoiDaiDien();
+            return await _dbContext.DonVi.FirstOrDefaultAsync(x => x.MaDonVi == obj.MaDonVi) ?? new DonVi();
         }
 
-        public async Task<NguoiDaiDien> Update(NguoiDaiDien obj)
+        public async Task<DonVi> Update(DonVi obj)
         {
             _dbContext.Entry(obj).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.NguoiDaiDiens.FirstOrDefaultAsync(x => x.MaNguoiDaiDien == obj.MaNguoiDaiDien) ?? new NguoiDaiDien();
+            return await _dbContext.DonVi.FirstOrDefaultAsync(x => x.MaDonVi == obj.MaDonVi) ?? new DonVi();
         }
 
-        public async Task<NguoiDaiDien> Delete(Guid id)
+        public async Task<DonVi> Delete(Guid id)
         {
-            var obj = await _dbContext.NguoiDaiDiens.FirstOrDefaultAsync(x => x.MaNguoiDaiDien == id) ?? new NguoiDaiDien();
+            var obj = await _dbContext.DonVi.FirstOrDefaultAsync(x => x.MaDonVi == id) ?? new DonVi();
             obj.ActiveFlag = 0;
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.NguoiDaiDiens.FirstOrDefaultAsync(x => x.MaNguoiDaiDien == obj.MaNguoiDaiDien) ?? new NguoiDaiDien();
+            return await _dbContext.DonVi.FirstOrDefaultAsync(x => x.MaDonVi == obj.MaDonVi) ?? new DonVi();
         }
 
-        public async Task<bool> ExistsByMaNguoiDaiDien(string MaNguoiDaiDien)
+        public async Task<bool> ExistsByMaDonVi(string MaDonVi)
         {
-            var entity = await _dbContext.NguoiDaiDiens.AsNoTracking().FirstOrDefaultAsync(x => x.MaNguoiDaiDien.ToString() == MaNguoiDaiDien);
+            var entity = await _dbContext.DonVi.AsNoTracking().FirstOrDefaultAsync(x => x.MaDonVi.ToString() == MaDonVi);
             return entity != null;
         }
     }

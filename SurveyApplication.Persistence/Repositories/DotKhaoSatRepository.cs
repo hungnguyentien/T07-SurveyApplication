@@ -21,39 +21,40 @@ namespace SurveyApplication.Persistence.Repositories
 
         public async Task<DotKhaoSat> GetById(string id)
         {
-            return await _dbContext.DotKhaoSats.FirstOrDefaultAsync(x => x.MaDotKhaoSat == id) ?? new DotKhaoSat();
+            return await _dbContext.DotKhaoSat.FirstOrDefaultAsync(x => x.MaDotKhaoSat == id) ?? new DotKhaoSat();
         }
 
         public async Task<List<DotKhaoSat>> GetAll()
         {
-            return await _dbContext.DotKhaoSats.ToListAsync();
+            return await _dbContext.DotKhaoSat.ToListAsync();
         }
 
         public async Task<DotKhaoSat> Create(DotKhaoSat obj)
         {
-            await _dbContext.DotKhaoSats.AddAsync(obj);
+            obj.ActiveFlag = 1;
+            await _dbContext.DotKhaoSat.AddAsync(obj);
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.DotKhaoSats.FirstOrDefaultAsync(x => x.MaDotKhaoSat == obj.MaDotKhaoSat) ?? new DotKhaoSat();
+            return await _dbContext.DotKhaoSat.FirstOrDefaultAsync(x => x.MaDotKhaoSat == obj.MaDotKhaoSat) ?? new DotKhaoSat();
         }
 
         public async Task<DotKhaoSat> Update(DotKhaoSat obj)
         {
             _dbContext.Entry(obj).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.DotKhaoSats.FirstOrDefaultAsync(x => x.MaDotKhaoSat == obj.MaDotKhaoSat) ?? new DotKhaoSat();
+            return await _dbContext.DotKhaoSat.FirstOrDefaultAsync(x => x.MaDotKhaoSat == obj.MaDotKhaoSat) ?? new DotKhaoSat();
         }
 
         public async Task<DotKhaoSat> Delete(string id)
         {
-            var obj = await _dbContext.DotKhaoSats.FirstOrDefaultAsync(x => x.MaDotKhaoSat == id) ?? new DotKhaoSat();
+            var obj = await _dbContext.DotKhaoSat.FirstOrDefaultAsync(x => x.MaDotKhaoSat == id) ?? new DotKhaoSat();
             obj.ActiveFlag = 0;
             await _dbContext.SaveChangesAsync();
-            return await _dbContext.DotKhaoSats.FirstOrDefaultAsync(x => x.MaDotKhaoSat == obj.MaDotKhaoSat) ?? new DotKhaoSat();
+            return await _dbContext.DotKhaoSat.FirstOrDefaultAsync(x => x.MaDotKhaoSat == obj.MaDotKhaoSat) ?? new DotKhaoSat();
         }
 
         public async Task<bool> ExistsByMaDotKhaoSat(string MaDotKhaoSat)
         {
-            var entity = await _dbContext.DotKhaoSats.AsNoTracking().FirstOrDefaultAsync(x => x.MaDotKhaoSat == MaDotKhaoSat);
+            var entity = await _dbContext.DotKhaoSat.AsNoTracking().FirstOrDefaultAsync(x => x.MaDotKhaoSat == MaDotKhaoSat);
             return entity != null;
         }
     }
