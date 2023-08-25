@@ -22,14 +22,9 @@ namespace SurveyApplication.Persistence
             services.AddScoped<ILoaiHinhDonViRepository, LoaiHinhDonViRepository>();
             services.AddScoped<IBangKhaoSatRepository, BangKhaoSatRepository>();
             services.AddScoped<IDotKhaoSatRepository, DotKhaoSatRepository>();
-
             services.AddScoped<IDonViRepository, DonViRepository>();
             services.AddScoped<INguoiDaiDienRepository, NguoiDaiDienRepository>();
-
             services.AddScoped<IGuiEmailRepository, GuiEmailRepository>();
-
-
-
 
             return services;
         }

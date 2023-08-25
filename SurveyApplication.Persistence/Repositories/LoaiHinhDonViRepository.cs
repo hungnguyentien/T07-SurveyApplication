@@ -18,37 +18,24 @@ namespace SurveyApplication.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<LoaiHinhDonVi> GetById(string id)
+        public async Task<string> GetLastRecordByMaLoaiHinh()
         {
-            return await _dbContext.LoaiHinhDonVi.FirstOrDefaultAsync(x => x.MaLoaiHinh == id) ?? new LoaiHinhDonVi();
-        }
+            var lastEntity = await _dbContext.LoaiHinhDonVi.OrderByDescending(e => e.Id).FirstOrDefaultAsync();
 
-        public async Task<List<LoaiHinhDonVi>> GetAll()
-        {
-            return await _dbContext.LoaiHinhDonVi.ToListAsync();
-        }
+            if (lastEntity != null)
+            {
+                string prefix = lastEntity.MaLoaiHinh.Substring(0, 2);
+                int currentNumber = int.Parse(lastEntity.MaLoaiHinh.Substring(2));
 
-        public async Task<LoaiHinhDonVi> Create(LoaiHinhDonVi obj)
-        {
-            obj.ActiveFlag = 1;
-            await _dbContext.LoaiHinhDonVi.AddAsync(obj);
-            await _dbContext.SaveChangesAsync();
-            return await _dbContext.LoaiHinhDonVi.FirstOrDefaultAsync(x => x.MaLoaiHinh == obj.MaLoaiHinh) ?? new LoaiHinhDonVi();
-        }
+                currentNumber++;
+                string newNumber = currentNumber.ToString("D3");
 
-        public async Task<LoaiHinhDonVi> Update(LoaiHinhDonVi obj)
-        {
-            _dbContext.Entry(obj).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
-            return await _dbContext.LoaiHinhDonVi.FirstOrDefaultAsync(x => x.MaLoaiHinh == obj.MaLoaiHinh) ?? new LoaiHinhDonVi();
-        }
-
-        public async Task<LoaiHinhDonVi> Delete(string id)
-        {
-            var obj = await _dbContext.LoaiHinhDonVi.FirstOrDefaultAsync(x => x.MaLoaiHinh == id) ?? new LoaiHinhDonVi();
-            obj.ActiveFlag = 0;
-            await _dbContext.SaveChangesAsync();
-            return await _dbContext.LoaiHinhDonVi.FirstOrDefaultAsync(x => x.MaLoaiHinh == obj.MaLoaiHinh) ?? new LoaiHinhDonVi();
+                return prefix + newNumber;
+            }
+            else
+            {
+                return "LH001";
+            }
         }
 
         public async Task<bool> ExistsByMaLoaiHinh(string MaLoaiHinh)
