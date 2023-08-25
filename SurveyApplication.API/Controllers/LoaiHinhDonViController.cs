@@ -28,8 +28,8 @@ namespace SurveyApplication.API.Controllers
         [HttpGet("GetLastRecordByMaLoaiHinh")]
         public async Task<ActionResult<string>> GetLastRecordByMaLoaiHinh()
         {
-            var record = await _mediator.Send(new GetLastRecordLoaiHinhDonViRequest());
-            return Ok(record);
+            //var record = await _mediator.Send(new GetLastRecordLoaiHinhDonViRequest());
+            return Ok(/*record*/);
         }
 
         [HttpGet("GetLoaiHinhDonViByCondition")]
