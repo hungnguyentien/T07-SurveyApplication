@@ -26,9 +26,9 @@ export class ClientHomeComponent implements OnInit {
   constructor(private clientHomeService: ClientHomeService) {}
 
   ngOnInit() {
-    this.clientHomeService.getAll().subscribe((rep) => {
-      this.bangKhaoSat = rep;
-    });
+    // this.clientHomeService.getAll().subscribe((rep) => {
+    //   this.bangKhaoSat = rep;
+    // });
 
     const creator = new SurveyCreatorModel(creatorOptions);
     creator.text =
@@ -41,28 +41,33 @@ export class ClientHomeComponent implements OnInit {
     // this.surveyCreatorModel = creator;
 
     const survey = new Model(defaultJson);
-    //survey.setValue('question3', 'aaaa');
     // You can delete the line below if you do not use a customized theme
     survey.setDataCore(jsonDataFake.data);
     survey.applyTheme(themeJson);
-    survey.addNavigationItem({
-      id: 'sv-nav-clear-page',
-      title: 'Khai lại từ đầu',
-      action: () => {
-        survey.currentPage.questions.forEach((question: any) => {
-          question.value = undefined;
-        });
-      },
-      css: 'nav-button',
-      innerCss: 'sd-btn nav-input',
-    });
-
+    // Set label for btn Complete
+    survey.completeText = 'Gửi thông tin';
     survey.addNavigationItem({
       id: 'sv-nav-back-page',
       title: 'Quay lại',
       action: () => {
         //TODO quay lại trang trước
         alert('Comming son!');
+      },
+      css: 'nav-button',
+      innerCss: 'sd-btn nav-input',
+    });
+
+    survey.addNavigationItem({
+      id: 'sv-nav-clear-page',
+      title: 'Khai lại từ đầu',
+      action: () => {
+        survey.currentPage.questions.forEach((question: any) => {
+          question.value = undefined;
+          question.commentElements &&
+            question.commentElements.forEach(
+              (comment: any) => (comment.value = '')
+            );
+        });
       },
       css: 'nav-button',
       innerCss: 'sd-btn nav-input',
@@ -113,9 +118,9 @@ export class ClientHomeComponent implements OnInit {
     });
 
     survey.onComplete.add((sender, options) => {
-      debugger;
       console.log(JSON.stringify(sender.data, null, 3));
     });
+
     this.model = survey;
   }
 }
