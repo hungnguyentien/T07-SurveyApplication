@@ -1,8 +1,8 @@
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
-import { ServiceService } from '@app/services/service.service';
-import { Customer, Representative } from '@app/models/customer';
-
+import { ServiceService } from 'src/app/services/service.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Customer, Representative } from '@app/models';
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
@@ -14,32 +14,26 @@ export class QuestionComponent {
   selectedCustomers!: Customer[];
   representatives!: Representative[];
   loading: boolean = true;
-  dropdownItems = ['Một đáp án', 'Chọn nhiều đáp án', 'Văn bản ngắn', 'Văn bản dài', 'Dạng bảng(một lựa chọn)',
-  'Dạng bảng(nhiều lựa chọn)', 'Dạng bảng(văn bản)', 'Tải tệp tin'];
-  selectedItem: string | null = null;
+  
 
   constructor(private customerService: ServiceService,private messageService: MessageService,private confirmationService: ConfirmationService){}
-  @ViewChild('dynamicFormContainer', { read: ViewContainerRef }) dynamicFormContainer!: ViewContainerRef;
-  onItemChange(){
-    
+  inputValue: string = '';
+  valueEditor: string = '';
+  selectedOption: string = 'motdapan';
+  submitForm() {
+    if (this.selectedOption === 'motdapan') {
+      console.log('Input Value:', this.inputValue);
+      console.log('ValueEditor:', this.valueEditor);
+    }
+    else if(this.selectedOption === 'nhieudapan'){
+      console.log('Input Value:', this.inputValue);
+    }
   }
   ngOnInit() {
     this.customerService.getCustomersLarge().then((customers) => {
         this.customers = customers;
         this.loading = false;
     });
-    this.representatives = [
-        { name: 'Amy Elsner', image: 'amyelsner.png' },
-        { name: 'Anna Fali', image: 'annafali.png' },
-        { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-        { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-        { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-        { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-        { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-        { name: 'Onyama Limba', image: 'onyamalimba.png' },
-        { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-        { name: 'Xuxue Feng', image: 'xuxuefeng.png' }
-    ];
   }
   confirm1() {
     this.confirmationService.confirm({

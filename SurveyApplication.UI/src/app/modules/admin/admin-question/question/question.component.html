@@ -131,20 +131,33 @@
                   <input type="text" class="form-control" id="recipient-name" placeholder="VB01">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="loaihinhdonvi" class="col-form-label">Loại câu hỏi: <span style="color: red;">*</span></label>
-                    <select  [(ngModel)]="selectedItem" (change)="onItemChange()">
-                        <option *ngFor="let item of dropdownItems" [value]="item">{{item}}</option>
+                    <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red;">*</span></label>
+                    <select class="custom-select" id="dropdown" name="dropdown" [(ngModel)]="selectedOption">
+                      <option value="motdapan" >Chọn một đáp án</option>
+                      <option value="nhieudapan">Chọn nhiều đáp án</option>
+                      <option value="vanbanngan">Văn bản ngắn</option>
+                      <option value="vanbandai">Văn bản dài</option>
+                      <option value="motluachon">Dạng bảng (một lựa chọn)</option>
+                      <option value="nhieuluachon">Dạng bảng (nhiều lựa chọn)</option>
+                      <option value="vanban">Dạng bảng (văn bản)</option>
+                      <option value="teptin">Tải tệp tin</option>
                     </select>
-                    <app-long-text *ngIf="selectedItem === 'Chọn nhiều đáp án'"> </app-long-text>
-                    <app-choose-an-answer *ngIf="selectedItem ==='Một đáp án'"> </app-choose-an-answer>
-                </div>
+                </div>  
             </div>
             <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Tiêu đề:</label>
                 <input type="text" class="form-control" id="recipient-name" placeholder="Nhập tiêu đề câu hỏi">
             </div>
             <div class="row">
-                
+                <!-- <ng-container *ngIf="selectedOption === 'motdapan'">
+                    <app-long-text [(inputValue)]="inputValue"></app-long-text>
+                  </ng-container> -->
+                  <ng-container *ngIf="selectedOption === 'motdapan'">
+                      <app-choose-an-answer [(inputValue)]="inputValue"></app-choose-an-answer>
+                  </ng-container>                  
+                <!-- <form #myForm="ngForm">
+                    <button type="submit" (click)="submitForm()">Submit</button>
+                </form> -->
             </div>
           </form>
         </div>

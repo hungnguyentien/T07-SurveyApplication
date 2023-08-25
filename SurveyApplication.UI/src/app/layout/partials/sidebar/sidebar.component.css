@@ -1,0 +1,10 @@
+/* Đổi màu nền khi ở trạng thái active */
+.nav-item.active {
+    background-color: #f8f9fc; /* Màu nền khác tùy chọn */
+  }
+  
+  /* Đổi màu chữ khi ở trạng thái active */
+  .nav-item.active .nav-link {
+    color: #000; /* Màu chữ khác tùy chọn */
+  }
+  

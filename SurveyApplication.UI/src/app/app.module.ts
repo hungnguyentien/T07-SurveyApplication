@@ -28,6 +28,7 @@ import { AdminPeriodSurveyComponent } from './modules/admin/admin-period-survey/
 
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { ConfirmationService } from 'primeng/api';
     ConfirmDialogModule,
     ToastModule,
     TreeSelectModule,
+    CKEditorModule
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent],
