@@ -30,7 +30,6 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<DotKhaoSat, CreateDotKhaoSatDto>().ReverseMap();
             CreateMap<DotKhaoSat, UpdateDotKhaoSatDto>().ReverseMap();
 
-
             CreateMap<DonVi, DonViDto>().ReverseMap();
             CreateMap<DonVi, CreateDonViDto>().ReverseMap();
             CreateMap<DonVi, UpdateDonViDto>().ReverseMap();

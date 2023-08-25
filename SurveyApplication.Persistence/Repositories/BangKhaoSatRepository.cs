@@ -18,39 +18,6 @@ namespace SurveyApplication.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<BangKhaoSat> GetById(string id)
-        {
-            return await _dbContext.BangKhaoSat.FirstOrDefaultAsync(x => x.MaBangKhaoSat == id) ?? new BangKhaoSat();
-        }
-
-        public async Task<List<BangKhaoSat>> GetAll()
-        {
-            return await _dbContext.BangKhaoSat.ToListAsync();
-        }
-
-        public async Task<BangKhaoSat> Create(BangKhaoSat obj)
-        {
-            obj.ActiveFlag = 1;
-            await _dbContext.BangKhaoSat.AddAsync(obj);
-            await _dbContext.SaveChangesAsync();
-            return await _dbContext.BangKhaoSat.FirstOrDefaultAsync(x => x.MaBangKhaoSat == obj.MaBangKhaoSat) ?? new BangKhaoSat();
-        }
-
-        public async Task<BangKhaoSat> Update(BangKhaoSat obj)
-        {
-            _dbContext.Entry(obj).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
-            return await _dbContext.BangKhaoSat.FirstOrDefaultAsync(x => x.MaBangKhaoSat == obj.MaBangKhaoSat) ?? new BangKhaoSat();
-        }
-
-        public async Task<BangKhaoSat> Delete(string id)
-        {
-            var obj = await _dbContext.BangKhaoSat.FirstOrDefaultAsync(x => x.MaBangKhaoSat == id) ?? new BangKhaoSat();
-            obj.ActiveFlag = 0;
-            await _dbContext.SaveChangesAsync();
-            return await _dbContext.BangKhaoSat.FirstOrDefaultAsync(x => x.MaBangKhaoSat == obj.MaBangKhaoSat) ?? new BangKhaoSat();
-        }
-
         public async Task<bool> ExistsByMaBangKhaoSat(string MaBangKhaoSat)
         {
             var entity = await _dbContext.BangKhaoSat.AsNoTracking().FirstOrDefaultAsync(x => x.MaBangKhaoSat == MaBangKhaoSat);
