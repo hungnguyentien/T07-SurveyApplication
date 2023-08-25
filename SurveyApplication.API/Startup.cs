@@ -102,7 +102,12 @@ namespace SurveyApplication.API
                 {
                     Version = "v1",
                     Title = "Survey Management Api",
-
+                    Description = "A SURVEY MANAGEMENT API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "toannck",
+                        Email = "toannck32@wrun.vn"
+                    }
                 });
 
             });

@@ -26,6 +26,7 @@ export const jsonDataFake = {
             type: 'checkbox',
             name: 'question2',
             title: '2. Loại hình của đơn vị',
+            isRequired: true,
             choices: [
               {
                 value: 'Doanh nghiệp nhà nước',
@@ -66,9 +67,7 @@ export const jsonDataFake = {
             ],
             showOtherItem: true,
             otherPlaceholder: 'Câu trả lời của bạn',
-            noneText: 'h. Hộ kinh doanh cá thể',
             otherText: 'j. Khác',
-            selectAllText: 'a. Doanh nghiệp nhà nước',
           },
           {
             type: 'comment',

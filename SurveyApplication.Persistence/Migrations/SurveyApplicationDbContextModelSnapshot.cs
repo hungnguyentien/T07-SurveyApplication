@@ -345,6 +345,13 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<int>("IdCauHoi")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsOther")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LabelCauTraLoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MaHang")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -358,8 +365,8 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 

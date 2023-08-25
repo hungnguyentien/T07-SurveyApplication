@@ -14,8 +14,10 @@ namespace SurveyApplication.Domain
         [MaxLength(50)]
         public string MaHang { get; set; }
         [Required]
-        [MaxLength(250)]
+        [MaxLength(500)]
         public string NoiDung { get; set; }
+        public bool? IsOther { get; set; }
+        public string LabelCauTraLoi { get; set; }
         public int IdCauHoi { get; set; }
     }
 }
