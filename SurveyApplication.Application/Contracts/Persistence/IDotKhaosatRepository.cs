@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Contracts.Persistence
 {
-    public interface IDotKhaosatRepository :IGenericRepository<DotKhaoSat>
+    public interface IDotKhaoSatRepository :IGenericRepository<DotKhaoSat>
     {
+        Task<bool> ExistsByMaDotKhaoSat(string maDotKhaoSat);
     }
 }
