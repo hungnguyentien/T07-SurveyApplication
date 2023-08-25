@@ -21,6 +21,7 @@ import { HeaderClientComponent } from './header-client/header-client.component';
     SidebarComponent,
     FooterClientComponent,
     HeaderClientComponent,
+    HeaderComponent
   ],
 })
 export class PartialsModule {}

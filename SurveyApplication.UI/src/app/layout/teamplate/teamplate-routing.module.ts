@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { TemplatePublicComponent } from './public-template/public-template.component';
+import { AdminTempleteComponent } from './admin-templete/admin-templete.component';
 import { LoginComponent } from '../share/login/login.component';
 
 const routes: Routes = [
@@ -24,6 +25,21 @@ const routes: Routes = [
               import('../../modules/client/client.module').then(
                 (x) => x.ClientModule
               ),
+          }
+        ],
+      }, {
+        path: '',
+        component: AdminTempleteComponent,
+        data: {
+          title: 'Admin',
+        },
+        children: [
+          {
+            path: 'admin',
+            loadChildren: () =>
+              import('../../modules/admin/admin.module').then(
+                (x) => x.AdminModule
+              ),
           },
         ],
       },
@@ -42,4 +58,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TeamplateRoutingModule {}
+export class TeamplateRoutingModule { }

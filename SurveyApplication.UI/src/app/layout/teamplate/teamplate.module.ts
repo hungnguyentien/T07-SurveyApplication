@@ -7,10 +7,11 @@ import { TeamplateRoutingModule } from './teamplate-routing.module';
 import { TemplatePublicComponent } from './public-template/public-template.component';
 import { PartialsModule } from '../partials/partials.module';
 import { ShareModule } from '../share/share.module';
-
+import { AdminTempleteComponent } from './admin-templete/admin-templete.component';
 @NgModule({
   declarations: [
     TemplatePublicComponent,
+    AdminTempleteComponent
   ],
   imports: [
     CommonModule,

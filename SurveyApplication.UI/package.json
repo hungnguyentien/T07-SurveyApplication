@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^16.2.0",
+    "@angular/cdk": "^12.0.0",
     "@angular/common": "^16.2.0",
     "@angular/compiler": "^16.2.0",
     "@angular/core": "^16.2.0",
@@ -27,6 +28,7 @@
     "primeng": "^16.2.0",
     "rxjs": "~7.8.0",
     "survey-angular": "^1.9.103",
+    "survey-angular-ui": "^1.9.104",
     "survey-creator-angular": "^1.9.103",
     "survey-creator-knockout": "^1.9.103",
     "tslib": "^2.3.0",
