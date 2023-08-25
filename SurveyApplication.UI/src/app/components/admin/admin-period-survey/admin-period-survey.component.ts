@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ConfirmEventType, ConfirmationService } from 'primeng/api';
-import { ServiceService } from 'src/app/application/services/service.service';
-import { Customer, Representative } from 'src/app/core/Entities/customer';
+import { ServiceService } from '@app/services/service.service';
+import { Customer, Representative } from '@app/models/customer';
 import { MessageService } from 'primeng/api';
 
 @Component({
