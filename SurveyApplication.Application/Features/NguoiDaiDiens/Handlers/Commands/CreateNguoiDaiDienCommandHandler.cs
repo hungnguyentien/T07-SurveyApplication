@@ -26,11 +26,11 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
         public async Task<BaseCommandResponse> Handle(CreateNguoiDaiDienCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            //var NguoiDaiDien = _mapper.Map<NguoiDaiDien>(request.NguoiDaiDienDto);
-            //NguoiDaiDien = await _nguoiDaiDienRepository.Create(NguoiDaiDien);
+            var NguoiDaiDien = _mapper.Map<NguoiDaiDien>(request.NguoiDaiDienDto);
+            NguoiDaiDien = await _nguoiDaiDienRepository.Create(NguoiDaiDien);
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            //response.Id = NguoiDaiDien.MaNguoiDaiDien.ToString();
+            response.Id = NguoiDaiDien.MaNguoiDaiDien.ToString();
             return response;
         }
     }
