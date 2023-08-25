@@ -26,9 +26,9 @@ export class ClientHomeComponent implements OnInit {
   constructor(private clientHomeService: ClientHomeService) {}
 
   ngOnInit() {
-    // this.clientHomeService.getAll().subscribe((rep) => {
-    //   this.bangKhaoSat = rep;
-    // });
+    this.clientHomeService.getAll().subscribe((rep) => {
+      this.bangKhaoSat = rep;
+    });
 
     const creator = new SurveyCreatorModel(creatorOptions);
     creator.text =
