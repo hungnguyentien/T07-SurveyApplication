@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,12 @@ namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators
 {
     public class CreateLoaiHinhDonViDtoValidator : AbstractValidator<CreateLoaiHinhDonViDto>
     {
-        private readonly ILoaiHinhDonViRepository _loaiHinhDonViRepository;
+        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
 
-        public CreateLoaiHinhDonViDtoValidator(ILoaiHinhDonViRepository loaiHinhDonViRepository)
+        public CreateLoaiHinhDonViDtoValidator(ILoaiHinhDonViRepository LoaiHinhDonViRepository)
         {
-            _loaiHinhDonViRepository = loaiHinhDonViRepository;
-            Include(new ILoaiHinhDonViDtoValidator(_loaiHinhDonViRepository));
+            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
+            Include(new LoaiHinhDonViDtoValidator(_LoaiHinhDonViRepository));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
@@ -8,8 +9,7 @@ namespace SurveyApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    public class LoaiHinhDonViController : Controller
+    public class LoaiHinhDonViController : ControllerBase
     {
         private readonly IMediator _mediator;
 

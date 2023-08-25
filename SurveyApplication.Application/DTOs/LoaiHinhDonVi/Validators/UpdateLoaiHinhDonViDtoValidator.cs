@@ -10,12 +10,12 @@ namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators
 {
     public class UpdateLoaiHinhDonViDtoValidator : AbstractValidator<UpdateLoaiHinhDonViDto>
     {
-        private readonly ILoaiHinhDonViRepository _loaiHinhDonViRepository;
+        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
 
-        public UpdateLoaiHinhDonViDtoValidator(ILoaiHinhDonViRepository loaiHinhDonViRepository)
+        public UpdateLoaiHinhDonViDtoValidator(ILoaiHinhDonViRepository LoaiHinhDonViRepository)
         {
-            _loaiHinhDonViRepository = loaiHinhDonViRepository;
-            Include(new ILoaiHinhDonViDtoValidator(_loaiHinhDonViRepository));
+            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
+            Include(new ILoaiHinhDonViDtoValidator(_LoaiHinhDonViRepository));
 
             RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
         }
