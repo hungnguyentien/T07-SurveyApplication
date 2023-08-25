@@ -2,6 +2,7 @@
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
+using SurveyApplication.Application.DTOs.GuiEmail;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Domain;
@@ -37,6 +38,10 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<NguoiDaiDien, NguoiDaiDienDto>().ReverseMap();
             CreateMap<NguoiDaiDien, CreateNguoiDaiDienDto>().ReverseMap();
             CreateMap<NguoiDaiDien, UpdateNguoiDaiDienDto>().ReverseMap();
+
+            CreateMap<GuiEmail, GuiEmailDto>().ReverseMap();
+            CreateMap<GuiEmail, CreateGuiEmailDto>().ReverseMap();
+            CreateMap<GuiEmail, UpdateGuiEmailDto>().ReverseMap();
         }
     }
 }

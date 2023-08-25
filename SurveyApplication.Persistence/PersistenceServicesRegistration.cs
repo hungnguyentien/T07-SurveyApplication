@@ -26,7 +26,7 @@ namespace SurveyApplication.Persistence
             services.AddScoped<IDonViRepository, DonViRepository>();
             services.AddScoped<INguoiDaiDienRepository, NguoiDaiDienRepository>();
 
-
+            services.AddScoped<IGuiEmailRepository, GuiEmailRepository>();
 
 
 
