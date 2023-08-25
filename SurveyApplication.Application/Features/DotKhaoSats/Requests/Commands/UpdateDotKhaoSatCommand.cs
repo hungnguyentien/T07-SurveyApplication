@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands
 {
    
-    public class UpdateDotKhaoSatCommand : IRequest<Unit>
+    public class UpdateGuiEmailCommand : IRequest<Unit>
     {
         public UpdateDotKhaoSatDto? DotKhaoSatDto { get; set; }
     }

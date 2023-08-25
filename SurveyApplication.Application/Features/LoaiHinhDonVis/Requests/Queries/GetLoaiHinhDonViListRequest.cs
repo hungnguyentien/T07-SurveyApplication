@@ -11,4 +11,5 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries
     public class GetLoaiHinhDonViListRequest : IRequest<List<LoaiHinhDonViDto>>
     {
     }
+   
 }

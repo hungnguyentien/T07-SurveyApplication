@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 {
    
-    public class DeleteDotKhaoSatCommandHandler : IRequestHandler<DeleteDotKhaoSatCommand>
+    public class DeleteGuiEmailCommandHandler : IRequestHandler<DeleteGuiEmailCommand>
     {
         private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
         private readonly IMapper _mapper;
 
-        public DeleteDotKhaoSatCommandHandler(IDotKhaoSatRepository dotKhaoSatRepository, IMapper mapper)
+        public DeleteGuiEmailCommandHandler(IDotKhaoSatRepository dotKhaoSatRepository, IMapper mapper)
         {
             _dotKhaoSatRepository = dotKhaoSatRepository;
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(DeleteDotKhaoSatCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteGuiEmailCommand request, CancellationToken cancellationToken)
         {
             var dotKhaoSatRepository = await _dotKhaoSatRepository.GetById(request.Id);
             await _dotKhaoSatRepository.Delete(dotKhaoSatRepository);

@@ -14,18 +14,18 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 {
     
-    public class CreateDotKhaoSatCommandHandler : IRequestHandler<CreateDotKhaosatCommand, BaseCommandResponse>
+    public class CreateGuiEmailCommandHandler : IRequestHandler<CreatGuiEmailCommand, BaseCommandResponse>
     {
         private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
         private readonly IMapper _mapper;
 
-        public CreateDotKhaoSatCommandHandler(IDotKhaoSatRepository dotKhaoSatRepository, IMapper mapper)
+        public CreateGuiEmailCommandHandler(IDotKhaoSatRepository dotKhaoSatRepository, IMapper mapper)
         {
             _dotKhaoSatRepository = dotKhaoSatRepository;
             _mapper = mapper;
         }
 
-        public async Task<BaseCommandResponse> Handle(CreateDotKhaosatCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(CreatGuiEmailCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
             var dotKhaoSat = _mapper.Map<DotKhaoSat>(request.DotKhaoSatDto);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Contracts.Persistence
 {
-    public interface INgyuoiDungVaiTroRepository : IGenericRepository<NguoiDungVaiTro>
+    public interface INguoiDungVaiTroRepository : IGenericRepository<NguoiDungVaiTro>
     {
     }
 }

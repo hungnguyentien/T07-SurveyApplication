@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands
 {
-    public class DeleteDotKhaoSatCommand : IRequest
+    public class DeleteGuiEmailCommand : IRequest
     {
         public int Id { get; set; }
     }

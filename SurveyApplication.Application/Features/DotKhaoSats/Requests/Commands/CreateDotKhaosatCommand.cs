@@ -12,7 +12,7 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands
 {
     
     
-    public class CreateDotKhaosatCommand : IRequest<BaseCommandResponse>
+    public class CreatGuiEmailCommand : IRequest<BaseCommandResponse>
     {
         public CreateDotKhaoSatDto? DotKhaoSatDto { get; set; }
     }
