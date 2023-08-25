@@ -8,9 +8,11 @@ namespace SurveyApplication.Domain
         [Required]
         [MaxLength(250)]
         public string MaCot { get; set; }
-         [Required]
-        [MaxLength(250)]
+        [Required]
+        [MaxLength(500)]
         public string NoiDung { get; set; }
         public int IdCauHoi { get; set; }
+        public bool? IsOther { get; set; }
+        public string LabelCauTraLoi { get; set; }
     }
 }

@@ -25,5 +25,17 @@ namespace SurveyApplication.Application.DTOs.CauHoi
         /// title
         /// </summary>
         public string TieuDe { get; set; }
+        /// <summary>
+        /// showOtherItem
+        /// </summary>
+        public bool? IsOther { get; set; }
+        /// <summary>
+        /// otherText
+        /// </summary>
+        public string LabelCauTraLoi { get; set; }
+        /// <summary>
+        /// maxSize
+        /// </summary>
+        public int KichThuocFile { get; set; }
     }
 }

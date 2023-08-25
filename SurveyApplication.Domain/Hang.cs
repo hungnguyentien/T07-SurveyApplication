@@ -16,8 +16,6 @@ namespace SurveyApplication.Domain
         [Required]
         [MaxLength(500)]
         public string NoiDung { get; set; }
-        public bool? IsOther { get; set; }
-        public string LabelCauTraLoi { get; set; }
         public int IdCauHoi { get; set; }
     }
 }

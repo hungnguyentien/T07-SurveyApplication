@@ -98,8 +98,15 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsOther")
+                        .HasColumnType("bit");
+
                     b.Property<int>("KichThuocFile")
                         .HasColumnType("int");
+
+                    b.Property<string>("LabelCauTraLoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<short>("LoaiCauHoi")
                         .HasColumnType("smallint");
@@ -150,6 +157,13 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<int>("IdCauHoi")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsOther")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LabelCauTraLoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MaCot")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -163,8 +177,8 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -344,13 +358,6 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.Property<int>("IdCauHoi")
                         .HasColumnType("int");
-
-                    b.Property<bool?>("IsOther")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LabelCauTraLoi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MaHang")
                         .IsRequired()
