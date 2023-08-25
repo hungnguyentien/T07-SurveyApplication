@@ -17,4 +17,9 @@
     <ProjectReference Include="..\SurveyApplication.Domain\SurveyApplication.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\CauHoi\Handlers\Commands\" />
+    <Folder Include="Features\CauHoi\Requests\Commands\" />
+  </ItemGroup>
+
 </Project>

@@ -1,13 +1,14 @@
 ﻿using SurveyApplication.Application.DTOs.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.CauHoi
 {
-    public partial class CauHoiDto : BaseDto
+    public class CauHoiDto : BaseDto
     {
         /// <summary>
         /// type
@@ -37,5 +38,9 @@ namespace SurveyApplication.Application.DTOs.CauHoi
         /// maxSize
         /// </summary>
         public int KichThuocFile { get; set; }
+        [NotMapped]
+        public List<CotDto>? LstCot { get; set; }
+        [NotMapped]
+        public List<HangDto>? LstHang { get; set; }
     }
 }

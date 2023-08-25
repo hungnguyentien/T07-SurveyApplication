@@ -5,6 +5,7 @@ import { themeJson } from './theme';
 import { jsonDataFake } from './json';
 
 import { ClientHomeService } from '@app/services';
+import { first } from 'rxjs';
 
 const creatorOptions = {
   showLogicTab: true,
@@ -29,6 +30,17 @@ export class ClientHomeComponent implements OnInit {
     this.clientHomeService.getAll().subscribe((rep) => {
       this.bangKhaoSat = rep;
     });
+
+    this.clientHomeService
+      .getSurveyConfig()
+      .pipe(first())
+      .subscribe((res) => {
+        let pages = defaultJson.pages[0];
+        let els = pages.elements;
+        res.forEach((i, el) => {
+          debugger;
+        });
+      });
 
     const creator = new SurveyCreatorModel(creatorOptions);
     creator.text =

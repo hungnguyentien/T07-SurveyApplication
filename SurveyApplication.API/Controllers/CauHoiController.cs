@@ -1,5 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.Application.DTOs.CauHoi;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
+using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -14,9 +19,11 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        public IActionResult Index()
+        [HttpGet("GetConfigPhieuKhaoSat")]
+        public async Task<ActionResult<List<CauHoiDto>>> GetConfigPhieuKhaoSat(int idBangKhaoSat)
         {
-            return Ok();
+            var result = await _mediator.Send(new GetConfigCauHoiRequest { IdBangKhaoSat = idBangKhaoSat });
+            return Ok(result);
         }
     }
 }
