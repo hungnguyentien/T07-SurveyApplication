@@ -3,9 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
-import { AdminComponent } from './components/admin/admin.component';
-import { AdminRoutingModule } from './components/admin/admin-routing.module';
+import { AdminRoutingModule } from './modules/admin/admin-routing.module';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
@@ -21,12 +19,12 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { TreeSelectModule } from 'primeng/treeselect';
 
-import { AdminObjectSurveyComponent } from './components/admin/admin-object-survey/admin-object-survey.component';
-import { AdminUnitTypeComponent } from './components/admin/admin-unit-type/admin-unit-type.component';
-import { ChooseAnAnswerComponent } from './components/admin/admin-question/choose-an-answer/choose-an-answer.component';
-import { LongTextComponent } from './components/admin/admin-question/long-text/long-text.component';
-import { QuestionComponent } from './components/admin/admin-question/question/question.component';
-import { AdminPeriodSurveyComponent } from './components/admin/admin-period-survey/admin-period-survey.component';
+import { AdminObjectSurveyComponent } from './modules/admin/admin-object-survey/admin-object-survey.component';
+import { AdminUnitTypeComponent } from './modules/admin/admin-unit-type/admin-unit-type.component';
+import { ChooseAnAnswerComponent } from './modules/admin/admin-question/choose-an-answer/choose-an-answer.component';
+import { LongTextComponent } from './modules/admin/admin-question/long-text/long-text.component';
+import { QuestionComponent } from './modules/admin/admin-question/question/question.component';
+import { AdminPeriodSurveyComponent } from './modules/admin/admin-period-survey/admin-period-survey.component';
 
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
@@ -34,15 +32,13 @@ import { ConfirmationService } from 'primeng/api';
 @NgModule({
   declarations: [
     AppComponent,
-    AdminHomeComponent,
-    AdminComponent,
     AdminObjectSurveyComponent,
     AdminUnitTypeComponent,
     AdminPeriodSurveyComponent,
     ChooseAnAnswerComponent,
     LongTextComponent,
     QuestionComponent,
-  ],
+   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
