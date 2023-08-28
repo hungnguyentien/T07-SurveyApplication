@@ -16,8 +16,10 @@ namespace SurveyApplication.Application.DTOs.GuiEmail.Validators
         public GuiEmailDtoValidator(IGuiEmailRepository guiEmailRepository)
         {
             _guiEmailRepository = guiEmailRepository;
+
             RuleFor(p => p.MaGuiEmail)
                 .NotNull().NotEmpty().WithMessage("Mã gửi email không được để trống");
+
             RuleFor(p => p.MaGuiEmail)
                 .MustAsync(async (maGuiEmail, token) =>
                 {

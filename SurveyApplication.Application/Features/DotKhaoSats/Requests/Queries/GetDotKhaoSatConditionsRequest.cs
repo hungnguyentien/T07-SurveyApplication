@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries
 {
-    public class GetGuiEmailConditionsRequest : IRequest<List<DotKhaoSatDto>>
+    public class GetDotKhaoSatConditionsRequest : IRequest<List<DotKhaoSatDto>>
     {
         public int PageIndex { get; set; } = 1;
         public int PageSize { get; set; } = 10;
