@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries
 {
     
-    public class GetGuiEmailDetailRequest : IRequest<DotKhaoSatDto>
+    public class GetDotKhaoSatDetailRequest : IRequest<DotKhaoSatDto>
     {
         public int Id { get; set; }
     }

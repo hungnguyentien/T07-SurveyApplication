@@ -9,5 +9,6 @@ namespace SurveyApplication.Application.Contracts.Persistence
 {
     public interface INguoiDungRepository : IGenericRepository<NguoiDung>
     {
+        Task<bool> ExistsByMaNguoiDung(string maDotKhaoSat);
     }
 }

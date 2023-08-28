@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries
 {
-    public class GetGuiEmailListRequest : IRequest<List<DotKhaoSatDto>>
+    public class GetDotKhaoSatListRequest : IRequest<List<DotKhaoSatDto>>
     {
     }
 }

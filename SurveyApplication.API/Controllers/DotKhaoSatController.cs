@@ -24,28 +24,28 @@ namespace SurveyApplication.API.Controllers
         [HttpGet("GetAllDotKhaoSat")]
         public async Task<ActionResult<List<DotKhaoSatDto>>> GetAllBangKhaoSat()
         {
-            var leaveAllocations = await _mediator.Send(new GetGuiEmailListRequest());
+            var leaveAllocations = await _mediator.Send(new GetDotKhaoSatListRequest());
             return Ok(leaveAllocations);
         }
 
         [HttpGet("GetDotKhaoSatByCondition")]
         public async Task<ActionResult<List<DotKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
         {
-            var leaveAllocations = await _mediator.Send(new GetGuiEmailConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
+            var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return Ok(leaveAllocations);
         }
 
         [HttpGet("GetByBangKhaoSat/{id}")]
         public async Task<ActionResult<List<DotKhaoSatDto>>> GetByBangKhaoSat(int id)
         {
-            var leaveAllocations = await _mediator.Send(new GetGuiEmailDetailRequest { Id = id });
+            var leaveAllocations = await _mediator.Send(new GetDotKhaoSatDetailRequest { Id = id });
             return Ok(leaveAllocations);
         }
 
         [HttpPost("CreateDotKhaoSat")]
         public async Task<ActionResult<DotKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateDotKhaoSatDto obj)
         {
-            var command = new CreatGuiEmailCommand { DotKhaoSatDto = obj };
+            var command = new CreatDotKhaoSatCommand { DotKhaoSatDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
         }
@@ -53,7 +53,7 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("UpdateDotKhaoSat")]
         public async Task<ActionResult<DotKhaoSatDto>> UpdateBangKhaoSat([FromBody] UpdateDotKhaoSatDto obj)
         {
-            var command = new UpdateGuiEmailCommand { DotKhaoSatDto = obj };
+            var command = new UpdateDotKhaoSatCommand { DotKhaoSatDto = obj };
             await _mediator.Send(command);
             return NoContent();
         }
@@ -61,7 +61,7 @@ namespace SurveyApplication.API.Controllers
         [HttpDelete("DeleteDotKhaoSat/{id}")]
         public async Task<ActionResult<List<DotKhaoSatDto>>> DeleteBangKhaoSat(int id)
         {
-            var command = new DeleteGuiEmailCommand { Id = id };
+            var command = new DeleteDotKhaoSatCommand { Id = id };
             await _mediator.Send(command);
             return NoContent();
         }

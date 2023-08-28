@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Queries
 {
     
-    public class GetGiuEmailstHandler : IRequestHandler<GetGuiEmailDetailRequest, GuiEmailDto>
+    public class GetGuiEmailListHandler : IRequestHandler<GetGuiEmailDetailRequest, GuiEmailDto>
     {
         private readonly IGuiEmailRepository _guiEmailRepository;
         private readonly IMapper _mapper;
 
-        public GetGiuEmailstHandler(IGuiEmailRepository guiEmailRepository, IMapper mapper)
+        public GetGuiEmailListHandler(IGuiEmailRepository guiEmailRepository, IMapper mapper)
         {
             _guiEmailRepository = guiEmailRepository;
             _mapper = mapper;
