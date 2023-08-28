@@ -1,23 +1,23 @@
 export interface Cot {
-    MaCot: string;
-    Noidung: string;
+    maCot: string;
+    noidung: string;
 }
 
 export interface Hang {
-    MaHang: string;
-    Noidung: string;
+    maHang: string;
+    noidung: string;
 }
 
 
 export interface SurveyConfig {
-    LoaiCauHoi: number;
-    MaCauHoi: string;
-    BatBuoc?: boolean;
-    TieuDe: string;
-    IsOther?: boolean;
-    LabelCauTraLoi: string;
-    KichThuocFile: number;
-    LstCot: Cot[];
-    LstHang: Hang[];
+    loaiCauHoi: number;
+    maCauHoi: string;
+    batBuoc?: boolean;
+    tieuDe: string;
+    isOther?: boolean;
+    labelCauTraLoi: string;
+    kichThuocFile: number;
+    lstCot: Cot[];
+    lstHang: Hang[];
+    noidung: string;
 }
-  

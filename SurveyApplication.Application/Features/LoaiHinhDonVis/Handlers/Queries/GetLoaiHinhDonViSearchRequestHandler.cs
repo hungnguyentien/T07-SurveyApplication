@@ -19,7 +19,7 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
 
         public async Task<List<LoaiHinhDonViDto>> Handle(GetLoaiHinhDonViSearchRequest request, CancellationToken cancellationToken)
         {
-            var loaiHinhDonVis = await _loaiHinhDonViRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenLoaiHinh) && x.TenLoaiHinh.Contains(request.Keyword));
+            var loaiHinhDonVis = await _loaiHinhDonViRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenLoaiHinh) && x.TenLoaiHinh.Contains(request.Keyword), x => x.Created);
             return _mapper.Map<List<LoaiHinhDonViDto>>(loaiHinhDonVis);
         }
     }

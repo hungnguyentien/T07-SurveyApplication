@@ -16,7 +16,7 @@ export class ClientHomeService {
 
   getSurveyConfig() {
     return this.http.get<SurveyConfig[]>(
-      `${environment.apiUrl}/CauHoi/GetConfigPhieuKhaoSat?idBangKhaoSat=1`
+      `${environment.apiUrl}/PhieuKhaoSat/GetConfigPhieuKhaoSat?idBangKhaoSat=1`
     );
   }
 }

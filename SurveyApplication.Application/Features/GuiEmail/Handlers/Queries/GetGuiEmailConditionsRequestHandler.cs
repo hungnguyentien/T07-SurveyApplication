@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Queries
 
         public async Task<List<GuiEmailDto>> Handle(GetGuiEmailConditionsRequest request, CancellationToken cancellationToken)
         {
-            var guiEmails = await _guiEmailRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TieuDe) && x.TieuDe.Contains(request.Keyword));
+            var guiEmails = await _guiEmailRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TieuDe) && x.TieuDe.Contains(request.Keyword), x => x.Created);
             return _mapper.Map<List<GuiEmailDto>>(guiEmails);
         }
     }

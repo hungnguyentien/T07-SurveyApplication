@@ -61,13 +61,10 @@ namespace SurveyApplication.Persistence.Repositories
         /// <param name="conditions"></param>
         /// <param name="orderBy"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<T>> GetByConditions(int pageIndex, int pageSize, Expression<Func<T, bool>> conditions,
-            Expression<Func<T, bool>>? orderBy = null)
+        public async Task<List<T>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, Expression<Func<T, bool>> conditions,
+            Expression<Func<T, TOrderBy>> orderBy)
         {
-            var result = _dbContext.Set<T>().AsNoTracking().Where(conditions);
-            if (orderBy != null)
-                result = result.OrderBy(orderBy);
-
+            var result = _dbContext.Set<T>().AsNoTracking().Where(conditions).OrderByDescending(orderBy);
             return await result.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
         }
     }

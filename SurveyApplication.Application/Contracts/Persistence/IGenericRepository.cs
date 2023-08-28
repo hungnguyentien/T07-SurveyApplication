@@ -15,7 +15,7 @@ namespace SurveyApplication.Application.Contracts.Persistence
         Task<T> Create(T entity);
         Task Update(T entity);
         Task Delete(T entity);
-        Task<IReadOnlyList<T>> GetByConditions(int pageIndex, int pageSize, Expression<Func<T, bool>> conditions,
-            Expression<Func<T, bool>>? orderBy = null);
+        Task<List<T>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, Expression<Func<T, bool>> conditions,
+            Expression<Func<T, TOrderBy>> orderBy);
     }
 }
