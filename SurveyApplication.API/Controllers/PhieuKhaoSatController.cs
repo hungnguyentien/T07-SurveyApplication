@@ -1,8 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.CauHoi;
+using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
+using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -22,6 +23,14 @@ namespace SurveyApplication.API.Controllers
         {
             var result = await _mediator.Send(new GetConfigCauHoiRequest { IdBangKhaoSat = idBangKhaoSat });
             return Ok(result);
+        }
+
+        [HttpPost("SavePhieuKhaoSat")]
+        public async Task<ActionResult> SavePhieuKhaoSat([FromBody] CreateKetQuaDto obj)
+        {
+            var command = new CreateKetQuaCommand { CreateKetQuaDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

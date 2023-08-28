@@ -20,6 +20,8 @@
   <ItemGroup>
     <Folder Include="Features\CauHoi\Handlers\Commands\" />
     <Folder Include="Features\CauHoi\Requests\Commands\" />
+    <Folder Include="Features\PhieuKhaoSat\Handlers\Queries\" />
+    <Folder Include="Features\PhieuKhaoSat\Requests\Queries\" />
   </ItemGroup>
 
 </Project>

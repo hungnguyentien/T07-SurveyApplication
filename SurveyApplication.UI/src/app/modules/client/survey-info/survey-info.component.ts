@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 import { Model } from 'survey-core';
 import { themeJson } from './theme';
 import { jsonDataFake } from './json';
+import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { ClientHomeService } from '@app/services';
 import { first } from 'rxjs';
+import { query } from '@angular/animations';
 
 const defaultJson = jsonDataFake.config;
 
@@ -16,7 +19,13 @@ const defaultJson = jsonDataFake.config;
 export class SurveyInfoComponent {
   model!: Model;
 
-  constructor(private clientHomeService: ClientHomeService) {}
+  constructor(
+    private clientHomeService: ClientHomeService,
+    private router: Router,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Thông tin phiếu khảo sát');
+  }
 
   ngOnInit() {
     const configSurvey = (configJson: any) => {
@@ -26,12 +35,40 @@ export class SurveyInfoComponent {
       survey.applyTheme(themeJson);
       // Set label for btn Complete
       survey.completeText = 'Gửi thông tin';
+
+      survey.onAfterRenderSurvey.add((sender, options) => {
+        options.htmlElement
+          .querySelectorAll(
+            '#sv-nav-back-page, #sv-nav-clear-page, #sv-nav-complete'
+          )
+          .forEach((el, i) => {
+            el.id === 'sv-nav-back-page' &&
+              el.insertAdjacentHTML(
+                'afterbegin',
+                '<i class="icons icon-quay-lai"></i>'
+              );
+
+            el.id === 'sv-nav-clear-page' &&
+              el.insertAdjacentHTML(
+                'afterbegin',
+                '<i class="icons icon-khai-lai-tu-dau"></i>'
+              );
+
+            el.id === 'sv-nav-complete' &&
+              el.insertAdjacentHTML(
+                'afterbegin',
+                '<i class="icons icon-gui-thong-tin"></i>'
+              );
+          });
+      });
+
       survey.addNavigationItem({
         id: 'sv-nav-back-page',
         title: 'Quay lại',
+        visibleIndex: 48,
         action: () => {
           //TODO quay lại trang trước
-          alert('Comming son!');
+          this.router.navigate(['/phieu/thong-tin-chung']);
         },
         css: 'nav-button',
         innerCss: 'sd-btn nav-input',
@@ -40,6 +77,7 @@ export class SurveyInfoComponent {
       survey.addNavigationItem({
         id: 'sv-nav-clear-page',
         title: 'Khai lại từ đầu',
+        visibleIndex: 49,
         action: () => {
           survey.currentPage.questions.forEach((question: any) => {
             question.value = undefined;
@@ -116,7 +154,7 @@ export class SurveyInfoComponent {
         res.forEach((el, i) => {
           let loaiCauHoi = el.loaiCauHoi;
           let name = el.maCauHoi;
-          let title = el.tieuDe;
+          let title = `${el.tieuDe}`;
           let isRequired = el.batBuoc ?? false;
           let description = el.noidung;
 

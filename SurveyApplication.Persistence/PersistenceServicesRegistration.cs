@@ -26,6 +26,7 @@ namespace SurveyApplication.Persistence
             services.AddScoped<INguoiDaiDienRepository, NguoiDaiDienRepository>();
             services.AddScoped<IGuiEmailRepository, GuiEmailRepository>();
             services.AddScoped<ICauHoiRepository, CauHoiRepository>();
+            services.AddScoped<IKetQuaRepository, KetQuaRepository>();
 
             return services;
         }
