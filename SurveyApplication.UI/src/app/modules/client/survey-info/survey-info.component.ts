@@ -7,7 +7,6 @@ import { Title } from '@angular/platform-browser';
 
 import { ClientHomeService } from '@app/services';
 import { first } from 'rxjs';
-import { query } from '@angular/animations';
 
 const defaultJson = jsonDataFake.config;
 
