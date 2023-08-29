@@ -40,7 +40,6 @@ namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Commands
                 response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
                 throw new ValidationException(validatorResult);
             }
-
             var GuiEmail = _mapper.Map<GuiEmail>(request.GuiEmailDto);
 
             GuiEmail = await _GuiEmailRepository.Create(GuiEmail);
