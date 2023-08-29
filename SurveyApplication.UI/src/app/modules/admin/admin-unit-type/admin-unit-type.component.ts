@@ -56,6 +56,7 @@ export class AdminUnitTypeComponent {
   Add(){
     debugger
     this.showadd = true;
+    this.FormUnitType.reset();
     this.UnitTypeService.GetIdUnitType().subscribe({
       next:(res:any) => {
         debugger
