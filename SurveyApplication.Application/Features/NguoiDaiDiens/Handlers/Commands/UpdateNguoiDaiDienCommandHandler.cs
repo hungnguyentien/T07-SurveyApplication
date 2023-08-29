@@ -2,6 +2,8 @@
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
+using SurveyApplication.Application.DTOs.NguoiDaiDien.Validators;
+using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
 using System;
 using System.Collections.Generic;
@@ -24,9 +26,17 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 
         public async Task<Unit> Handle(UpdateNguoiDaiDienCommand request, CancellationToken cancellationToken)
         {
-            //var NguoiDaiDien = await _nguoiDaiDienRepository.GetById(request.NguoiDaiDienDto?.Id ?? 0);
-            //_mapper.Map(request.NguoiDaiDienDto, NguoiDaiDien);
-            //await _nguoiDaiDienRepository.Update(NguoiDaiDien);
+            var validator = new UpdateNguoiDaiDienDtoValidator(_nguoiDaiDienRepository);
+            var validatorResult = await validator.ValidateAsync(request.NguoiDaiDienDto);
+
+            if (validatorResult.IsValid == false)
+            {
+                throw new ValidationException(validatorResult);
+            }
+
+            var NguoiDaiDien = await _nguoiDaiDienRepository.GetById(request.NguoiDaiDienDto?.Id ?? 0);
+            _mapper.Map(request.NguoiDaiDienDto, NguoiDaiDien);
+            await _nguoiDaiDienRepository.Update(NguoiDaiDien);
             return Unit.Value;
         }
     }

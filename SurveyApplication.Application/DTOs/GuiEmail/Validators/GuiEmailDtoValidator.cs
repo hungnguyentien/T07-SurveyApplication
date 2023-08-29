@@ -25,7 +25,19 @@ namespace SurveyApplication.Application.DTOs.GuiEmail.Validators
                 {
                     var guiEmailExists = await _guiEmailRepository.ExistsByMaGuiEmail(maGuiEmail); ;
                     return !guiEmailExists;
-                }).WithMessage("Mã bảng khảo sát đã tồn tại!");
+                }).WithMessage("Mã gửi email đã tồn tại!");
+
+            RuleFor(p => p.DiaChiNhan)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
+
+            RuleFor(p => p.TieuDe)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
+
+            RuleFor(p => p.NoiDung)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
         }
     }
 }

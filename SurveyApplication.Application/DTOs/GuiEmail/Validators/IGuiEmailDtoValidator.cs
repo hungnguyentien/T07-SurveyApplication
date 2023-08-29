@@ -1,33 +1,33 @@
 ﻿using FluentValidation;
 using SurveyApplication.Application.Contracts.Persistence;
-using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.Application.DTOs.GuiEmail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SurveyApplication.Application.DTOs.DotKhaoSat.Validators
+namespace SurveyApplication.Application.DTOs.GuiEmail.Validators
 {
     
 
-    public class IDotKhaoSatDtoValitor : AbstractValidator<IDotKhaoSatDto>
+    public class IGuiEmailDtoValidator : AbstractValidator<IGuiEmailDto>
     {
-        private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
+        private readonly IGuiEmailRepository _guiEmailRepository;
 
-        public IDotKhaoSatDtoValitor(IDotKhaoSatRepository dotKhaoSatRepository)
+        public IGuiEmailDtoValidator(IGuiEmailRepository guiEmailRepository)
         {
-            _dotKhaoSatRepository = dotKhaoSatRepository;
+            _guiEmailRepository = guiEmailRepository;
 
-            RuleFor(p => p.TenDotKhaoSat)
+            RuleFor(p => p.DiaChiNhan)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-            RuleFor(p => p.NgayBatDau)
+            RuleFor(p => p.TieuDe)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-            RuleFor(p => p.NgayKetThuuc)
+            RuleFor(p => p.NoiDung)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
         }

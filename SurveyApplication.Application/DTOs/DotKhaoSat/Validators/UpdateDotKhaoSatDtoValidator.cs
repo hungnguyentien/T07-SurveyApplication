@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.DTOs.DotKhaoSat.Validators
 {
     
-    public class UpdateDotKhaoSatDtoValitor : AbstractValidator<UpdateDotKhaoSatDto>
+    public class UpdateDotKhaoSatDtoValidator : AbstractValidator<UpdateDotKhaoSatDto>
     {
         private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
 
-        public UpdateDotKhaoSatDtoValitor(IDotKhaoSatRepository dotKhaoSatRepository)
+        public UpdateDotKhaoSatDtoValidator(IDotKhaoSatRepository dotKhaoSatRepository)
         {
             _dotKhaoSatRepository = dotKhaoSatRepository;
-            Include(new IDotKhaoSatDtoValitor(_dotKhaoSatRepository));
+            Include(new IDotKhaoSatDtoValidator(_dotKhaoSatRepository));
 
             RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
         }

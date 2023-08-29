@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands
 {
-    public class CreatDotKhaoSatCommand : IRequest<BaseCommandResponse>
+    public class CreateDotKhaoSatCommand : IRequest<BaseCommandResponse>
     {
         public CreateDotKhaoSatDto? DotKhaoSatDto { get; set; }
     }

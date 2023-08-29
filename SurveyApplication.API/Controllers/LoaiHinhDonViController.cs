@@ -10,7 +10,7 @@ namespace SurveyApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class LoaiHinhDonViController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -30,12 +30,12 @@ namespace SurveyApplication.API.Controllers
         [HttpGet("GetLastRecordByMaLoaiHinh")]
         public async Task<ActionResult<string>> GetLastRecordByMaLoaiHinh()
         {
-            var record = await _mediator.Send(new GetLastRecordLoaiHinhDonViRequest());
-            return Ok(record);
+            //var record = await _mediator.Send(new GetLastRecordLoaiHinhDonViRequest());
+            return Ok(/*record*/);
         }
 
         [HttpGet("GetLoaiHinhDonViByCondition")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition(int pageIndex = 1, int pageSize =5, string? keyword = "")
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return Ok(leaveAllocations);

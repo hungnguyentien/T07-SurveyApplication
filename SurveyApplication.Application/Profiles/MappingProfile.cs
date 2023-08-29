@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SurveyApplication.Application.DTOs.Auth;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.DonVi;
@@ -6,6 +7,7 @@ using SurveyApplication.Application.DTOs.DotKhaoSat;
 using SurveyApplication.Application.DTOs.GuiEmail;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
+using SurveyApplication.Application.DTOs.NguoiDung;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Domain;
 
@@ -43,6 +45,13 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<Cot, CotDto>().ReverseMap();
             CreateMap<Hang, HangDto>().ReverseMap();
             CreateMap<KetQua, CreateKetQuaDto>().ReverseMap();
+
+            CreateMap<DonVi, DonViDto>().ReverseMap();
+            CreateMap<DonVi, CreateDonViDto>().ReverseMap();
+            CreateMap<DonVi, UpdateDonViDto>().ReverseMap();
+
+            CreateMap<NguoiDung, AuthDto>().ReverseMap();
+            CreateMap<NguoiDung, NguoiDungDto>().ReverseMap();
         }
     }
 }

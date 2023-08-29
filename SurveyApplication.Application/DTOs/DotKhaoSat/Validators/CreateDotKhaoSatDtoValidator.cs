@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.DTOs.DotKhaoSat.Validators
 {
     
-    public class CreateDotKhaoSatDtoValitor : AbstractValidator<CreateDotKhaoSatDto>
+    public class CreateDotKhaoSatDtoValidator : AbstractValidator<CreateDotKhaoSatDto>
     {
         private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
 
-        public CreateDotKhaoSatDtoValitor(IDotKhaoSatRepository dotKhaoSatRepository)
+        public CreateDotKhaoSatDtoValidator(IDotKhaoSatRepository dotKhaoSatRepository)
         {
             _dotKhaoSatRepository = dotKhaoSatRepository;
             Include(new DotKhaoSatDtoValidator(_dotKhaoSatRepository));
