@@ -59,7 +59,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ConfirmDialogModule,
     ToastModule,
     TreeSelectModule,
-    CKEditorModule
+    CKEditorModule,
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent],
