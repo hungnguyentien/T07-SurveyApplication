@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.GuiEmails.Requests.Commands;
+using SurveyApplication.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,10 @@ namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Commands
         public async Task<Unit> Handle(DeleteGuiEmailCommand request, CancellationToken cancellationToken)
         {
             var GuiEmailRepository = await _GuiEmailRepository.GetById(request.Id);
+            if (GuiEmailRepository == null)
+            {
+                throw new NotFoundException(nameof(GuiEmail), request.Id);
+            }
             await _GuiEmailRepository.Delete(GuiEmailRepository);
             return Unit.Value;
         }

@@ -11,13 +11,22 @@ namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators
         {
             _loaiHinhDonViRepository = loaiHinhDonViViRepository;
             RuleFor(p => p.MaLoaiHinh)
-                .NotNull().NotEmpty().WithMessage("Mã bảng khảo sát không được để trống");
+                .NotNull().NotEmpty().WithMessage("Mã loại hình đơn vị không được để trống");
+
             RuleFor(p => p.MaLoaiHinh)
                 .MustAsync(async (maLoaiHinh, token) =>
                 {
                     var LoaiHinhDonViViExists = await _loaiHinhDonViRepository.ExistsByMaLoaiHinh(maLoaiHinh);
                     return !LoaiHinhDonViViExists;
-                }).WithMessage("Mã bảng khảo sát đã tồn tại!");
+                }).WithMessage("Mã loại hình đơn vị đã tồn tại!");
+
+            RuleFor(p => p.TenLoaiHinh)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
+
+            RuleFor(p => p.MoTa)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
         }
     }
 }

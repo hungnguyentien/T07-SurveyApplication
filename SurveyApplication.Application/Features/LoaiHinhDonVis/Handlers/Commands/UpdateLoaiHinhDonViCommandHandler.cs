@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
+using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,14 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
 
         public async Task<Unit> Handle(UpdateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
+            var validator = new UpdateLoaiHinhDonViDtoValidator(_LoaiHinhDonViRepository);
+            var validatorResult = await validator.ValidateAsync(request.LoaiHinhDonViDto);
+
+            if (validatorResult.IsValid == false)
+            {
+                throw new ValidationException(validatorResult);
+            }
+
             var LoaiHinhDonVi = await _LoaiHinhDonViRepository.GetById(request.LoaiHinhDonViDto?.Id ?? 0);
             _mapper.Map(request.LoaiHinhDonViDto, LoaiHinhDonVi);
             await _LoaiHinhDonViRepository.Update(LoaiHinhDonVi);

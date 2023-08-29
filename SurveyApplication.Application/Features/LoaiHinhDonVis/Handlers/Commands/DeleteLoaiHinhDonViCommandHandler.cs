@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
+using SurveyApplication.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,10 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
         public async Task<Unit> Handle(DeleteLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
             var LoaiHinhDonViRepository = await _LoaiHinhDonViRepository.GetById(request.Id);
+            if (LoaiHinhDonViRepository == null)
+            {
+                throw new NotFoundException(nameof(LoaiHinhDonVi), request.Id);
+            }
             await _LoaiHinhDonViRepository.Delete(LoaiHinhDonViRepository);
             return Unit.Value;
         }

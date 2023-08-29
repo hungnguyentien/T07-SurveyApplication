@@ -26,7 +26,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetGuiEmailByCondition")]
-        public async Task<ActionResult<List<GuiEmailDto>>> GetGuiEmailByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
+        public async Task<ActionResult<List<GuiEmailDto>>> GetGuiEmailByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetGuiEmailConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return Ok(leaveAllocations);

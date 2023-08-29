@@ -19,6 +19,18 @@ namespace SurveyApplication.Application.DTOs.NguoiDung.Validators
         {
             _NguoiDungRepository = NguoiDungRepository;
 
+            RuleFor(p => p.UserName)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
+
+            RuleFor(p => p.PassWord)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
+
+            RuleFor(p => p.Email)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
+
             RuleFor(p => p.DiaChi)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
@@ -27,7 +39,11 @@ namespace SurveyApplication.Application.DTOs.NguoiDung.Validators
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-            RuleFor(p => p.Email)
+            RuleFor(p => p.NgaySinh)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
+
+            RuleFor(p => p.SoDienThoai)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
         }

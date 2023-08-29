@@ -9,7 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
+using SurveyApplication.Application.DTOs.GuiEmail.Validators;
+using SurveyApplication.Application.Exceptions;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands
 {
@@ -27,8 +29,21 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
         public async Task<BaseCommandResponse> Handle(CreateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
+            var validator = new CreateLoaiHinhDonViDtoValidator(_LoaiHinhDonViRepository);
+            var validatorResult = await validator.ValidateAsync(request.LoaiHinhDonViDto);
+
+            if (validatorResult.IsValid == false)
+            {
+                response.Success = false;
+                response.Message = "Tạo mới thất bại";
+                response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
+                throw new ValidationException(validatorResult);
+            }
+
             var LoaiHinhDonVi = _mapper.Map<LoaiHinhDonVi>(request.LoaiHinhDonViDto);
+
             LoaiHinhDonVi = await _LoaiHinhDonViRepository.Create(LoaiHinhDonVi);
+
             response.Success = true;
             response.Message = "Tạo mới thành công";
             response.Id = LoaiHinhDonVi.MaLoaiHinh;

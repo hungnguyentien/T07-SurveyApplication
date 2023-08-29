@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.Features.Auths.Requests.Queries;
 using SurveyApplication.Application.Models.Identity;
 using SurveyApplication.Domain;
 using System;
@@ -18,18 +19,12 @@ namespace SurveyApplication.Persistence.Repositories
     public class AuthRepository : GenericRepository<NguoiDung>, IAuthRepository
     {
         private readonly SurveyApplicationDbContext _dbContext;
-        private readonly UserManager<NguoiDung> _userManager;
-        private readonly SignInManager<NguoiDung> _signInManager;
         private readonly JwtSettings _jwtSettings;
 
-        public AuthRepository(SurveyApplicationDbContext dbContext, UserManager<NguoiDung> userManager,
-            IOptions<JwtSettings> jwtSettings,
-            SignInManager<NguoiDung> signInManager) : base(dbContext)
+        public AuthRepository(SurveyApplicationDbContext dbContext, IOptions<JwtSettings> jwtSettings) : base(dbContext)
         {
             _dbContext = dbContext;
-            _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
-            _signInManager = signInManager;
         }
 
         public Task<bool> ExistsByMaAuth(string maBangKhaoSat)
@@ -37,107 +32,86 @@ namespace SurveyApplication.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<AuthResponse> Login(AuthRequest request)
+        public async Task<AuthResponse> Login(LoginRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.UserName);
+            var user = (from p in _dbContext.NguoiDung
 
-            if (user == null)
+                        join e in _dbContext.NguoiDungVaiTro
+                        on p.Id equals e.MaNguoiDung
+
+                        join g in _dbContext.VaiTro
+                        on e.MaVaiTro equals g.Id
+
+                        join h in _dbContext.VaiTroQuyen
+                        on g.Id equals h.MaVaiTro
+
+                        join k in _dbContext.Quyen
+                        on h.MaQuyen equals k.Id
+
+                        where p.UserName == request.UserName && p.PassWord == request.PassWord && p.ActiveFlag == 1
+
+                        select new
+                        {
+                            UserName = p.UserName,
+                            PassWord = p.PassWord,
+                            Email = p.Email,
+                            MaNguoiDung = p.MaNguoiDung,
+                            TenVaiTro = g.TenVaiTro,
+                            TenQuyen = k.TenQuyen
+                        }).ToList();
+
+            if (user != null && user.Count > 0)
             {
-                throw new Exception($"User with {request.UserName} not found.");
-            }
+                var firstUser = user[0];
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, request.PassWord, false, lockoutOnFailure: false);
-
-            if (!result.Succeeded)
-            {
-                throw new Exception($"Credentials for '{request.UserName} aren't valid'.");
-            }
-
-            JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
-
-            AuthResponse response = new AuthResponse
-            {
-                Id = user.Id.ToString(),
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                Email = user.Email,
-                UserName = user.UserName
-            };
-
-            return response;
-        }
-
-        public async Task<RegistrationResponse> Register(RegistrationRequest request)
-        {
-            var existingUser = await _userManager.FindByNameAsync(request.UserName);
-
-            if (existingUser != null)
-            {
-                throw new Exception($"Username '{request.UserName}' already exists.");
-            }
-
-            var user = new NguoiDung
-            {
-                Email = request.Email,
-                HoTen = request.HoTen,
-                UserName = request.UserName,
-                //EmailConfirmed = true
-            };
-
-            var existingEmail = await _userManager.FindByEmailAsync(request.Email);
-
-            if (existingEmail == null)
-            {
-                var result = await _userManager.CreateAsync(user, request.PassWord);
-
-                if (result.Succeeded)
+                List<Claim> userClaims = new List<Claim>()
                 {
-                    await _userManager.AddToRoleAsync(user, "Employee");
-                    return new RegistrationResponse() { UserId = user.Id.ToString() };
-                }
-                else
+                new Claim(ClaimTypes.NameIdentifier, firstUser.MaNguoiDung.ToString()),
+                new Claim(ClaimTypes.Role, firstUser.TenVaiTro)
+                };
+
+                var roleClaims = new List<Claim>();
+
+                foreach (var name in user)
                 {
-                    throw new Exception($"{result.Errors}");
+                    userClaims.Add(new Claim(ClaimTypes.Name, name.TenQuyen));
                 }
+
+                var claims = new[]
+                {
+                new Claim(JwtRegisteredClaimNames.Sub, firstUser.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, firstUser.Email),
+                }
+                .Union(userClaims)
+                .Union(roleClaims);
+
+                var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+                var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+                var jwtSecurityToken = new JwtSecurityToken
+                (
+                    issuer: _jwtSettings.Issuer,
+                    audience: _jwtSettings.Audience,
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                    signingCredentials: signingCredentials
+                );
+
+                AuthResponse response = new AuthResponse
+                {
+                    Id = firstUser.MaNguoiDung.ToString(),
+                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                    Email = firstUser.Email,
+                    UserName = firstUser.UserName
+                };
+
+                return response;
             }
             else
             {
-                throw new Exception($"Email {request.Email} already exists.");
+                throw new Exception($"User with {request.UserName} not found.");
             }
-        }
-
-        private async Task<JwtSecurityToken> GenerateToken(NguoiDung user)
-        {
-            var userClaims = await _userManager.GetClaimsAsync(user);
-            var roles = await _userManager.GetRolesAsync(user);
-
-            var roleClaims = new List<Claim>();
-
-            for (int i = 0; i < roles.Count; i++)
-            {
-                roleClaims.Add(new Claim(ClaimTypes.Role, roles[i]));
-            }
-
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                //new Claim(CustomClaimTypes.Uid, user.Id)
-                new Claim("uid", user.Id.ToString())
-            }
-            .Union(userClaims)
-            .Union(roleClaims);
-
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-
-            var jwtSecurityToken = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-                audience: _jwtSettings.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-                signingCredentials: signingCredentials);
-            return jwtSecurityToken;
         }
     }
 }

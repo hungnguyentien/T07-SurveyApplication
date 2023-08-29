@@ -29,7 +29,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetDotKhaoSatByCondition")]
-        public async Task<ActionResult<List<DotKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
+        public async Task<ActionResult<List<DotKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return Ok(leaveAllocations);
@@ -45,7 +45,7 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("CreateDotKhaoSat")]
         public async Task<ActionResult<DotKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateDotKhaoSatDto obj)
         {
-            var command = new CreatDotKhaoSatCommand { DotKhaoSatDto = obj };
+            var command = new CreateDotKhaoSatCommand { DotKhaoSatDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
         }

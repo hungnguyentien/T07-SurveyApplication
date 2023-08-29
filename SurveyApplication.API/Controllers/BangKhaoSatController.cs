@@ -26,7 +26,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetBangKhaoSatByCondition")]
-        public async Task<ActionResult<List<BangKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
+        public async Task<ActionResult<List<BangKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return Ok(leaveAllocations);

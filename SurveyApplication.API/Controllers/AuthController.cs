@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.Features.Auths.Requests.Queries;
 using SurveyApplication.Application.Models.Identity;
 
 namespace SurveyApplication.API.Controllers
@@ -15,16 +16,10 @@ namespace SurveyApplication.API.Controllers
             _authenticationService = authenticationService;
         }
 
-        //[HttpPost("login")]
-        //public async Task<ActionResult<AuthResponse>> Login(AuthRequest request)
-        //{
-        //    return Ok(await _authenticationService.Login(request));
-        //}
-
-        //[HttpPost("register")]
-        //public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
-        //{
-        //    return Ok(await _authenticationService.Register(request));
-        //}
+        [HttpPost("login")]
+        public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
+        {
+            return Ok(await _authenticationService.Login(request));
+        }
     }
 }
