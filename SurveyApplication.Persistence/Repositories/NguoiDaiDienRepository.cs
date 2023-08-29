@@ -23,5 +23,10 @@ namespace SurveyApplication.Persistence.Repositories
             var entity = await _dbContext.NguoiDaiDien.AsNoTracking().FirstOrDefaultAsync(x => x.MaNguoiDaiDien.ToString() == MaNguoiDaiDien);
             return entity != null;
         }
+
+        public async Task<NguoiDaiDien?> GetByIdDonVi(int idDonVi)
+        {
+            return await _dbContext.NguoiDaiDien.AsNoTracking().FirstOrDefaultAsync(x => x.MaDonVi == idDonVi);
+        }
     }
 }

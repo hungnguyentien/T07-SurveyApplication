@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.CauHoi.Requests.Queries
 {
-    public class GetConfigCauHoiRequest:IRequest<List<CauHoiDto>>
+    public class GetConfigCauHoiRequest : IRequest<List<CauHoiDto>>
     {
         public int IdBangKhaoSat { get; set; }
     }

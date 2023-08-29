@@ -10,6 +10,7 @@ import {
 import { MessageService } from 'primeng/api';
 
 import { GeneralInfo, TinhQuanHuyen } from '@app/models';
+import { PhieuKhaoSatService } from '@app/services';
 import { jsonDataFake } from './json';
 
 @Component({
@@ -39,7 +40,8 @@ export class GeneralInfoComponent {
     private router: Router,
     private titleService: Title,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private phieuKhaoSatService: PhieuKhaoSatService
   ) {
     this.titleService.setTitle('Thông tin chung');
   }
@@ -56,7 +58,7 @@ export class GeneralInfoComponent {
       let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
       this.tinh?.push({ name: tinhQuanHuyen.name, code: tinhQuanHuyen.code });
     });
-    // this.selectedTinh = '10';
+
     this.frmGeneralInfo = this.formBuilder.group({
       DonVi: this.formBuilder.group({
         TenDonVi: ['', Validators.required],
@@ -102,9 +104,24 @@ export class GeneralInfoComponent {
         ],
       }),
     });
+
+    this.phieuKhaoSatService.getGeneralInfo(1).subscribe({
+      next: (res) => {
+        // this.f('DonVi')?.forEach(element => {
+          
+        // });
+        debugger
+      },
+      error: (e) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: e.message });;
+      },
+      complete: () => {
+        debugger
+      },
+    });
   }
 
-  f = (name: string, subName: string): FormControl => {
+  f = (name: string, subName: string = ''): FormControl => {
     return (
       subName
         ? this.frmGeneralInfo?.get(name)?.get(subName)
@@ -122,7 +139,6 @@ export class GeneralInfoComponent {
     this.loading = true;
     this.messageService.clear();
     this.messageService.add({
-      key: 'success',
       severity: 'success',
       summary: 'Success',
       detail: 'Gửi thông tin chung thành công',
@@ -179,7 +195,9 @@ export class GeneralInfoComponent {
 
   setDiaChi = () => {
     let arr = [
-      this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.['name_with_type'],
+      this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.[
+        'name_with_type'
+      ],
       this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.[
         'quan-huyen'
       ]?.[this.selectedQuanHuyen ?? '']?.['name_with_type'],

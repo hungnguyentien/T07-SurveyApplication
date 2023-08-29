@@ -39,7 +39,6 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             }
 
             var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto);
-            ketQua.ActiveFlag = (int)EnumCommon.ActiveFlag.Active;
             ketQua = await _ketQuaRepository.Create(ketQua);
             response.Success = true;
             response.Message = "Gửi thông tin thành công";
