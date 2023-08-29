@@ -5,6 +5,7 @@ import { SurveyCreatorModule } from 'survey-creator-angular';
 import { SurveyModule } from 'survey-angular-ui';
 import { NgxLoadingModule } from 'ngx-loading';
 import { ToastModule } from 'primeng/toast';
+import { DropdownModule } from 'primeng/dropdown';
 
 import { ClientHomeComponent } from './client-home/client-home.component';
 import { ClientRoutingModule } from './client-routing.module';
@@ -25,7 +26,9 @@ import { SurveyInfoComponent } from './survey-info/survey-info.component';
     SurveyModule,
     ReactiveFormsModule,
     NgxLoadingModule.forRoot({}),
-    ToastModule
+    ///TODO add primeng
+    ToastModule,
+    DropdownModule,
   ],
 })
 export class ClientModule {}

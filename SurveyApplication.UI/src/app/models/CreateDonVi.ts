@@ -10,6 +10,14 @@ export interface CreateDonVi {
   soDienThoai: string;
 }
 
+export interface CreateNguoiDaiDien {
+  hoTen: string;
+  chucVu: string;
+  soDienThoai: string;
+  email: string;
+}
+
 export interface GeneralInfo {
-  createDonVi: CreateDonVi;
+  donVi: CreateDonVi;
+  nguoiDaiDien: CreateNguoiDaiDien;
 }
