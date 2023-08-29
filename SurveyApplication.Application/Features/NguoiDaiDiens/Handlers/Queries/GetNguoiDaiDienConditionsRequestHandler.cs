@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Queries
 
         public async Task<List<NguoiDaiDienDto>> Handle(GetNguoiDaiDienConditionsRequest request, CancellationToken cancellationToken)
         {
-            var NguoiDaiDiens = await _nguoiDaiDienRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.HoTen) && x.HoTen.Contains(request.Keyword));
+            var NguoiDaiDiens = await _nguoiDaiDienRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.HoTen) && x.HoTen.Contains(request.Keyword), x => x.Created);
             return _mapper.Map<List<NguoiDaiDienDto>>(NguoiDaiDiens);
         }
     }

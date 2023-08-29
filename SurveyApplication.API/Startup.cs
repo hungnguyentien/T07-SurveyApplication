@@ -18,6 +18,7 @@ namespace SurveyApplication.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+
             AddSwaggerDoc(services);
 
             services.ConfigureApplicationServices();
@@ -48,6 +49,7 @@ namespace SurveyApplication.API
             app.UseAuthentication();
 
             app.UseSwagger();
+
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SurveyManagement.Api v1"));
 
             app.UseHttpsRedirection();
@@ -102,11 +104,14 @@ namespace SurveyApplication.API
                 {
                     Version = "v1",
                     Title = "Survey Management Api",
-
+                    Description = "A SURVEY MANAGEMENT API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "toannck",
+                        Email = "toannck32@wrun.vn"
+                    }
                 });
-
             });
         }
-
     }
 }

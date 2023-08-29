@@ -75,7 +75,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BangKhaoSats");
+                    b.ToTable("BangKhaoSat");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.CauHoi", b =>
@@ -98,8 +98,15 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsOther")
+                        .HasColumnType("bit");
+
                     b.Property<int>("KichThuocFile")
                         .HasColumnType("int");
+
+                    b.Property<string>("LabelCauTraLoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<short>("LoaiCauHoi")
                         .HasColumnType("smallint");
@@ -118,6 +125,9 @@ namespace SurveyApplication.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
                     b.Property<int>("SoLuongFileToiDa")
                         .HasColumnType("int");
 
@@ -127,10 +137,10 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CauHois");
+                    b.ToTable("CauHoi");
                 });
 
-            modelBuilder.Entity("SurveyApplication.Domain.CauHoiPhu", b =>
+            modelBuilder.Entity("SurveyApplication.Domain.Cot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,9 +160,17 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<int>("IdCauHoi")
                         .HasColumnType("int");
 
-                    b.Property<string>("MaCauHoi")
+                    b.Property<bool?>("IsOther")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LabelCauTraLoi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaCot")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
@@ -162,50 +180,12 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CauHoiPhus");
-                });
-
-            modelBuilder.Entity("SurveyApplication.Domain.DapAn", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("ActiveFlag")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdCauHoi")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MaDapAn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NoiDung")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DapAns");
+                    b.ToTable("Cot");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.DonVi", b =>
@@ -268,7 +248,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DonVis");
+                    b.ToTable("DonVi");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.DotKhaoSat", b =>
@@ -316,7 +296,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DotKhaoSats");
+                    b.ToTable("DotKhaoSat");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.GuiEmail", b =>
@@ -359,7 +339,48 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GuiEmails");
+                    b.ToTable("GuiEmail");
+                });
+
+            modelBuilder.Entity("SurveyApplication.Domain.Hang", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ActiveFlag")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdCauHoi")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaHang")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Hang");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.KetQua", b =>
@@ -400,7 +421,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KetQuas");
+                    b.ToTable("KetQua");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.LinhVucHoatDong", b =>
@@ -435,7 +456,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LinhVucHoatDongs");
+                    b.ToTable("LinhVucHoatDong");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.LoaiHinhDonVi", b =>
@@ -475,7 +496,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LoaiHinhDonVis");
+                    b.ToTable("LoaiHinhDonVi");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.NguoiDaiDien", b =>
@@ -530,7 +551,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NguoiDaiDiens");
+                    b.ToTable("NguoiDaiDien");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.NguoiDung", b =>
@@ -573,7 +594,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NguoiDungs");
+                    b.ToTable("NguoiDung");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.NguoiDungVaiTro", b =>
@@ -612,7 +633,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NguoiDungVaiTros");
+                    b.ToTable("NguoiDungVaiTro");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.Quyen", b =>
@@ -647,7 +668,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Quyens");
+                    b.ToTable("Quyen");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.VaiTro", b =>
@@ -682,7 +703,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VaiTros");
+                    b.ToTable("VaiTro");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.VaiTroQuyen", b =>
@@ -721,7 +742,7 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VaiTroQuyens");
+                    b.ToTable("VaiTroQuyen");
                 });
 #pragma warning restore 612, 618
         }

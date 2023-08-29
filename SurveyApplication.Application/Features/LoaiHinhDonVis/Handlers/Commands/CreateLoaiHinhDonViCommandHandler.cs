@@ -2,46 +2,36 @@
 using MediatR;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Contracts.Persistence;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
-using SurveyApplication.Application.Exceptions;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
+using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands
 {
     public class CreateLoaiHinhDonViCommandHandler : IRequestHandler<CreateLoaiHinhDonViCommand, BaseCommandResponse>
     {
-        private readonly ILoaiHinhDonViRepository _loaiHinhDonViRepository;
+        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
         private readonly IMapper _mapper;
 
-        public CreateLoaiHinhDonViCommandHandler(ILoaiHinhDonViRepository loaiHinhDonViRepository, IMapper mapper)
+        public CreateLoaiHinhDonViCommandHandler(ILoaiHinhDonViRepository LoaiHinhDonViRepository, IMapper mapper)
         {
-            _loaiHinhDonViRepository = loaiHinhDonViRepository;
+            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
             _mapper = mapper;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new CreateLoaiHinhDonViDtoValidator(_loaiHinhDonViRepository);
-            var validationResult = await validator.ValidateAsync(request.LoaiHinhDonViDto ?? new CreateLoaiHinhDonViDto());
-
-            if (!validationResult.IsValid)
-            {
-                response.Success = false;
-                response.Message = "Tạo mới không thành công";
-                response.Errors = validationResult.Errors.Select(q=> q.ErrorMessage).ToList();
-            }
-
-            var loaiHinhDonVi = _mapper.Map<LoaiHinhDonVi>(request.LoaiHinhDonViDto);
-            
-            loaiHinhDonVi = await _loaiHinhDonViRepository.Create(loaiHinhDonVi);
-
+            var LoaiHinhDonVi = _mapper.Map<LoaiHinhDonVi>(request.LoaiHinhDonViDto);
+            LoaiHinhDonVi = await _LoaiHinhDonViRepository.Create(LoaiHinhDonVi);
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = loaiHinhDonVi.MaLoaiHinh;
-
+            response.Id = LoaiHinhDonVi.MaLoaiHinh;
             return response;
         }
     }

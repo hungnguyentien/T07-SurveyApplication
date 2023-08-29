@@ -23,5 +23,13 @@ namespace SurveyApplication.Application.Enums
             [Description("Tải tệp tin")]
             UploadFile = 7
         }
+
+        public enum ShowOtherItem
+        {
+            [Description("Không")]
+            No = 0,
+            [Description("Có")]
+            Yes = 1
+        }
     }
 }

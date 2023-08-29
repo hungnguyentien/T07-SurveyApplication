@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
 
         public async Task<List<DonViDto>> Handle(GetDonViConditionsRequest request, CancellationToken cancellationToken)
         {
-            var DonVis = await _donViRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenDonVi) && x.TenDonVi.Contains(request.Keyword));
+            var DonVis = await _donViRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenDonVi) && x.TenDonVi.Contains(request.Keyword), x => x.Created);
             return _mapper.Map<List<DonViDto>>(DonVis);
         }
     }

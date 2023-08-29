@@ -4,6 +4,8 @@
   background-color: #005b8a;
   color: #ffff;
   cursor: pointer;
+  width: 100%;
+  padding: 16px 40px 16px 16px;
 }
 .sidebar .arrow::before {
   content: "\f078"; /* Mũi tên xuống */

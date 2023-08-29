@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +12,19 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
 {
     public class DeleteLoaiHinhDonViCommandHandler : IRequestHandler<DeleteLoaiHinhDonViCommand>
     {
-        private readonly ILoaiHinhDonViRepository _loaiHinhDonViRepository;
+        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
         private readonly IMapper _mapper;
 
-        public DeleteLoaiHinhDonViCommandHandler(ILoaiHinhDonViRepository loaiHinhDonViRepository, IMapper mapper)
+        public DeleteLoaiHinhDonViCommandHandler(ILoaiHinhDonViRepository LoaiHinhDonViRepository, IMapper mapper)
         {
-            _loaiHinhDonViRepository = loaiHinhDonViRepository;
+            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
-            var loaiHinhDonVi = await _loaiHinhDonViRepository.GetById(request.Id);
-            await _loaiHinhDonViRepository.Delete(loaiHinhDonVi);
+            var LoaiHinhDonViRepository = await _LoaiHinhDonViRepository.GetById(request.Id);
+            await _LoaiHinhDonViRepository.Delete(LoaiHinhDonViRepository);
             return Unit.Value;
         }
     }

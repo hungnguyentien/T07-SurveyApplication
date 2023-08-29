@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,8 +29,10 @@ import { AdminPeriodSurveyComponent } from './modules/admin/admin-period-survey/
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-
+import { PaginatorModule } from 'primeng/paginator';
+import { MessagesModule } from 'primeng/messages';
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     AppComponent,
     AdminObjectSurveyComponent,
@@ -39,6 +41,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ChooseAnAnswerComponent,
     LongTextComponent,
     QuestionComponent,
+    
    ],
   imports: [
     BrowserModule,
@@ -59,7 +62,10 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ConfirmDialogModule,
     ToastModule,
     TreeSelectModule,
-    CKEditorModule
+    CKEditorModule,
+    PaginatorModule,
+    MessagesModule,
+    
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent],

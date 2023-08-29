@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ClientHomeComponent } from './client-home/client-home.component';
+import {
+  ClientHomeComponent,
+  GeneralInfoComponent,
+  SurveyInfoComponent,
+} from '@app/modules/client';
 
 const routes: Routes = [
   {
@@ -14,6 +18,20 @@ const routes: Routes = [
         component: ClientHomeComponent,
         data: {
           title: 'Phiếu khảo sát',
+        },
+      },
+      {
+        path: 'thong-tin-chung',
+        component: GeneralInfoComponent,
+        data: {
+          title: 'Thông tin chung',
+        },
+      },
+      {
+        path: 'thong-tin-khao-sat',
+        component: SurveyInfoComponent,
+        data: {
+          title: 'Thông tin phiếu khảo sát',
         },
       },
     ],

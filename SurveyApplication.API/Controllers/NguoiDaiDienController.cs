@@ -39,21 +39,21 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
-        //[HttpPost("CreateNguoiDaiDien")]
-        //public async Task<ActionResult<NguoiDaiDienDto>> CreateNguoiDaiDien([FromBody] CreateNguoiDaiDienDto obj)
-        //{
-        //    var command = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
-        //    var response = await _mediator.Send(command);
-        //    return Ok(response);
-        //}
+        [HttpPost("CreateNguoiDaiDien")]
+        public async Task<ActionResult<NguoiDaiDienDto>> CreateNguoiDaiDien([FromBody] CreateNguoiDaiDienDto obj)
+        {
+            var command = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
 
-        //[HttpPost("UpdateNguoiDaiDien")]
-        //public async Task<ActionResult<NguoiDaiDienDto>> UpdateNguoiDaiDien([FromBody] UpdateNguoiDaiDienDto obj)
-        //{
-        //    var command = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
-        //    await _mediator.Send(command);
-        //    return NoContent();
-        //}
+        [HttpPost("UpdateNguoiDaiDien")]
+        public async Task<ActionResult<NguoiDaiDienDto>> UpdateNguoiDaiDien([FromBody] UpdateNguoiDaiDienDto obj)
+        {
+            var command = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
+            await _mediator.Send(command);
+            return NoContent();
+        }
 
         [HttpDelete("DeleteNguoiDaiDien/{id}")]
         public async Task<ActionResult<List<NguoiDaiDienDto>>> DeleteNguoiDaiDien(int id)

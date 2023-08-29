@@ -35,22 +35,27 @@ namespace SurveyApplication.Persistence
             return base.SaveChangesAsync(cancellationToken);
         }
 
-        public DbSet<LoaiHinhDonVi> LoaiHinhDonVis { get; set; }
-        
-        public DbSet<LinhVucHoatDong> LinhVucHoatDongs { get; set; }
-        public DbSet<GuiEmail> GuiEmails { get; set; }
-        public DbSet<DotKhaoSat> DotKhaoSats { get; set; }
-        public DbSet<CauHoi> CauHois { get; set; }
-        public DbSet<BangKhaoSat> BangKhaoSats { get; set; }
-        public DbSet<NguoiDaiDien> NguoiDaiDiens { get; set; }
-        public DbSet<NguoiDung> NguoiDungs { get; set; }
-        public DbSet<NguoiDungVaiTro> NguoiDungVaiTros { get; set; }
-        public DbSet<Quyen> Quyens { get; set; }
-        public DbSet<VaiTro> VaiTros { get; set; }
-        public DbSet<VaiTroQuyen> VaiTroQuyens { get; set; }
-        public DbSet<DonVi> DonVis { get; set; }
-        public DbSet<CauHoiPhu> CauHoiPhus { get; set; }
-        public DbSet<DapAn> DapAns { get; set; }
-        public DbSet<KetQua> KetQuas { get; set; }
+        public DbSet<LoaiHinhDonVi> LoaiHinhDonVi { get; set; }
+        public DbSet<LinhVucHoatDong> LinhVucHoatDong { get; set; }
+        public DbSet<GuiEmail> GuiEmail { get; set; }
+        public DbSet<DotKhaoSat> DotKhaoSat { get; set; }
+        public DbSet<BangKhaoSat> BangKhaoSat { get; set; }
+        public DbSet<NguoiDaiDien> NguoiDaiDien { get; set; }
+        public DbSet<NguoiDung> NguoiDung { get; set; }
+        public DbSet<NguoiDungVaiTro> NguoiDungVaiTro { get; set; }
+        public DbSet<Quyen> Quyen { get; set; }
+        public DbSet<VaiTro> VaiTro { get; set; }
+        public DbSet<VaiTroQuyen> VaiTroQuyen { get; set; }
+        public DbSet<DonVi> DonVi { get; set; }
+
+        #region Câu hỏi
+
+        public DbSet<CauHoi> CauHoi { get; set; }
+        public DbSet<Cot> Cot { get; set; }
+        public DbSet<Hang> Hang { get; set; }
+        public DbSet<KetQua> KetQua { get; set; }
+
+        #endregion
+
     }
 }

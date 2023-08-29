@@ -19,5 +19,8 @@ namespace SurveyApplication.Domain
         public string NoiDung { get; set; }
         public int SoLuongFileToiDa { get; set; }
         public int KichThuocFile { get; set; }
+        public bool? IsOther { get; set; }
+        public string LabelCauTraLoi { get; set; }
+        public int Priority { get; set; }
     }
 }
