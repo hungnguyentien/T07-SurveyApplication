@@ -1,10 +1,47 @@
-/* Đổi màu nền khi ở trạng thái active */
-.nav-item.active {
-    background-color: #f8f9fc; /* Màu nền khác tùy chọn */
-  }
-  
-  /* Đổi màu chữ khi ở trạng thái active */
-  .nav-item.active .nav-link {
-    color: #000; /* Màu chữ khác tùy chọn */
-  }
-  
+
+
+.sidebar .nav-item.active > .nav-link {
+  background-color: #005b8a;
+  color: #ffff;
+  cursor: pointer;
+}
+.sidebar .arrow::before {
+  content: "\f078"; /* Mũi tên xuống */
+  font-family: "FontAwesome";
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar .nav-item.active > .arrow::before {
+  transform: translateY(-50%) rotate(-180deg);
+}
+
+
+.sidebar .nav-item.active > .collapse-inner .collapse-item {
+  color: #005b8a;
+}
+
+.sidebar[_ngcontent-ng-c3157372814] .nav-item.active[_ngcontent-ng-c3157372814] > .nav-link[_ngcontent-ng-c3157372814] {
+  background-color: #005b8a;
+  color: #ffff;
+  padding: 16px 40px 16px 16px;
+  width: 100%;
+}
+
+/* Hiệu ứng animation cho dropdown */
+.collapse-inner { 
+    transition: 0.3s all;
+}
+
+.collapse.show .collapse-inner {
+    max-height: 500px; /* Điều chỉnh chiều cao tùy theo nội dung thực tế */
+}
+.collapse-inner>a{
+  cursor: pointer;
+}
+.nav-item>a{
+  cursor: pointer;
+}
