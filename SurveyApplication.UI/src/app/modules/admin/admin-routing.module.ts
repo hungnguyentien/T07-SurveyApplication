@@ -5,6 +5,7 @@ import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.compon
 import { AdminObjectSurveyComponent } from './admin-object-survey/admin-object-survey.component';
 import { QuestionComponent } from './admin-question/question/question.component';
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
+import { Thongke } from '@app/models';
 const routes: Routes = [
   {
     path: '',

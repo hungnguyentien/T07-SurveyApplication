@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ServiceService } from '@app/services';
-import { Customer, Representative } from '@app/models';
+import { Customer, Representative, UnitType } from '@app/models';
+import { UnitTypeService } from '@app/services/unit-type.service';
 
 @Component({
   selector: 'app-admin-unit-type',
@@ -10,34 +11,56 @@ import { Customer, Representative } from '@app/models';
 export class AdminUnitTypeComponent {
   public value: any;
   customers!: Customer[];
-
-  selectedCustomers!: Customer[];
-
   representatives!: Representative[];
-
   statuses!: any[];
-
   loading: boolean = true;
-
   activityValues: number[] = [0, 100];
+  
 
-  constructor(private customerService: ServiceService) {}
+  selectedUnitType!: UnitType[];
+  datas : UnitType [] = [];
+  MaLoaiHinh: any;
+  
+  
+  
+
+  constructor(private UnitTypeService:UnitTypeService,private customerService: ServiceService) {}
   ngOnInit() {
     this.customerService.getCustomersLarge().then((customers) => {
       this.customers = customers;
       this.loading = false;
     });
-    this.representatives = [
-      { name: 'Amy Elsner', image: 'amyelsner.png' },
-      { name: 'Anna Fali', image: 'annafali.png' },
-      { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-      { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-      { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-      { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-      { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-      { name: 'Onyama Limba', image: 'onyamalimba.png' },
-      { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-      { name: 'Xuxue Feng', image: 'xuxuefeng.png' },
-    ];
+  }
+
+  
+  first: number = 0;
+  rows: number = 5;
+  page: number = 1;
+  TotalCount = 0;
+  onPageChange(event:any) {
+      this.first = event.first;
+      this.rows = event.rows;
+      this.page = event.page+1
+      let obj = {
+        pageIndex: this.page,
+        pageSize: this.rows,
+        keyword: this.MaLoaiHinh
+      }
+      this.UnitTypeService.Search("api/CuDuong/cuduong_search",obj).subscribe(res=>{
+        this.datas = res.Data
+        this.TotalCount = res.TotalItems
+      })
+  }
+  search(){
+    let obj = {
+      pageIndex: this.page,
+      pageSize: this.rows,
+      keyword: this.MaLoaiHinh
+    }
+    this.UnitTypeService.Search("api/CuDuong/cuduong_search",obj).subscribe(res=>{
+      debugger
+      this.datas = res.data
+      this.TotalCount = res.totalItems
+    })
   }
 }
