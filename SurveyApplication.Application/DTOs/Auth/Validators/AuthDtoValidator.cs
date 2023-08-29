@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.Auth.Validators
 {
-   
     public class AuthDtoValidator : AbstractValidator<IAuthDto>
     {
         private readonly IAuthRepository _AuthRepository;

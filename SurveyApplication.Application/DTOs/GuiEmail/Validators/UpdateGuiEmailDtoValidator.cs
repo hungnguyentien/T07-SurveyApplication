@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.DTOs.GuiEmail.Validators
 {
     
-    public class UpdateGuiEmailDtoValitor : AbstractValidator<UpdateGuiEmailDto>
+    public class UpdateGuiEmailDtoValidator : AbstractValidator<UpdateGuiEmailDto>
     {
         private readonly IGuiEmailRepository _guiEmailRepository;
 
-        public UpdateGuiEmailDtoValitor(IGuiEmailRepository guiEmailRepository)
+        public UpdateGuiEmailDtoValidator(IGuiEmailRepository guiEmailRepository)
         {
             _guiEmailRepository = guiEmailRepository;
-            Include(new IGuiEmailDtoValitor(_guiEmailRepository));
+            Include(new IGuiEmailDtoValidator(_guiEmailRepository));
 
             RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
         }

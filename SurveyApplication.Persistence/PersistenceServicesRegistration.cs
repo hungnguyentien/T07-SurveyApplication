@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.Models.Identity;
+using SurveyApplication.Domain;
 using SurveyApplication.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace SurveyApplication.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString"),
                 b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
 
-            //services.AddTransient<IAuthRepository, AuthRepository>();
+            ///services.AddTransient<IAuthRepository, AuthRepository>();
 
             services.AddAuthentication(options =>
             {
@@ -59,6 +60,7 @@ namespace SurveyApplication.Persistence
             services.AddScoped<IGuiEmailRepository, GuiEmailRepository>();
             services.AddScoped<ICauHoiRepository, CauHoiRepository>();
             services.AddScoped<IKetQuaRepository, KetQuaRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
 
             return services;
         }

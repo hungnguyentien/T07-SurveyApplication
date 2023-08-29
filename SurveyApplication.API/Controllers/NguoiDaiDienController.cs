@@ -26,7 +26,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetNguoiDaiDienByCondition")]
-        public async Task<ActionResult<List<NguoiDaiDienDto>>> GetNguoiDaiDienByCondition(int pageIndex = 1, int pageSize = 10, string? keyword = "")
+        public async Task<ActionResult<List<NguoiDaiDienDto>>> GetNguoiDaiDienByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetNguoiDaiDienConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return Ok(leaveAllocations);

@@ -770,7 +770,8 @@
           "FluentValidation.DependencyInjectionExtensions": "11.7.1",
           "MediatR.Extensions.Microsoft.DependencyInjection": "11.1.0",
           "Newtonsoft.Json": "13.0.3",
-          "SurveyApplication.Domain": "1.0.0"
+          "SurveyApplication.Domain": "1.0.0",
+          "System.IdentityModel.Tokens.Jwt": "6.32.2"
         },
         "runtime": {
           "SurveyApplication.Application.dll": {}

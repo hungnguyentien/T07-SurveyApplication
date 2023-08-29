@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
+using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using System;
@@ -25,6 +28,14 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
 
         public async Task<Unit> Handle(UpdateBangKhaoSatCommand request, CancellationToken cancellationToken)
         {
+            var validator = new UpdateBangKhaoSatDtoValidator(_bangKhaoSatRepository);
+            var validatorResult = await validator.ValidateAsync(request.BangKhaoSatDto);
+
+            if (validatorResult.IsValid == false)
+            {
+                throw new ValidationException(validatorResult);
+            }
+
             var bangKhaoSat = await _bangKhaoSatRepository.GetById(request.BangKhaoSatDto?.Id ?? 0);
             _mapper.Map(request.BangKhaoSatDto, bangKhaoSat);
             await _bangKhaoSatRepository.Update(bangKhaoSat);

@@ -11,7 +11,7 @@ import { ClientHomeComponent } from './client-home/client-home.component';
 import { ClientRoutingModule } from './client-routing.module';
 import { GeneralInfoComponent } from './general-info/general-info.component';
 import { SurveyInfoComponent } from './survey-info/survey-info.component';
-
+import { MessagesModule } from 'primeng/messages';
 @NgModule({
   declarations: [
     ClientHomeComponent,

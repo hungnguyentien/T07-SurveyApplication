@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.DTOs.DonVi.Validators;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
+using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using System;
@@ -25,6 +27,14 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
 
         public async Task<Unit> Handle(UpdateDonViCommand request, CancellationToken cancellationToken)
         {
+            var validator = new UpdateDonViDtoValidator(_donViRepository);
+            var validatorResult = await validator.ValidateAsync(request.DonViDto);
+
+            if (validatorResult.IsValid == false)
+            {
+                throw new ValidationException(validatorResult);
+            }
+
             var DonVi = await _donViRepository.GetById(request.DonViDto?.Id ?? 0);
             _mapper.Map(request.DonViDto, DonVi);
             await _donViRepository.Update(DonVi);

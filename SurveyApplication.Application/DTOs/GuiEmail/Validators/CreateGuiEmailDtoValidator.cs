@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.DTOs.GuiEmail.Validators
 {
     
-    public class CreateGuiEmailDtoValitor : AbstractValidator<CreateGuiEmailDto>
+    public class CreateGuiEmailDtoValidator : AbstractValidator<CreateGuiEmailDto>
     {
         private readonly IGuiEmailRepository _guiEmailRepository;
 
-        public CreateGuiEmailDtoValitor(IGuiEmailRepository guiEmailRepository)
+        public CreateGuiEmailDtoValidator(IGuiEmailRepository guiEmailRepository)
         {
             _guiEmailRepository = guiEmailRepository;
             Include(new GuiEmailDtoValidator(_guiEmailRepository));

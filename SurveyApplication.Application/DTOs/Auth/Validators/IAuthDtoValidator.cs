@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.Auth.Validators
 {
-    
-
-    public class IAuthDtoValitor : AbstractValidator<IAuthDto>
+    public class IAuthDtoValidator : AbstractValidator<IAuthDto>
     {
         private readonly IAuthRepository _AuthRepository;
 
-        public IAuthDtoValitor(IAuthRepository AuthRepository)
+        public IAuthDtoValidator(IAuthRepository AuthRepository)
         {
             _AuthRepository = AuthRepository;
 

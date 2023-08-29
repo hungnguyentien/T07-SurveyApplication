@@ -3,7 +3,6 @@ using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;

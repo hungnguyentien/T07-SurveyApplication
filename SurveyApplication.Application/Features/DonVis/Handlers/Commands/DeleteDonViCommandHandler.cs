@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
+using SurveyApplication.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,11 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
         public async Task<Unit> Handle(DeleteDonViCommand request, CancellationToken cancellationToken)
         {
             var DonViRepository = await _donViRepository.GetById(request.Id);
+
+            if (DonViRepository == null)
+            {
+                throw new NotFoundException(nameof(DonVi), request.Id);
+            }
             await _donViRepository.Delete(DonViRepository);
             return Unit.Value;
         }
