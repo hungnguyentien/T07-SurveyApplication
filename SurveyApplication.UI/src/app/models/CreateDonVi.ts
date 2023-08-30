@@ -8,6 +8,7 @@ export interface CreateDonVi {
   email: string;
   webSite: string;
   soDienThoai: string;
+  id: number;
 }
 
 export interface CreateNguoiDaiDien {
@@ -15,6 +16,7 @@ export interface CreateNguoiDaiDien {
   chucVu: string;
   soDienThoai: string;
   email: string;
+  id: number;
 }
 
 export interface GeneralInfo {

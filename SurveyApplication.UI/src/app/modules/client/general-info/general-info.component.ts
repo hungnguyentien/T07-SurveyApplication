@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormGroup,
   FormBuilder,
@@ -12,6 +11,7 @@ import { MessageService } from 'primeng/api';
 import { GeneralInfo, TinhQuanHuyen } from '@app/models';
 import { PhieuKhaoSatService } from '@app/services';
 import { jsonDataFake } from './json';
+import Utils from '@app/helpers/utils';
 
 @Component({
   selector: 'app-general-info',
@@ -38,15 +38,15 @@ export class GeneralInfoComponent {
 
   constructor(
     private router: Router,
-    private titleService: Title,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private phieuKhaoSatService: PhieuKhaoSatService
-  ) {
-    this.titleService.setTitle('Thông tin chung');
-  }
+    private phieuKhaoSatService: PhieuKhaoSatService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    let idDonVi =
+      this.activatedRoute.snapshot.queryParamMap.get('idDonVi') ?? '0';
     this.submitCount = 0;
     this.submitted = false;
     this.loading = false;
@@ -58,7 +58,7 @@ export class GeneralInfoComponent {
       let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
       this.tinh?.push({ name: tinhQuanHuyen.name, code: tinhQuanHuyen.code });
     });
-
+    this.selectedTinh = '10';
     this.frmGeneralInfo = this.formBuilder.group({
       DonVi: this.formBuilder.group({
         TenDonVi: ['', Validators.required],
@@ -105,18 +105,29 @@ export class GeneralInfoComponent {
       }),
     });
 
-    this.phieuKhaoSatService.getGeneralInfo(1).subscribe({
+    this.phieuKhaoSatService.getGeneralInfo(idDonVi).subscribe({
       next: (res) => {
-        // this.f('DonVi')?.forEach(element => {
-          
-        // });
-        debugger
+        this.loading = true;
+        this.generalInfo = res;
+        Utils.setValueFormNetted(
+          this.frmGeneralInfo,
+          'donVi',
+          Object.keys(res.donVi),
+          Object.values(res.donVi)
+        );
+        Utils.setValueFormNetted(
+          this.frmGeneralInfo,
+          'nguoiDaiDien',
+          Object.keys(res.nguoiDaiDien),
+          Object.values(res.nguoiDaiDien)
+        );
       },
       error: (e) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: e.message });;
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
       },
       complete: () => {
-        debugger
+        this.loading = false;
       },
     });
   }
@@ -136,17 +147,18 @@ export class GeneralInfoComponent {
       return;
     }
 
-    this.loading = true;
-    this.messageService.clear();
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Gửi thông tin chung thành công',
-    });
+    Utils.messageSuccess(
+      this.messageService,
+      'Nhập thông tin chung thành công!'
+    );
     setTimeout(() => {
-      this.router.navigate(['/phieu/thong-tin-khao-sat']);
-    }, 5000);
+      this.router.navigateByUrl('/phieu/thong-tin-khao-sat', {
+        state: this.generalInfo,
+      });
+    }, 3000);
   };
+
+  resetForm = () => Utils.resetForm(this.frmGeneralInfo);
 
   handlerChangeTinh = (e: any) => {
     this.quanHuyen = [];
@@ -211,9 +223,5 @@ export class GeneralInfoComponent {
       ?.get('DonVi')
       ?.get('DiaChi')
       ?.setValue(arr.filter((x) => x).join(' ,'));
-  };
-
-  resetForm = () => {
-    return this.frmGeneralInfo?.reset();
   };
 }

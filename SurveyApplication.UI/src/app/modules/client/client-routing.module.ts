@@ -23,6 +23,7 @@ const routes: Routes = [
       {
         path: 'thong-tin-chung',
         component: GeneralInfoComponent,
+        title: 'Thông tin chung',
         data: {
           title: 'Thông tin chung',
         },
@@ -30,6 +31,7 @@ const routes: Routes = [
       {
         path: 'thong-tin-khao-sat',
         component: SurveyInfoComponent,
+        title: 'Thông tin phiếu khảo sát',
         data: {
           title: 'Thông tin phiếu khảo sát',
         },

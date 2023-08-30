@@ -33,7 +33,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             if (validationResult.IsValid == false)
             {
                 response.Success = false;
-                response.Message = "Gửi thông tin không thành công";
+                response.Message = "Gửi thông tin không thành công!";
                 response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
                  return response;
             }
@@ -41,7 +41,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto);
             ketQua = await _ketQuaRepository.Create(ketQua);
             response.Success = true;
-            response.Message = "Gửi thông tin thành công";
+            response.Message = "Gửi thông tin thành công!";
             response.Id = ketQua.Id.ToString();
             return response;
         }

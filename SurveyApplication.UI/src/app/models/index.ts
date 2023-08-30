@@ -7,3 +7,5 @@ export * from './SurveyConfig';
 export * from './CreateDonVi';
 export * from './TinhQuanHuyen';
 export *from './UnitType'
+export *from './SaveSurvey'
+export *from './Response'
