@@ -10,25 +10,6 @@ export class UnitTypeService {
 
   constructor(private http: HttpClient) {}
 
-  // getAll() {
-  //   return this.http.get(`${environment.apiUrl}/BangKhaoSat/GetAllBangKhaoSat`);
-  // }
-  GetList(url: string,): Observable<any>{
-    return this.http.get(`${environment.apiUrl}${url}`)
-  }
-
-  GetById(url: string,id: any): Observable<any>{
-    return this.http.get<any>(`${environment.apiUrl}${url}/${id}`).pipe();
-  }
-
-  
-  Delete(url: string, model: string[]): Observable<any>{
-    return this.http.post(`${environment.apiUrl}${url}`, model).pipe();
-  }
-  Search(url : string,fromdata : object):Observable<any>{
-    return this.http.post<UnitType[]>(`${environment.apiUrl}${url}`, fromdata).pipe();
-  }
-
   SearchUnitType(pageIndex: number, pageSize: number, keyword: string) {
     const url = `${environment.apiUrl}/LoaiHinhDonVi/GetLoaiHinhDonViByCondition`;
     const params = {
@@ -50,5 +31,10 @@ export class UnitTypeService {
   GetIdUnitType(){
     const url = `${environment.apiUrl}/LoaiHinhDonVi/GetLastRecordByMaLoaiHinh`
     return this.http.get(url);
+  }
+
+  Delete(id: any): Observable<any> {
+    const url = `${environment.apiUrl}/LoaiHinhDonVi/DeleteLoaiHinhDonVi/${id}`;
+    return this.http.delete(url);
   }
 }

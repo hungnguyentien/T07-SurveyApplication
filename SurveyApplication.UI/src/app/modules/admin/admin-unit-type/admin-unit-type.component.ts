@@ -3,7 +3,7 @@ import { ServiceService } from '@app/services';
 import { Customer, Representative, UnitType } from '@app/models';
 import { UnitTypeService } from '@app/services/unit-type.service';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-unit-type',
@@ -23,13 +23,14 @@ export class AdminUnitTypeComponent {
   showadd!: boolean;
   FormUnitType!: FormGroup;
   MaLoaiHinh !:string
+  IdLoaiHinh !:string
 
-  constructor(private FormBuilder :FormBuilder,private UnitTypeService:UnitTypeService,private messageService: MessageService) {}
+  constructor(private FormBuilder :FormBuilder,private UnitTypeService:UnitTypeService,private messageService: MessageService,private confirmationService: ConfirmationService) {}
   ngOnInit() {
     this.GetUnitType()
 
     this.FormUnitType = this.FormBuilder.group({
-      MaLoaiHinh: [{ value: this.MaLoaiHinh, disabled: true },'', Validators.required],
+      MaLoaiHinh: [{ value: this.MaLoaiHinh, disabled: true },''],
       TenLoaiHinh: ['', Validators.required],
       MoTa: ['', Validators.required]
     });
@@ -44,8 +45,6 @@ export class AdminUnitTypeComponent {
   }
 
   GetUnitType() {
-    console.log(this.keyword)
-    debugger
     this.UnitTypeService.SearchUnitType(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
         this.datas = response;
@@ -60,7 +59,8 @@ export class AdminUnitTypeComponent {
     this.UnitTypeService.GetIdUnitType().subscribe({
       next:(res:any) => {
         debugger
-        this.MaLoaiHinh = res
+        this.FormUnitType.controls['MaLoaiHinh'].setValue(res.maLoaiHinh)
+        this.MaLoaiHinh = res.maLoaiHinh
         console.log(this.MaLoaiHinh);
       }
     })
@@ -68,7 +68,8 @@ export class AdminUnitTypeComponent {
   Edit(data:any){
     debugger
     this.showadd = false;
-    this.MaLoaiHinh = data.id;
+    this.IdLoaiHinh = data.id;
+    this.MaLoaiHinh = data.maLoaiHinh;
     this.FormUnitType.controls['MaLoaiHinh'].setValue(data.maLoaiHinh)
     this.FormUnitType.controls['TenLoaiHinh'].setValue(data.tenLoaiHinh)
     this.FormUnitType.controls['MoTa'].setValue(data.moTa)
@@ -76,7 +77,7 @@ export class AdminUnitTypeComponent {
 
 
   Save(){
-    debugger
+    
     if(this.showadd){
       this.SaveAdd()
     }
@@ -88,12 +89,11 @@ export class AdminUnitTypeComponent {
 
   SaveAdd(){
     if(this.FormUnitType.valid){
-      debugger
       const ObjUnitType = this.FormUnitType.value; 
+      ObjUnitType['maLoaiHinh'] = this.MaLoaiHinh;
       this.UnitTypeService.Insert(ObjUnitType).subscribe({
         next:(res) => {
-          console.log(res)
-          debugger
+        
           if(res != null){
             this.messageService.add({severity:'success', summary: 'Thành Công', detail:'Thêm thành Công !'});
             this.GetUnitType();  
@@ -106,10 +106,13 @@ export class AdminUnitTypeComponent {
     }
   }
   SaveEdit(){
+    debugger
     const ObjUnitType = this.FormUnitType.value; 
-    ObjUnitType['id'] = this.MaLoaiHinh;
+    ObjUnitType['id'] = this.IdLoaiHinh;
+    ObjUnitType['maLoaiHinh'] = this.MaLoaiHinh;
     this.UnitTypeService.Update(ObjUnitType).subscribe({
       next:(res) => {
+        debugger
         if(res ==null){
           this.messageService.add({severity:'success', summary: 'Thành Công', detail:'Cập nhật Thành Công !'});  
           this.GetUnitType(); 
@@ -120,4 +123,49 @@ export class AdminUnitTypeComponent {
     }
     )
   }
+
+  Delete(data:any){
+    debugger
+    this.confirmationService.confirm({
+      message: 'Bạn có chắc chắn muốn xoá không ' + '?',
+      header: 'delete',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        debugger
+        this.UnitTypeService.Delete(data.id).subscribe((res:any) =>{
+          debugger
+          if(res.success == true)
+          this.messageService.add({severity:'success', summary: 'Thành Công', detail:'Xoá Thành Công !'});  
+          this.GetUnitType(); 
+          this.FormUnitType.reset();
+          console.log(res)
+          
+        })
+      }
+    });
+  }
+
+  // Delete(data: any) {
+  //   debugger
+  //   this.confirmationService.confirm({
+  //     message: 'Bạn có chắc chắn muốn xoá không ?',
+  //     icon: 'pi pi-exclamation-triangle',
+  //     accept: () => {
+  //       this.UnitTypeService.Delete(data.id).subscribe((res: any) => {
+  //         if (res.success == true) {
+  //           this.messageService.add({severity: 'success', summary: 'Thành Công', detail: 'Xoá Thành Công !'});
+  //           this.GetUnitType();
+  //           this.FormUnitType.reset();
+  //           console.log(res);
+  //         } else {
+  //           this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá không thành công.'});
+  //         }
+  //       });
+  //     },
+  //     reject: () => {
+  //       this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+  //     },
+  //   });
+  // }
+  
 }

@@ -10,7 +10,6 @@ namespace SurveyApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class LoaiHinhDonViController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -30,8 +29,11 @@ namespace SurveyApplication.API.Controllers
         [HttpGet("GetLastRecordByMaLoaiHinh")]
         public async Task<ActionResult<string>> GetLastRecordByMaLoaiHinh()
         {
-            //var record = await _mediator.Send(new GetLastRecordLoaiHinhDonViRequest());
-            return Ok(/*record*/);
+            var record = await _mediator.Send(new GetLastRecordLoaiHinhDonViRequest());
+            return Ok(new
+            {
+                MaLoaiHinh = record,
+            });
         }
 
         [HttpGet("GetLoaiHinhDonViByCondition")]
@@ -69,7 +71,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new DeleteLoaiHinhDonViCommand { Id = id };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new { 
+                success = true
+            });
+
         }
     }
 }

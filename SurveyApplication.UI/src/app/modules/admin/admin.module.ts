@@ -5,9 +5,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
 
 @NgModule({
-  declarations: [AdminHomeComponent],
+  declarations: [AdminHomeComponent, AdminSendEmailComponent],
   imports: [
     CommonModule,
     FormsModule,
