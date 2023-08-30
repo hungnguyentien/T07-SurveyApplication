@@ -1,7 +1,7 @@
 <p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast>
 <p-confirmDialog #cd [style]="{width: '30vw'}">
     <ng-template pTemplate="header">
-        <h3>Xác nhận xoá đợt khảo sát</h3>
+        <h5>Xác nhận xoá loại hình đơn vị</h5>
     </ng-template>
     <ng-template pTemplate="footer">
         <button type="button" pButton icon="pi pi-times" class="custom-small-button" label="No" (click)="cd.reject()"></button>
@@ -93,7 +93,7 @@
                 <td>
                     <a class="m-3"><span data-toggle="modal" data-target="#createForm" (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
 
-                    <a class="m-3"><span class="pi pi-trash" title="Xoá" style="color: red;" aria-hidden="true"></span></a>
+                    <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;" aria-hidden="true"></span></a>
                 </td>
             </tr>
         </ng-template>
