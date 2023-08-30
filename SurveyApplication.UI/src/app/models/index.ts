@@ -6,3 +6,4 @@ export * from './thong-ke';
 export * from './SurveyConfig';
 export * from './CreateDonVi';
 export *from './UnitType'
+export * from './Preiod-Survey'
