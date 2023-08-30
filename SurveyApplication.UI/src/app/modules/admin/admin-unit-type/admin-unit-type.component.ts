@@ -145,27 +145,5 @@ export class AdminUnitTypeComponent {
     });
   }
 
-  // Delete(data: any) {
-  //   debugger
-  //   this.confirmationService.confirm({
-  //     message: 'Bạn có chắc chắn muốn xoá không ?',
-  //     icon: 'pi pi-exclamation-triangle',
-  //     accept: () => {
-  //       this.UnitTypeService.Delete(data.id).subscribe((res: any) => {
-  //         if (res.success == true) {
-  //           this.messageService.add({severity: 'success', summary: 'Thành Công', detail: 'Xoá Thành Công !'});
-  //           this.GetUnitType();
-  //           this.FormUnitType.reset();
-  //           console.log(res);
-  //         } else {
-  //           this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá không thành công.'});
-  //         }
-  //       });
-  //     },
-  //     reject: () => {
-  //       this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
-  //     },
-  //   });
-  // }
   
 }

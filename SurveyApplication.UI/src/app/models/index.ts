@@ -5,4 +5,6 @@ export * from './customer';
 export * from './thong-ke';
 export * from './SurveyConfig';
 export * from './CreateDonVi';
-export *from './UnitType'
+export * from './UnitType';
+export * from './ObjectSurvey';
+export * from './TableSurvey'
