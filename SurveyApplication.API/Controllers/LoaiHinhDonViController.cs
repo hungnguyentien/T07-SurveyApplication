@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
+using SurveyApplication.Application.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -37,10 +38,10 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetLoaiHinhDonViByCondition")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        public async Task<ActionResult<PageCommandResponse<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
-            return Ok(leaveAllocations);
+            return leaveAllocations;
         }
 
         [HttpGet("GetByLoaiHinhDonVi/{id}")]
@@ -63,7 +64,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new UpdateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
 
         [HttpDelete("DeleteLoaiHinhDonVi/{id}")]
@@ -71,7 +75,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new DeleteLoaiHinhDonViCommand { Id = id };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
     }
 }

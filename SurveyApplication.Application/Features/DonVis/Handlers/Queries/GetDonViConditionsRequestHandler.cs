@@ -2,7 +2,9 @@
 using MediatR;
 using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.DonVi;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
+using SurveyApplication.Application.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
 {
    
-    public class GetDonViConditionsRequestHandler : IRequestHandler<GetDonViConditionsRequest, List<DonViDto>>
+    public class GetDonViConditionsRequestHandler : IRequestHandler<GetDonViConditionsRequest, PageCommandResponse<DonViDto>>
     {
         private readonly IDonViRepository _donViRepository;
         private readonly IMapper _mapper;
@@ -22,10 +24,10 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
             _mapper = mapper;
         }
 
-        public async Task<List<DonViDto>> Handle(GetDonViConditionsRequest request, CancellationToken cancellationToken)
+        public async Task<PageCommandResponse<DonViDto>> Handle(GetDonViConditionsRequest request, CancellationToken cancellationToken)
         {
             var DonVis = await _donViRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenDonVi) && x.TenDonVi.Contains(request.Keyword), x => x.Created);
-            return _mapper.Map<List<DonViDto>>(DonVis);
+            return _mapper.Map<PageCommandResponse<DonViDto>>(DonVis);
         }
     }
 

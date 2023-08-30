@@ -45,7 +45,7 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
 
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = donVi.MaDonVi.ToString();
+            response.Id = donVi.Id;
             return response;
         }
     }

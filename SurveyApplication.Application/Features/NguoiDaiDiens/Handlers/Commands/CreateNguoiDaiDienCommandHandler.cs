@@ -45,7 +45,7 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = NguoiDaiDien.MaNguoiDaiDien.ToString();
+            response.Id = NguoiDaiDien.Id;
             return response;
         }
     }

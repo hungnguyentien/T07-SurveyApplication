@@ -45,7 +45,7 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
 
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = bangKhaoSat.MaBangKhaoSat;
+            response.Id = bangKhaoSat.Id;
             return response;
         }
     }

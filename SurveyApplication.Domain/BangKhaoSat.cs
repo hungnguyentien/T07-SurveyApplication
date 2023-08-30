@@ -30,5 +30,8 @@ namespace SurveyApplication.Domain
 
         [Required]
         public DateTime? NgayKetThuc { get; set; }
+
+        [Required]
+        public int? TrangThai { get; set; }
     }
 }
