@@ -2,6 +2,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Model } from 'survey-core';
 import { Router } from '@angular/router';
+import { HttpParams } from '@angular/common/http';
+import { Paging } from '@app/models';
 
 export default class Utils {
   static getFormControl = (
@@ -193,4 +195,10 @@ export default class Utils {
 
     return survey;
   };
+
+  static getParams = (keys: string[], values: string[]) =>{
+    let params = new HttpParams();
+    keys.forEach((el, i) => params.append(el, values[i]));
+    return params;
+  }
 }

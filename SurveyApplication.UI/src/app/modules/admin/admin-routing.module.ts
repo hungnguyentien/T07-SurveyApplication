@@ -22,28 +22,29 @@ const routes: Routes = [
       },
       {
         path: 'loai-hinh-don-vi',
-        component:AdminUnitTypeComponent,
+        component: AdminUnitTypeComponent,
         data: {
           title: 'loai-hinh-don-vi',
         },
       },
       {
         path: 'quan-ly-don-vi',
-        component:AdminObjectSurveyComponent,
+        component: AdminObjectSurveyComponent,
         data: {
           title: 'quan-ly-don-vi',
         },
       },
       {
-        path: 'question',
-        component:QuestionComponent,
+        path: 'quan-ly-cau-hoi',
+        component: QuestionComponent,
+        title: 'Quản lý câu hỏi',
         data: {
-          title: 'question',
+          title: 'Quản lý câu hỏi',
         },
       },
       {
         path: 'dot-khao-sat',
-        component:AdminPeriodSurveyComponent,
+        component: AdminPeriodSurveyComponent,
         data: {
           title: 'dot-khao-sat',
         },
@@ -56,4 +57,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

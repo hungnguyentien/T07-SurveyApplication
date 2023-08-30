@@ -1,7 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.CauHoi;
+using SurveyApplication.Application.DTOs.DonVi;
+using SurveyApplication.Application.Features.CauHoi.Requests.Commands;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
+using SurveyApplication.Application.Features.DonVis.Requests.Commands;
+using SurveyApplication.Application.Responses;
+using System.Net.NetworkInformation;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -16,11 +22,50 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        //[HttpGet("GetConfigPhieuKhaoSat")]
-        //public async Task<ActionResult<List<CauHoiDto>>> GetConfigPhieuKhaoSat(int idBangKhaoSat)
-        //{
-        //    var result = await _mediator.Send(new GetConfigCauHoiRequest { IdBangKhaoSat = idBangKhaoSat });
-        //    return Ok(result);
-        //}
+        [HttpGet("GetByCondition")]
+        public async Task<ActionResult<BaseQuerieResponse<CauHoiDto>>> GetCauHoiByCondition([FromQuery] Paging paging)
+        {
+            var result = await _mediator.Send(new GetCauHoiConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+            return Ok(result);
+        }
+
+        [HttpGet("GetById/{id}")]
+        public async Task<ActionResult<CauHoiDto>> GetCauHoiById(int id)
+        {
+            var result = await _mediator.Send(new GetCauHoiDetailRequest { Id = id });
+            return Ok(result);
+        }
+
+        [HttpPost("Create")]
+        public async Task<ActionResult> CreateCauHoi([FromBody] CreateCauHoiDto obj)
+        {
+            var command = new CreateCauHoiCommand { CauHoiDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("Update")]
+        public async Task<ActionResult> UpdateCauHoi([FromBody] UpdateCauHoiDto obj)
+        {
+            var command = new UpdateCauHoiCommand { CauHoiDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult> DeleteCauHoi(int id)
+        {
+            var command = new DeleteCauHoiCommand { Ids = new List<int> { id } };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        {
+            var command = new DeleteCauHoiCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
     }
 }

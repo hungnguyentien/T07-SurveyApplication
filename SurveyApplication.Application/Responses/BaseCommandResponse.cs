@@ -21,14 +21,14 @@ namespace SurveyApplication.Application.Responses
         {
             Errors = new List<string>();
             Message = message;
-            Success = false;
+            Success = true;
         }
 
-        public BaseCommandResponse(string message, List<string> errors)
+        public BaseCommandResponse(string message, List<string> errors, bool success)
         {
             Errors = errors;
             Message = message;
-            Success = false;
+            Success = success;
         }
     }
 }

@@ -8,4 +8,7 @@ export * from './CreateDonVi';
 export * from './TinhQuanHuyen';
 export *from './UnitType'
 export *from './SaveSurvey'
-export *from './Response'
+export *from './Common/BaseCommandResponse'
+export *from './Common/BaseQuerieResponse'
+export *from './CauHoi'
+export *from './Paging'

@@ -14,7 +14,7 @@ import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.com
     FormsModule,
     DropdownModule,
     AdminRoutingModule,
-    CKEditorModule
+    CKEditorModule,
   ]
 })
 export class AdminModule { }

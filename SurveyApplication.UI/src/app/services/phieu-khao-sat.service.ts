@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first } from 'rxjs';
 
-import { SurveyConfig, GeneralInfo, SaveSurvey, ResponseResult } from '@app/models';
+import { SurveyConfig, GeneralInfo, SaveSurvey, BaseCommandResponse } from '@app/models';
 import { environment } from '@environments/environment';
 
 @Injectable({
@@ -28,7 +28,7 @@ export class PhieuKhaoSatService {
   }
 
   saveSurvey(result: SaveSurvey) {
-    return this.http.post<ResponseResult>(
+    return this.http.post<BaseCommandResponse>(
       `${environment.apiUrl}/PhieuKhaoSat/SavePhieuKhaoSat`,
       result
     );
