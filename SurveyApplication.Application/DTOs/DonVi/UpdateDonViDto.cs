@@ -11,7 +11,7 @@ namespace SurveyApplication.Application.DTOs.DonVi
 {
     public class UpdateDonViDto : BaseDto, IDonViDto
     {
-        public Guid? MaDonVi { get; set; }
+        public Guid MaDonVi { get; set; }
         public int? MaLoaiHinh { get; set; }        
         public int? MaLinhVuc { get; set; }
         public string? TenDonVi { get; set; }

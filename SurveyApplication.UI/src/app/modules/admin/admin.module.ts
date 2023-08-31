@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDialogModule
 import { InputSwitchModule } from 'primeng/inputswitch';
-
+import { InputTextModule } from 'primeng/inputtext';
 import { DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 @NgModule({
@@ -36,7 +36,8 @@ import { ButtonModule } from 'primeng/button';
     ToastModule,
     ConfirmDialogModule,
     InputSwitchModule,
-    ButtonModule
+    ButtonModule,
+    InputTextModule
   ],
   providers:[DatePipe]
 })

@@ -4,6 +4,7 @@ import { UnitTypeService } from '@app/services/unit-type.service';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { ObjectSurveyService } from '@app/services/object-survey.service';
+import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 
 @Component({
   selector: 'app-admin-object-survey',
@@ -11,19 +12,19 @@ import { ObjectSurveyService } from '@app/services/object-survey.service';
   styleUrls: ['./admin-object-survey.component.css']
 })
 export class AdminObjectSurveyComponent {
-  selectedObjectSurvey!: ObjectSurvey[];
-  datas : ObjectSurvey [] = [];
+  selectedObjectSurvey!: CreateUnitAndRep[];
+  datas : CreateUnitAndRep [] = [];
 
-  first: number = 0;
-  TotalCount: number = 0;
-  pageIndex: number = 1;
-  pageSize: number = 5;
-  keyword: string = '';
+  first = 0;
+  pageSize = 5; 
+  pageIndex = 1; 
+  TotalCount = 0; 
+  keyword = '';
   
   showadd!: boolean;
   FormObjectSurvey!: FormGroup;
   FormRepresentative!:FormGroup;
-  MaLoaiHinh !:string
+  IdMaLoaiHinh !:string
   IdLoaiHinh !:string
   listloaihinhdonvi: any[] = []
   ContainerAdd: any[] = []
@@ -55,7 +56,6 @@ export class AdminObjectSurveyComponent {
       //   PhuongXa: new FormControl(''),
       //   DiaChiChiTiet: new FormControl('')
       // }),
-      
     });
     this.FormRepresentative= new FormGroup({
       HoTen: new FormControl('', Validators.required),
@@ -69,7 +69,7 @@ export class AdminObjectSurveyComponent {
     });
   }
   onCityChange(event: any): void {
-    debugger
+    
     const selectedCityId = event.target.value;
     const selectedCity = this.cities.find(city => city.Id === selectedCityId);
     this.districts = selectedCity?.Districts || [];
@@ -78,7 +78,7 @@ export class AdminObjectSurveyComponent {
   }
 
   onDistrictChange(event: any): void {
-  debugger
+  
   const selectedDistrictId: string = event.target.value; 
   const selectedCityId: string | undefined = this.cities.find(city => city.Districts.some((district: { Id: string; }) => district.Id === selectedDistrictId))?.Id;
 
@@ -89,7 +89,7 @@ export class AdminObjectSurveyComponent {
   this.combineArrays();
   }
   combineArrays(): void {
-    debugger
+    
     this.combinedArray = [...this.cities, ...this.districts, ...this.wards];
   }
 
@@ -97,8 +97,6 @@ export class AdminObjectSurveyComponent {
     debugger
     return this.combinedArray.map(item => item.Id).join(',');
   }
-
-
 
   GetUnitType(){
     this.ObjectSurveyService.GetUnitType()
@@ -110,7 +108,7 @@ export class AdminObjectSurveyComponent {
   }
   
   onPageChange(event: any) {
-    debugger
+
     this.first = event.first;
     this.pageSize = event.rows;
     this.pageIndex = event.page + 1;
@@ -121,7 +119,7 @@ export class AdminObjectSurveyComponent {
     this.ObjectSurveyService.SearchObjectSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
         this.datas = response.data;
-        this.TotalCount = response.totalItems;
+        this.TotalCount = response.pageCount;
       });
   }
   Add(){
@@ -130,14 +128,16 @@ export class AdminObjectSurveyComponent {
   Edit(data:any){
     debugger
     this.showadd = false;
-    this.IdLoaiHinh = data.id;
-    this.MaLoaiHinh = data.maLoaiHinh;
+    this.IdMaLoaiHinh = data.maLoaiHinh;
     this.FormObjectSurvey.controls['MaLoaiHinh'].setValue(data.maLoaiHinh)
-    this.FormObjectSurvey.controls['TenLoaiHinh'].setValue(data.tenLoaiHinh)
-    this.FormObjectSurvey.controls['MoTa'].setValue(data.moTa)
+    this.FormObjectSurvey.controls['TenDonVi'].setValue(data.tenDonVi)
+    this.FormObjectSurvey.controls['MaSoThue'].setValue(data.maSoThue)
+    this.FormObjectSurvey.controls['Email'].setValue(data.email)
+    this.FormObjectSurvey.controls['WebSite'].setValue(data.webSite)
+    this.FormObjectSurvey.controls['SoDienThoai'].setValue(data.soDienThoai)
+    this.FormObjectSurvey.controls['DiaChi'].setValue(data.diaChi)
+    this.FormObjectSurvey.controls['MaLinhVuc'].setValue(data.maLinhVuc)
   }
-
-
   Save(){
     debugger
     if(this.showadd){
@@ -151,12 +151,11 @@ export class AdminObjectSurveyComponent {
 
   SaveAdd(){
     debugger
-    if(this.FormObjectSurvey.valid){   
-      const obj:any = {
+    if(this.FormObjectSurvey.valid){  
+      const obj:CreateUnitAndRep = {
         DonViDto: this.FormObjectSurvey.value,
         NguoiDaiDienDto: this.FormRepresentative.value
       };
-      console.log(obj)
       this.ObjectSurveyService.Insert(obj).subscribe({
         next:(res) => {
         debugger
@@ -177,7 +176,7 @@ export class AdminObjectSurveyComponent {
     debugger
     const ObjObjectSurvey = this.FormObjectSurvey.value; 
     ObjObjectSurvey['id'] = this.IdLoaiHinh;
-    ObjObjectSurvey['maLoaiHinh'] = this.MaLoaiHinh;
+    ObjObjectSurvey['maLoaiHinh'] = this.IdMaLoaiHinh;
     this.ObjectSurveyService.Update(ObjObjectSurvey).subscribe({
       next:(res) => {
         debugger

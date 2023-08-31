@@ -35,15 +35,15 @@ namespace SurveyApplication.Persistence.Repositories
                         join b in _dbContext.NguoiDaiDien
                         on d.Id equals b.MaDonVi
 
-                        join o in _dbContext.LoaiHinhDonVi
-                        on d.MaLoaiHinh equals o.Id
+                        //join o in _dbContext.LoaiHinhDonVi
+                        //on d.MaLoaiHinh equals o.Id
                         //where d.MaDonVi.ToString().Contains(conditions) || d.TenDonVi.Contains(conditions) ||
                         //    d.DiaChi.Contains(conditions) || b.HoTen.Contains(conditions)
                         select new DonViDto
                         {
                             MaDonVi = d.MaDonVi,
                             TenDonVi = d.TenDonVi,
-                            TenLoaiHinh = o.TenLoaiHinh,
+                            //TenLoaiHinh = o.TenLoaiHinh,
                             DiaChi = d.DiaChi,
                             HoTen = b.HoTen,
                         };
