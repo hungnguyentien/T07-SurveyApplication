@@ -37,7 +37,7 @@ import {
   styleUrls: ['./question.component.css'],
 })
 export class QuestionComponent {
-  Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
+  public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
   @Input() valueEditor: string = ''; // Khai báo biến lưu nội dung CKEditor
   @Input() inputValue: string = '';
   @Input() listAnswer: string[] = [];
