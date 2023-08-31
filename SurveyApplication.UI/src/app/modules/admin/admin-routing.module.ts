@@ -5,11 +5,13 @@ import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.compon
 import { AdminObjectSurveyComponent } from './admin-object-survey/admin-object-survey.component';
 import { QuestionComponent } from './admin-question/question/question.component';
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
+import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
+import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';
 const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Admin',
+      title: 'Admin',   
     },
     children: [
       {
@@ -45,6 +47,20 @@ const routes: Routes = [
         component:AdminPeriodSurveyComponent,
         data: {
           title: 'dot-khao-sat',
+        },
+      },
+      {
+        path: 'bang-khao-sat',
+        component:AdminTableSurveyComponent,
+        data: {
+          title: 'bang-khao-sat',
+        },
+      },
+      {
+        path: 'gui-email',
+        component:AdminSendEmailComponent,
+        data: {
+          title: 'gui-email',
         },
       },
     ],

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ServiceService } from '@app/services';
-import { Customer, Representative } from '@app/models';
+import { Customer, Representative, UnitType } from '@app/models';
+import { UnitTypeService } from '@app/services/unit-type.service';
+import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-unit-type',
@@ -8,36 +11,138 @@ import { Customer, Representative } from '@app/models';
   styleUrls: ['./admin-unit-type.component.css'],
 })
 export class AdminUnitTypeComponent {
-  public value: any;
-  customers!: Customer[];
+  selectedUnitType!: UnitType[];
+  datas : UnitType [] = [];
 
-  selectedCustomers!: Customer[];
+  first = 0;
+  pageSize = 5; 
+  pageIndex = 1; 
+  TotalCount = 0; 
+  keyword = '';
+  
+  showadd!: boolean;
+  FormUnitType!: FormGroup;
+  MaLoaiHinh !:string
+  IdLoaiHinh !:string
 
-  representatives!: Representative[];
-
-  statuses!: any[];
-
-  loading: boolean = true;
-
-  activityValues: number[] = [0, 100];
-
-  constructor(private customerService: ServiceService) {}
+  constructor(private FormBuilder :FormBuilder,private UnitTypeService:UnitTypeService,private messageService: MessageService,private confirmationService: ConfirmationService) {}
   ngOnInit() {
-    this.customerService.getCustomersLarge().then((customers) => {
-      this.customers = customers;
-      this.loading = false;
+    this.GetUnitType()
+    this.FormUnitType = this.FormBuilder.group({
+      MaLoaiHinh: [{ value: this.MaLoaiHinh, disabled: true },''],
+      TenLoaiHinh: ['', Validators.required],
+      MoTa: ['', Validators.required]
     });
-    this.representatives = [
-      { name: 'Amy Elsner', image: 'amyelsner.png' },
-      { name: 'Anna Fali', image: 'annafali.png' },
-      { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-      { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-      { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-      { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-      { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-      { name: 'Onyama Limba', image: 'onyamalimba.png' },
-      { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-      { name: 'Xuxue Feng', image: 'xuxuefeng.png' },
-    ];
   }
+
+
+  onPageChange(event: any) { 
+    this.first = event.first;
+    this.pageSize = event.rows;
+    this.pageIndex = event.page + 1;
+    this.GetUnitType();
+  }
+
+  GetUnitType() {
+    
+    this.UnitTypeService.SearchUnitType(this.pageIndex, this.pageSize, this.keyword)
+      .subscribe((response: any) => {
+        this.datas = response.data;
+        this.TotalCount = response.pageCount;        
+      });
+  }
+  Add(){
+    
+    this.showadd = true;
+    this.FormUnitType.reset();
+    this.UnitTypeService.GetIdUnitType().subscribe({
+      next:(res:any) => {
+        debugger
+        this.FormUnitType.controls['MaLoaiHinh'].setValue(res.maLoaiHinh)
+        this.MaLoaiHinh = res.maLoaiHinh
+        console.log(this.MaLoaiHinh);
+      }
+    })
+  }
+  Edit(data:any){
+    
+    this.showadd = false;
+    this.IdLoaiHinh = data.id;
+    this.MaLoaiHinh = data.maLoaiHinh;
+    this.FormUnitType.controls['MaLoaiHinh'].setValue(data.maLoaiHinh)
+    this.FormUnitType.controls['TenLoaiHinh'].setValue(data.tenLoaiHinh)
+    this.FormUnitType.controls['MoTa'].setValue(data.moTa)
+  }
+
+
+  Save(){
+    
+    if(this.showadd){
+      this.SaveAdd()
+    }
+    else{
+      this.SaveEdit();
+    }
+  }
+
+
+  SaveAdd(){
+    if(this.FormUnitType.valid){
+      const ObjUnitType = this.FormUnitType.value; 
+      ObjUnitType['maLoaiHinh'] = this.MaLoaiHinh;
+      this.UnitTypeService.Insert(ObjUnitType).subscribe({
+        next:(res) => {
+        
+          if(res != null){
+            this.messageService.add({severity:'success', summary: 'Thành Công', detail:'Thêm thành Công !'});
+            this.GetUnitType();  
+            this.FormUnitType.reset();
+          }else{
+            this.messageService.add({severity:'error', summary: 'Lỗi', detail:'Lỗi vui Lòng kiểm tra lại !'});
+          }
+        }
+      });
+    }
+  }
+  SaveEdit(){
+    debugger
+    const ObjUnitType = this.FormUnitType.value; 
+    ObjUnitType['id'] = this.IdLoaiHinh;
+    ObjUnitType['maLoaiHinh'] = this.MaLoaiHinh;
+    this.UnitTypeService.Update(ObjUnitType).subscribe({
+      next:(res) => {
+        debugger
+        if(res ==null){
+          this.messageService.add({severity:'success', summary: 'Thành Công', detail:'Cập nhật Thành Công !'});  
+          this.GetUnitType(); 
+          this.FormUnitType.reset();
+          console.log(res)
+        }
+      }
+    }
+    )
+  }
+
+  Delete(data:any){
+    debugger
+    this.confirmationService.confirm({
+      message: 'Bạn có chắc chắn muốn xoá không ' + '?',
+      header: 'delete',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        debugger
+        this.UnitTypeService.Delete(data.id).subscribe((res:any) =>{
+          debugger
+          if(res.success == true)
+          this.messageService.add({severity:'success', summary: 'Thành Công', detail:'Xoá Thành Công !'});  
+          this.GetUnitType(); 
+          this.FormUnitType.reset();
+          console.log(res)
+          
+        })
+      }
+    });
+  }
+
+  
 }

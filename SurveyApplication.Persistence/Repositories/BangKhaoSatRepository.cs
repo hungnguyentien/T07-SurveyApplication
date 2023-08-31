@@ -45,9 +45,9 @@ namespace SurveyApplication.Persistence.Repositories
                         {
                             MaBangKhaoSat = d.MaBangKhaoSat,
                             TenBangKhaoSat = d.TenBangKhaoSat,
-                            //MaDotKhaoSat = b.MaDotKhaoSat,
+                            MaDotKhaoSat = b.MaDotKhaoSat,
                             TenDotKhaoSat = b.TenDotKhaoSat,
-                            //MaLoaiHinh = o.MaLoaiHinh,
+                            MaLoaiHinh = o.MaLoaiHinh,
                             TenLoaiHinh = o.TenLoaiHinh,
                             NgayBatDau = d.NgayBatDau,
                             NgayKetThuc = d.NgayKetThuc,

@@ -28,7 +28,7 @@ namespace SurveyApplication.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString"),
                 b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
 
-            services.AddTransient<IAuthRepository, AuthRepository>();
+            ///services.AddTransient<IAuthRepository, AuthRepository>();
 
             services.AddAuthentication(options =>
             {
