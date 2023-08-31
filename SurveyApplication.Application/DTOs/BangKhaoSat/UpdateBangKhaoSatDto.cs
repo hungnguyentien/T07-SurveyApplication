@@ -17,5 +17,7 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat
         public string? MoTa { get; set; }
         public DateTime? NgayBatDau { get; set; }
         public DateTime? NgayKetThuc { get; set; }
+        public int? TrangThai { get; set; }
+
     }
 }

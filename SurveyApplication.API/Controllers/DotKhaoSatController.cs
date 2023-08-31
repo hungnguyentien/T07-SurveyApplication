@@ -7,6 +7,7 @@ using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
+using SurveyApplication.Application.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -29,10 +30,10 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetDotKhaoSatByCondition")]
-        public async Task<ActionResult<List<DotKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        public async Task<ActionResult<PageCommandResponse<DotKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
-            return Ok(leaveAllocations);
+            return leaveAllocations;
         }
 
         [HttpGet("GetByBangKhaoSat/{id}")]
@@ -55,7 +56,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new UpdateDotKhaoSatCommand { DotKhaoSatDto = obj };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
 
         [HttpDelete("DeleteDotKhaoSat/{id}")]
@@ -65,7 +69,7 @@ namespace SurveyApplication.API.Controllers
             await _mediator.Send(command);
             return Ok(new
             {
-                success = true
+                Success = true,
             });
         }
     }

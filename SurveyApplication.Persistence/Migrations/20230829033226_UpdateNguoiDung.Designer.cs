@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyApplication.Persistence;
 
@@ -11,9 +12,10 @@ using SurveyApplication.Persistence;
 namespace SurveyApplication.Persistence.Migrations
 {
     [DbContext(typeof(SurveyApplicationDbContext))]
-    partial class SurveyApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230829033226_UpdateNguoiDung")]
+    partial class UpdateNguoiDung
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,10 +74,6 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<string>("TenBangKhaoSat")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TrangThai")
-                        .IsRequired()
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -298,10 +296,6 @@ namespace SurveyApplication.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TrangThai")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("DotKhaoSat");
@@ -327,10 +321,6 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<string>("DiaChiNhan")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MaBangKhaoSat")
-                        .IsRequired()
-                        .HasColumnType("int");
 
                     b.Property<Guid>("MaGuiEmail")
                         .HasColumnType("uniqueidentifier");
