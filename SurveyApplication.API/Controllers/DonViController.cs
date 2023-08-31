@@ -31,6 +31,8 @@ namespace SurveyApplication.API.Controllers
         [HttpGet("GetDonViByCondition")]
         public async Task<ActionResult<PageCommandResponse<DonViDto>>> GetDonViByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
+            keyword ??= "";
+
             var leaveAllocations = await _mediator.Send(new GetDonViConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return leaveAllocations;
         }

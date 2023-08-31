@@ -13,6 +13,9 @@ import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDialogModule
+
+import { DatePipe } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 @NgModule({
   declarations: [AdminHomeComponent, AdminSendEmailComponent, AdminTableSurveyComponent],
   imports: [
@@ -27,6 +30,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDi
     ReactiveFormsModule,
     ToastModule,
     ConfirmDialogModule,
-  ]
+    ButtonModule
+  ],
+  providers:[DatePipe]
 })
 export class AdminModule { }

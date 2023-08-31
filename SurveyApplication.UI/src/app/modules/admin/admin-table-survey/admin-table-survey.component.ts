@@ -4,6 +4,7 @@ import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms'
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { TableSurveyService } from '@app/services/table-survey.service';
 
+
 @Component({
   selector: 'app-admin-table-survey',
   templateUrl: './admin-table-survey.component.html',
@@ -49,7 +50,7 @@ export class AdminTableSurveyComponent {
   GetTableSurvey() {
     this.TableSurveyService.SearchTableSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
-        this.datas = response;
+        this.datas = response.data;
         this.TotalCount = response.totalItems;
         
       });

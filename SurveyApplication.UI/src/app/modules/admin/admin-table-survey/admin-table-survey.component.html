@@ -37,7 +37,7 @@
         [rowHover]="true"
         [rows]="10"
         [showCurrentPageReport]="true"
-        [filterDelay]="0">
+     >
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 4rem">
@@ -68,6 +68,11 @@
                 </th>
                 <th style="min-width: 10rem">
                     <div class="flex justify-content-between align-items-center">               
+                        Mô tả<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+                    </div>
+                </th>
+                <th style="min-width: 10rem">
+                    <div class="flex justify-content-between align-items-center">               
                         Thời gian<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
@@ -88,8 +93,10 @@
                 </th>
             </tr>
         </ng-template>
+        
         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
             <tr class="p-selectable-row">
+
                 <td>
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
@@ -97,35 +104,45 @@
                     <span class="p-column-title">STT</span>
                     {{ rowIndex + 1}}
                 </td>
+                
                 <td>
                     <span class="ml-1 vertical-align-middle">{{ rowData.maBangKhaoSat }}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.TenBangKhaoSat }}</span>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.tenBangKhaoSat }}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.MaLoaiHinh }}</span>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.maDotKhaoSat }}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.NgayBatDau }}</span>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.maLoaiHinh }}</span>
                 </td>
-                <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.TenBangKhaoSat }}</span>
-                </td>
+                
                 <td>
                     <span class="ml-1 vertical-align-middle">{{ rowData.moTa }}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy'  }}-{{ rowData.ngayKetThuc| date:'dd/MM/yyyy'  }}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle"></span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.trangThai }}</span>
                 </td>
                 <td>
                     <a class="m-3"><span data-toggle="modal" data-target="#createForm" (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
 
                     <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;" aria-hidden="true"></span></a>
+                    <a class="m-3"><span class="pi pi-caret-right" title="Dừng" style="color: rgb(32, 154, 60);" aria-hidden="true"></span></a>
+                    <a class="m-3"><span class="pi pi-eye" title="Xoá" style="color: rgb(25, 150, 222);" aria-hidden="true"></span></a>
                 </td>
             </tr>
         </ng-template>
     </p-table>
     <!-- <p-paginator [rows]="pageSize" [totalRecords]="TotalCount" (onPageChange)="onPageChange($event)"></p-paginator> -->
     <div class="card flex justify-content-center">
-        <p-paginator (onPageChange)="onPageChange($event)"[first]="first" [rows]="pageSize" [totalRecords]="100" [rowsPerPageOptions]="[5, 10, 50]"></p-paginator>
+        <p-paginator (onPageChange)="onPageChange($event)"[first]="first" [rows]="pageSize" [totalRecords]="TotalCount" [rowsPerPageOptions]="[5, 10, 50]"></p-paginator>
         
     </div>
 </div>
@@ -134,7 +151,7 @@
 
 <!-- modal -->
 <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd == true" >Thêm mới bảng khảo sát</h5>
@@ -143,23 +160,53 @@
           </button>
         </div>
         <div class="modal-body">
-          <!-- <form method="POST" [formGroup]="FormTableSurvey">
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Mã loại hình: <span style="color: red;">*</span></label>
-              <input type="text" formControlName="MaLoaiHinh" [disabled]="true" class="form-control" id="recipient-name">
-            </div>
-            
-            <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Tên loại hình: <span style="color: red;">*</span></label>
-                <input type="text"formControlName="TenLoaiHinh" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên loại hình đơn vị">
-            </div>
-           
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Mô tả: <span style="color: red;">*</span></label>
-              <textarea class="form-control" formControlName="MoTa" id="message-text" pInputText placeholder="Nhập mô tả"></textarea>
-            </div>
-            
-          </form> -->
+            <form method="POST" [formGroup]="FormTableSurvey">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="recipient-name" class="col-form-label">Mã Bảng: <span style="color: red;">*</span></label>
+                      <input type="text"formControlName="MaDotKhaoSat" class="form-control" id="recipient-name" pInputText placeholder="Nhập mã bảng khảo sát">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span style="color: red;">*</span> </label>
+                        <select  formControlName="MaLoaiHinh" class="custom-select" >
+                            <option value="">Chọn loại hình đơn vị</option>
+                          <!-- <option *ngFor="let Lh of DSLoaiHinh" [value]="Lh.id">{{Lh.tenLoaiHinh}}</option> -->
+                        </select>
+                      </div>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Tên Bảng: <span style="color: red;">*</span></label>
+                    <input type="text"formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên bảng khảo sát">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Đợt Khảo Sát: <span style="color: red;">*</span></label>
+                    <select  formControlName="MaDotKhaoSat" class="custom-select" >
+                        <option value="">Chọn đợt khảo sát</option>
+                      <!-- <option *ngFor="let Lh of DSLoaiHinh" [value]="Lh.id">{{Lh.tenLoaiHinh}}</option> -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Mô Tả: <span style="color: red;">*</span></label>
+                    <input type="text"formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên đợt khảo sát">
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span style="color: red;">*</span></label>
+                        <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name" pInputText placeholder="Ngày Bắt Đầu">
+                      </div>
+                      
+                      <div class="form-group col-md-6">
+                        <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span style="color: red;">*</span></label>
+                        <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên loại hình đơn vị">
+                      </div>
+                </div>
+                
+
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Mô Tả: <span style="color: red;">*</span></label>
+                    <input type="text"formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên đợt khảo sát">
+                </div>
+              </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
