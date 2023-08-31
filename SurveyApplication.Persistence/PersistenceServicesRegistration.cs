@@ -61,6 +61,7 @@ namespace SurveyApplication.Persistence
             services.AddScoped<ICauHoiRepository, CauHoiRepository>();
             services.AddScoped<IKetQuaRepository, KetQuaRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<ILinhVucHoatDongRepository, LinhVucHoatDongRepository>();
 
             return services;
         }

@@ -16,13 +16,9 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat.Validators
         {
             _bangKhaoSatRepository = bangKhaoSatRepository;
 
-            RuleFor(p => p.MaLoaiHinh)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+            RuleFor(p => p.MaLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
 
-            RuleFor(p => p.MaDotKhaoSat)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+            RuleFor(p => p.MaDotKhaoSat).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
 
             RuleFor(p => p.TenBangKhaoSat)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

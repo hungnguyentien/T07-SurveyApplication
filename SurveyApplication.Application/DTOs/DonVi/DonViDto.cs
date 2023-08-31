@@ -21,6 +21,6 @@ namespace SurveyApplication.Application.DTOs.DonVi
 
         public string? HoTen { get; set; }
         public string? TenLoaiHinh { get; set; }
-
+        public Guid? MaNguoiDaiDien { get; set; }
     }
 }
