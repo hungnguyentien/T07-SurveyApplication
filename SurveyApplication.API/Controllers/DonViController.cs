@@ -60,7 +60,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new DeleteDonViCommand { Id = id };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                success = true
+            });
         }
     }
 }

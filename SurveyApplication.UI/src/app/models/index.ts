@@ -13,3 +13,5 @@ export *from './Common/BaseQuerieResponse'
 export *from './CauHoi'
 export *from './Paging'
 export * from './Preiod-Survey'
+export * from './ObjectSurvey';
+export * from './TableSurvey'
