@@ -80,6 +80,7 @@ namespace SurveyApplication.Persistence.Repositories
             var result = dbSet.AsNoTracking().Where(conditions).OrderByDescending(orderBy);
 
             var totalCount = await dbSet.CountAsync();
+
             var pageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             var pageResults = await result.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -87,7 +88,7 @@ namespace SurveyApplication.Persistence.Repositories
             var response = new PageCommandResponse<T>
             {
                 PageSize = pageSize,
-                PageCount = pageCount,
+                PageCount = totalCount,
                 PageIndex = pageIndex,
                 Data = pageResults,
             };
