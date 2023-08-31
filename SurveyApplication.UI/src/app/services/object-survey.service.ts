@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ObjectSurvey } from '@app/models';
+import { ObjectSurvey} from '@app/models';
+import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 
@@ -21,9 +22,9 @@ export class ObjectSurveyService {
     return this.http.get(url, { params });
   }
 
-  Insert(model: ObjectSurvey){
+  Insert(obj: CreateUnitAndRep){
     const url = `${environment.apiUrl}/DonVi/CreateDonVi`;
-    return this.http.post(url,model);
+    return this.http.post(url,obj);
   }
 
 
