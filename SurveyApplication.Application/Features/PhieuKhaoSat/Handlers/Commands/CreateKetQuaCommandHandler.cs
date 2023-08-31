@@ -38,11 +38,11 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                  return response;
             }
 
-            var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto);
+            var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
             ketQua = await _ketQuaRepository.Create(ketQua);
             response.Success = true;
             response.Message = "Gửi thông tin thành công!";
-            response.Id = ketQua.Id.ToString();
+            response.Id = ketQua.Id;
             return response;
         }
     }

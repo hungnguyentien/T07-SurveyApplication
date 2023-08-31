@@ -34,7 +34,7 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Commands
             await _cauHoiRepository.Create(cauHoi);
             response.Success = true;
             response.Message = "Tạo mới thành công!";
-            response.Id = cauHoi.Id.ToString();
+            response.Id = cauHoi.Id;
             return response;
         }
     }

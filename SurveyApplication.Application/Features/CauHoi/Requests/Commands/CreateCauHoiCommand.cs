@@ -6,6 +6,6 @@ namespace SurveyApplication.Application.Features.CauHoi.Requests.Commands
 {
     public class CreateCauHoiCommand : IRequest<BaseCommandResponse>
     {
-        public CreateCauHoiDto? CauHoiDto { get; set; }
+        public CreateCauHoiDto CauHoiDto { get; set; }
     }
 }

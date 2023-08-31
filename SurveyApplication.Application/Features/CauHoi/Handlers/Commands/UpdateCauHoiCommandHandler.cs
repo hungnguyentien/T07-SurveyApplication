@@ -39,7 +39,7 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Commands
             _mapper.Map(request.CauHoiDto, cauHoi);
             await _cauHoiRepository.Update(cauHoi);
             response.Message = "Cập nhật thành công!";
-            response.Id = cauHoi.Id.ToString();
+            response.Id = cauHoi.Id;
             return response;
         }
     }
