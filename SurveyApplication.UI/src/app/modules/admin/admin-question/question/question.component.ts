@@ -4,9 +4,9 @@ import {
   ConfirmationService,
   MessageService,
 } from 'primeng/api';
-import { ServiceService, CauHoiService } from '@app/services';
-import { Customer, Paging, Representative, CauHoi } from '@app/models';
+import { Paging, CauHoi, UpdateCauHoi } from '@app/models';
 import Utils from '@app/helpers/utils';
+import { CauHoiService } from '@app/services';
 
 @Component({
   selector: 'app-question',
@@ -19,7 +19,7 @@ export class QuestionComponent {
   paging!: Paging;
   lstQuestion!: CauHoi[];
   selectedQuestion!: CauHoi[];
-  question!: CauHoi;
+  question!: UpdateCauHoi;
 
   constructor(
     private cauHoiService: CauHoiService,
@@ -40,7 +40,7 @@ export class QuestionComponent {
   ngOnInit() {
     this.paging = {
       pageIndex: 1,
-      pageSize: 10,
+      pageSize: 100,
       keyword: '',
     };
     this.cauHoiService.getByCondition(this.paging).subscribe({
@@ -90,7 +90,7 @@ export class QuestionComponent {
     });
   }
 
-  confirmDelete(title: string, id: number) {
+  confirmDelete = (title: string, id: number) => {
     this.confirmationService.confirm({
       message: `Bạn có chắc chắn muốn xoá câu hỏi ${title} không?`,
       icon: 'pi pi-exclamation-triangle',
@@ -107,5 +107,29 @@ export class QuestionComponent {
         });
       },
     });
-  }
+  };
+
+  update = () => {
+    // this.question = {
+    //   maCauHoi: 'string16',
+    //   loaiCauHoi: 0,
+    //   batBuoc: true,
+    //   tieuDe: 'string',
+    //   kichThuocFile: 0,
+    //   isOther: true,
+    //   labelCauTraLoi: 'string',
+    //   priority: 0,
+    //   noiDung: 'aa',
+    //   soLuongFileToiDa: 1,
+    //   id: 16
+    // }
+    this.cauHoiService
+      .update<UpdateCauHoi>(this.question)
+      .subscribe({
+        next: (res) => {
+          Utils.messageSuccess(this.messageService, res.message)
+        },
+        error: (e) => Utils.messageError(this.messageService, e.message),
+      });
+  };
 }

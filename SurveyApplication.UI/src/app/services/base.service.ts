@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import Utils from '@app/helpers/utils';
 import { BaseCommandResponse, BaseQuerieResponse, Paging } from '@app/models';
 import { Observable, first } from 'rxjs';
@@ -15,42 +15,57 @@ export abstract class BaseService<T> {
   }
 
   getByCondition(paging: Paging): Observable<BaseQuerieResponse<T>> {
-    let params = Utils.getParams(Object.keys(paging), Object.values(paging));
+    let query = Utils.getParamsQuery(
+      Object.keys(paging),
+      Object.values(paging)
+    );
     return this._http
-      .get<BaseQuerieResponse<T>>(`${this.actionUrl}/GetByCondition`, {
-        params,
-      })
+      .get<BaseQuerieResponse<T>>(`${this.actionUrl}/GetByCondition${query}`)
       .pipe(first());
   }
 
-  create(data: T): Observable<BaseCommandResponse> {
+  create<T>(data: T): Observable<BaseCommandResponse> {
     return this._http
       .post<BaseCommandResponse>(`${this.actionUrl}/Create`, data)
       .pipe(first());
   }
 
-  update(data: T): Observable<BaseCommandResponse> {
+  update<T>(data: T): Observable<BaseCommandResponse> {
     return this._http
       .post<BaseCommandResponse>(`${this.actionUrl}/Update`, data)
       .pipe(first());
   }
 
   delete(id: number): Observable<BaseCommandResponse> {
-    let params = new HttpParams();
-    params.append('id', id);
-    debugger;
     return this._http
-      .delete<BaseCommandResponse>(`${this.actionUrl}/Delete`, { params })
+      .delete<BaseCommandResponse>(`${this.actionUrl}/Delete/${id}`)
       .pipe(first());
   }
 
   deleteMultiple(ids: number[]): Observable<BaseCommandResponse> {
-    const params = {
-      ids: ids,
-    };
     return this._http
-      .delete<BaseCommandResponse>(`${this.actionUrl}/DeleteMultiple`, {
-        params,
+      .request<BaseCommandResponse>(
+        'delete',
+        `${this.actionUrl}/DeleteMultiple`,
+        { body: ids }
+      )
+      .pipe(first());
+  }
+
+  deleteParams(id: number): Observable<BaseCommandResponse> {
+    const params = { id: id };
+    return this._http
+      .delete<BaseCommandResponse>(`${this.actionUrl}/Delete`, {
+        params: params,
+      })
+      .pipe(first());
+  }
+
+  getByConditionParams(paging: Paging): Observable<BaseQuerieResponse<T>> {
+    let getParams = Utils.getParams(Object.keys(paging), Object.values(paging));
+    return this._http
+      .get<BaseQuerieResponse<T>>(`${this.actionUrl}/GetByCondition`, {
+        params: getParams,
       })
       .pipe(first());
   }

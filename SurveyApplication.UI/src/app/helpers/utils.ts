@@ -196,9 +196,17 @@ export default class Utils {
     return survey;
   };
 
-  static getParams = (keys: string[], values: string[]) =>{
+  static getParams = (keys: string[], values: string[]) => {
     let params = new HttpParams();
-    keys.forEach((el, i) => params.append(el, values[i]));
+    keys.forEach((el, i) => params.set(el, values[i]));
     return params;
-  }
+  };
+
+  static getParamsQuery = (keys: string[], values: string[]) => {
+    let params = new Array();
+    keys.forEach((el, i) => {
+      values[i] && params.push(`${el}=${values[i]}`);
+    });
+    return `?${params.join('&')}`;
+  };
 }
