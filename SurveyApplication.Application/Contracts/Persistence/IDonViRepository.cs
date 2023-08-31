@@ -14,6 +14,6 @@ namespace SurveyApplication.Application.Contracts.Persistence
     public interface IDonViRepository : IGenericRepository<DonVi>
     {
         Task<bool> ExistsByMaDonVi(string maDonVi);
-        Task<PageCommandResponse<DonViDto>> GetByCondition<TOrderBy>(int pageIndex, int pageSize, Expression<Func<DonViDto, bool>> conditions, Expression<Func<DonViDto, TOrderBy>> orderBy);
+        Task<PageCommandResponse<DonViDto>> GetByCondition<TOrderBy>(int pageIndex, int pageSize, string keyword, Expression<Func<DonViDto, bool>> conditions, Expression<Func<DonViDto, TOrderBy>> orderBy);
     }
 }

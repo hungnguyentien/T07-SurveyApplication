@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
 using System;
@@ -27,7 +28,7 @@ namespace SurveyApplication.Persistence.Repositories
             return entity != null;
         }
 
-        public async Task<PageCommandResponse<BangKhaoSatDto>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, string conditions, Expression<Func<BangKhaoSatDto, TOrderBy>> orderBy)
+        public async Task<PageCommandResponse<BangKhaoSatDto>> GetByCondition<TOrderBy>(int pageIndex, int pageSize, string keyword, Expression<Func<BangKhaoSatDto, bool>> conditions, Expression<Func<BangKhaoSatDto, TOrderBy>> orderBy)
         {
             var query = from d in _dbContext.BangKhaoSat
                         join b in _dbContext.DotKhaoSat
@@ -38,20 +39,25 @@ namespace SurveyApplication.Persistence.Repositories
 
                         join s in _dbContext.GuiEmail
                         on d.Id equals s.MaBangKhaoSat
-                        where d.MaBangKhaoSat.Contains(conditions) || d.TenBangKhaoSat.Contains(conditions) ||
-                            b.TenDotKhaoSat.Contains(conditions) || o.TenLoaiHinh.Contains(conditions)
+                        where d.MaBangKhaoSat.Contains(keyword) || d.TenBangKhaoSat.Contains(keyword) ||
+                            b.TenDotKhaoSat.Contains(keyword) || o.TenLoaiHinh.Contains(keyword)
                         select new BangKhaoSatDto
                         {
                             MaBangKhaoSat = d.MaBangKhaoSat,
                             TenBangKhaoSat = d.TenBangKhaoSat,
+                            MaDotKhaoSat = b.MaDotKhaoSat,
                             TenDotKhaoSat = b.TenDotKhaoSat,
+                            MaLoaiHinh = o.MaLoaiHinh,
                             TenLoaiHinh = o.TenLoaiHinh,
+                            NgayBatDau = d.NgayBatDau,
+                            NgayKetThuc = d.NgayKetThuc,
+                            TrangThai = d.TrangThai,
 
                         };
             var totalCount = await query.CountAsync();
             var pageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-            var pageResults = await query.OrderBy(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            var pageResults = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
 
             var response = new PageCommandResponse<BangKhaoSatDto>
             {
