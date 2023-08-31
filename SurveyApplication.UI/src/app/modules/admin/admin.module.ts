@@ -6,7 +6,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
-
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [AdminHomeComponent, AdminSendEmailComponent],
   imports: [
@@ -14,7 +14,9 @@ import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.com
     FormsModule,
     DropdownModule,
     AdminRoutingModule,
-    CKEditorModule
-  ]
+    CKEditorModule,
+    
+  ],
+  providers: [DatePipe],
 })
 export class AdminModule { }
