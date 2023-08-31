@@ -62,13 +62,18 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("UpdateDonVi")]
-        public async Task<ActionResult<DonViDto>> UpdateDonVi([FromBody] UpdateDonViDto obj)
+        public async Task<ActionResult<DonViDto>> UpdateDonVi([FromBody] UpdateDonViAndNguoiDaiDienDto obj)
         {
-            var command = new UpdateDonViCommand { DonViDto = obj };
-            await _mediator.Send(command);
+            var command_1 = new UpdateDonViCommand { DonViDto = obj.DonViDto };
+            var response_1 = await _mediator.Send(command_1);
+
+            var command_2 = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
+            var response_2 = await _mediator.Send(command_2);
+
             return Ok(new
             {
-                Success = true,
+                response_1 = response_1,
+                response_2 = response_2,
             });
         }
 

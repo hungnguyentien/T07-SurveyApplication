@@ -56,7 +56,7 @@ namespace SurveyApplication.API.Controllers
             await _mediator.Send(command);
             return Ok(new
             {
-                Success = true,
+                Success = true, 
             });
         }
 

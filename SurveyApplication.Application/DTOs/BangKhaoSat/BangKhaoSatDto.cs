@@ -10,8 +10,8 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat
     public partial class BangKhaoSatDto : BaseDto
     {
         public string MaBangKhaoSat { get; set; }
-        public string? MaLoaiHinh { get; set; }
-        public string? MaDotKhaoSat { get; set; }
+        public int? MaLoaiHinh { get; set; }
+        public int? MaDotKhaoSat { get; set; }
         public string? TenBangKhaoSat { get; set; }
         public string? MoTa { get; set; }
         public DateTime? NgayBatDau { get; set; }
