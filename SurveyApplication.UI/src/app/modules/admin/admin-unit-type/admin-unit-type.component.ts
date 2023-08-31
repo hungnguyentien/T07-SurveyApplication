@@ -25,14 +25,16 @@ export class AdminUnitTypeComponent {
   MaLoaiHinh !:string
   IdLoaiHinh !:string
 
-  constructor(private FormBuilder :FormBuilder,private UnitTypeService:UnitTypeService,private messageService: MessageService,private confirmationService: ConfirmationService) {}
+  constructor(private FormBuilder :FormBuilder,private UnitTypeService:UnitTypeService,
+    private messageService: MessageService,private confirmationService: ConfirmationService) {}
   ngOnInit() {
     this.GetUnitType()
 
     this.FormUnitType = this.FormBuilder.group({
       MaLoaiHinh: [{ value: this.MaLoaiHinh, disabled: true },''],
       TenLoaiHinh: ['', Validators.required],
-      MoTa: ['', Validators.required]
+      NgayBatDau: ['', Validators.required],
+      
     });
   }
 
@@ -53,7 +55,7 @@ export class AdminUnitTypeComponent {
       });
   }
   Add(){
-    debugger
+
     this.showadd = true;
     this.FormUnitType.reset();
     this.UnitTypeService.GetIdUnitType().subscribe({
@@ -66,7 +68,7 @@ export class AdminUnitTypeComponent {
     })
   }
   Edit(data:any){
-    debugger
+ 
     this.showadd = false;
     this.IdLoaiHinh = data.id;
     this.MaLoaiHinh = data.maLoaiHinh;
@@ -77,7 +79,7 @@ export class AdminUnitTypeComponent {
 
 
   Save(){
-    
+   
     if(this.showadd){
       this.SaveAdd()
     }
