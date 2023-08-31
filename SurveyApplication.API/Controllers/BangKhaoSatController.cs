@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
+using SurveyApplication.Application.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -26,10 +27,10 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetBangKhaoSatByCondition")]
-        public async Task<ActionResult<List<BangKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        public async Task<ActionResult<PageCommandResponse<BangKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
-            return Ok(leaveAllocations);
+            return leaveAllocations;
         }
 
         [HttpGet("GetByBangKhaoSat/{id}")]
@@ -42,6 +43,7 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("CreateBangKhaoSat")]
         public async Task<ActionResult<BangKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateBangKhaoSatDto obj)
         {
+            obj.TrangThai = 1;
             var command = new CreateBangKhaoSatCommand { BangKhaoSatDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
@@ -52,7 +54,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new UpdateBangKhaoSatCommand { BangKhaoSatDto = obj };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
 
         [HttpDelete("DeleteBangKhaoSat/{id}")]
@@ -60,7 +65,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new DeleteBangKhaoSatCommand { Id = id };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
     }
 }

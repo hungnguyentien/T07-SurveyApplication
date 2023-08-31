@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.Responses;
 using System.Linq.Expressions;
 
 namespace SurveyApplication.Persistence.Repositories
@@ -61,11 +62,39 @@ namespace SurveyApplication.Persistence.Repositories
         /// <param name="conditions"></param>
         /// <param name="orderBy"></param>
         /// <returns></returns>
-        public async Task<List<T>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, Expression<Func<T, bool>> conditions,
-            Expression<Func<T, TOrderBy>> orderBy)
+        public async Task<PageCommandResponse<T>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, Expression<Func<T, bool>> conditions, Expression<Func<T, TOrderBy>> orderBy)
         {
-            var result = _dbContext.Set<T>().AsNoTracking().Where(conditions).OrderByDescending(orderBy);
-            return await result.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            var dbSet = _dbContext.Set<T>();
+
+            if (dbSet == null)
+            {
+                return new PageCommandResponse<T>
+                {
+                    PageSize = 0,
+                    PageCount = 0,
+                    PageIndex = pageIndex,
+                    Data = new List<T>(),
+                };
+            }
+
+            var result = dbSet.AsNoTracking().Where(conditions).OrderByDescending(orderBy);
+
+            var totalCount = await dbSet.CountAsync();
+
+            var pageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            var pageResults = await result.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var response = new PageCommandResponse<T>
+            {
+                PageSize = pageSize,
+                PageCount = totalCount,
+                PageIndex = pageIndex,
+                Data = pageResults,
+            };
+
+            return response;
         }
+
     }
 }

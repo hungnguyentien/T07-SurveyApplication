@@ -9,6 +9,8 @@ using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.NguoiDung;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
+using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
+using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
 
 namespace SurveyApplication.Application.Profiles
@@ -52,6 +54,43 @@ namespace SurveyApplication.Application.Profiles
 
             CreateMap<NguoiDung, AuthDto>().ReverseMap();
             CreateMap<NguoiDung, NguoiDungDto>().ReverseMap();
+
+
+            CreateMap<PageCommandResponse<BangKhaoSat>, PageCommandResponse<BangKhaoSatDto>>()
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))
+                .ForMember(dest => dest.PageCount, opt => opt.MapFrom(src => src.PageCount))
+                .ForMember(dest => dest.PageIndex, opt => opt.MapFrom(src => src.PageIndex))
+                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.PageSize));
+
+            CreateMap<PageCommandResponse<DonVi>, PageCommandResponse<DonViDto>>()
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))
+                .ForMember(dest => dest.PageCount, opt => opt.MapFrom(src => src.PageCount))
+                .ForMember(dest => dest.PageIndex, opt => opt.MapFrom(src => src.PageIndex))
+                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.PageSize));
+
+            CreateMap<PageCommandResponse<DotKhaoSat>, PageCommandResponse<DotKhaoSatDto>>()
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))
+                .ForMember(dest => dest.PageCount, opt => opt.MapFrom(src => src.PageCount))
+                .ForMember(dest => dest.PageIndex, opt => opt.MapFrom(src => src.PageIndex))
+                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.PageSize));
+
+            CreateMap<PageCommandResponse<GuiEmail>, PageCommandResponse<GuiEmailDto>>()
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))
+                .ForMember(dest => dest.PageCount, opt => opt.MapFrom(src => src.PageCount))
+                .ForMember(dest => dest.PageIndex, opt => opt.MapFrom(src => src.PageIndex))
+                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.PageSize));
+
+            CreateMap<PageCommandResponse<LoaiHinhDonVi>, PageCommandResponse<LoaiHinhDonViDto>>()
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))
+                .ForMember(dest => dest.PageCount, opt => opt.MapFrom(src => src.PageCount))
+                .ForMember(dest => dest.PageIndex, opt => opt.MapFrom(src => src.PageIndex))
+                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.PageSize));
+
+            CreateMap<PageCommandResponse<NguoiDaiDien>, PageCommandResponse<NguoiDaiDienDto>>()
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))
+                .ForMember(dest => dest.PageCount, opt => opt.MapFrom(src => src.PageCount))
+                .ForMember(dest => dest.PageIndex, opt => opt.MapFrom(src => src.PageIndex))
+                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.PageSize));
         }
     }
 }

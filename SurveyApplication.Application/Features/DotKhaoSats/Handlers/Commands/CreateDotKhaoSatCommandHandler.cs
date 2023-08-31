@@ -47,9 +47,8 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = dotKhaoSat.MaDotKhaoSat;
+            response.Id = dotKhaoSat.Id;
             return response;
         }
     }
-
 }

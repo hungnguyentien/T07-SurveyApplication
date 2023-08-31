@@ -31,7 +31,7 @@ namespace SurveyApplication.Application.Features.Auths.Handlers.Commands
             Auth = await _AuthRepository.Create(Auth);
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = Auth.MaNguoiDung.ToString();
+            response.Id = Auth.Id;
             return response;
         }
     }

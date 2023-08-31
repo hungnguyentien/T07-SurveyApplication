@@ -42,6 +42,7 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("CreateNguoiDaiDien")]
         public async Task<ActionResult<NguoiDaiDienDto>> CreateNguoiDaiDien([FromBody] CreateNguoiDaiDienDto obj)
         {
+            obj.MaNguoiDaiDien = Guid.NewGuid();
             var command = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
@@ -52,7 +53,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
 
         [HttpDelete("DeleteNguoiDaiDien/{id}")]
@@ -60,7 +64,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new DeleteNguoiDaiDienCommand { Id = id };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
     }
 }

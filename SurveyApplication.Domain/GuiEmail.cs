@@ -14,6 +14,9 @@ namespace SurveyApplication.Domain
         public Guid MaGuiEmail { get; set; }
 
         [Required]
+        public int? MaBangKhaoSat { get; set; }
+
+        [Required]
         public string? DiaChiNhan { get; set; }
 
         [Required]

@@ -46,7 +46,7 @@ namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Commands
 
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = GuiEmail.MaGuiEmail.ToString();
+            response.Id = GuiEmail.Id;
             return response;
         }
     }

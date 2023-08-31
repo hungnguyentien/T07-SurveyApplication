@@ -18,5 +18,9 @@ namespace SurveyApplication.Application.DTOs.DonVi
         public string? Email { get; set; }
         public string? WebSite { get; set; }
         public string? SoDienThoai { get; set; }
+
+        public string? HoTen { get; set; }
+        public string? TenLoaiHinh { get; set; }
+
     }
 }

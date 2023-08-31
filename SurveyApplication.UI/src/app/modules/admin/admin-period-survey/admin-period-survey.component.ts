@@ -83,8 +83,8 @@ export class AdminPeriodSurveyComponent {
     this.PeriodSurveyService.SearchPeriodSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
 
-        this.datas = response;
-        this.TotalCount = response.totalItems;
+        this.datas = response.data;
+        this.TotalCount = response.pageCount;
 
       });
   }
