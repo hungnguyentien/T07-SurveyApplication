@@ -3,65 +3,63 @@
   <input id="longTextInput" name="longTextInput" [(ngModel)]="inputValue" (input)="onInputChange()">
 </div> -->
 <div class="row">
-    <div class="col-md-6">
-        <label class="checkbox-inline" style="margin-top: 40px;">
-          <input type="checkbox" checked data-toggle="toggle"> Câu trả lời khác
-        </label>
-    </div>
-    <div class="col-md-6" >
-        <div class="form-group">
-          <label for="recipient-name" class="col-form-label">Lable câu trả lời khác:</label>
-          <input type="text" class="form-control" id="recipient-name" placeholder="Nhập tiêu đề câu hỏi">
-        </div>
+  <div class="col-md-6">
+    <label class="checkbox-inline" style="margin-top: 40px;">
+      <input type="checkbox" checked data-toggle="toggle"> Câu trả lời khác
+    </label>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="labelCauTraLoi" class="col-form-label">Lable câu trả lời khác:</label>
+      <input type="text" pInputText class="form-control" formControlName="labelCauTraLoi" id="labelCauTraLoi" placeholder="Nhập tiêu đề câu hỏi">
     </div>
   </div>
-  <label for="recipient-name" class="col-form-label">Nội dung:</label>
-  <ckeditor [(ngModel)]="valueEditor"[editor]="Editor"(input)="onInputChange()"></ckeditor>
+</div>
+<!-- <label for="recipient-name" class="col-form-label">Nội dung:</label>
+<ckeditor [(ngModel)]="valueEditor" [editor]="Editor" (input)="onInputChange()"></ckeditor> -->
 
 
-    <!-- dynamic-form.component.html -->
+<!-- dynamic-form.component.html -->
 <!-- <form [formGroup]="dynamicForm">
-    <div formArrayName="items">
-      <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
-        <input type="text" formControlName="name" placeholder="Name">
-        <input type="number" formControlName="age" placeholder="Age">
-        <button type="button" (click)="deleteItem(i)">Delete</button>
-      </div>
+  <div formArrayName="items">
+    <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+      <input type="text" formControlName="name" placeholder="Name">
+      <input type="number" formControlName="age" placeholder="Age">
+      <button type="button" (click)="deleteItem(i)">Delete</button>
     </div>
-    <button type="button" (click)="addItem()">Add Item</button>
-</form>
-   -->
+  </div>
+  <button type="button" (click)="addItem()">Add Item</button>
+</form> -->
 
+<!-- <button type="button" (click)="addItem()">Add Item</button>
 
-  <label for="recipient-name" class="col-form-label">Đáp án:</label>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>STT</th>
-        <th style="width: 7rem;">Mã</th>
-        <th>Câu trả lời</th>
-        <th>Chức năng</th>
-      </tr>
-    </thead>
-    <tbody>
+<label for="recipient-name" class="col-form-label">Đáp án:</label>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>STT</th>
+      <th style="width: 7rem;">Mã</th>
+      <th>Câu trả lời</th>
+      <th>Chức năng</th>
+    </tr>
+  </thead>
+  <tbody>
     <tr *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
-        <td></td>
-        <td><input formControlName="age"style="width: 7rem;"type="text"></td>
-        <td><input formControlName="name" style="width: 28rem;" type="text"></td>
-        <td>
-            <div >
-                <button class="ml-2 btn_plus" (click)="addItem()">
-                <a href=""><i class="fa fa-plus" aria-hidden="true"></i></a>
-                </button>
-                <button class="ml-3 btn_delete" (click)="deleteItem(i)">
-                    <a href=""><i class="fa fa-trash" aria-hidden="true"></i></a>
-                </button>
-                
-            </div>
-        </td>
-      </tr>
-    </tbody>
-    
-  </table>
-  
-  
+      <td></td>
+      <td><input formControlName="age" style="width: 7rem;" type="text"></td>
+      <td><input formControlName="name" style="width: 28rem;" type="text"></td>
+      <td>
+        <div>
+          <button class="ml-2 btn_plus" (click)="addItem()">
+            <a href=""><i class="fa fa-plus" aria-hidden="true"></i></a>
+          </button>
+          <button class="ml-3 btn_delete" (click)="deleteItem(i)">
+            <a href=""><i class="fa fa-trash" aria-hidden="true"></i></a>
+          </button>
+
+        </div>
+      </td>
+    </tr>
+  </tbody>
+
+</table> -->

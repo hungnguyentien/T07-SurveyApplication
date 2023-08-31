@@ -1,4 +1,5 @@
 import { Base } from './Common/Base';
+import { Cot, Hang } from './SurveyConfig';
 
 export interface CauHoi extends Base {
   loaiCauHoi: number;
@@ -10,29 +11,23 @@ export interface CauHoi extends Base {
   kichThuocFile: number;
   loaiCauHoiText: string;
 }
-export interface CreateCauHoi {
-  maCauHoi: string;
-  loaiCauHoi: number;
-  batBuoc: boolean | null;
-  tieuDe: string;
-  noiDung: string;
-  soLuongFileToiDa: number;
-  kichThuocFile: number;
-  isOther: boolean | null;
-  labelCauTraLoi: string;
-  priority: number;
-}
-
-export interface UpdateCauHoi {
+export interface CreateUpdateCauHoi {
   id: number;
   maCauHoi: string;
   loaiCauHoi: number;
   batBuoc: boolean | null;
   tieuDe: string;
-  noiDung: string;
+  noidung: string;
   soLuongFileToiDa: number;
   kichThuocFile: number;
   isOther: boolean | null;
   labelCauTraLoi: string;
   priority: number;
+  lstCot: Cot[]; //Câu hỏi phụ
+  lstHang: Hang[]; // Câu trả lời
+}
+
+export interface LoaiCauHoi {
+  text: string;
+  value: string;
 }

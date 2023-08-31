@@ -14,11 +14,7 @@ export class ChooseAnAnswerComponent {
   @Input() listAnswer:string[] =  [];
   @Output() inputValueChange: EventEmitter<string> = new EventEmitter<string>();
   
-  onInputChange() {
-    this.inputValueChange.emit(this.inputValue);
-    this.inputValueChange.emit(this.valueEditor)
-    console.log(this.inputValue)
-  }
+
   dynamicForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {

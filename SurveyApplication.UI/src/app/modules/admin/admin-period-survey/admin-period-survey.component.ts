@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ConfirmEventType, ConfirmationService } from 'primeng/api';
 import { ServiceService } from '@app/services/service.service';
-import { Customer, Representative } from '@app/models/customer';
+import { Customer, Representative } from '@app/models/Customer';
 import { MessageService } from 'primeng/api';
 import { PeriodSurvey } from '@app/models';
 import { PeriodSurveyService } from '@app/services/period-survey.service';

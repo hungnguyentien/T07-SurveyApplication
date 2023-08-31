@@ -125,3 +125,7 @@ input[type="button"].sd-btn:focus {
 .icon-gui-thong-tin {
   background-image: url("/assets/img/icons/gui-thong-tin.svg");
 }
+
+.ck.ck-editor__main > .ck-editor__editable {
+  height: 80px;
+}

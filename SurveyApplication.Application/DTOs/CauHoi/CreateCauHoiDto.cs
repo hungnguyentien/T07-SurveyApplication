@@ -4,6 +4,7 @@ namespace SurveyApplication.Application.DTOs.CauHoi
 {
     public class CreateCauHoiDto
     {
+        public int Id { get; set; }
         public string MaCauHoi { get; set; }
         public short LoaiCauHoi { get; set; }
         public bool? BatBuoc { get; set; }

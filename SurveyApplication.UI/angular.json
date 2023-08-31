@@ -36,6 +36,13 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "Utils",
+              "survey-core",
+              "survey-creator-core",
+              "survey-core/survey.i18n",
+              "@ckeditor/ckeditor5-build-classic"
             ]
           },
           "configurations": {

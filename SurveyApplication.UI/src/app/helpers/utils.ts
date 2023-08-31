@@ -62,6 +62,24 @@ export default class Utils {
     });
   };
 
+  static messageInfo = (messageService: MessageService, message: string) => {
+    messageService.clear();
+    messageService.add({
+      severity: 'info',
+      summary: 'info',
+      detail: message,
+    });
+  };
+
+  static messageWarring = (messageService: MessageService, message: string) => {
+    messageService.clear();
+    messageService.add({
+      severity: 'warring',
+      summary: 'Warring',
+      detail: message,
+    });
+  };
+
   static resetForm = (frm: FormGroup<any>) => {
     return frm?.reset();
   };

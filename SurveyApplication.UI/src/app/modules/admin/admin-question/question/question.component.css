@@ -1,16 +1,34 @@
 .custom-button {
-    background-color: #4e73df;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 13px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  .custom-button:hover {
-    background-color: #4e73df;
-  }
-  .custom-small-button {
-    font-size: 15px;
-    padding: 6px 12px;
-  }
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.custom-button:hover {
+  background-color: #4e73df;
+}
+.custom-small-button {
+  font-size: 15px;
+  padding: 6px 12px;
+}
+
+.btn_plus {
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 35px;
+}
+.btn_plus > a > i {
+  color: green;
+}
+.btn_delete {
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 35px;
+}
+.btn_delete > a > i {
+  color: red;
+}
+
