@@ -29,7 +29,7 @@ namespace SurveyApplication.Persistence.Repositories
             return entity != null;
         }
 
-        public async Task<PageCommandResponse<DonViDto>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, string conditions, Expression<Func<DonViDto, TOrderBy>> orderBy)
+        public async Task<PageCommandResponse<DonViDto>> GetByCondition<TOrderBy>(int pageIndex, int pageSize, Expression<Func<DonViDto, bool>> conditions, Expression<Func<DonViDto, TOrderBy>> orderBy)
         {
             var query = from d in _dbContext.DonVi
                         join b in _dbContext.NguoiDaiDien
@@ -37,8 +37,8 @@ namespace SurveyApplication.Persistence.Repositories
 
                         join o in _dbContext.LoaiHinhDonVi
                         on d.MaLoaiHinh equals o.Id
-                        where d.MaDonVi.ToString().Contains(conditions) || d.TenDonVi.Contains(conditions) ||
-                            d.DiaChi.Contains(conditions) || b.HoTen.Contains(conditions)
+                        //where d.MaDonVi.ToString().Contains(conditions) || d.TenDonVi.Contains(conditions) ||
+                        //    d.DiaChi.Contains(conditions) || b.HoTen.Contains(conditions)
                         select new DonViDto
                         {
                             MaDonVi = d.MaDonVi,

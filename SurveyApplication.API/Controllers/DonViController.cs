@@ -45,10 +45,12 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("CreateDonVi")]
         public async Task<ActionResult<DonViDto>> CreateDonVi([FromBody] CreateDonViAndNguoiDaiDienDto obj)
         {
+            obj.DonViDto.MaDonVi = Guid.NewGuid();
             var command_1 = new CreateDonViCommand { DonViDto = obj.DonViDto };
             var response_1 = await _mediator.Send(command_1);
 
             obj.NguoiDaiDienDto.MaDonVi = response_1.Id;
+            obj.NguoiDaiDienDto.MaNguoiDaiDien = Guid.NewGuid();
 
             var command_2 = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
             var response_2 = await _mediator.Send(command_2);
