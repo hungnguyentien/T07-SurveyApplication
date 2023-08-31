@@ -22,9 +22,11 @@ export class ObjectSurveyService {
   }
 
   Insert(model: ObjectSurvey){
-    const url = `${environment.apiUrl}/LoaiHinhDonVi/CreateLoaiHinhDonVi`;
+    const url = `${environment.apiUrl}/DonVi/CreateDonVi`;
     return this.http.post(url,model);
   }
+
+
   Update(model: ObjectSurvey){
     const url = `${environment.apiUrl}/LoaiHinhDonVi/UpdateLoaiHinhDonVi`;
     return this.http.post(url,model);

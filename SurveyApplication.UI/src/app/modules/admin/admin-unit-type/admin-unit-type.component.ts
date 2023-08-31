@@ -14,11 +14,11 @@ export class AdminUnitTypeComponent {
   selectedUnitType!: UnitType[];
   datas : UnitType [] = [];
 
-  first: number = 0;
-  TotalCount: number = 0;
-  pageIndex: number = 1;
-  pageSize: number = 5;
-  keyword: string = '';
+  first = 0;
+  pageSize = 5; 
+  pageIndex = 1; 
+  TotalCount = 0; 
+  keyword = '';
   
   showadd!: boolean;
   FormUnitType!: FormGroup;
@@ -28,7 +28,6 @@ export class AdminUnitTypeComponent {
   constructor(private FormBuilder :FormBuilder,private UnitTypeService:UnitTypeService,private messageService: MessageService,private confirmationService: ConfirmationService) {}
   ngOnInit() {
     this.GetUnitType()
-
     this.FormUnitType = this.FormBuilder.group({
       MaLoaiHinh: [{ value: this.MaLoaiHinh, disabled: true },''],
       TenLoaiHinh: ['', Validators.required],
@@ -37,7 +36,7 @@ export class AdminUnitTypeComponent {
   }
 
 
-  onPageChange(event: any) {
+  onPageChange(event: any) { 
     this.first = event.first;
     this.pageSize = event.rows;
     this.pageIndex = event.page + 1;
@@ -45,15 +44,15 @@ export class AdminUnitTypeComponent {
   }
 
   GetUnitType() {
+    
     this.UnitTypeService.SearchUnitType(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
-        this.datas = response;
-        this.TotalCount = response.totalItems;
-        
+        this.datas = response.data;
+        this.TotalCount = response.pageCount;        
       });
   }
   Add(){
-    debugger
+    
     this.showadd = true;
     this.FormUnitType.reset();
     this.UnitTypeService.GetIdUnitType().subscribe({
@@ -66,7 +65,7 @@ export class AdminUnitTypeComponent {
     })
   }
   Edit(data:any){
-    debugger
+    
     this.showadd = false;
     this.IdLoaiHinh = data.id;
     this.MaLoaiHinh = data.maLoaiHinh;

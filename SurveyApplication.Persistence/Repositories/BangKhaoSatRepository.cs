@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +25,43 @@ namespace SurveyApplication.Persistence.Repositories
         {
             var entity = await _dbContext.BangKhaoSat.AsNoTracking().FirstOrDefaultAsync(x => x.MaBangKhaoSat == MaBangKhaoSat);
             return entity != null;
+        }
+
+        public async Task<PageCommandResponse<BangKhaoSatDto>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, string conditions, Expression<Func<BangKhaoSatDto, TOrderBy>> orderBy)
+        {
+            var query = from d in _dbContext.BangKhaoSat
+                        join b in _dbContext.DotKhaoSat
+                        on d.MaDotKhaoSat equals b.Id
+
+                        join o in _dbContext.LoaiHinhDonVi
+                        on d.MaLoaiHinh equals o.Id
+
+                        join s in _dbContext.GuiEmail
+                        on d.Id equals s.MaBangKhaoSat
+                        where d.MaBangKhaoSat.Contains(conditions) || d.TenBangKhaoSat.Contains(conditions) ||
+                            b.TenDotKhaoSat.Contains(conditions) || o.TenLoaiHinh.Contains(conditions)
+                        select new BangKhaoSatDto
+                        {
+                            MaBangKhaoSat = d.MaBangKhaoSat,
+                            TenBangKhaoSat = d.TenBangKhaoSat,
+                            TenDotKhaoSat = b.TenDotKhaoSat,
+                            TenLoaiHinh = o.TenLoaiHinh,
+
+                        };
+            var totalCount = await query.CountAsync();
+            var pageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            var pageResults = await query.OrderBy(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var response = new PageCommandResponse<BangKhaoSatDto>
+            {
+                PageSize = pageSize,
+                PageCount = pageCount,
+                PageIndex = pageIndex,
+                Data = pageResults,
+            };
+
+            return response;
         }
     }
 }

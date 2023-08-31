@@ -22,10 +22,12 @@ export class AdminObjectSurveyComponent {
   
   showadd!: boolean;
   FormObjectSurvey!: FormGroup;
+  FormRepresentative!:FormGroup;
   MaLoaiHinh !:string
   IdLoaiHinh !:string
   listloaihinhdonvi: any[] = []
-
+  ContainerAdd: any[] = []
+  
   combinedArray: any[] = [];
   cities: any[] = [];
   districts: any[] = [];
@@ -46,21 +48,22 @@ export class AdminObjectSurveyComponent {
       Email: new FormControl('', Validators.required),
       WebSite: new FormControl('', Validators.required),
       SoDienThoai: new FormControl('', Validators.required),
-      DiaChi: new FormGroup({
-        TinhThanh: new FormControl(''),
-        QuanHuyen: new FormControl(''),
-        PhuongXa: new FormControl(''),
-        DiaChiChiTiet: new FormControl('')
-      }),
-      listRepresentative: new FormGroup({
-        // MaNguoiDaiDien: new FormControl(''),
-        HoTen: new FormControl('', Validators.required),
-        ChucVu: new FormControl('', Validators.required),
-        Email: new FormControl('', Validators.required),
-        SoDienThoai: new FormControl('', Validators.required),
-        MoTa: new FormControl('')
-      })
+      DiaChi: new FormControl(''),
+      // DiaChi: new FormGroup({
+      //   TinhThanh: new FormControl(''),
+      //   QuanHuyen: new FormControl(''),
+      //   PhuongXa: new FormControl(''),
+      //   DiaChiChiTiet: new FormControl('')
+      // }),
+      
     });
+    this.FormRepresentative= new FormGroup({
+      HoTen: new FormControl('', Validators.required),
+      ChucVu: new FormControl('', Validators.required),
+      Email: new FormControl('', Validators.required),
+      SoDienThoai: new FormControl('', Validators.required),
+      MoTa: new FormControl('')
+    })
     this.ObjectSurveyService.getCities().subscribe((data: any) => {
       this.cities = data;
     });
@@ -117,9 +120,8 @@ export class AdminObjectSurveyComponent {
   GetObjectSurvey() {
     this.ObjectSurveyService.SearchObjectSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
-        this.datas = response;
+        this.datas = response.data;
         this.TotalCount = response.totalItems;
-        
       });
   }
   Add(){
@@ -149,15 +151,20 @@ export class AdminObjectSurveyComponent {
 
   SaveAdd(){
     debugger
-    if(this.FormObjectSurvey.valid){
-      const ObjObjectSurvey = this.FormObjectSurvey.value; 
-      console.log(ObjObjectSurvey)
-      this.ObjectSurveyService.Insert(ObjObjectSurvey).subscribe({
+    if(this.FormObjectSurvey.valid){   
+      const obj:any = {
+        DonViDto: this.FormObjectSurvey.value,
+        NguoiDaiDienDto: this.FormRepresentative.value
+      };
+      console.log(obj)
+      this.ObjectSurveyService.Insert(obj).subscribe({
         next:(res) => {
-        
+        debugger
           if(res != null){
             this.messageService.add({severity:'success', summary: 'Thành Công', detail:'Thêm thành Công !'});
-            this.GetObjectSurvey();  
+            debugger
+            this.GetObjectSurvey();
+            console.log(res)  
             this.FormObjectSurvey.reset();
           }else{
             this.messageService.add({severity:'error', summary: 'Lỗi', detail:'Lỗi vui Lòng kiểm tra lại !'});

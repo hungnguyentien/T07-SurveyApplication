@@ -19,5 +19,7 @@ namespace SurveyApplication.Application.DTOs.DotKhaoSat
         public DateTime NgayBatDau { get; set; }
 
         public DateTime NgayKetThuuc { get; set; }
+        public int? TrangThai { get; set; }
+
     }
 }

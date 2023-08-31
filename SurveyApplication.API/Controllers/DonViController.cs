@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.DonVi;
+using SurveyApplication.Application.DTOs.DonViAndNguoiDaiDien;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
+using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
+using SurveyApplication.Application.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -26,10 +29,10 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetDonViByCondition")]
-        public async Task<ActionResult<List<DonViDto>>> GetDonViByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        public async Task<ActionResult<PageCommandResponse<DonViDto>>> GetDonViByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
             var leaveAllocations = await _mediator.Send(new GetDonViConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
-            return Ok(leaveAllocations);
+            return leaveAllocations;
         }
 
         [HttpGet("GetByDonVi/{id}")]
@@ -40,11 +43,20 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("CreateDonVi")]
-        public async Task<ActionResult<DonViDto>> CreateDonVi([FromBody] CreateDonViDto obj)
+        public async Task<ActionResult<DonViDto>> CreateDonVi([FromBody] CreateDonViAndNguoiDaiDienDto obj)
         {
-            var command = new CreateDonViCommand { DonViDto = obj };
-            var response = await _mediator.Send(command);
-            return Ok(response);
+            var command_1 = new CreateDonViCommand { DonViDto = obj.DonViDto };
+            var response_1 = await _mediator.Send(command_1);
+
+            obj.NguoiDaiDienDto.MaDonVi = response_1.Id;
+
+            var command_2 = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
+            var response_2 = await _mediator.Send(command_2);
+            return Ok(new
+            {
+                response_1 = response_1,
+                response_2 = response_2,
+            });
         }
 
         [HttpPost("UpdateDonVi")]
@@ -52,7 +64,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new UpdateDonViCommand { DonViDto = obj };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
 
         [HttpDelete("DeleteDonVi/{id}")]
@@ -62,7 +77,7 @@ namespace SurveyApplication.API.Controllers
             await _mediator.Send(command);
             return Ok(new
             {
-                success = true
+                Success = true,
             });
         }
     }

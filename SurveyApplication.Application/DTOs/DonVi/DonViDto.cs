@@ -9,7 +9,7 @@ namespace SurveyApplication.Application.DTOs.DonVi
 {
     public partial class DonViDto : BaseDto
     {
-        public Guid MaDonVi { get; set; }
+        public Guid? MaDonVi { get; set; }
         public int? MaLoaiHinh { get; set; }
         public int? MaLinhVuc { get; set; }
         public string? TenDonVi { get; set; }
@@ -18,5 +18,9 @@ namespace SurveyApplication.Application.DTOs.DonVi
         public string? Email { get; set; }
         public string? WebSite { get; set; }
         public string? SoDienThoai { get; set; }
+
+        public string? HoTen { get; set; }
+        public string? TenLoaiHinh { get; set; }
+
     }
 }

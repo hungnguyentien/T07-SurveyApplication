@@ -46,7 +46,7 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
 
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = LoaiHinhDonVi.MaLoaiHinh;
+            response.Id = LoaiHinhDonVi.Id;
             return response;
         }
     }

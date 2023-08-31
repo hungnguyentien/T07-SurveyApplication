@@ -52,7 +52,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
 
         [HttpDelete("DeleteNguoiDaiDien/{id}")]
@@ -60,7 +63,10 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new DeleteNguoiDaiDienCommand { Id = id };
             await _mediator.Send(command);
-            return NoContent();
+            return Ok(new
+            {
+                Success = true,
+            });
         }
     }
 }
