@@ -42,6 +42,7 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("CreateNguoiDaiDien")]
         public async Task<ActionResult<NguoiDaiDienDto>> CreateNguoiDaiDien([FromBody] CreateNguoiDaiDienDto obj)
         {
+            obj.MaNguoiDaiDien = Guid.NewGuid();
             var command = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);

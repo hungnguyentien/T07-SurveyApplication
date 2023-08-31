@@ -42,6 +42,7 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("CreateGuiEmail")]
         public async Task<ActionResult<GuiEmailDto>> CreateGuiEmail([FromBody] CreateGuiEmailDto obj)
         {
+            obj.MaGuiEmail = Guid.NewGuid();
             var command = new CreatGuiEmailCommand { GuiEmailDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);

@@ -46,6 +46,7 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("CreateDotKhaoSat")]
         public async Task<ActionResult<DotKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateDotKhaoSatDto obj)
         {
+            obj.TrangThai = 1;
             var command = new CreateDotKhaoSatCommand { DotKhaoSatDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);

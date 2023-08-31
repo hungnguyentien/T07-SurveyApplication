@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class TableSurveyService {
   constructor(private http: HttpClient) {}
   SearchTableSurvey(pageIndex: number, pageSize: number, keyword: string) {
-    const url = `${environment.apiUrl}/LoaiHinhDonVi/GetLoaiHinhDonViByCondition`;
+    const url = `${environment.apiUrl}/BangKhaoSat/GetBangKhaoSatByCondition`;
     const params = {
       pageIndex: pageIndex.toString(),
       pageSize: pageSize.toString(),
@@ -20,20 +20,17 @@ export class TableSurveyService {
   }
 
   Insert(model: TableSurvey){
-    const url = `${environment.apiUrl}/LoaiHinhDonVi/CreateLoaiHinhDonVi`;
+    const url = `${environment.apiUrl}/BangKhaoSat/CreateBangKhaoSat`;
     return this.http.post(url,model);
   }
   Update(model: TableSurvey){
-    const url = `${environment.apiUrl}/LoaiHinhDonVi/UpdateLoaiHinhDonVi`;
+    const url = `${environment.apiUrl}/BangKhaoSat/UpdateBangKhaoSat`;
     return this.http.post(url,model);
   }
-  GetIdUnitType(){
-    const url = `${environment.apiUrl}/LoaiHinhDonVi/GetLastRecordByMaLoaiHinh`
-    return this.http.get(url);
-  }
+ 
 
   Delete(id: any): Observable<any> {
-    const url = `${environment.apiUrl}/LoaiHinhDonVi/DeleteLoaiHinhDonVi/${id}`;
+    const url = `${environment.apiUrl}/BangKhaoSat/DeleteBangKhaoSat/${id}`;
     return this.http.delete(url);
   }
 }

@@ -14,6 +14,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDialogModule
 import { InputSwitchModule } from 'primeng/inputswitch';
+
+import { DatePipe } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 @NgModule({
   declarations: [
     AdminHomeComponent,
@@ -33,6 +36,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     ToastModule,
     ConfirmDialogModule,
     InputSwitchModule,
+    ButtonModule
   ],
+  providers:[DatePipe]
 })
 export class AdminModule {}

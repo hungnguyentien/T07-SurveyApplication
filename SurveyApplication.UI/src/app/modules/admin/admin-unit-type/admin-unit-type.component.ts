@@ -14,32 +14,29 @@ export class AdminUnitTypeComponent {
   selectedUnitType!: UnitType[];
   datas : UnitType [] = [];
 
-  first: number = 0;
-  TotalCount: number = 0;
-  pageIndex: number = 1;
-  pageSize: number = 5;
-  keyword: string = '';
+  first = 0;
+  pageSize = 5; 
+  pageIndex = 1; 
+  TotalCount = 0; 
+  keyword = '';
   
   showadd!: boolean;
   FormUnitType!: FormGroup;
   MaLoaiHinh !:string
   IdLoaiHinh !:string
 
-  constructor(private FormBuilder :FormBuilder,private UnitTypeService:UnitTypeService,
-    private messageService: MessageService,private confirmationService: ConfirmationService) {}
+  constructor(private FormBuilder :FormBuilder,private UnitTypeService:UnitTypeService,private messageService: MessageService,private confirmationService: ConfirmationService) {}
   ngOnInit() {
     this.GetUnitType()
-
     this.FormUnitType = this.FormBuilder.group({
       MaLoaiHinh: [{ value: this.MaLoaiHinh, disabled: true },''],
       TenLoaiHinh: ['', Validators.required],
-      NgayBatDau: ['', Validators.required],
-      
+      MoTa: ['', Validators.required]
     });
   }
 
 
-  onPageChange(event: any) {
+  onPageChange(event: any) { 
     this.first = event.first;
     this.pageSize = event.rows;
     this.pageIndex = event.page + 1;
@@ -47,15 +44,15 @@ export class AdminUnitTypeComponent {
   }
 
   GetUnitType() {
+    
     this.UnitTypeService.SearchUnitType(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
-        this.datas = response;
-        this.TotalCount = response.totalItems;
-        
+        this.datas = response.data;
+        this.TotalCount = response.pageCount;        
       });
   }
   Add(){
-
+    
     this.showadd = true;
     this.FormUnitType.reset();
     this.UnitTypeService.GetIdUnitType().subscribe({
@@ -68,7 +65,7 @@ export class AdminUnitTypeComponent {
     })
   }
   Edit(data:any){
- 
+    
     this.showadd = false;
     this.IdLoaiHinh = data.id;
     this.MaLoaiHinh = data.maLoaiHinh;
@@ -79,7 +76,7 @@ export class AdminUnitTypeComponent {
 
 
   Save(){
-   
+    
     if(this.showadd){
       this.SaveAdd()
     }
