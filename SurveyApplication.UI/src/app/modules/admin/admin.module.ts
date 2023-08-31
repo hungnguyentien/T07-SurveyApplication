@@ -12,7 +12,8 @@ import { TableModule } from 'primeng/table';
 import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDialogModule
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   declarations: [AdminHomeComponent, AdminSendEmailComponent, AdminTableSurveyComponent],
   imports: [
@@ -27,6 +28,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDi
     ReactiveFormsModule,
     ToastModule,
     ConfirmDialogModule,
+    InputTextModule
   ]
 })
 export class AdminModule { }
