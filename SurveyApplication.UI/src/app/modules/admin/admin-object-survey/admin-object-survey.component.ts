@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { ObjectSurvey , Representative } from '@app/models';
-import { UnitTypeService } from '@app/services/unit-type.service';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ObjectSurveyService } from '@app/services/object-survey.service';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 

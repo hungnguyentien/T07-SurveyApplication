@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { ConfirmEventType, ConfirmationService } from 'primeng/api';
-import { ServiceService } from '@app/services/service.service';
-import { Customer, Representative } from '@app/models/Customer';
+import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { PeriodSurvey } from '@app/models';
 import { PeriodSurveyService } from '@app/services/period-survey.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 @Component({

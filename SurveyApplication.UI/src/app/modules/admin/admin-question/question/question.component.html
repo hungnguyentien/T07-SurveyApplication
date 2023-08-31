@@ -34,7 +34,7 @@
 
 <div class="card mt-3">
     <p-table #dt [value]="lstQuestion" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
-        scrollHeight="650px" [(selection)]="selectedQuestion" dataKey="id"
+        scrollHeight="calc(100vh - 396px)" [(selection)]="selectedQuestion" dataKey="id"
         styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
         [totalRecords]='dataTotalRecords'

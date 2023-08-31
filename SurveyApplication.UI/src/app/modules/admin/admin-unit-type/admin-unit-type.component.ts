@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { ServiceService } from '@app/services';
-import { Customer, Representative, UnitType } from '@app/models';
 import { UnitTypeService } from '@app/services/unit-type.service';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { UnitType } from '@app/models';
 
 @Component({
   selector: 'app-admin-unit-type',
