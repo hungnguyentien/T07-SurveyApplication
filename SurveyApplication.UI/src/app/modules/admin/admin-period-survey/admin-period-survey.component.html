@@ -140,11 +140,11 @@
           <form method="POST" [formGroup]="FormPeriodSurvey">
             <div class="row">
                 <div class="form-group col-md-6">
-                  <label for="recipient-name" class="col-form-label">Mã đợt:</label>
+                  <label for="recipient-name" class="col-form-label">Mã đợt: <span style="color: red;">*</span></label>
                   <input type="text"formControlName="MaDotKhaoSat" class="form-control" id="recipient-name" pInputText placeholder="Nhập mã đợt khảo sát">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: </label>
+                    <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span style="color: red;">*</span> </label>
                     <select  formControlName="MaLoaiHinh" class="custom-select" >
                         <option value="">Chọn loại hình đơn vị</option>
                       <option *ngFor="let Lh of DSLoaiHinh" [value]="Lh.id">{{Lh.tenLoaiHinh}}</option>
@@ -152,17 +152,17 @@
                   </div>
             </div>
             <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Tên đợt:</label>
+                <label for="recipient-name" class="col-form-label">Tên đợt: <span style="color: red;">*</span></label>
                 <input type="text"formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên đợt khảo sát">
             </div>
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label for="recipient-name" class="col-form-label">Ngày bắt đầu:</label>
+                    <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span style="color: red;">*</span></label>
                     <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name" pInputText placeholder="Ngày Bắt Đầu">
                   </div>
                   
                   <div class="form-group col-md-6">
-                    <label for="recipient-name" class="col-form-label">Ngày kết thúc:</label>
+                    <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span style="color: red;">*</span></label>
                     <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên loại hình đơn vị">
                   </div>
             </div>

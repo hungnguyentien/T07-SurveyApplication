@@ -6,17 +6,32 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
+import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { TableModule } from 'primeng/table';
+import { MessageModule } from 'primeng/message';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDialogModule
+
 import { DatePipe } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 @NgModule({
-  declarations: [AdminHomeComponent, AdminSendEmailComponent],
+  declarations: [AdminHomeComponent, AdminSendEmailComponent, AdminTableSurveyComponent],
   imports: [
     CommonModule,
     FormsModule,
     DropdownModule,
     AdminRoutingModule,
     CKEditorModule,
-    
+    PaginatorModule,
+    TableModule,
+    MessageModule,
+    ReactiveFormsModule,
+    ToastModule,
+    ConfirmDialogModule,
+    ButtonModule
   ],
-  providers: [DatePipe],
+  providers:[DatePipe]
 })
 export class AdminModule { }
