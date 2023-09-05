@@ -16,3 +16,11 @@
 /SurveyApplication.UI/node_modules
 /SurveyApplication.Persistence/bin/Debug/net6.0
 /SurveyApplication.Persistence/obj
+/SurveyApplication.Identity/bin/Debug/net6.0/SurveyApplication.Application.dll
+/SurveyApplication.Identity/bin/Debug/net6.0/SurveyApplication.Application.pdb
+/SurveyApplication.Identity/bin/Debug/net6.0/SurveyApplication.Domain.dll
+/SurveyApplication.Identity/bin/Debug/net6.0/SurveyApplication.Domain.pdb
+/SurveyApplication.Identity/bin/Debug/net6.0/SurveyApplication.Identity.deps.json
+/SurveyApplication.Identity/bin/Debug/net6.0/SurveyApplication.Identity.dll
+/SurveyApplication.Identity/bin/Debug/net6.0/SurveyApplication.Identity.pdb
+/SurveyApplication.Identity/bin/Debug/net6.0/SurveyApplication.Identity.runtimeconfig.json
