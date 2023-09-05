@@ -26,7 +26,10 @@ namespace SurveyApplication.Identity
                 options.UseSqlServer(configuration.GetConnectionString("SurveyManagerIdentityConnectionString"),
                 b => b.MigrationsAssembly(typeof(SurveyApplicationIdentityDbContext).Assembly.FullName)));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    options.User.RequireUniqueEmail = false;
+                })
                 .AddEntityFrameworkStores<SurveyApplicationIdentityDbContext>().AddDefaultTokenProviders();
 
             services.AddTransient<IAuthService, AuthService>();

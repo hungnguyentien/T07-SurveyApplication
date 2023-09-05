@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.DonVi;
@@ -12,6 +13,7 @@ namespace SurveyApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class DonViController : ControllerBase
     {
         private readonly IMediator _mediator;

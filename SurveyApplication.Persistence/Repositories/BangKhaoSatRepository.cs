@@ -37,8 +37,8 @@ namespace SurveyApplication.Persistence.Repositories
                         join o in _dbContext.LoaiHinhDonVi
                         on d.MaLoaiHinh equals o.Id
 
-                        join s in _dbContext.GuiEmail
-                        on d.Id equals s.MaBangKhaoSat
+                        //join s in _dbContext.GuiEmail
+                        //on d.Id equals s.MaBangKhaoSat
                         where d.MaBangKhaoSat.Contains(keyword) || d.TenBangKhaoSat.Contains(keyword) ||
                             b.TenDotKhaoSat.Contains(keyword) || o.TenLoaiHinh.Contains(keyword)
                         select new BangKhaoSatDto
