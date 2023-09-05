@@ -94,7 +94,7 @@ export class AdminPeriodSurveyComponent {
     this.showadd = true;
   }
   Edit(data: any) {
-    debugger
+    
     this.showadd = false;
     this.IdDotKhaoSat = data.id;
     this.MaDotKhaoSat = data.maDotKhaoSat;

@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using SurveyApplication.API.Middleware;
 using SurveyApplication.Application;
+using SurveyApplication.Identity;
 using SurveyApplication.Persistence;
 
 namespace SurveyApplication.API
@@ -21,6 +22,7 @@ namespace SurveyApplication.API
 
             AddSwaggerDoc(services);
 
+            services.ConfigureIdentityServices(Configuration);
             services.ConfigureApplicationServices();
             //services.ConfigureInfrastructureServices(Configuration);
             services.ConfigurePersistenceServices(Configuration);
