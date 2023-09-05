@@ -103,12 +103,11 @@ export class AdminObjectSurveyComponent {
     .subscribe((response: any) => {
       this.listloaihinhdonvi = response;
       this.TotalCount = response.totalItems;
-      
     });
   }
   
   onPageChange(event: any) {
-
+    debugger
     this.first = event.first;
     this.pageSize = event.rows;
     this.pageIndex = event.page + 1;
@@ -116,8 +115,10 @@ export class AdminObjectSurveyComponent {
   }
 
   GetObjectSurvey() {
+    debugger
     this.ObjectSurveyService.SearchObjectSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
+        debugger
         this.datas = response.data;
         this.TotalCount = response.pageCount;
       });
