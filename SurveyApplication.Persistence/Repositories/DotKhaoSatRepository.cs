@@ -41,11 +41,16 @@ namespace SurveyApplication.Persistence.Repositories
                         {
                             MaDotKhaoSat = d.MaDotKhaoSat,
                             TenDotKhaoSat = d.TenDotKhaoSat,
-                            MaLoaiHinh = b.MaLoaiHinh,
-                            TenLoaiHinh = b.TenLoaiHinh,
                             NgayBatDau = d.NgayBatDau,
                             NgayKetThuuc = d.NgayKetThuuc,
                             TrangThai = d.TrangThai,
+
+                            IdDotKhaoSat = b.Id,
+                            IdLoaiHinhDonVi = d.Id,
+
+                            MaLoaiHinh = b.MaLoaiHinh,
+                            TenLoaiHinh = b.TenLoaiHinh,
+                            MoTa = b.MoTa,
                         };
             var totalCount = await query.CountAsync();
             var pageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
@@ -55,7 +60,7 @@ namespace SurveyApplication.Persistence.Repositories
             var response = new PageCommandResponse<DotKhaoSatDto>
             {
                 PageSize = pageSize,
-                PageCount = pageCount,
+                PageCount = totalCount,
                 PageIndex = pageIndex,
                 Data = pageResults,
             };

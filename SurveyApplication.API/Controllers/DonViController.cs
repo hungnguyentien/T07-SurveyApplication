@@ -80,10 +80,13 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("DeleteDonVi/{id}")]
-        public async Task<ActionResult<List<DonViDto>>> DeleteDonVi(int id)
+        public async Task<ActionResult<List<DonViDto>>> DeleteDonVi(int idDonVi, int idNguoiDaiDien)
         {
-            var command = new DeleteDonViCommand { Id = id };
-            await _mediator.Send(command);
+            var command_1 = new DeleteDonViCommand { Id = idDonVi };
+            await _mediator.Send(command_1);
+
+            var command_2 = new DeleteNguoiDaiDienCommand { Id = idNguoiDaiDien };
+            await _mediator.Send(command_2);
             return Ok(new
             {
                 Success = true,
