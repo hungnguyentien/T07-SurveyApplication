@@ -116,6 +116,7 @@ export class AdminObjectSurveyComponent {
   }
 
   GetObjectSurvey() {
+    debugger
     this.ObjectSurveyService.SearchObjectSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
         this.datas = response.data;

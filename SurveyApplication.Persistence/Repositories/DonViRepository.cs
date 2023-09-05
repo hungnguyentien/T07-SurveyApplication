@@ -38,13 +38,27 @@ namespace SurveyApplication.Persistence.Repositories
                              d.DiaChi.Contains(keyword) || b.HoTen.Contains(keyword)
                         select new DonViDto
                         {
+                            MaLinhVuc = d.MaLinhVuc,
+                            IdDonVi = d.Id,
+                            IdNguoiDaiDien = b.Id,
+
                             MaDonVi = d.MaDonVi,
                             TenDonVi = d.TenDonVi,
+                            DiaChi = d.DiaChi,
+                            MaSoThue = d.MaSoThue,
+                            EmailDonVi = d.Email,
+                            WebSite = d.WebSite,
+                            SoDienThoaiDonVi = d.SoDienThoai,
+
                             MaLoaiHinh = d.MaLoaiHinh,
                             TenLoaiHinh = o.TenLoaiHinh,
-                            DiaChi = d.DiaChi,
+
                             MaNguoiDaiDien = b.MaNguoiDaiDien,
                             HoTen = b.HoTen,
+                            ChucVu = b.ChucVu,
+                            SoDienThoaiNguoiDaiDien = b.SoDienThoai,
+                            EmailNguoiDaiDien = b.Email,
+                            MoTa = b.MoTa,
                         };
 
             var totalCount = await query.CountAsync();
@@ -55,7 +69,7 @@ namespace SurveyApplication.Persistence.Repositories
             var response = new PageCommandResponse<DonViDto>
             {
                 PageSize = pageSize,
-                PageCount = pageCount,
+                PageCount = totalCount,
                 PageIndex = pageIndex,
                 Data = pageResults,
             };

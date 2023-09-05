@@ -45,14 +45,19 @@ namespace SurveyApplication.Persistence.Repositories
                         {
                             MaBangKhaoSat = d.MaBangKhaoSat,
                             TenBangKhaoSat = d.TenBangKhaoSat,
-                            MaDotKhaoSat = b.MaDotKhaoSat,
-                            TenDotKhaoSat = b.TenDotKhaoSat,
-                            MaLoaiHinh = o.MaLoaiHinh,
-                            TenLoaiHinh = o.TenLoaiHinh,
+                            MoTa = d.MoTa,
                             NgayBatDau = d.NgayBatDau,
                             NgayKetThuc = d.NgayKetThuc,
                             TrangThai = d.TrangThai,
 
+                            IdBangKhaoSat = d.Id,
+                            IdDotKhaoSat = b.Id,
+
+                            MaDotKhaoSat = b.MaDotKhaoSat,
+                            TenDotKhaoSat = b.TenDotKhaoSat,
+
+                            MaLoaiHinh = o.MaLoaiHinh,
+                            TenLoaiHinh = o.TenLoaiHinh,
                         };
             var totalCount = await query.CountAsync();
             var pageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
@@ -62,7 +67,7 @@ namespace SurveyApplication.Persistence.Repositories
             var response = new PageCommandResponse<BangKhaoSatDto>
             {
                 PageSize = pageSize,
-                PageCount = pageCount,
+                PageCount = totalCount,
                 PageIndex = pageIndex,
                 Data = pageResults,
             };
