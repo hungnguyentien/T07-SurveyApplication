@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
 
 import { TeamplateRoutingModule } from './teamplate-routing.module';
 import { TemplatePublicComponent } from './public-template/public-template.component';
@@ -20,6 +21,7 @@ import { AdminTempleteComponent } from './admin-templete/admin-templete.componen
     TeamplateRoutingModule,
     PartialsModule,
     ShareModule,
+    ToastModule
   ],
 })
 export class TeamplateModule {}

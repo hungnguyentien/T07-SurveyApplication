@@ -8,8 +8,18 @@ export interface CreateDonVi {
   email: string;
   webSite: string;
   soDienThoai: string;
+  id: number;
+}
+
+export interface CreateNguoiDaiDien {
+  hoTen: string;
+  chucVu: string;
+  soDienThoai: string;
+  email: string;
+  id: number;
 }
 
 export interface GeneralInfo {
-  createDonVi: CreateDonVi;
+  donVi: CreateDonVi;
+  nguoiDaiDien: CreateNguoiDaiDien;
 }

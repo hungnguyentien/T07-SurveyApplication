@@ -4,6 +4,7 @@ using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
+using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Queries;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -25,6 +26,13 @@ namespace SurveyApplication.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetThongTinChung")]
+        public async Task<ActionResult<ThongTinChungDto>> GetThongTinChung(int idDonVi)
+        {
+            var result = await _mediator.Send(new GetThongTinChungRequest { IdDonVi = idDonVi });
+            return Ok(result);
+        }
+
         [HttpPost("SavePhieuKhaoSat")]
         public async Task<ActionResult> SavePhieuKhaoSat([FromBody] CreateKetQuaDto obj)
         {
@@ -32,5 +40,6 @@ namespace SurveyApplication.API.Controllers
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
     }
 }

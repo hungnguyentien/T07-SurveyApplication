@@ -48,6 +48,8 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<Cot, CotDto>().ReverseMap();
             CreateMap<Hang, HangDto>().ReverseMap();
             CreateMap<KetQua, CreateKetQuaDto>().ReverseMap();
+             CreateMap<CauHoi, CreateCauHoiDto>().ReverseMap();
+            CreateMap<CauHoi, UpdateCauHoiDto>().ReverseMap();
 
             CreateMap<DonVi, DonViDto>().ReverseMap();
             CreateMap<DonVi, CreateDonViDto>().ReverseMap();

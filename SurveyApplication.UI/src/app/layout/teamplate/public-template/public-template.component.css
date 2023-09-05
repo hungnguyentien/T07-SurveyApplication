@@ -5,7 +5,7 @@
 }
 
 #box-content {
-  /* margin-top: 136px; */
+  min-height: calc(100vh - 256px);
   padding: 30px 60px;
   background: url("/assets/img/12\ 3.png");
   background-repeat: no-repeat;

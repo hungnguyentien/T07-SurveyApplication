@@ -42,5 +42,7 @@ namespace SurveyApplication.Application.DTOs.CauHoi
         public List<CotDto>? LstCot { get; set; }
         [NotMapped]
         public List<HangDto>? LstHang { get; set; }
+        [NotMapped]
+        public string LoaiCauHoiText { get; set; }
     }
 }
