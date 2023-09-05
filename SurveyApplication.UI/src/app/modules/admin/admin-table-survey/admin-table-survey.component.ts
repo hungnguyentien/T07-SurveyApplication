@@ -85,6 +85,7 @@ export class AdminTableSurveyComponent {
   Add(){
     this.showadd = true;
   }
+  
   Edit(data:any){
    
     this.showadd = false;
