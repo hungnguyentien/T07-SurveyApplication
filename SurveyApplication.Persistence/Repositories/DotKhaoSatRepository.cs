@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static SurveyApplication.Application.Enums.EnumTrangThai;
 
 namespace SurveyApplication.Persistence.Repositories
 {
@@ -45,8 +46,8 @@ namespace SurveyApplication.Persistence.Repositories
                             NgayKetThuuc = d.NgayKetThuuc,
                             TrangThai = d.TrangThai,
 
-                            IdDotKhaoSat = b.Id,
-                            IdLoaiHinhDonVi = d.Id,
+                            IdDotKhaoSat = d.Id,
+                            IdLoaiHinhDonVi = b.Id,
 
                             MaLoaiHinh = b.MaLoaiHinh,
                             TenLoaiHinh = b.TenLoaiHinh,

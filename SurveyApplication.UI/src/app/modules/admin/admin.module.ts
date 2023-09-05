@@ -16,7 +16,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDi
 import { DialogModule } from 'primeng/dialog';
 import { DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
   declarations: [AdminHomeComponent, AdminSendEmailComponent, AdminTableSurveyComponent],
@@ -33,9 +36,13 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     ToastModule,
     ConfirmDialogModule,
     ButtonModule,
-    DialogModule,
-    InputTextareaModule
+    CalendarModule,
+    InputTextareaModule,
+    FieldsetModule,
+    InputTextModule,
+    DialogModule
   ],
   providers:[DatePipe]
 })
+
 export class AdminModule { }

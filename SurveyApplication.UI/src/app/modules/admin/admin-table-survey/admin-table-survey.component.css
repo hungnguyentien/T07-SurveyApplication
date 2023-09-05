@@ -26,4 +26,17 @@
     font-size: 15px;
     padding: 6px 12px;
   }
+  
+
+  ::ng-deep .p-calendar {
+    height: 40px; /* Đặt chiều cao mong muốn */
+  }
+/* Tùy chỉnh chiều cao của p-dropdown */
+::ng-deep .p-dropdown {
+  max-height: 40px; /* Đặt chiều cao mong muốn */
+}
+/* Tùy chỉnh chiều cao cho tất cả các trường input có type="text" */
+input {
+  height: 40px; /* Đặt chiều cao mong muốn */
+}
 

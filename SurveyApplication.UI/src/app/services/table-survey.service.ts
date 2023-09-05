@@ -33,4 +33,13 @@ export class TableSurveyService {
     const url = `${environment.apiUrl}/BangKhaoSat/DeleteBangKhaoSat/${id}`;
     return this.http.delete(url);
   }
+
+  GetAllUnitType(): Observable<any[]> {
+    const url = `${environment.apiUrl}/LoaiHinhDonVi/GetAllLoaiHinhDonVi`; 
+    return this.http.get<any[]>(url);
+  }
+  GetAllPeriodSurvey(): Observable<any[]> {
+    const url = `${environment.apiUrl}/DotKhaoSat/GetAllDotKhaoSat`; 
+    return this.http.get<any[]>(url);
+  }
 }

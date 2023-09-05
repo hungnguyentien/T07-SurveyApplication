@@ -38,17 +38,16 @@ export class AdminPeriodSurveyComponent {
 
   ngOnInit() {
     this.GetPeriodSurvey()
-
-
+    this.LoadLoaiHinh();
     this.FormPeriodSurvey = this.FormBuilder.group({
       MaDotKhaoSat: ['', Validators.required],
       MaLoaiHinh: ['', Validators.required],
       TenDotKhaoSat: ['', Validators.required],
       NgayBatDau: ['', Validators.required],
-      NgayKetThuuc: ['', Validators.required]
+      NgayKetThuuc: ['', Validators.required],
+      TrangThai: ['', Validators.required],
     });
 
-    this.LoadLoaiHinh();
   }
 
 
@@ -79,7 +78,6 @@ export class AdminPeriodSurveyComponent {
   }
 
   GetPeriodSurvey() {
-
     this.PeriodSurveyService.SearchPeriodSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
 
@@ -96,18 +94,17 @@ export class AdminPeriodSurveyComponent {
   Edit(data: any) {
     debugger
     this.showadd = false;
-    this.IdDotKhaoSat = data.id;
+    this.IdDotKhaoSat = data.idDotKhaoSat;
     this.MaDotKhaoSat = data.maDotKhaoSat;
     this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(data.maDotKhaoSat)
     this.FormPeriodSurvey.controls['MaLoaiHinh'].setValue(data.maLoaiHinh)
     this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(data.tenDotKhaoSat)
-    // Định dạng ngày tháng từ chuỗi "yyyy-MM-ddThh:mm" sang "dd/MM/yyyy"
-  const ngayBatDauFormatted = this.datePipe.transform(data.ngayBatDau, 'yyyy-MM-dd');
-  const ngayKetThuucFormatted = this.datePipe.transform(data.ngayKetThuuc, 'yyyy-MM-dd');
-
-  this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
-  this.FormPeriodSurvey.controls['NgayKetThuuc'].setValue(ngayKetThuucFormatted);
-  console.log(ngayKetThuucFormatted)
+    this.FormPeriodSurvey.controls['TrangThai'].setValue(data.trangThai)
+    const ngayBatDauFormatted = this.datePipe.transform(data.ngayBatDau, 'yyyy-MM-dd');
+    const ngayKetThuucFormatted = this.datePipe.transform(data.ngayKetThuuc, 'yyyy-MM-dd');
+    this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
+    this.FormPeriodSurvey.controls['NgayKetThuuc'].setValue(ngayKetThuucFormatted);
+    console.log(ngayKetThuucFormatted)
   }
 
 
@@ -123,7 +120,7 @@ export class AdminPeriodSurveyComponent {
 
 
   SaveAdd() {
-
+    debugger
     if (this.FormPeriodSurvey.valid) {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
       this.PeriodSurveyService.Insert(ObjPeriodSurvey).subscribe({
@@ -141,14 +138,14 @@ export class AdminPeriodSurveyComponent {
     }
   }
   SaveEdit() {
-
+    debugger
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
     ObjPeriodSurvey['id'] = this.IdDotKhaoSat;
     ObjPeriodSurvey['maDotKhaoSat'] = this.MaDotKhaoSat;
     this.PeriodSurveyService.Update(ObjPeriodSurvey).subscribe({
-      next: (res) => {
-
-        if (res == null) {
+      next: (res:any) => {
+        debugger
+        if (res.success == true) {
           this.messageService.add({ severity: 'success', summary: 'Thành Công', detail: 'Cập nhật Thành Công !' });
           this.GetPeriodSurvey();
           this.FormPeriodSurvey.reset();
@@ -161,13 +158,13 @@ export class AdminPeriodSurveyComponent {
 
 
   Delete(data: any) {
-
+    debugger
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn xoá không ' + '?',
       header: 'delete',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.PeriodSurveyService.Delete(data.id).subscribe((res: any) => {
+        this.PeriodSurveyService.Delete(data.idDotKhaoSat).subscribe((res: any) => {
           debugger
           if (res.success == true)
             this.messageService.add({ severity: 'success', summary: 'Thành Công', detail: 'Xoá Thành Công !' });
