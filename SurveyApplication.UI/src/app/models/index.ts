@@ -1,6 +1,7 @@
 // Models for User
 export * from './Login';
 export * from './User';
+export * from './customer';
 export * from './SurveyConfig';
 export * from './CreateDonVi';
 export * from './TinhQuanHuyen';
@@ -13,4 +14,3 @@ export *from './Paging'
 export * from './Preiod-Survey'
 export * from './ObjectSurvey';
 export * from './TableSurvey'
-export * from './Representative'
