@@ -22,10 +22,10 @@ namespace SurveyApplication.API
 
             AddSwaggerDoc(services);
 
+            services.ConfigureIdentityServices(Configuration);
             services.ConfigureApplicationServices();
             //services.ConfigureInfrastructureServices(Configuration);
             services.ConfigurePersistenceServices(Configuration);
-            services.ConfigureIdentityServices(Configuration);
 
             services.AddControllers();
 

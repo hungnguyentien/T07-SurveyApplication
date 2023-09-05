@@ -6,6 +6,7 @@ using SurveyApplication.Application.Models.Identity;
 using SurveyApplication.Identity.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -18,15 +19,17 @@ namespace SurveyApplication.Identity.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtSettings _jwtSettings;
 
         public AuthService(UserManager<ApplicationUser> userManager,
             IOptions<JwtSettings> jwtSettings,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public async Task<AuthResponse> Login(AuthRequest request)
@@ -100,14 +103,15 @@ namespace SurveyApplication.Identity.Services
 
         private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
         {
-            var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
-
+            var userClaims = new List<Claim>();
             var roleClaims = new List<Claim>();
 
             for (int i = 0; i < roles.Count; i++)
             {
                 roleClaims.Add(new Claim(ClaimTypes.Role, roles[i]));
+                var roleClaim = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(roles[i]));
+                userClaims.AddRange(roleClaim);
             }
 
             var claims = new[]
