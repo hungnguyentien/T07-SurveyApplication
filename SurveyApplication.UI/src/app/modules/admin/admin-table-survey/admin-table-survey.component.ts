@@ -74,11 +74,11 @@ export class AdminTableSurveyComponent {
     this.TableSurveyService.SearchTableSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
         this.datas = response.data;
-        this.TotalCount = response.totalItems;
+        this.TotalCount = response.pageCount;
         
       });
   }
-  
+
   toggleHeader() {
     this.showHeader = !this.showHeader; // Đảo ngược giá trị của biến showHeader
 }
@@ -108,6 +108,8 @@ export class AdminTableSurveyComponent {
 
 
   SaveAdd(){
+
+    debugger
     if(this.FormTableSurvey.valid){
       const ObjTableSurvey = this.FormTableSurvey.value; 
       this.TableSurveyService.Insert(ObjTableSurvey).subscribe({
@@ -125,7 +127,7 @@ export class AdminTableSurveyComponent {
     }
   }
   SaveEdit(){
-
+    
     const ObjTableSurvey = this.FormTableSurvey.value; 
     ObjTableSurvey['id'] = this.IdLoaiHinh;
     ObjTableSurvey['maLoaiHinh'] = this.MaLoaiHinh;
