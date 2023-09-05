@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { TableSurvey } from '@app/models';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Customer, Representative, TableSurvey } from '@app/models';
+import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { TableSurveyService } from '@app/services/table-survey.service';
 import { DialogModule } from 'primeng/dialog';
 
@@ -28,7 +28,8 @@ export class AdminTableSurveyComponent {
   DSLoaiHinh: any[] = [];
   DSDotKhaoSat :any[]=[];
   showHeader: boolean = true;
-
+  
+  visible: boolean = false;
   constructor(private FormBuilder:FormBuilder, private TableSurveyService:TableSurveyService,private messageService: MessageService,private confirmationService: ConfirmationService) {}
   ngOnInit() {
     this.GetTableSurvey() 
@@ -53,7 +54,9 @@ export class AdminTableSurveyComponent {
     this.GetTableSurvey();
   }
 
-  
+  CloseModal(){
+    this.visible = false; 
+  }
   
   LoadUnitType() {
 
@@ -74,18 +77,18 @@ export class AdminTableSurveyComponent {
     this.TableSurveyService.SearchTableSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
         this.datas = response.data;
-        this.TotalCount = response.pageCount;
+        this.TotalCount = response.totalItems;
         
       });
   }
-
+  
   toggleHeader() {
     this.showHeader = !this.showHeader; // Đảo ngược giá trị của biến showHeader
 }
   Add(){
     this.showadd = true;
+    this.visible = !this.visible;
   }
-  
   Edit(data:any){
    
     this.showadd = false;
@@ -109,8 +112,6 @@ export class AdminTableSurveyComponent {
 
 
   SaveAdd(){
-
-    debugger
     if(this.FormTableSurvey.valid){
       const ObjTableSurvey = this.FormTableSurvey.value; 
       this.TableSurveyService.Insert(ObjTableSurvey).subscribe({
@@ -128,7 +129,7 @@ export class AdminTableSurveyComponent {
     }
   }
   SaveEdit(){
-    
+    this.visible = !this.visible;
     const ObjTableSurvey = this.FormTableSurvey.value; 
     ObjTableSurvey['id'] = this.IdLoaiHinh;
     ObjTableSurvey['maLoaiHinh'] = this.MaLoaiHinh;

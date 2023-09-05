@@ -43,9 +43,9 @@ import { DialogModule } from 'primeng/dialog';
     InputSwitchModule,
     ButtonModule,
     CalendarModule,
-    InputTextModule,
     InputTextareaModule,
     FieldsetModule,
+    InputTextModule,
     DialogModule
 
   ],
