@@ -32,6 +32,8 @@ namespace SurveyApplication.API.Controllers
         [HttpGet("GetDotKhaoSatByCondition")]
         public async Task<ActionResult<PageCommandResponse<DotKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
         {
+            keyword ??= "";
+
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
             return leaveAllocations;
         }

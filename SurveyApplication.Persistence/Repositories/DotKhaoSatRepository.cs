@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
 using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
@@ -28,23 +29,28 @@ namespace SurveyApplication.Persistence.Repositories
             return entity != null;
         }
 
-        public async Task<PageCommandResponse<DotKhaoSatDto>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, string conditions, Expression<Func<DotKhaoSatDto, TOrderBy>> orderBy)
+        public async Task<PageCommandResponse<DotKhaoSatDto>> GetByCondition<TOrderBy>(int pageIndex, int pageSize, string keyword, Expression<Func<DotKhaoSatDto, bool>> conditions, Expression<Func<DotKhaoSatDto, TOrderBy>> orderBy)
         {
             var query = from d in _dbContext.DotKhaoSat
                         join b in _dbContext.LoaiHinhDonVi
                         on d.MaLoaiHinh equals b.Id
 
-                        where d.MaDotKhaoSat.Contains(conditions) || d.TenDotKhaoSat.Contains(conditions) || b.TenLoaiHinh.Contains(conditions)
+                        where d.MaDotKhaoSat.Contains(keyword) || d.TenDotKhaoSat.Contains(keyword) ||
+                            b.TenLoaiHinh.Contains(keyword)
                         select new DotKhaoSatDto
                         {
                             MaDotKhaoSat = d.MaDotKhaoSat,
                             TenDotKhaoSat = d.TenDotKhaoSat,
+                            MaLoaiHinh = b.MaLoaiHinh,
                             TenLoaiHinh = b.TenLoaiHinh,
+                            NgayBatDau = d.NgayBatDau,
+                            NgayKetThuuc = d.NgayKetThuuc,
+                            TrangThai = d.TrangThai,
                         };
             var totalCount = await query.CountAsync();
             var pageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-            var pageResults = await query.OrderBy(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            var pageResults = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
 
             var response = new PageCommandResponse<DotKhaoSatDto>
             {

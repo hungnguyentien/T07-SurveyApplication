@@ -26,7 +26,7 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Queries
 
         public async Task<PageCommandResponse<DotKhaoSatDto>> Handle(GetDotKhaoSatConditionsRequest request, CancellationToken cancellationToken)
         {
-            var DotKhaoSats = await _dotKhaoSatRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenDotKhaoSat) && x.TenDotKhaoSat.Contains(request.Keyword), x => x.Created);
+            var DotKhaoSats = await _dotKhaoSatRepository.GetByCondition(request.PageIndex, request.PageSize, request.Keyword, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenDotKhaoSat) && x.TenDotKhaoSat.Contains(request.Keyword), x => x.Created);
             return _mapper.Map<PageCommandResponse<DotKhaoSatDto>>(DotKhaoSats);
         }
     }

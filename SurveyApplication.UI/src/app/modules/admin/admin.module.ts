@@ -12,8 +12,10 @@ import { TableModule } from 'primeng/table';
 import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDialogModule
+
+import { DatePipe } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 @NgModule({
   declarations: [AdminHomeComponent, AdminSendEmailComponent, AdminTableSurveyComponent],
   imports: [
@@ -28,7 +30,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ReactiveFormsModule,
     ToastModule,
     ConfirmDialogModule,
-    InputTextModule
-  ]
+    ButtonModule
+  ],
+  providers:[DatePipe]
 })
 export class AdminModule { }

@@ -1,4 +1,3 @@
-
 // Models for User
 export * from './Login';
 export * from './User';
@@ -7,5 +6,5 @@ export * from './SurveyConfig';
 export * from './CreateDonVi';
 export * from './UnitType';
 export * from './ObjectSurvey';
-export * from './TableSurvey';
-
+export * from './TableSurvey'
+export * from './Preiod-Survey'
