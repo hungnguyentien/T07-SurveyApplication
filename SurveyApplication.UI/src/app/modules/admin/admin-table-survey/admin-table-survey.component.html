@@ -165,13 +165,13 @@
                 <div class="col-4">
                     <div class="field">
                         <label for="MaDotKhaoSat" class="col-form-label">Mã Bảng: <span style="color: red;">*</span></label>
-                        <input type="text" formControlName="MaDotKhaoSat" pInputText placeholder="Nhập mã bảng khảo sát">
+                        <input type="text" formControlName="MaBangKhaoSat" pInputText placeholder="Nhập mã bảng khảo sát">
                     </div>
                 </div>
                 <div class="col-7"> 
                     <div class="field">
                         <label for="MaLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát: <span style="color: red;">*</span></label>
-                        <p-dropdown formControlName="MaLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" placeholder="Chọn loại hình đơn vị"></p-dropdown>
+                        <p-dropdown formControlName="MaLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh"optionValue="id" placeholder="Chọn loại hình đơn vị"></p-dropdown>
                     </div>
                 </div>
             </div>
@@ -181,16 +181,16 @@
     <div class="p-grid p-fluid">
         <div class="p-col-12 p-md-6">
             <label for="TenDotKhaoSat" class="col-form-label">Tên Bảng: <span style="color: red;">*</span></label>
-            <input type="text" formControlName="TenDotKhaoSat" pInputText placeholder="Nhập tên bảng khảo sát">
+            <input type="text" formControlName="TenBangKhaoSat" pInputText placeholder="Nhập tên bảng khảo sát">
         </div>
         <div class="p-col-12 p-md-6">
             <label for="MaDotKhaoSat" class="col-form-label">Đợt Khảo Sát: <span style="color: red;">*</span></label>
-            <p-dropdown formControlName="MaDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat"
+            <p-dropdown formControlName="MaDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat"optionValue="id"
                 placeholder="Chọn đợt khảo sát"></p-dropdown>
         </div>
         <div class="p-col-12 p-md-6">
-            <label for="TenDotKhaoSat" class="col-form-label">Mô Tả: <span style="color: red;">*</span></label>
-            <textarea rows="3" cols="80" pInputTextarea formControlName="text" formControlName="TenDotKhaoSat"
+            <label for="MoTa" class="col-form-label">Mô Tả: <span style="color: red;">*</span></label>
+            <textarea rows="3" cols="80" pInputTextarea formControlName="MoTa" formControlName="MoTa"
                 placeholder="Nhập mô tả đợt khảo sát" class="form-control"></textarea>
         </div>
     </div>
@@ -211,76 +211,9 @@
         </div>
     </div>
 
-
-
     </p-fieldset>
     </div>
-    <!-- <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd == true">Thêm mới bảng khảo sát</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p-fieldset [formGroup]="FormTableSurvey">
-                    <div class="p-grid p-fluid">
-                        <div class="p-col-6">
-                            <label for="MaDotKhaoSat" class="col-form-label">Mã Bảng: <span
-                                    style="color: red;">*</span></label>
-                            <input type="text" formControlName="MaDotKhaoSat" pInputText
-                                placeholder="Nhập mã bảng khảo sát">
-                        </div>
-                        <div class="p-col-6">
-                            <label for="MaLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát: <span
-                                    style="color: red;">*</span></label>
-                            <p-dropdown formControlName="MaLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh"
-                                placeholder="Chọn loại hình đơn vị"></p-dropdown>
-                        </div>
-                    
-                        <div class="p-col-12 p-md-6">
-                            <label for="TenDotKhaoSat" class="col-form-label">Tên Bảng: <span
-                                    style="color: red;">*</span></label>
-                            <input type="text" formControlName="TenDotKhaoSat" pInputText
-                                placeholder="Nhập tên bảng khảo sát">
-                        </div>
-                        <div class="p-col-12 p-md-6">
-                            <label for="MaDotKhaoSat" class="col-form-label">Đợt Khảo Sát: <span
-                                    style="color: red;">*</span></label>
-                            <p-dropdown formControlName="MaDotKhaoSat" [options]="DSDotKhaoSat"
-                                optionLabel="tenDotKhaoSat" placeholder="Chọn đợt khảo sát"></p-dropdown>
-                        </div>
-                        <div class="p-col-12 p-md-6">
-                            <label for="TenDotKhaoSat" class="col-form-label">Mô Tả: <span
-                                    style="color: red;">*</span></label>
-                            <textarea rows="3" cols="80" pInputTextarea formControlName="text"
-                                formControlName="TenDotKhaoSat" placeholder="Nhập mô tả đợt khảo sát"
-                                class="form-control"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="p-grid p-fluid ">
-                        <div class="p-col-6">
-                            <label for="NgayBatDau" class="col-form-label">Ngày bắt đầu: <span style="color: red;">*</span></label>
-                            <p-calendar formControlName="NgayBatDau" placeholder="Ngày Bắt Đầu" [showIcon]="true"></p-calendar>
-                        </div>
-                        <div class="p-col-6">
-                            <label for="NgayKetThuc" class="col-form-label">Ngày kết thúc: <span style="color: red;">*</span></label>
-                            <p-calendar formControlName="NgayKetThuc" placeholder="Ngày Kết Thúc" [showIcon]="true"></p-calendar>
-                        </div>
-                    </div>
-                    
-
-                </p-fieldset>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="Save()">Lưu</button>
-            </div>
-        </div>
-    </div> -->
-    <!-- Nút để đóng modal -->
+    
 
     <br>
     <div class="button-container">
