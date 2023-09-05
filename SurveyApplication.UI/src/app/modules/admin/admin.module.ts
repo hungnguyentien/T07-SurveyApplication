@@ -13,7 +13,7 @@ import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDialogModule
-
+import { DialogModule } from 'primeng/dialog';
 import { DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 @NgModule({
@@ -30,7 +30,8 @@ import { ButtonModule } from 'primeng/button';
     ReactiveFormsModule,
     ToastModule,
     ConfirmDialogModule,
-    ButtonModule
+    ButtonModule,
+    DialogModule
   ],
   providers:[DatePipe]
 })

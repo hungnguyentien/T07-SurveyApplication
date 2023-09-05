@@ -34,6 +34,7 @@ export class AdminObjectSurveyComponent {
   districts: any[] = [];
   wards: any[] = []
 
+  visible: boolean = false;
 
   selectedCountry: string | undefined;
   constructor(private FormBuilder :FormBuilder,private ObjectSurveyService:ObjectSurveyService,private messageService: MessageService,private confirmationService: ConfirmationService) {}
@@ -118,17 +119,19 @@ export class AdminObjectSurveyComponent {
     debugger
     this.ObjectSurveyService.SearchObjectSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
-        debugger
+        debugger  
         this.datas = response.data;
         this.TotalCount = response.pageCount;
       });
   }
   Add(){
     this.showadd = true;
+    this.visible = !this.visible;
   }
   Edit(data:any){
     debugger
     this.showadd = false;
+    this.visible = !this.visible; 
     this.IdMaLoaiHinh = data.maLoaiHinh;
     this.FormObjectSurvey.controls['MaLoaiHinh'].setValue(data.maLoaiHinh)
     this.FormObjectSurvey.controls['TenDonVi'].setValue(data.tenDonVi)
@@ -138,6 +141,10 @@ export class AdminObjectSurveyComponent {
     this.FormObjectSurvey.controls['SoDienThoai'].setValue(data.soDienThoai)
     this.FormObjectSurvey.controls['DiaChi'].setValue(data.diaChi)
     this.FormObjectSurvey.controls['MaLinhVuc'].setValue(data.maLinhVuc)
+  }
+
+  CloseModal(){
+    this.visible = false; 
   }
   Save(){
     debugger
