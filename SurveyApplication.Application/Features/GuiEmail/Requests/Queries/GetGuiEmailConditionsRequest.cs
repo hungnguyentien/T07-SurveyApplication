@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SurveyApplication.Application.DTOs.GuiEmail;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
 using System;

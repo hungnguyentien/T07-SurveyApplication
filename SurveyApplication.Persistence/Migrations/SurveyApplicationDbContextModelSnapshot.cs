@@ -345,9 +345,17 @@ namespace SurveyApplication.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ThoiGian")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("TieuDe")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TrangThai")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

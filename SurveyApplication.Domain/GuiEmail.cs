@@ -17,6 +17,12 @@ namespace SurveyApplication.Domain
         public int? MaBangKhaoSat { get; set; }
 
         [Required]
+        public int? TrangThai { get; set; }
+
+        [Required]
+        public DateTime? ThoiGian { get; set; }
+
+        [Required]
         public string? DiaChiNhan { get; set; }
 
         [Required]
