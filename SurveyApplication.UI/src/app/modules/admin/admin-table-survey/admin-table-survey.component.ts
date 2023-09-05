@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Representative, TableSurvey } from '@app/models';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { TableSurvey } from '@app/models';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableSurveyService } from '@app/services/table-survey.service';
 
 
