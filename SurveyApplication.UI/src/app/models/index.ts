@@ -13,3 +13,4 @@ export *from './Paging'
 export * from './Preiod-Survey'
 export * from './ObjectSurvey';
 export * from './TableSurvey'
+export * from './SendEmail'

@@ -79,7 +79,7 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        [HttpDelete("DeleteDonVi/{id}")]
+        [HttpDelete("DeleteDonVi")]
         public async Task<ActionResult<List<DonViDto>>> DeleteDonVi(int idDonVi, int idNguoiDaiDien)
         {
             var command_1 = new DeleteDonViCommand { Id = idDonVi };

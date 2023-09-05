@@ -31,6 +31,7 @@ import { ConfirmationService } from 'primeng/api';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { PaginatorModule } from 'primeng/paginator';
 import { MessagesModule } from 'primeng/messages';
+import { DialogModule } from 'primeng/dialog';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -65,6 +66,7 @@ import { MessagesModule } from 'primeng/messages';
     CKEditorModule,
     PaginatorModule,
     MessagesModule,
+    DialogModule
     
   ],
   providers: [MessageService, ConfirmationService],

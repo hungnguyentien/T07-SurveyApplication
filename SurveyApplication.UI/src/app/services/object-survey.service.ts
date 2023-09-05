@@ -28,18 +28,26 @@ export class ObjectSurveyService {
   }
 
 
-  Update(model: ObjectSurvey){
-    const url = `${environment.apiUrl}/LoaiHinhDonVi/UpdateLoaiHinhDonVi`;
+  Update(model: CreateUnitAndRep){
+    const url = `${environment.apiUrl}/DonVi/UpdateDonVi`;
     return this.http.post(url,model);
   }
+
+
+
   GetIdObjectSurvey(){
     const url = `${environment.apiUrl}/LoaiHinhDonVi/GetLastRecordByMaLoaiHinh`
     return this.http.get(url);
   }
 
-  Delete(id: any): Observable<any> {
-    const url = `${environment.apiUrl}/DonVi/DeleteDonVi/${id}`;
-    return this.http.delete(url);
+  // /DonVi/DeleteDonVi?idDonVi=1&idNguoiDaiDien=1
+  Delete(idDonVi: number, idNguoiDaiDien: number) {
+    const url = `${environment.apiUrl}/DonVi/DeleteDonVi`;
+    const params = {
+      idDonVi: idDonVi,
+      idNguoiDaiDien: idNguoiDaiDien,
+    };
+    return this.http.delete(url, { params });
   }
 
   getCities(): Observable<any> {

@@ -1,11 +1,11 @@
-<p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast>
+<!-- <p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast> -->
 <p-confirmDialog #cd [style]="{width: '30vw'}">
     <ng-template pTemplate="header">
         <h5>Xác nhận xoá loại hình đơn vị</h5>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" class="custom-small-button" label="No" (click)="cd.reject()"></button>
-        <button type="button" pButton icon="pi pi-check" class="custom-small-button" label="Yes" (click)="cd.accept()"></button>
+        <button type="button" pButton icon="pi pi-times" class="custom-small-button" label="Không" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" class="custom-small-button" label="Có" (click)="cd.accept()"></button>
     </ng-template>
 </p-confirmDialog>
 
@@ -107,7 +107,7 @@
 
 
 <!-- modal -->
-<div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -150,4 +150,47 @@
         </div>
       </div>
     </div>
+  </div> -->
+
+
+  <div class="card flex justify-content-center">
+    <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '40vw'}" [draggable]="false" [resizable]="false">
+      <p-header>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd">Thêm mới loại hình đơn vị</h5>
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="!showadd">Cập nhật loại hình đơn vị</h5>
+      </p-header>
+      <div class="modal-content">
+        <div class="modal-body">
+          <form method="POST" [formGroup]="FormUnitType">
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Mã loại hình: <span style="color: red;">*</span></label>
+              <input type="text" formControlName="MaLoaiHinh" [disabled]="true" class="form-control" id="recipient-name">
+            </div>
+            
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Tên loại hình: <span style="color: red;">*</span></label>
+                <input type="text"formControlName="TenLoaiHinh" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên loại hình đơn vị">
+            </div>
+            <div class="col-md-12 ">
+                <p-message severity="error" text="Tên loại hình Không Được Rỗng"
+                *ngIf="!FormUnitType.controls['TenLoaiHinh'].valid && FormUnitType.controls['TenLoaiHinh'].dirty">
+                </p-message>
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Mô tả: <span style="color: red;">*</span></label>
+              <textarea class="form-control" formControlName="MoTa" id="message-text" pInputText placeholder="Nhập mô tả"></textarea>
+            </div>
+            <div class="col-md-12 ">
+                <p-message severity="error" text="Tên loại hình Không Được Rỗng"
+               *ngIf="!FormUnitType.controls['TenLoaiHinh'].valid && FormUnitType.controls['TenLoaiHinh'].dirty">
+                </p-message>
+            </div>
+          </form>
+        </div>
+      </div>
+      <p-footer>
+        <button pButton (click)="CloseModal()"type="button" label="Đóng" class="custom-button"style="background-color: #ea5c5c;"></button>
+        <button pButton [disabled]="!FormUnitType.valid"(click)="Save()" type="submit" label="Lưu" class="custom-button" ></button>
+      </p-footer>
+    </p-dialog>
   </div>
