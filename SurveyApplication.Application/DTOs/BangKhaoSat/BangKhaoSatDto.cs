@@ -18,6 +18,9 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat
         public DateTime? NgayKetThuc { get; set; }
         public int? TrangThai { get; set; }
 
+        public int? IdBangKhaoSat { get; set; }
+        public int? IdDotKhaoSat { get; set; }
+
         public string? TenDotKhaoSat { get; set; }
         public string? TenLoaiHinh { get; set; }
 

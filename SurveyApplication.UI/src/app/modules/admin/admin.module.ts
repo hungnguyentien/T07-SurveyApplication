@@ -16,6 +16,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDi
 import { DialogModule } from 'primeng/dialog';
 import { DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+
 @NgModule({
   declarations: [AdminHomeComponent, AdminSendEmailComponent, AdminTableSurveyComponent],
   imports: [
@@ -31,7 +33,8 @@ import { ButtonModule } from 'primeng/button';
     ToastModule,
     ConfirmDialogModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    InputTextareaModule
   ],
   providers:[DatePipe]
 })

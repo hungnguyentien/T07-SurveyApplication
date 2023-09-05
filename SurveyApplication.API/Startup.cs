@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using SurveyApplication.API.Middleware;
 using SurveyApplication.Application;
+//using SurveyApplication.Identity;
 using SurveyApplication.Persistence;
 
 namespace SurveyApplication.API
@@ -24,6 +25,7 @@ namespace SurveyApplication.API
             services.ConfigureApplicationServices();
             //services.ConfigureInfrastructureServices(Configuration);
             services.ConfigurePersistenceServices(Configuration);
+            //services.ConfigureIdentityServices(Configuration);
 
             services.AddControllers();
 
