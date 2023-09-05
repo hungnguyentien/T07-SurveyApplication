@@ -3,7 +3,7 @@ import { Customer, Representative, TableSurvey } from '@app/models';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { TableSurveyService } from '@app/services/table-survey.service';
-
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -20,14 +20,20 @@ export class AdminTableSurveyComponent {
   pageSize: number = 5;
   keyword: string = '';
   
-  showadd!: boolean;
+  showadd : boolean= false;
   FormTableSurvey!: FormGroup;
   MaLoaiHinh !:string
   IdLoaiHinh !:string
 
+  DSLoaiHinh: any[] = [];
+  DSDotKhaoSat :any[]=[];
+  showHeader: boolean = true;
+
   constructor(private FormBuilder:FormBuilder, private TableSurveyService:TableSurveyService,private messageService: MessageService,private confirmationService: ConfirmationService) {}
   ngOnInit() {
     this.GetTableSurvey() 
+    this.LoadUnitType()
+    this.LoadPeriodSurvey()
     this.FormTableSurvey = this.FormBuilder.group({
       MaBangKhaoSat: [''],
       MaLoaiHinh: ['', Validators.required],
@@ -47,6 +53,23 @@ export class AdminTableSurveyComponent {
     this.GetTableSurvey();
   }
 
+  
+  
+  LoadUnitType() {
+
+    this.TableSurveyService.GetAllUnitType().subscribe((data) => {
+      this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
+
+    });
+  }
+  LoadPeriodSurvey() {
+
+    this.TableSurveyService.GetAllPeriodSurvey().subscribe((data) => {
+      this.DSDotKhaoSat = data; // Lưu dữ liệu vào danh sách
+
+    });
+  }
+
   GetTableSurvey() {
     this.TableSurveyService.SearchTableSurvey(this.pageIndex, this.pageSize, this.keyword)
       .subscribe((response: any) => {
@@ -55,11 +78,15 @@ export class AdminTableSurveyComponent {
         
       });
   }
+  
+  toggleHeader() {
+    this.showHeader = !this.showHeader; // Đảo ngược giá trị của biến showHeader
+}
   Add(){
     this.showadd = true;
   }
   Edit(data:any){
-    debugger
+   
     this.showadd = false;
     this.IdLoaiHinh = data.id;
     this.MaLoaiHinh = data.maLoaiHinh;
@@ -98,7 +125,7 @@ export class AdminTableSurveyComponent {
     }
   }
   SaveEdit(){
-    debugger
+
     const ObjTableSurvey = this.FormTableSurvey.value; 
     ObjTableSurvey['id'] = this.IdLoaiHinh;
     ObjTableSurvey['maLoaiHinh'] = this.MaLoaiHinh;
@@ -117,7 +144,7 @@ export class AdminTableSurveyComponent {
   }
 
   Delete(data:any){
-    debugger
+
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn xoá không ' + '?',
       header: 'delete',
