@@ -5,6 +5,7 @@ using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
 using SurveyApplication.Application.DTOs.GuiEmail;
+using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.NguoiDung;
@@ -57,6 +58,7 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<NguoiDung, AuthDto>().ReverseMap();
             CreateMap<NguoiDung, NguoiDungDto>().ReverseMap();
 
+            CreateMap<LinhVucHoatDong, LinhVucHoatDongDto>().ReverseMap();
 
             CreateMap<PageCommandResponse<BangKhaoSat>, PageCommandResponse<BangKhaoSatDto>>()
                 .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))

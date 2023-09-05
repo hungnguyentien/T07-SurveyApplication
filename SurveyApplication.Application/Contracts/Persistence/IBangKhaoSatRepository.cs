@@ -1,4 +1,5 @@
 ﻿using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
 using System;
@@ -13,6 +14,6 @@ namespace SurveyApplication.Application.Contracts.Persistence
     public interface IBangKhaoSatRepository : IGenericRepository<BangKhaoSat>
     {
         Task<bool> ExistsByMaBangKhaoSat(string maBangKhaoSat);
-        Task<PageCommandResponse<BangKhaoSatDto>> GetByConditions<TOrderBy>(int pageIndex, int pageSize, string conditions, Expression<Func<BangKhaoSatDto, TOrderBy>> orderBy);
+        Task<PageCommandResponse<BangKhaoSatDto>> GetByCondition<TOrderBy>(int pageIndex, int pageSize, string keyword, Expression<Func<BangKhaoSatDto, bool>> conditions, Expression<Func<BangKhaoSatDto, TOrderBy>> orderBy);
     }
 }

@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { PeriodSurvey } from '@app/models';
 import { PeriodSurveyService } from '@app/services/period-survey.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 @Component({
