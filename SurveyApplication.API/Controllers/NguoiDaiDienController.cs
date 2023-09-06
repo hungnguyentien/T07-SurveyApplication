@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Queries;
@@ -18,37 +19,36 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("GetAllNguoiDaiDien")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<NguoiDaiDienDto>>> GetAllNguoiDaiDien()
         {
             var leaveAllocations = await _mediator.Send(new GetNguoiDaiDienListRequest());
             return Ok(leaveAllocations);
         }
 
-        [HttpGet("GetNguoiDaiDienByCondition")]
-        public async Task<ActionResult<List<NguoiDaiDienDto>>> GetNguoiDaiDienByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        [HttpGet("GetByCondition")]
+        public async Task<ActionResult<List<NguoiDaiDienDto>>> GetNguoiDaiDienByCondition([FromQuery] Paging paging)
         {
-            var leaveAllocations = await _mediator.Send(new GetNguoiDaiDienConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
+            var leaveAllocations = await _mediator.Send(new GetNguoiDaiDienConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return Ok(leaveAllocations);
         }
 
-        [HttpGet("GetByNguoiDaiDien/{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<List<NguoiDaiDienDto>>> GetByNguoiDaiDien(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetNguoiDaiDienDetailRequest { Id = id });
             return Ok(leaveAllocations);
         }
 
-        [HttpPost("CreateNguoiDaiDien")]
+        [HttpPost("Create")]
         public async Task<ActionResult<NguoiDaiDienDto>> CreateNguoiDaiDien([FromBody] CreateNguoiDaiDienDto obj)
         {
-            obj.MaNguoiDaiDien = Guid.NewGuid();
             var command = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
         }
 
-        [HttpPost("UpdateNguoiDaiDien")]
+        [HttpPost("Update")]
         public async Task<ActionResult<NguoiDaiDienDto>> UpdateNguoiDaiDien([FromBody] UpdateNguoiDaiDienDto obj)
         {
             var command = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
@@ -59,7 +59,7 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        [HttpDelete("DeleteNguoiDaiDien/{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<NguoiDaiDienDto>>> DeleteNguoiDaiDien(int id)
         {
             var command = new DeleteNguoiDaiDienCommand { Id = id };

@@ -8,12 +8,13 @@ namespace SurveyApplication.Domain
     public partial class LoaiHinhDonVi : BaseDomainEntity
     {
         [Required]
+        [MaxLength(250)]
         public string MaLoaiHinh { get; set; } = null!;
 
         [Required]
-        public string? TenLoaiHinh { get; set; }
+        public string TenLoaiHinh { get; set; }
 
         [Required]
-        public string? MoTa { get; set; }
+        public string MoTa { get; set; }
     }
 }

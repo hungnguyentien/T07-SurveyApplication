@@ -8,10 +8,16 @@ import {
 } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 
-import { GeneralInfo, TinhQuanHuyen } from '@app/models';
-import { PhieuKhaoSatService } from '@app/services';
+import {
+  GeneralInfo,
+  LinhVucHoatDong,
+  TinhQuanHuyen,
+  UnitType,
+} from '@app/models';
+import { LinhVucHoatDongService, PhieuKhaoSatService } from '@app/services';
 import { jsonDataFake } from './json';
 import Utils from '@app/helpers/utils';
+import { UnitTypeService } from '@app/services/unit-type.service';
 
 @Component({
   selector: 'app-general-info',
@@ -36,17 +42,26 @@ export class GeneralInfoComponent {
 
   dataArr: any[] | undefined;
 
+  lstLoaiHinhDonVi: UnitType[] | undefined;
+  selectedLoaiHinhDonVi: number | undefined;
+
+  lstLinhVuc: LinhVucHoatDong[] | undefined;
+  selectedLinhVuc: number | undefined;
+  showBtnReset: boolean = true;
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private phieuKhaoSatService: PhieuKhaoSatService,
+    private loaiHinhDonViService: UnitTypeService,
+    private linhVucHoatDongService: LinhVucHoatDongService,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    let idDonVi =
-      this.activatedRoute.snapshot.queryParamMap.get('idDonVi') ?? '0';
+    let data = this.activatedRoute.snapshot.queryParamMap.get('data') ?? '';
+    !data && this.router.navigate(['/login']);
     this.submitCount = 0;
     this.submitted = false;
     this.loading = false;
@@ -58,16 +73,16 @@ export class GeneralInfoComponent {
       let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
       this.tinh?.push({ name: tinhQuanHuyen.name, code: tinhQuanHuyen.code });
     });
-    this.selectedTinh = '10';
+    // this.selectedTinh = '10';
     this.frmGeneralInfo = this.formBuilder.group({
       DonVi: this.formBuilder.group({
         TenDonVi: ['', Validators.required],
-        Tinh: ['', Validators.required],
+        Tinh: [''],
         QuanHuyen: [''],
         PhuongXa: [''],
         DiaChi: ['', Validators.required],
-        MaLoaiHinh: ['', Validators.required],
-        MaLinhVuc: ['', Validators.required],
+        IdLoaiHinh: ['', Validators.required],
+        IdLinhVuc: ['', Validators.required],
         MaSoThue: [''],
         WebSite: [
           '',
@@ -105,10 +120,39 @@ export class GeneralInfoComponent {
       }),
     });
 
-    this.phieuKhaoSatService.getGeneralInfo(idDonVi).subscribe({
+    this.loaiHinhDonViService.getAll().subscribe({
+      next: (res) => {
+        this.loading = true;
+        this.lstLoaiHinhDonVi = res;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+
+    this.linhVucHoatDongService.getAll().subscribe({
+      next: (res) => {
+        this.loading = true;
+        this.lstLinhVuc = res;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+
+    this.phieuKhaoSatService.getGeneralInfo(data).subscribe({
       next: (res) => {
         this.loading = true;
         this.generalInfo = res;
+        this.generalInfo.data = data;
         Utils.setValueFormNetted(
           this.frmGeneralInfo,
           'donVi',
@@ -121,6 +165,10 @@ export class GeneralInfoComponent {
           Object.keys(res.nguoiDaiDien),
           Object.values(res.nguoiDaiDien)
         );
+        this.selectedLoaiHinhDonVi = res.donVi.idLoaiHinh;
+        this.selectedLinhVuc = res.donVi.idLinhVuc;
+        this.generalInfo.trangThai === 2 && this.frmGeneralInfo.disable();
+        this.showBtnReset = this.generalInfo.trangThai !== 2;
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);
@@ -155,7 +203,7 @@ export class GeneralInfoComponent {
       this.router.navigateByUrl('/phieu/thong-tin-khao-sat', {
         state: this.generalInfo,
       });
-    }, 3000);
+    }, 1000);
   };
 
   resetForm = () => Utils.resetForm(this.frmGeneralInfo);

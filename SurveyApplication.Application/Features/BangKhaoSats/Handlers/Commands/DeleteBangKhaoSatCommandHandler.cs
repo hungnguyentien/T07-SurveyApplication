@@ -1,38 +1,24 @@
-﻿using AutoMapper;
-using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
+﻿using MediatR;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
 {
-    public class DeleteBangKhaoSatCommandHandler : IRequestHandler<DeleteBangKhaoSatCommand>
+    public class DeleteBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteBangKhaoSatCommand>
     {
-        private readonly IBangKhaoSatRepository _bangKhaoSatRepository;
-        private readonly IMapper _mapper;
-
-        public DeleteBangKhaoSatCommandHandler(IBangKhaoSatRepository bangKhaoSatRepository, IMapper mapper)
+        public DeleteBangKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository) : base(surveyRepository)
         {
-            _bangKhaoSatRepository = bangKhaoSatRepository;
-            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteBangKhaoSatCommand request, CancellationToken cancellationToken)
         {
-            var bangKhaoSatRepository = await _bangKhaoSatRepository.GetById(request.Id);
-
-            if (bangKhaoSatRepository == null)
-            {
-                throw new NotFoundException(nameof(BangKhaoSat), request.Id);
-            }
-
-            await _bangKhaoSatRepository.Delete(bangKhaoSatRepository);
+            var bangKhaoSat = await _surveyRepo.BangKhaoSat.GetById(request.Id) ?? throw new NotFoundException(nameof(BangKhaoSat), request.Id);
+            var lstRemove = await _surveyRepo.BangKhaoSatCauHoi.GetAllListAsync(x => x.IdBangKhaoSat == bangKhaoSat.Id);
+            await _surveyRepo.BangKhaoSatCauHoi.DeleteAsync(lstRemove);
+            await _surveyRepo.BangKhaoSat.DeleteAsync(bangKhaoSat);
+            await _surveyRepo.SaveAync();
             return Unit.Value;
         }
     }

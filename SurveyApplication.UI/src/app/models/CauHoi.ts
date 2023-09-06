@@ -26,8 +26,3 @@ export interface CreateUpdateCauHoi {
   lstCot: Cot[]; //Câu hỏi phụ
   lstHang: Hang[]; // Câu trả lời
 }
-
-export interface LoaiCauHoi {
-  text: string;
-  value: string;
-}

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using SurveyApplication.Application.DTOs.CauHoi;
-using SurveyApplication.Application.Responses;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.CauHoi.Requests.Commands
 {

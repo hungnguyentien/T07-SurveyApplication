@@ -11,30 +11,29 @@ namespace SurveyApplication.Domain
     public partial class DonVi : BaseDomainEntity
     {
         [Required]
-        public Guid MaDonVi { get;set; }
+        [MaxLength(250)]
+        public string MaDonVi { get;set; }
+
+        public int IdLoaiHinh { get;set; }
+
+        public int IdLinhVuc { get;set; }
 
         [Required]
-        public int? MaLoaiHinh { get;set; }
+        public string TenDonVi { get;set; }
 
         [Required]
-        public int? MaLinhVuc { get;set; }
+        public string DiaChi { get;set; }
 
         [Required]
-        public string? TenDonVi { get;set; }
+        public string MaSoThue { get; set; }
 
         [Required]
-        public string? DiaChi { get;set; }
+        public string Email { get;set; }
 
         [Required]
-        public string? MaSoThue { get; set; }
+        public string WebSite { get;set; }
 
         [Required]
-        public string? Email { get;set; }
-
-        [Required]
-        public string? WebSite { get;set; }
-
-        [Required]
-        public string? SoDienThoai { get;set; }
+        public string SoDienThoai { get;set; }
     }
 }

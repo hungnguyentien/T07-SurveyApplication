@@ -5,10 +5,10 @@
         public int PageIndex { get; set; }
         public int TotalPages { get; set; }
         public int PageSize { get; set; }
-        public int TotalFilter { get; set; }
+        public long TotalFilter { get; set; }
         public T Param { get; set; }
 
-        public PagingDto(List<T> items, int count, int pageIndex, int pageSize)
+        public PagingDto(List<T> items, long count, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);

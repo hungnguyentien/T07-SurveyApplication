@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.Exceptions;
-using SurveyApplication.Application.Features.GuiEmails.Requests.Commands;
+using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
 using SurveyApplication.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Commands
+namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 {
    
     public class DeleteGuiEmailCommandHandler : IRequestHandler<DeleteGuiEmailCommand>

@@ -1,33 +1,32 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.DonVi;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
+using SurveyApplication.Application.DTOs.DonViAndNguoiDaiDien;
+using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain;
+using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
 {
-    public class GetDonViDetailRequestHandler : IRequestHandler<GetDonViDetailRequest, DonViDto>
+    public class GetDonViDetailRequestHandler : BaseMasterFeatures, IRequestHandler<GetDonViDetailRequest, CreateDonViAndNguoiDaiDienDto>
     {
-        private readonly IDonViRepository _donViRepository;
         private readonly IMapper _mapper;
-
-        public GetDonViDetailRequestHandler(IDonViRepository donViRepository, IMapper mapper)
+        public GetDonViDetailRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _donViRepository = donViRepository;
             _mapper = mapper;
         }
 
-        public async Task<DonViDto> Handle(GetDonViDetailRequest request, CancellationToken cancellationToken)
+        public async Task<CreateDonViAndNguoiDaiDienDto> Handle(GetDonViDetailRequest request, CancellationToken cancellationToken)
         {
-            var DonViRepository = await _donViRepository.GetById(request.Id);
-            return _mapper.Map<DonViDto>(DonViRepository);
+            var donViRepository = await _surveyRepo.DonVi.GetById(request.Id);
+            var nguoiDaiDien = await _surveyRepo.NguoiDaiDien.FirstOrDefaultAsync(x => x.IdDonVi == donViRepository.Id);
+            return new CreateDonViAndNguoiDaiDienDto
+            {
+                DonViDto = _mapper.Map<CreateDonViDto>(donViRepository),
+                NguoiDaiDienDto = _mapper.Map<CreateNguoiDaiDienDto>(nguoiDaiDien)
+            };
         }
     }
-    
 }

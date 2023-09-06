@@ -14,10 +14,11 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'khao-sat',
+        path: 'phieu-khao-sat',
         component: ClientHomeComponent,
+        title: 'Thông tin chung',
         data: {
-          title: 'Phiếu khảo sát',
+          title: 'Thông tin chung',
         },
       },
       {

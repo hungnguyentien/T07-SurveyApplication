@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
 {

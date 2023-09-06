@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
-using SurveyApplication.Application.Responses;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands
 {

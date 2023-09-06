@@ -1,179 +1,213 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { PeriodSurvey } from '@app/models';
-import { PeriodSurveyService } from '@app/services/period-survey.service';
+import { Paging, PeriodSurvey } from '@app/models';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { UnitTypeService, PeriodSurveyService } from '@app/services';
+import { Table } from 'primeng/table';
+import Utils from '@app/helpers/utils';
 
 @Component({
   selector: 'app-admin-period-survey',
   templateUrl: './admin-period-survey.component.html',
-  styleUrls: ['./admin-period-survey.component.css']
+  styleUrls: ['./admin-period-survey.component.css'],
 })
 export class AdminPeriodSurveyComponent {
+  @ViewChild('dt') table!: Table;
+  loading: boolean = true;
   selectedPeriodSurvey!: PeriodSurvey[];
   datas: PeriodSurvey[] = [];
-
-  first: number = 0;
-  TotalCount: number = 0;
-  pageIndex: number = 1;
-  pageSize: number = 5;
-  keyword: string = '';
+  paging!: Paging;
+  dataTotalRecords!: number;
+  keyWord!: string;
+  visible: boolean = false;
 
   showadd!: boolean;
   FormPeriodSurvey!: FormGroup;
-  MaDotKhaoSat !: string;
-  IdDotKhaoSat !: number
+  MaDotKhaoSat!: string;
+  IdDotKhaoSat!: number;
 
   DSLoaiHinh: any[] = [];
 
-
-
-  constructor(private FormBuilder: FormBuilder, private PeriodSurveyService: PeriodSurveyService,
-    private messageService: MessageService, private confirmationService: ConfirmationService,private datePipe: DatePipe) { }
+  constructor(
+    private FormBuilder: FormBuilder,
+    private PeriodSurveyService: PeriodSurveyService,
+    private unitTypeService: UnitTypeService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
-    this.GetPeriodSurvey()
     this.LoadLoaiHinh();
     this.FormPeriodSurvey = this.FormBuilder.group({
       MaDotKhaoSat: ['', Validators.required],
-      MaLoaiHinh: ['', Validators.required],
+      IdLoaiHinh: ['', Validators.required],
       TenDotKhaoSat: ['', Validators.required],
       NgayBatDau: ['', Validators.required],
       NgayKetThuuc: ['', Validators.required],
-      TrangThai: ['', Validators.required],
     });
-
   }
 
+  loadListLazy = (event: any) => {
+    this.loading = true;
+    let pageSize = event.rows;
+    let pageIndex = event.first / pageSize + 1;
+    this.paging = {
+      pageIndex: pageIndex,
+      pageSize: pageSize,
+      keyword: '',
+      orderBy: event.sortField
+        ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
+        : '',
+    };
+    this.PeriodSurveyService.getByCondition(this.paging).subscribe({
+      next: (res) => {
+        this.datas = res.data;
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  };
 
-
+  onSubmitSearch = () => {
+    this.paging.keyword = this.keyWord;
+    this.PeriodSurveyService.getByCondition(this.paging).subscribe({
+      next: (res) => {
+        this.datas = res.data;
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  };
 
   LoadLoaiHinh() {
-
-    this.PeriodSurveyService.GetAllUnitType().subscribe((data) => {
+    this.unitTypeService.getAll().subscribe((data) => {
       this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
-
     });
   }
 
   GetNameById(maLoaiHinh: number): string {
-
-    const loaiHinh = this.DSLoaiHinh.find(item => item.id == maLoaiHinh);
+    const loaiHinh = this.DSLoaiHinh.find((item) => item.id == maLoaiHinh);
     return loaiHinh ? loaiHinh.tenLoaiHinh : maLoaiHinh;
-
   }
-
-
-
-  onPageChange(event: any) {
-    this.first = event.first;
-    this.pageSize = event.rows;
-    this.pageIndex = event.page + 1;
-    this.GetPeriodSurvey();
-  }
-
-  GetPeriodSurvey() {
-    this.PeriodSurveyService.SearchPeriodSurvey(this.pageIndex, this.pageSize, this.keyword)
-      .subscribe((response: any) => {
-
-        this.datas = response.data;
-        this.TotalCount = response.pageCount;
-
-      });
-  }
-
 
   Add() {
     this.showadd = true;
-  }
-  Edit(data: any) {
-    
-    this.showadd = false;
-    this.IdDotKhaoSat = data.idDotKhaoSat;
-    this.MaDotKhaoSat = data.maDotKhaoSat;
-    this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(data.maDotKhaoSat)
-    this.FormPeriodSurvey.controls['MaLoaiHinh'].setValue(data.maLoaiHinh)
-    this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(data.tenDotKhaoSat)
-    this.FormPeriodSurvey.controls['TrangThai'].setValue(data.trangThai)
-    const ngayBatDauFormatted = this.datePipe.transform(data.ngayBatDau, 'yyyy-MM-dd');
-    const ngayKetThuucFormatted = this.datePipe.transform(data.ngayKetThuuc, 'yyyy-MM-dd');
-    this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
-    this.FormPeriodSurvey.controls['NgayKetThuuc'].setValue(ngayKetThuucFormatted);
-    console.log(ngayKetThuucFormatted)
+    this.visible = !this.visible;
   }
 
+  Edit(data: any) {
+    this.showadd = false;
+    this.visible = !this.visible;
+    this.IdDotKhaoSat = data.id;
+    this.MaDotKhaoSat = data.maDotKhaoSat;
+    this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(data.maDotKhaoSat);
+    this.FormPeriodSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
+    this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(
+      data.tenDotKhaoSat
+    );
+    const ngayBatDauFormatted = this.datePipe.transform(
+      data.ngayBatDau,
+      'yyyy-MM-dd'
+    );
+    const ngayKetThuucFormatted = this.datePipe.transform(
+      data.ngayKetThuuc,
+      'yyyy-MM-dd'
+    );
+    this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
+    this.FormPeriodSurvey.controls['NgayKetThuuc'].setValue(
+      ngayKetThuucFormatted
+    );
+    console.log(ngayKetThuucFormatted);
+  }
 
   Save() {
-    debugger
     if (this.showadd) {
-      this.SaveAdd()
-    }
-    else {
+      this.SaveAdd();
+    } else {
       this.SaveEdit();
     }
   }
 
-
   SaveAdd() {
-    debugger
     if (this.FormPeriodSurvey.valid) {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
-      this.PeriodSurveyService.Insert(ObjPeriodSurvey).subscribe({
+      this.PeriodSurveyService.create(ObjPeriodSurvey).subscribe({
         next: (res) => {
-          debugger
           if (res != null) {
-            this.messageService.add({ severity: 'success', summary: 'Thành Công', detail: 'Thêm thành Công !' });
-            this.GetPeriodSurvey();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Thành Công',
+              detail: 'Thêm thành Công !',
+            });
+            this.table.reset();
             this.FormPeriodSurvey.reset();
+            this.visible = false;
           } else {
-            this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Lỗi vui Lòng kiểm tra lại !' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Lỗi',
+              detail: 'Lỗi vui Lòng kiểm tra lại !',
+            });
           }
-        }
+        },
       });
     }
   }
+
   SaveEdit() {
-    debugger
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
     ObjPeriodSurvey['id'] = this.IdDotKhaoSat;
     ObjPeriodSurvey['maDotKhaoSat'] = this.MaDotKhaoSat;
-    this.PeriodSurveyService.Update(ObjPeriodSurvey).subscribe({
-      next: (res:any) => {
-        debugger
+    this.PeriodSurveyService.update(ObjPeriodSurvey).subscribe({
+      next: (res: any) => {
         if (res.success == true) {
-          this.messageService.add({ severity: 'success', summary: 'Thành Công', detail: 'Cập nhật Thành Công !' });
-          this.GetPeriodSurvey();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành Công',
+            detail: 'Cập nhật Thành Công !',
+          });
+          this.table.reset();
           this.FormPeriodSurvey.reset();
-          console.log(res)
+          this.visible = false;
+          console.log(res);
         }
-      }
-    }
-    )
+      },
+    });
   }
 
-
   Delete(data: any) {
-    debugger
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn xoá không ' + '?',
       header: 'delete',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.PeriodSurveyService.Delete(data.idDotKhaoSat).subscribe((res: any) => {
-          debugger
+        this.PeriodSurveyService.delete(data.id).subscribe((res: any) => {
           if (res.success == true)
-            this.messageService.add({ severity: 'success', summary: 'Thành Công', detail: 'Xoá Thành Công !' });
-          this.GetPeriodSurvey();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Thành Công',
+              detail: 'Xoá Thành Công !',
+            });
+          this.table.reset();
           this.FormPeriodSurvey.reset();
-          console.log(res)
-
-        })
-      }
+          console.log(res);
+        });
+      },
     });
   }
-
-
 }

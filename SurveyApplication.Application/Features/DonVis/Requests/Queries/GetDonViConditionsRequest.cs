@@ -1,17 +1,11 @@
 ﻿using MediatR;
 using SurveyApplication.Application.DTOs.DonVi;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
-using SurveyApplication.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.DonVis.Requests.Queries
 {
     
-    public class GetDonViConditionsRequest : IRequest<PageCommandResponse<DonViDto>>
+    public class GetDonViConditionsRequest : IRequest<BaseQuerieResponse<DonViDto>>
     {
         public List<DonViDto> Data { get; set; }
         public int PageCount { get; set; }

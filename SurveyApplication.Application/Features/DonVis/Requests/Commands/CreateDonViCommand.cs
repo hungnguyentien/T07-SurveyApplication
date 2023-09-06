@@ -1,11 +1,6 @@
 ﻿using MediatR;
 using SurveyApplication.Application.DTOs.DonVi;
-using SurveyApplication.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.DonVis.Requests.Commands
 {

@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Queries
 {

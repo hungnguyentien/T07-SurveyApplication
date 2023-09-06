@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.DTOs.NguoiDaiDien.Validators
 {
-    
+
     public class NguoiDaiDienDtoValidator : AbstractValidator<INguoiDaiDienDto>
     {
         private readonly INguoiDaiDienRepository _NguoiDaiDienRepository;
@@ -11,17 +11,17 @@ namespace SurveyApplication.Application.DTOs.NguoiDaiDien.Validators
         {
             _NguoiDaiDienRepository = NguoiDaiDienViRepository;
 
-            RuleFor(p => p.MaNguoiDaiDien)
-                .NotNull().NotEmpty().WithMessage("Mã người đại diện không được để trống");
+            //RuleFor(p => p.MaNguoiDaiDien)
+            //    .NotNull().NotEmpty().WithMessage("Mã người đại diện không được để trống");
 
-            RuleFor(p => p.MaNguoiDaiDien)
-                .MustAsync(async (maNguoiDaiDien, token) =>
-                {
-                    var NguoiDaiDienViExists = await _NguoiDaiDienRepository.ExistsByMaNguoiDaiDien(maNguoiDaiDien.ToString());
-                    return !NguoiDaiDienViExists;
-                }).WithMessage("Mã người đại diện đã tồn tại!");
+            //RuleFor(p => p.MaNguoiDaiDien)
+            //    .MustAsync(async (maNguoiDaiDien, token) =>
+            //    {
+            //        var NguoiDaiDienViExists = await _NguoiDaiDienRepository.ExistsByMaNguoiDaiDien(maNguoiDaiDien);
+            //        return !NguoiDaiDienViExists;
+            //    }).WithMessage("Mã người đại diện đã tồn tại!");
 
-            RuleFor(p => p.MaDonVi).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
+            RuleFor(p => p.IdDonVi).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
 
             RuleFor(p => p.HoTen)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
@@ -39,9 +39,9 @@ namespace SurveyApplication.Application.DTOs.NguoiDaiDien.Validators
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-            RuleFor(p => p.MoTa)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+            //RuleFor(p => p.MoTa)
+            //    .NotEmpty().WithMessage("{PropertyName} is required.")
+            //    .NotNull();
         }
     }
 }

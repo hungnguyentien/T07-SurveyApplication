@@ -1,11 +1,6 @@
 ﻿using MediatR;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
-using SurveyApplication.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries
 {
@@ -16,6 +11,6 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries
         public int PageCount { get; set; }
         public int PageIndex { get; set; } = 1;
         public int PageSize { get; set; } = 5;
-        public string Keyword { get; set; }
+        public string? Keyword { get; set; }
     }
 }

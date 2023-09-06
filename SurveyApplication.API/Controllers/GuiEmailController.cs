@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.GuiEmail;
-using SurveyApplication.Application.Features.GuiEmails.Requests.Commands;
+using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
 using SurveyApplication.Application.Features.GuiEmails.Requests.Queries;
 
 namespace SurveyApplication.API.Controllers
@@ -18,37 +18,36 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("GetAllGuiEmail")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<GuiEmailDto>>> GetAllGuiEmail()
         {
             var leaveAllocations = await _mediator.Send(new GetGuiEmailListRequest());
             return Ok(leaveAllocations);
         }
 
-        [HttpGet("GetGuiEmailByCondition")]
-        public async Task<ActionResult<List<GuiEmailDto>>> GetGuiEmailByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        [HttpGet("GetByCondition")]
+        public async Task<ActionResult<List<GuiEmailDto>>> GetGuiEmailByCondition([FromQuery] Paging paging)
         {
-            var leaveAllocations = await _mediator.Send(new GetGuiEmailConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
-            return Ok(leaveAllocations);
+            var lstGuiMail = await _mediator.Send(new GetGuiEmailConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+            return Ok(lstGuiMail);
         }
 
-        [HttpGet("GetByGuiEmail/{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<List<GuiEmailDto>>> GetByGuiEmail(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetGuiEmailDetailRequest { Id = id });
             return Ok(leaveAllocations);
         }
 
-        [HttpPost("CreateGuiEmail")]
+        [HttpPost("Create")]
         public async Task<ActionResult<GuiEmailDto>> CreateGuiEmail([FromBody] CreateGuiEmailDto obj)
         {
-            obj.MaGuiEmail = Guid.NewGuid();
             var command = new CreatGuiEmailCommand { GuiEmailDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
         }
 
-        [HttpPost("UpdateGuiEmail")]
+        [HttpPost("Update")]
         public async Task<ActionResult<GuiEmailDto>> UpdateGuiEmail([FromBody] UpdateGuiEmailDto obj)
         {
             var command = new UpdateGuiEmailCommand { GuiEmailDto = obj };
@@ -59,7 +58,7 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        [HttpDelete("DeleteGuiEmail/{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<GuiEmailDto>>> DeleteGuiEmail(int id)
         {
             var command = new DeleteGuiEmailCommand { Id = id };

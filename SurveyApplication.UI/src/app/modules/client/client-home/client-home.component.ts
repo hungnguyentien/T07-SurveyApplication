@@ -1,296 +1,232 @@
-import { Component, OnInit } from '@angular/core';
-import { SurveyCreatorModel } from 'survey-creator-core';
-import { Model } from 'survey-core';
-import { themeJson } from './theme';
-import { jsonDataFake } from './json';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+} from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
-import { ClientHomeService } from '@app/services';
-import { first } from 'rxjs';
-
-const creatorOptions = {
-  showLogicTab: true,
-  isAutoSave: true,
-};
-
-const defaultJson = jsonDataFake.config;
+import { GeneralInfo, LinhVucHoatDong, TinhQuanHuyen, UnitType } from '@app/models';
+import { jsonDataFake } from '../general-info/json';
+import Utils from '@app/helpers/utils';
+import { UnitTypeService } from '@app/services/unit-type.service';
+import { LinhVucHoatDongService } from '@app/services';
 
 @Component({
   selector: 'app-client-home',
   templateUrl: './client-home.component.html',
   styleUrls: ['./client-home.component.css'],
 })
-export class ClientHomeComponent implements OnInit {
-  surveyCreatorModel!: SurveyCreatorModel;
-  model!: Model;
-  bangKhaoSat?: any;
+export class ClientHomeComponent {
+  generalInfo?: GeneralInfo;
+  frmGeneralInfo!: FormGroup;
+  submitCount!: number;
+  submitted!: boolean;
+  loading!: boolean;
 
-  constructor(private clientHomeService: ClientHomeService) {}
+  tinh: any[] | undefined;
+  selectedTinh: string | undefined;
+
+  quanHuyen: any[] | undefined;
+  selectedQuanHuyen: string | undefined;
+
+  phuongXa: any[] | undefined;
+  selectedPhuongXa: string | undefined;
+
+  dataArr: any[] | undefined;
+
+  lstLoaiHinhDonVi: UnitType[] | undefined;
+
+  lstLinhVuc: LinhVucHoatDong[] | undefined;
+
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private messageService: MessageService,
+    private loaiHinhDonViService: UnitTypeService,
+    private linhVucHoatDongService: LinhVucHoatDongService
+  ) {}
 
   ngOnInit() {
-    const configSurvey = (configJson: any) => {
-      const survey = new Model(configJson);
-      // survey.setDataCore(jsonDataFake.data);
-      // You can delete the line below if you do not use a customized theme
-      survey.applyTheme(themeJson);
-      // Set label for btn Complete
-      survey.completeText = 'Gửi thông tin';
-      survey.addNavigationItem({
-        id: 'sv-nav-back-page',
-        title: 'Quay lại',
-        action: () => {
-          //TODO quay lại trang trước
-          alert('Comming son!');
-        },
-        css: 'nav-button',
-        innerCss: 'sd-btn nav-input',
-      });
-
-      survey.addNavigationItem({
-        id: 'sv-nav-clear-page',
-        title: 'Khai lại từ đầu',
-        action: () => {
-          survey.currentPage.questions.forEach((question: any) => {
-            question.value = undefined;
-            question.commentElements &&
-              question.commentElements.forEach(
-                (comment: any) => (comment.value = '')
-              );
-          });
-        },
-        css: 'nav-button',
-        innerCss: 'sd-btn nav-input',
-      });
-
-      survey.onClearFiles.add((survey, options) => {
-        // Get temp files for this question
-        let tempFiles = new Array(options.name);
-        let fileInfoToRemove = !!tempFiles
-          ? tempFiles.filter(function (file: any) {
-              return file.name === options.fileName;
-            })[0]
-          : undefined;
-        if (fileInfoToRemove !== undefined) {
-          var index = tempFiles.indexOf(fileInfoToRemove);
-          tempFiles.splice(index, 1);
-        }
-        // Code to remove temporary stored files
-        // Write your own code to remove files fron server if they were loaded already
-        // and then invoke success and allow to proceed further
-        options.callback('success');
-      });
-
-      survey.onUploadFiles.add((survey, options) => {
-        let content = new Array();
-        options.files.forEach((file) => {
-          let fileReader = new FileReader();
-          fileReader.onload = function (e) {
-            content = content.concat([
-              {
-                name: file.name,
-                type: file.type,
-                content: fileReader.result,
-                file: file,
-              },
-            ]);
-            if (content.length === options.files.length) {
-              options.callback(
-                'success',
-                content.map(function (fileContent) {
-                  return {
-                    file: fileContent.file,
-                    content: fileContent.content,
-                  };
-                })
-              );
-            }
-          };
-          fileReader.readAsDataURL(file);
-        });
-      });
-
-      survey.onComplete.add((sender, options) => {
-        console.log(JSON.stringify(sender.data, null, 3));
-      });
-
-      this.model = survey;
-    };
-
-    this.clientHomeService.getAll().subscribe((rep) => {
-      this.bangKhaoSat = rep;
+    this.submitCount = 0;
+    this.submitted = false;
+    this.loading = false;
+    this.tinh = [];
+    this.quanHuyen = [];
+    this.phuongXa = [];
+    this.dataArr = Object.entries(jsonDataFake);
+    this.dataArr.forEach((el, i) => {
+      let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
+      this.tinh?.push({ name: tinhQuanHuyen.name, code: tinhQuanHuyen.code });
+    });
+    // this.selectedTinh = '10';
+    this.frmGeneralInfo = this.formBuilder.group({
+      DonVi: this.formBuilder.group({
+        TenDonVi: ['', Validators.required],
+        Tinh: ['', Validators.required],
+        QuanHuyen: [''],
+        PhuongXa: [''],
+        DiaChi: ['', Validators.required],
+        IdLoaiHinh: ['', Validators.required],
+        IdLinhVuc: ['', Validators.required],
+        MaSoThue: [''],
+        WebSite: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
+            ),
+          ],
+        ],
+        Email: ['', [Validators.required, Validators.email]],
+        SoDienThoai: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+            ),
+          ],
+        ],
+      }),
+      NguoiDaiDien: this.formBuilder.group({
+        HoTen: ['', Validators.required],
+        ChucVu: ['', Validators.required],
+        Email: ['', [Validators.required, Validators.email]],
+        SoDienThoai: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+            ),
+          ],
+        ],
+      }),
     });
 
-    this.clientHomeService
-      .getSurveyConfig()
-      .pipe(first())
-      .subscribe((res) => {
-        let pages = defaultJson.pages[0];
-        let els = new Array();
-        res.forEach((el, i) => {
-          let loaiCauHoi = el.loaiCauHoi;
-          let name = el.maCauHoi;
-          let title = el.tieuDe;
-          let isRequired = el.batBuoc ?? false;
-          let description = el.noidung;
+    this.loaiHinhDonViService.getAll().subscribe({
+      next: (res) => {
+        this.loading = true;
+        this.lstLoaiHinhDonVi = res;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
 
-          let labelTrue = el.lstCot[0]?.noidung;
-          let labelFalse = el.lstCot[1]?.noidung;
-          let choices = new Array();
-          el.lstCot.forEach((el, i) => {
-            choices.push({
-              value: el.noidung,
-              text: `${i + 1}. ${el.noidung}`,
-            });
-          });
-          let showOtherItem = el.isOther ?? false;
-          let otherPlaceholder = showOtherItem ? 'Câu trả lời của bạn' : '';
-          let otherText = showOtherItem ? el.labelCauTraLoi : '';
-
-          let columns = new Array();
-          let isMatrixdropdown = loaiCauHoi == 4;
-          el.lstCot.forEach((el, i) => {
-            columns.push(
-              isMatrixdropdown
-                ? {
-                    value: el.maCot,
-                    text: el.noidung,
-                  }
-                : {
-                    name: el.maCot,
-                    title: el.noidung,
-                  }
-            );
-          });
-          let rows = new Array();
-          el.lstHang.forEach((el, i) => {
-            rows.push({
-              value: el.maHang,
-              text: el.noidung,
-            });
-          });
-
-          let maxSize = el.kichThuocFile;
-          if (loaiCauHoi === 0) {
-            els.push({
-              type: 'boolean',
-              name: name,
-              title: title,
-              defaultValue: 'true',
-              labelTrue: labelTrue,
-              labelFalse: labelFalse,
-              isRequired: isRequired,
-              description: description,
-            });
-          } else if (loaiCauHoi === 1) {
-            els.push({
-              type: 'checkbox',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              description: description,
-              choices: choices,
-              showOtherItem: showOtherItem,
-              otherPlaceholder: otherPlaceholder,
-              otherText: otherText,
-            });
-          } else if (loaiCauHoi == 2) {
-            els.push({
-              type: 'text',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              description: description,
-            });
-          } else if (loaiCauHoi == 3) {
-            els.push({
-              type: 'comment',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              description: description,
-            });
-          } else if (loaiCauHoi == 4) {
-            els.push({
-              type: 'matrix',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              description: description,
-              alternateRows: true,
-              columns: columns,
-              rows: rows,
-            });
-          } else if (loaiCauHoi == 5) {
-            els.push({
-              type: 'matrixdropdown',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              description: description,
-              alternateRows: true,
-              columns: columns,
-              rows: rows,
-              choices: [
-                {
-                  value: '1',
-                  text: 'Có',
-                },
-              ],
-              cellType: 'checkbox',
-              columnColCount: 1,
-            });
-          } else if (loaiCauHoi == 6) {
-            els.push({
-              type: 'matrixdropdown',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              description: description,
-              alternateRows: true,
-              columns: columns,
-              rows: rows,
-              choices: [
-                {
-                  value: '1',
-                  text: 'Có',
-                },
-              ],
-              cellType: 'text',
-              columnColCount: 1,
-            });
-          } else if (loaiCauHoi == 7) {
-            els.push({
-              type: 'file',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              description: description,
-              storeDataAsText: false,
-              allowMultiple: true,
-              maxSize: maxSize,
-              showCommentArea: true,
-              commentText: 'Ghi chú',
-            });
-          }
-        });
-
-        pages.elements = els;
-        configSurvey(defaultJson);
-      });
-
-    // const creator = new SurveyCreatorModel(creatorOptions);
-    // creator.text =
-    //   window.localStorage.getItem('survey-json') || JSON.stringify(defaultJson);
-
-    // creator.saveSurveyFunc = (saveNo: number, callback: Function) => {
-    //   window.localStorage.setItem("survey-json", creator.text);
-    //   callback(saveNo, true);
-    // };
-    // this.surveyCreatorModel = creator;
-
-    // survey.onComplete.add((sender, options) => {
-    //   console.log(JSON.stringify(sender.data, null, 3));
-    // });
-
-    // this.model = survey;
+    this.loaiHinhDonViService.getAll().subscribe({
+      next: (res) => {
+        this.loading = true;
+        this.lstLoaiHinhDonVi = res;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
   }
+
+  f = (name: string, subName: string = ''): FormControl => {
+    return (
+      subName
+        ? this.frmGeneralInfo?.get(name)?.get(subName)
+        : this.frmGeneralInfo?.get(name)
+    ) as FormControl;
+  };
+
+  onSubmit = () => {
+    this.submitted = true;
+    this.submitCount++;
+    if (this.frmGeneralInfo.invalid) {
+      return;
+    }
+
+    Utils.messageSuccess(
+      this.messageService,
+      'Nhập thông tin chung thành công!'
+    );
+    setTimeout(() => {
+      this.router.navigateByUrl('/phieu/thong-tin-khao-sat', {
+        state: this.generalInfo,
+      });
+    }, 3000);
+  };
+
+  resetForm = () => Utils.resetForm(this.frmGeneralInfo);
+
+  handlerChangeTinh = (e: any) => {
+    this.quanHuyen = [];
+    this.phuongXa = [];
+    if (e) {
+      if (e.value) {
+        this.setDiaChi();
+        let arr = Object.entries(
+          this.dataArr?.find((x) => x.at(0) == e.value).at(1)['quan-huyen']
+        );
+        arr.forEach((el, i) => {
+          let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
+          this.quanHuyen?.push({
+            name: tinhQuanHuyen.name,
+            code: tinhQuanHuyen.code,
+          });
+        });
+      }
+    }
+  };
+
+  handlerChangeQuanHuyen = (e: any) => {
+    this.phuongXa = [];
+    if (e) {
+      if (e.value) {
+        this.setDiaChi();
+        let arr = Object.entries(
+          this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)[
+            'quan-huyen'
+          ][this.selectedQuanHuyen ?? '']['xa-phuong']
+        );
+        arr.forEach((el, i) => {
+          let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
+          this.phuongXa?.push({
+            name: tinhQuanHuyen.name,
+            code: tinhQuanHuyen.code,
+          });
+        });
+      }
+    }
+  };
+
+  handlerChangePhuongXa = (e: any) => {
+    this.setDiaChi();
+  };
+
+  setDiaChi = () => {
+    let arr = [
+      this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.[
+        'name_with_type'
+      ],
+      this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.[
+        'quan-huyen'
+      ]?.[this.selectedQuanHuyen ?? '']?.['name_with_type'],
+      this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.[
+        'quan-huyen'
+      ]?.[this.selectedQuanHuyen ?? '']?.['xa-phuong']?.[
+        this.selectedPhuongXa ?? ''
+      ]?.['name_with_type'],
+    ];
+    this.frmGeneralInfo
+      ?.get('DonVi')
+      ?.get('DiaChi')
+      ?.setValue(arr.filter((x) => x).join(' ,'));
+  };
 }

@@ -1,10 +1,5 @@
 ﻿using MediatR;
-using SurveyApplication.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.CauHoi.Requests.Commands
 {

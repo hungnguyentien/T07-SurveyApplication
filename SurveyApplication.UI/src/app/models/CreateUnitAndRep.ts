@@ -1,24 +1,25 @@
+import { Base } from './Common/Base';
 
-export interface CreateUnitAndRep{
-    DonViDto:ObjectSurvey
-    NguoiDaiDienDto:Representative
+export interface CreateUnitAndRep {
+  donViDto: ObjectSurvey;
+  nguoiDaiDienDto: Representative;
 }
 
-export interface ObjectSurvey{
-    MaLoaiHinh :number
-    MaLinhVuc:number
-    TenDonVi:string
-    DiaChi:string
-    MaSoThue:string
-    Email:string
-    WebSite:string
-    SoDienThoai:string
-   
+export interface ObjectSurvey extends Base{
+  IdLoaiHinh: number;
+  IdLinhVuc: number;
+  TenDonVi: string;
+  DiaChi: string;
+  MaSoThue: string;
+  Email: string;
+  WebSite: string;
+  SoDienThoai: string;
+
 }
-export interface Representative{
-    SoDienThoai:string
-    HoTen:string
-    ChucVu:string
-    Email:string
-    MoTa:string
+export interface Representative extends Base {
+  SoDienThoai: string;
+  HoTen: string;
+  ChucVu: string;
+  Email: string;
+  MoTa: string;
 }

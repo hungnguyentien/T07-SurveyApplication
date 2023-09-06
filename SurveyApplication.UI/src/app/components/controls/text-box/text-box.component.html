@@ -1,0 +1,34 @@
+<p>text-box works!</p>
+<input
+  type="text"
+  pInputText
+  class="form-control"
+  id="{{ name }}"
+  formControlName="{{ name }}"
+  placeholder="{{ placeholder ? placeholder : displayName }}"
+  [ngClass]="ngClass"
+/>
+<div *ngIf="submitted && fControl.errors" class="invalid-feedback">
+  <small *ngIf="fControl.errors?.['required']">
+    Vui lòng nhập {{ displayName.toLowerCase() }}
+  </small>
+</div>
+<!-- <input
+  type="text"
+  pInputText
+  class="form-control"
+  id="maCauHoi"
+  formControlName="maCauHoi"
+  [ngClass]="{
+    'is-invalid': cauHoiForm.submitted && f('maCauHoi').errors
+  }"
+  placeholder="VB01"
+/> -->
+<!-- <div
+  *ngIf="cauHoiForm.submitted && f('maCauHoi').errors"
+  class="invalid-feedback"
+>
+  <small *ngIf="f('maCauHoi').errors?.['required']">
+    Vui lòng nhập mã câu hỏi
+  </small>
+</div> -->

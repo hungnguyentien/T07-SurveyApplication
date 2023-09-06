@@ -31,17 +31,18 @@ export class SurveyInfoComponent {
 
   ngOnInit() {
     this.generalInfo = history.state;
-    const configSurvey = (configJson: any) => {
+    const configSurvey = (configJson: any, surveyData: string) => {
       this.model = Utils.configSurvey(
         configJson,
         themeJson,
         this.router,
-        (sender: Model) => {
+        (sender: Model, status: number) => {
           this.saveSurvey = {
             data: JSON.stringify(sender.data),
-            idBangKhaoSat: 1,
+            idBangKhaoSat: this.generalInfo.bangKhaoSat,
             idDonVi: this.generalInfo.donVi.id,
             idNguoiDaiDien: this.generalInfo.nguoiDaiDien.id,
+            trangThai: status,
           };
           this.loading = true;
           this.phieuKhaoSatService.saveSurvey(this.saveSurvey).subscribe({
@@ -61,176 +62,196 @@ export class SurveyInfoComponent {
               this.loading = false;
             },
           });
-        }
+        },
+        `${this.generalInfo.data}`,
+        surveyData
       );
     };
 
     this.loading = true;
-    this.phieuKhaoSatService.getSurveyConfig().subscribe((res) => {
-      let pages = defaultJson.pages[0];
-      let els = new Array();
-      res.forEach((el, i) => {
-        let loaiCauHoi = el.loaiCauHoi;
-        let name = el.maCauHoi;
-        let title = `${el.tieuDe}`;
-        let isRequired = el.batBuoc ?? false;
-        let requiredErrorText = isRequired
-          ? 'Vui lòng nhập câu trả lời của bạn!'
-          : '';
-        let description = el.noidung;
+    this.phieuKhaoSatService
+      .getSurveyConfig(
+        this.generalInfo.bangKhaoSat,
+        this.generalInfo.donVi.id,
+        this.generalInfo.nguoiDaiDien.id
+      )
+      .subscribe((res) => {
+        let els = new Array();
+        let pages = defaultJson.pages[0];
+        let readOnly = res.trangThai === 2;
+        res.lstCauHoi.forEach((el, i) => {
+          let loaiCauHoi = el.loaiCauHoi;
+          let name = el.maCauHoi;
+          let title = `${el.tieuDe}`;
+          let isRequired = el.batBuoc ?? false;
+          let requiredErrorText = isRequired
+            ? 'Vui lòng nhập câu trả lời của bạn!'
+            : '';
+          let description = el.noidung;
 
-        let labelTrue = el.lstCot[0]?.noidung;
-        let labelFalse = el.lstCot[1]?.noidung;
-        let choices = new Array();
-        el.lstCot.forEach((el, i) => {
-          choices.push({
-            value: el.noidung,
-            text: `${i + 1}. ${el.noidung}`,
+          let labelTrue = el.lstCot[0]?.noidung;
+          let labelFalse = el.lstCot[1]?.noidung;
+          let choices = new Array();
+          el.lstCot.forEach((el, i) => {
+            choices.push({
+              value: el.noidung,
+              text: `${i + 1}. ${el.noidung}`,
+            });
           });
-        });
-        let showOtherItem = el.isOther ?? false;
-        let otherPlaceholder = showOtherItem ? 'Câu trả lời của bạn' : '';
-        let otherText = showOtherItem ? el.labelCauTraLoi : '';
+          let showOtherItem = el.isOther ?? false;
+          let otherPlaceholder = showOtherItem ? 'Câu trả lời của bạn' : '';
+          let otherText = showOtherItem ? el.labelCauTraLoi : '';
 
-        let columns = new Array();
-        let isMatrixdropdown = loaiCauHoi == 4;
-        el.lstCot.forEach((el, i) => {
-          columns.push(
-            isMatrixdropdown
-              ? {
-                  value: el.maCot,
-                  text: el.noidung,
-                }
-              : {
-                  name: el.maCot,
-                  title: el.noidung,
-                }
-          );
-        });
-        let rows = new Array();
-        el.lstHang.forEach((el, i) => {
-          rows.push({
-            value: el.maHang,
-            text: el.noidung,
+          let columns = new Array();
+          let isMatrixdropdown = loaiCauHoi == 4;
+          el.lstCot.forEach((el, i) => {
+            columns.push(
+              isMatrixdropdown
+                ? {
+                    value: el.maCot,
+                    text: el.noidung,
+                  }
+                : {
+                    name: el.maCot,
+                    title: el.noidung,
+                  }
+            );
           });
+          let rows = new Array();
+          el.lstHang.forEach((el, i) => {
+            rows.push({
+              value: el.maHang,
+              text: el.noidung,
+            });
+          });
+
+          let maxSize = el.kichThuocFile;
+          if (loaiCauHoi === 0) {
+            els.push({
+              type: 'boolean',
+              name: name,
+              title: title,
+              defaultValue: 'true',
+              labelTrue: labelTrue,
+              labelFalse: labelFalse,
+              isRequired: isRequired,
+              requiredErrorText: requiredErrorText,
+              description: description,
+              readOnly: readOnly,
+            });
+          } else if (loaiCauHoi === 1) {
+            els.push({
+              type: 'checkbox',
+              name: name,
+              title: title,
+              isRequired: isRequired,
+              requiredErrorText: requiredErrorText,
+              description: description,
+              choices: choices,
+              showOtherItem: showOtherItem,
+              otherPlaceholder: otherPlaceholder,
+              otherText: otherText,
+              readOnly: readOnly,
+            });
+          } else if (loaiCauHoi == 2) {
+            els.push({
+              type: 'text',
+              name: name,
+              title: title,
+              isRequired: isRequired,
+              requiredErrorText: requiredErrorText,
+              description: description,
+              readOnly: readOnly,
+            });
+          } else if (loaiCauHoi == 3) {
+            els.push({
+              type: 'comment',
+              name: name,
+              title: title,
+              isRequired: isRequired,
+              requiredErrorText: requiredErrorText,
+              description: description,
+              readOnly: readOnly,
+            });
+          } else if (loaiCauHoi == 4) {
+            els.push({
+              type: 'matrix',
+              name: name,
+              title: title,
+              isRequired: isRequired,
+              requiredErrorText: requiredErrorText,
+              description: description,
+              alternateRows: true,
+              columns: columns,
+              rows: rows,
+              readOnly: readOnly,
+            });
+          } else if (loaiCauHoi == 5) {
+            els.push({
+              type: 'matrixdropdown',
+              name: name,
+              title: title,
+              isRequired: isRequired,
+              requiredErrorText: requiredErrorText,
+              description: description,
+              alternateRows: true,
+              columns: columns,
+              rows: rows,
+              choices: [
+                {
+                  value: '1',
+                  text: 'Có',
+                },
+              ],
+              cellType: 'checkbox',
+              columnColCount: 1,
+              readOnly: readOnly,
+            });
+          } else if (loaiCauHoi == 6) {
+            els.push({
+              type: 'matrixdropdown',
+              name: name,
+              title: title,
+              isRequired: isRequired,
+              requiredErrorText: requiredErrorText,
+              description: description,
+              alternateRows: true,
+              columns: columns,
+              rows: rows,
+              choices: [
+                {
+                  value: '1',
+                  text: 'Có',
+                },
+              ],
+              cellType: 'text',
+              columnColCount: 1,
+              readOnly: readOnly,
+            });
+          } else if (loaiCauHoi == 7) {
+            els.push({
+              type: 'file',
+              name: name,
+              title: title,
+              isRequired: isRequired,
+              requiredErrorText: requiredErrorText,
+              description: description,
+              storeDataAsText: false,
+              allowMultiple: true,
+              maxSize: maxSize,
+              showCommentArea: true,
+              commentText: 'Ghi chú',
+              readOnly: readOnly,
+            });
+          }
         });
 
-        let maxSize = el.kichThuocFile;
-        if (loaiCauHoi === 0) {
-          els.push({
-            type: 'boolean',
-            name: name,
-            title: title,
-            defaultValue: 'true',
-            labelTrue: labelTrue,
-            labelFalse: labelFalse,
-            isRequired: isRequired,
-            requiredErrorText: requiredErrorText,
-            description: description,
-          });
-        } else if (loaiCauHoi === 1) {
-          els.push({
-            type: 'checkbox',
-            name: name,
-            title: title,
-            isRequired: isRequired,
-            requiredErrorText: requiredErrorText,
-            description: description,
-            choices: choices,
-            showOtherItem: showOtherItem,
-            otherPlaceholder: otherPlaceholder,
-            otherText: otherText,
-          });
-        } else if (loaiCauHoi == 2) {
-          els.push({
-            type: 'text',
-            name: name,
-            title: title,
-            isRequired: isRequired,
-            requiredErrorText: requiredErrorText,
-            description: description,
-          });
-        } else if (loaiCauHoi == 3) {
-          els.push({
-            type: 'comment',
-            name: name,
-            title: title,
-            isRequired: isRequired,
-            requiredErrorText: requiredErrorText,
-            description: description,
-          });
-        } else if (loaiCauHoi == 4) {
-          els.push({
-            type: 'matrix',
-            name: name,
-            title: title,
-            isRequired: isRequired,
-            requiredErrorText: requiredErrorText,
-            description: description,
-            alternateRows: true,
-            columns: columns,
-            rows: rows,
-          });
-        } else if (loaiCauHoi == 5) {
-          els.push({
-            type: 'matrixdropdown',
-            name: name,
-            title: title,
-            isRequired: isRequired,
-            requiredErrorText: requiredErrorText,
-            description: description,
-            alternateRows: true,
-            columns: columns,
-            rows: rows,
-            choices: [
-              {
-                value: '1',
-                text: 'Có',
-              },
-            ],
-            cellType: 'checkbox',
-            columnColCount: 1,
-          });
-        } else if (loaiCauHoi == 6) {
-          els.push({
-            type: 'matrixdropdown',
-            name: name,
-            title: title,
-            isRequired: isRequired,
-            requiredErrorText: requiredErrorText,
-            description: description,
-            alternateRows: true,
-            columns: columns,
-            rows: rows,
-            choices: [
-              {
-                value: '1',
-                text: 'Có',
-              },
-            ],
-            cellType: 'text',
-            columnColCount: 1,
-          });
-        } else if (loaiCauHoi == 7) {
-          els.push({
-            type: 'file',
-            name: name,
-            title: title,
-            isRequired: isRequired,
-            requiredErrorText: requiredErrorText,
-            description: description,
-            storeDataAsText: false,
-            allowMultiple: true,
-            maxSize: maxSize,
-            showCommentArea: true,
-            commentText: 'Ghi chú',
-          });
-        }
+        pages.elements = [];
+        els.map((el) => {
+          (pages.elements as any[]).push(el);
+        });
+        configSurvey(defaultJson, res.kqSurvey);
+        this.loading = false;
       });
-
-      pages.elements = els;
-      configSurvey(defaultJson);
-      this.loading = false;
-    });
   }
 }

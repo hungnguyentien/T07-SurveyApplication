@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators
 {

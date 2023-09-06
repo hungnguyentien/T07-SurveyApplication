@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SurveyApplication.Application.Contracts.Identity;
-using SurveyApplication.Application.Models.Identity;
+﻿using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.Domain.Common.Identity;
+using SurveyApplication.Domain.Interfaces.Identity;
 
 namespace SurveyApplication.API.Controllers
 {

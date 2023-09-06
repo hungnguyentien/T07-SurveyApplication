@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
-using SurveyApplication.Application.Contracts.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.DTOs.DonVi.Validators
 {
@@ -16,9 +11,9 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
         {
             _donViRepository = donViRepository;
 
-            RuleFor(p => p.MaLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0."); ;
+            RuleFor(p => p.IdLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0."); ;
 
-            RuleFor(p => p.MaLinhVuc).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0."); ;
+            RuleFor(p => p.IdLinhVuc).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0."); ;
 
             RuleFor(p => p.TenDonVi)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

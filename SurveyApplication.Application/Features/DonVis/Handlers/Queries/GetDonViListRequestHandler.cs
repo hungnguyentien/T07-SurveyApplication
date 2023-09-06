@@ -1,14 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
 {

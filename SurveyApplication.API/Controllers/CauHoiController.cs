@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.CauHoi;
-using SurveyApplication.Application.DTOs.DonVi;
+using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.CauHoi.Requests.Commands;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
-using SurveyApplication.Application.Features.DonVis.Requests.Commands;
-using SurveyApplication.Application.Responses;
-using System.Net.NetworkInformation;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Utility;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -25,7 +24,7 @@ namespace SurveyApplication.API.Controllers
         [HttpGet("GetByCondition")]
         public async Task<ActionResult<BaseQuerieResponse<CauHoiDto>>> GetCauHoiByCondition([FromQuery] Paging paging)
         {
-            var result = await _mediator.Send(new GetCauHoiConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+            var result = await _mediator.Send(new GetCauHoiConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword, OrderBy = paging.OrderBy });
             return Ok(result);
         }
 
@@ -33,6 +32,13 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<CauHoiDto>> GetCauHoiById(int id)
         {
             var result = await _mediator.Send(new GetCauHoiDetailRequest { Id = id });
+            return Ok(result);
+        }
+
+        [HttpGet("GetLoaiCauHoi")]
+        public ActionResult GetLoaiCauHoi()
+        {
+            var result = EnumUltils.GetDescription<EnumCauHoi.Type>().Select(x => new { text = x.Value, value = ((int)x.Key).ToString() });
             return Ok(result);
         }
 

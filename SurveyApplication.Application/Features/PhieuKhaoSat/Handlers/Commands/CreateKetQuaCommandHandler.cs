@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat.Validators;
 using SurveyApplication.Application.Enums;
-using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
-using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 {
@@ -19,10 +13,12 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
     {
         private readonly IMapper _mapper;
         private readonly IKetQuaRepository _ketQuaRepository;
-        public CreateKetQuaCommandHandler(IMapper mapper, IKetQuaRepository ketQuaRepository)
+        private readonly IBangKhaoSatRepository _bangKhaoSatRepository;
+        public CreateKetQuaCommandHandler(IMapper mapper, IKetQuaRepository ketQuaRepository, IBangKhaoSatRepository bangKhaoSatRepository)
         {
             _mapper = mapper;
             _ketQuaRepository = ketQuaRepository;
+            _bangKhaoSatRepository = bangKhaoSatRepository;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateKetQuaCommand request, CancellationToken cancellationToken)
@@ -35,10 +31,21 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 response.Success = false;
                 response.Message = "Gửi thông tin không thành công!";
                 response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
-                 return response;
+                return response;
             }
 
+            var bangKs = await _bangKhaoSatRepository.GetById(request.CreateKetQuaDto.IdBangKhaoSat);
+            if (bangKs == null)
+            {
+                response.Success = false;
+                response.Message = "Không tồn tại bảng khảo sát!";
+                return response;
+            }
+
+            bangKs.TrangThai = (int)EnumTrangThai.TrangThai.HoanThanh;
+            await _bangKhaoSatRepository.Update(bangKs);
             var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
+            ketQua.ActiveFlag = request.CreateKetQuaDto.Status;
             ketQua = await _ketQuaRepository.Create(ketQua);
             response.Success = true;
             response.Message = "Gửi thông tin thành công!";

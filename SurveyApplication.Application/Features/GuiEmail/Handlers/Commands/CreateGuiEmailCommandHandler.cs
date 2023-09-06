@@ -1,19 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
-using SurveyApplication.Application.DTOs.DotKhaoSat.Validators;
 using SurveyApplication.Application.DTOs.GuiEmail.Validators;
 using SurveyApplication.Application.Exceptions;
-using SurveyApplication.Application.Features.GuiEmails.Requests.Commands;
-using SurveyApplication.Application.Responses;
-using SurveyApplication.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Commands
+namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 {
     
     public class CreateGuiEmailCommandHandler : IRequestHandler<CreatGuiEmailCommand, BaseCommandResponse>
@@ -40,10 +33,9 @@ namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Commands
                 response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
                 throw new ValidationException(validatorResult);
             }
-            var GuiEmail = _mapper.Map<GuiEmail>(request.GuiEmailDto);
 
+            var GuiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto);
             GuiEmail = await _GuiEmailRepository.Create(GuiEmail);
-
             response.Success = true;
             response.Message = "Tạo mới thành công";
             response.Id = GuiEmail.Id;

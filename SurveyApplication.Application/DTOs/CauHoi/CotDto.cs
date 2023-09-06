@@ -17,5 +17,7 @@ namespace SurveyApplication.Application.DTOs.CauHoi
         /// lable (text)
         /// </summary>
         public string Noidung { get; set; }
+
+        public int Id { get; set; }
     }
 }

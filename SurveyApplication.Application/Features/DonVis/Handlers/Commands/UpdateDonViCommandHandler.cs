@@ -1,16 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.DonVi.Validators;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
 {
@@ -29,7 +22,6 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
         {
             var validator = new UpdateDonViDtoValidator(_donViRepository);
             var validatorResult = await validator.ValidateAsync(request.DonViDto);
-
             if (validatorResult.IsValid == false)
             {
                 throw new ValidationException(validatorResult);

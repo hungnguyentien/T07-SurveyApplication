@@ -1,11 +1,5 @@
 ﻿using FluentValidation;
-using SurveyApplication.Application.Contracts.Persistence;
-using SurveyApplication.Application.DTOs.DotKhaoSat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.DTOs.DotKhaoSat.Validators
 {
@@ -26,7 +20,7 @@ namespace SurveyApplication.Application.DTOs.DotKhaoSat.Validators
                     return !dotKhaoSatExists;
                 }).WithMessage("Mã bảng khảo sát đã tồn tại!");
 
-            RuleFor(p => p.MaLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
+            RuleFor(p => p.IdLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
 
             RuleFor(p => p.TenDotKhaoSat)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

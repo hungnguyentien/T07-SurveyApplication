@@ -17,13 +17,15 @@ const routes: Routes = [
       {
         path: 'home',
         component: AdminHomeComponent,
+        title: 'Quản lý dashboard',
         data: {
-          title: 'Admin-home',
+          title: 'Dashboard',
         },
       },
       {
         path: 'loai-hinh-don-vi',
         component: AdminUnitTypeComponent,
+        title: 'Quản lý loại hình đơn vị',
         data: {
           title: 'loai-hinh-don-vi',
         },
@@ -31,6 +33,7 @@ const routes: Routes = [
       {
         path: 'quan-ly-don-vi',
         component: AdminObjectSurveyComponent,
+        title: 'Quản lý đơn vị',
         data: {
           title: 'quan-ly-don-vi',
         },
@@ -46,6 +49,7 @@ const routes: Routes = [
       {
         path: 'dot-khao-sat',
         component: AdminPeriodSurveyComponent,
+        title: 'Quản lý đợt khảo sát',
         data: {
           title: 'dot-khao-sat',
         },
@@ -53,6 +57,7 @@ const routes: Routes = [
       {
         path: 'bang-khao-sat',
         component:AdminTableSurveyComponent,
+        title: 'Quản lý bảng khảo sát',
         data: {
           title: 'bang-khao-sat',
         },
@@ -60,6 +65,7 @@ const routes: Routes = [
       {
         path: 'gui-email',
         component:AdminSendEmailComponent,
+        title: 'Quản lý gửi email',
         data: {
           title: 'gui-email',
         },

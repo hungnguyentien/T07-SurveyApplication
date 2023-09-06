@@ -4,8 +4,10 @@
         <h3>Xác nhận xoá đợt khảo sát</h3>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" class="custom-small-button" label="No" (click)="cd.reject()"></button>
-        <button type="button" pButton icon="pi pi-check" class="custom-small-button" label="Yes" (click)="cd.accept()"></button>
+        <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
+            (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
+            label="Xóa" (click)="cd.accept()"></button>
     </ng-template>
 </p-confirmDialog>
 
@@ -14,32 +16,33 @@
     <h5>Danh sách đợt khảo sát</h5>
     <div class="d-flex mt-3">
         <div>
-            <button (click)=" Add()" data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"></button>
+            <button (click)=" Add()" pButton type="button" icon="pi pi-plus" label="Thêm mới"
+                class="custom-button"></button>
         </div>
         <div class="ml-3">
-            <button pButton type="button"  icon="pi pi-trash" label="Xoá" class="custom-button" style="background-color: #ea5c5c;"></button>
+            <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"
+                style="background-color: #ea5c5c;"></button>
         </div>
     </div>
-    <form class="form-inline mt-4" (change)="GetPeriodSurvey()">
+    <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
         <div class="form-group mb-2">
-          <label for="inputPassword2" class="sr-only">Search</label>
-          <input type="text" class="form-control" id="inputPassword2" placeholder="Nhập từ khoá" [(ngModel)]="keyword" name="keyword"(change)="GetPeriodSurvey()">
+            <label for="keyWord" class="sr-only">Search</label>
+            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+                [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
         </div>
-        <button type="submit" class="btn btn-primary ml-2 mb-2"><i class="pi pi-search"></i></button>
+        <button type="submit" class="btn btn-primary ml-2 mb-2">
+            <i class="pi pi-search"></i>
+        </button>
     </form>
 </div>
 <div class="card mt-3">
-    <p-table
-    #dt
-    [value]="datas"
-    [(selection)]="selectedPeriodSurvey"
-    dataKey="id"
-    styleClass="p-datatable-gridlines"
-    [rowHover]="true"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-  >
-    >
+    <p-table #dt [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
+        scrollHeight="calc(100vh - 396px)" [(selection)]="selectedPeriodSurvey" dataKey="id"
+        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+        [totalRecords]="dataTotalRecords"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+        >
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 4rem">
@@ -48,41 +51,42 @@
                 <th style="min-width: 0rem">
                     STT
                 </th>
-                <th  style="min-width: 14rem">
+                <th style="min-width: 14rem">
                     <div class="flex justify-content-between align-items-center">
                         Mã đợt<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
-                <th  style="min-width: 14rem">
+                <th style="min-width: 14rem">
                     <div class="flex justify-content-between align-items-center">
                         Tên đợt<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
                 <th style="min-width: 10rem">
-                    <div class="flex justify-content-between align-items-center">               
-                        Loại hình đơn vị khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+                    <div class="flex justify-content-between align-items-center">
+                        Loại hình đơn vị khảo sát<div type="text" field="country.name" display="menu" class="ml-auto">
+                        </div>
                     </div>
                 </th>
                 <th style="min-width: 10rem">
-                    <div class="flex justify-content-between align-items-center">               
+                    <div class="flex justify-content-between align-items-center">
                         Thời gian<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
                 <th style="min-width: 10rem">
-                    <div class="flex justify-content-between align-items-center">               
+                    <div class="flex justify-content-between align-items-center">
                         Trạng thái<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
-            
+
                 <th style="min-width: 10rem">
                     <div>
                         Chức năng
                     </div>
                 </th>
-                
+
             </tr>
         </ng-template>
-       
+
         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
             <tr class="p-selectable-row">
 
@@ -99,79 +103,109 @@
                 <td>
                     <span class="ml-1 vertical-align-middle">{{ rowData.tenDotKhaoSat }}</span>
                 </td>
-             
+
                 <td>
                     <span class="ml-1 vertical-align-middle">{{ GetNameById(rowData.maLoaiHinh) }}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy' }}-{{rowData.ngayKetThuuc| date:'dd/MM/yyyy'}}</span>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy'
+                        }}-{{rowData.ngayKetThuuc| date:'dd/MM/yyyy'}}</span>
                 </td>
                 <td>
                     <span class="ml-1 vertical-align-middle"></span>
                 </td>
                 <td>
-                    <a class="m-3"><span data-toggle="modal" data-target="#createForm" (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
+                    <a class="m-3"><span (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật"
+                            aria-hidden="true"></span></a>
 
-                    <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;" aria-hidden="true"></span></a>
+                    <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;"
+                            aria-hidden="true"></span></a>
                 </td>
             </tr>
         </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8" class="text-center">Không có bản ghi nào</td>
+            </tr>
+        </ng-template>
     </p-table>
-    <div class="card flex justify-content-center">
-        <p-paginator (onPageChange)="onPageChange($event)"[first]="first" [rows]="pageSize" [totalRecords]="TotalCount" [rowsPerPageOptions]="[5, 10, 50]"></p-paginator>
-        
-    </div>
 </div>
 
 
 
 <!-- modal -->
-<div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"*ngIf="showadd == true">Thêm mới đợt khảo sát</h5>
-          <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd == false">Cập nhật loại hình đơn vị</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form method="POST" [formGroup]="FormPeriodSurvey">
+<form method="POST" [formGroup]="FormPeriodSurvey" (ngSubmit)="Save()">
+    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+        [resizable]="true" [maximizable]="true">
+        <ng-template pTemplate="header">
+            <h5 class="modal-title">
+                {{ showadd === true ? "Thêm mới đợt khảo sát" : "Cập nhật đợt khảo sát" }}
+            </h5>
+        </ng-template>
+        <ng-template pTemplate="body">
             <div class="row">
                 <div class="form-group col-md-6">
-                  <label for="recipient-name" class="col-form-label">Mã đợt: <span style="color: red;">*</span></label>
-                  <input type="text"formControlName="MaDotKhaoSat" class="form-control" id="recipient-name" pInputText placeholder="Nhập mã đợt khảo sát">
+                    <label for="recipient-name" class="col-form-label">Mã đợt: <span
+                            style="color: red;">*</span></label>
+                    <input type="text" formControlName="MaDotKhaoSat" class="form-control" id="recipient-name"
+                        pInputText placeholder="Nhập mã đợt khảo sát">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span style="color: red;">*</span> </label>
-                    <select  formControlName="MaLoaiHinh" class="custom-select" >
+                    <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span
+                            style="color: red;">*</span> </label>
+                    <select formControlName="IdLoaiHinh" class="custom-select">
                         <option value="">Chọn loại hình đơn vị</option>
-                      <option *ngFor="let Lh of DSLoaiHinh" [value]="Lh.id">{{Lh.tenLoaiHinh}}</option>
+                        <option *ngFor="let Lh of DSLoaiHinh" [value]="Lh.id">{{Lh.tenLoaiHinh}}</option>
                     </select>
-                  </div>
+                </div>
             </div>
             <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Tên đợt: <span style="color: red;">*</span></label>
-                <input type="text"formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên đợt khảo sát">
+                <input type="text" formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText
+                    placeholder="Nhập tên đợt khảo sát">
             </div>
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span style="color: red;">*</span></label>
-                    <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name" pInputText placeholder="Ngày Bắt Đầu">
-                  </div>
-                  
-                  <div class="form-group col-md-6">
-                    <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span style="color: red;">*</span></label>
-                    <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name" pInputText placeholder="Nhập tên loại hình đơn vị">
-                  </div>
+                    <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span
+                            style="color: red;">*</span></label>
+                    <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name" pInputText
+                        placeholder="Ngày Bắt Đầu">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span
+                            style="color: red;">*</span></label>
+                    <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name"
+                        pInputText placeholder="Ngày bắt đầu">
+                </div>
             </div>
-          </form>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button type="button" class="btn btn-secondary" (click)="visible = false">Đóng</button>
+            <button type="submit" class="btn btn-primary">Lưu</button>
+        </ng-template>
+    </p-dialog>
+</form>
+<!-- <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd == true">Thêm mới đợt khảo sát</h5>
+                <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd == false">Cập nhật loại hình đơn vị</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" [formGroup]="FormPeriodSurvey">
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="Save()">Lưu</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-          <button type="button" class="btn btn-primary"  data-dismiss="modal"(click)="Save()">Lưu</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div> -->

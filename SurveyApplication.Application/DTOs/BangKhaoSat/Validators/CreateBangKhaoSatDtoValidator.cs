@@ -1,12 +1,5 @@
 ﻿using FluentValidation;
-using SurveyApplication.Application.Contracts.Persistence;
-using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
-using SurveyApplication.Application.DTOs.BangKhaoSat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.DTOs.BangKhaoSat.Validators
 {

@@ -1,10 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   ConfirmEventType,
   ConfirmationService,
@@ -13,14 +7,7 @@ import {
 import { Table } from 'primeng/table';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import {
-  Paging,
-  CauHoi,
-  CreateUpdateCauHoi,
-  Cot,
-  Hang,
-  LoaiCauHoi,
-} from '@app/models';
+import { Paging, CauHoi, CreateUpdateCauHoi, Select } from '@app/models';
 import Utils from '@app/helpers/utils';
 import { CauHoiService } from '@app/services';
 import {
@@ -30,6 +17,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { PrimeNGConfig } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-question',
@@ -38,69 +27,95 @@ import {
 })
 export class QuestionComponent {
   public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
-  @Input() valueEditor: string = ''; // Khai báo biến lưu nội dung CKEditor
-  @Input() inputValue: string = '';
-  @Input() listAnswer: string[] = [];
-  @Output() inputValueChange: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('dt') table!: Table;
   loading: boolean = true;
   lstQuestion!: CauHoi[];
   selectedQuestion!: CauHoi[];
-
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
-  frmCauHoi: FormGroup;
+
+  frmCauHoi!: FormGroup;
 
   question!: CreateUpdateCauHoi;
-  columns!: Cot[];
-
-  lstLoaiCauHoi!: LoaiCauHoi[];
-  isOther!: boolean;
+  lstLoaiCauHoi!: Select[];
+  isOther: boolean = true;
   selectedLoaiCauHoi: string = '0';
   id: number = 0;
+  isCreate?: boolean;
+  visible: boolean = false;
+  submitted: boolean = false;
 
   constructor(
     private cauHoiService: CauHoiService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private formBuilder: FormBuilder
-  ) {
-    this.frmCauHoi = this.formBuilder.group({
-      id: [''],
-      maCauHoi: ['', Validators.required],
-      loaiCauHoi: ['', Validators.required],
-      tieuDe: [''],
-      isOther: [''],
-      labelCauTraLoi: [''],
-      noidung: [''],
-      kichThuocFile: [''],
-      soLuongFileToiDa: [''],
-      lstCot: this.formBuilder.array([]),
-      lstHang: this.formBuilder.array([]),
-    });
-  }
+    private formBuilder: FormBuilder,
+    private config: PrimeNGConfig,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit() {
     this.loading = true;
-    this.lstLoaiCauHoi = [
-      { text: 'Chọn một đáp án', value: '0' },
-      { text: 'Chọn nhiều đáp án', value: '1' },
-      { text: 'Văn bản ngắn', value: '2' },
-      { text: 'Văn bản dài', value: '3' },
-      { text: 'Dạng bảng (một lựa chọn)', value: '4' },
-      { text: 'Dạng bảng (nhiều lựa chọn)', value: '5' },
-      { text: 'Dạng bảng (văn bản)', value: '6' },
-      { text: 'Tải tệp tin', value: '7' },
-    ];
+    this.cauHoiService.getLoaiCauHoi().subscribe({
+      next: (res) => {
+        this.lstLoaiCauHoi = res;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+    this.createForm();
+    Utils.translate('vi', this.translateService, this.config);
   }
-  //CKEditer
-  onInputChange() {
-    this.inputValueChange.emit(this.inputValue);
-    this.inputValueChange.emit(this.valueEditor);
-    console.log(this.inputValue);
-  }
+
+  createForm = () => {
+    this.frmCauHoi = this.formBuilder.group({
+      id: new FormControl<number>(0),
+      maCauHoi: ['', Validators.required],
+      loaiCauHoi: ['', Validators.required],
+      tieuDe: [''],
+      isOther: new FormControl<boolean>(true),
+      labelCauTraLoi: [''],
+      noidung: [''],
+      kichThuocFile: new FormControl<number>(0),
+      soLuongFileToiDa: new FormControl<number>(0),
+      lstCot: this.formBuilder.array([]),
+      lstHang: this.formBuilder.array([]),
+    });
+  };
+
+  loadListLazy = (event: any) => {
+    this.loading = true;
+    let pageSize = event.rows;
+    let pageIndex = event.first / pageSize + 1;
+    this.paging = {
+      pageIndex: pageIndex,
+      pageSize: pageSize,
+      keyword: '',
+      orderBy: event.sortField
+        ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
+        : '',
+    };
+    this.cauHoiService.getByCondition(this.paging).subscribe({
+      next: (res) => {
+        this.lstQuestion = res.data;
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  };
 
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
@@ -119,27 +134,56 @@ export class QuestionComponent {
     });
   };
 
-  loadListLazy = (event: any) => {
-    this.loading = true;
-    let pageSize = event.rows;
-    let pageIndex = event.first / pageSize + 1;
-    this.paging = {
-      pageIndex: pageIndex,
-      pageSize: pageSize,
-      keyword: '',
-    };
-    this.cauHoiService.getByCondition(this.paging).subscribe({
+  f = (name: string, subName: string = ''): FormControl => {
+    return (
+      subName
+        ? this.frmCauHoi?.get(name)?.get(subName)
+        : this.frmCauHoi?.get(name)
+    ) as FormControl;
+  };
+
+  onSubmit = (data: any) => {
+    if (this.isCreate !== null)
+      this.isCreate ? this.createSubmit(data) : this.updateSubmit(data);
+  };
+
+  createDialog = () => {
+    this.isCreate = true;
+    this.visible = true;
+    this.submitted = false;
+    this.createForm();
+  };
+
+  updateDialog = (id: number) => {
+    this.isCreate = false;
+    this.visible = true;
+    this.submitted = false;
+    this.createForm();
+    this.cauHoiService.getById<CreateUpdateCauHoi>(id).subscribe({
       next: (res) => {
-        this.lstQuestion = res.data;
-        this.dataTotalRecords = res.totalFilter;
+        let k = Object.keys(res);
+        let v = Object.values(res);
+        Utils.setValueForm(this.frmCauHoi, k, v);
+        this.selectedLoaiCauHoi = res.loaiCauHoi.toString();
+        this.isOther = res.isOther ?? false;
+        res.lstCot.forEach((el, i) => {
+          const newItem = this.formBuilder.group({
+            id: el.id,
+            maCot: el.maCot,
+            noidung: el.noidung,
+          });
+          this.lstCot.push(newItem);
+        });
+        res.lstHang.forEach((el, i) => {
+          const newItem = this.formBuilder.group({
+            id: el.id,
+            maCot: el.maHang,
+            noidung: el.noidung,
+          });
+          this.lstHang.push(newItem);
+        });
       },
-      error: (e) => {
-        Utils.messageError(this.messageService, e.message);
-        this.loading = false;
-      },
-      complete: () => {
-        this.loading = false;
-      },
+      error: (e) => Utils.messageError(this.messageService, e.message),
     });
   };
 
@@ -190,55 +234,45 @@ export class QuestionComponent {
     });
   };
 
-  update = () => {
-    // this.question = {
-    //   maCauHoi: 'string16',
-    //   loaiCauHoi: 0,
-    //   batBuoc: true,
-    //   tieuDe: 'string',
-    //   kichThuocFile: 0,
-    //   isOther: true,
-    //   labelCauTraLoi: 'string',
-    //   priority: 0,
-    //   noiDung: 'aa',
-    //   soLuongFileToiDa: 1,
-    //   id: 16
-    // }
-    this.cauHoiService.update<CreateUpdateCauHoi>(this.question).subscribe({
+  createSubmit = (data: any) => {
+    this.submitted = true;
+    if (this.frmCauHoi.invalid) return;
+    this.question = data.value;
+    this.question.batBuoc = false;
+    this.question.priority = 0;
+    this.cauHoiService.create<CreateUpdateCauHoi>(this.question).subscribe({
       next: (res) => {
-        this.table.reset();
-        Utils.messageSuccess(this.messageService, res.message);
+        if (res.success) {
+          this.table.reset();
+          Utils.messageSuccess(this.messageService, res.message);
+          this.visible = false;
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
       },
       error: (e) => Utils.messageError(this.messageService, e.message),
     });
   };
 
-  submitForm() {
-    if (this.selectedLoaiCauHoi === '0') {
-      console.log('Input Value:', this.inputValue);
-      console.log('ValueEditor:', this.valueEditor);
-    } else if (this.selectedLoaiCauHoi === '1') {
-      console.log('Input Value:', this.inputValue);
-    }
-  }
-
-  onSubmit(data: any) {
-    if (this.frmCauHoi.invalid) {
-      return;
-    }
-
+  updateSubmit = (data: any) => {
+    this.submitted = true;
+    if (this.frmCauHoi.invalid) return;
     this.question = data.value;
     this.question.batBuoc = false;
     this.question.priority = 0;
-    debugger;
-    this.cauHoiService.create<CreateUpdateCauHoi>(this.question).subscribe({
+    this.cauHoiService.update<CreateUpdateCauHoi>(this.question).subscribe({
       next: (res) => {
-        this.table.reset();
-        Utils.messageSuccess(this.messageService, res.message);
+        if (res.success) {
+          this.table.reset();
+          Utils.messageSuccess(this.messageService, res.message);
+          this.visible = false;
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
       },
       error: (e) => Utils.messageError(this.messageService, e.message),
     });
-  }
+  };
 
   handlerChange = (e: any) => {
     this.isOther = e.target.checked;
@@ -247,14 +281,6 @@ export class QuestionComponent {
 
   handlerChangeLCh = (e: any) => {
     this.selectedLoaiCauHoi = e.value;
-  };
-
-  f = (name: string, subName: string = ''): FormControl => {
-    return (
-      subName
-        ? this.frmCauHoi?.get(name)?.get(subName)
-        : this.frmCauHoi?.get(name)
-    ) as FormControl;
   };
 
   get lstCot(): FormArray {

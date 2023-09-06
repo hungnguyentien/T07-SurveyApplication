@@ -3,4 +3,5 @@ export interface SaveSurvey {
   idNguoiDaiDien: number;
   idBangKhaoSat: number;
   data: string;
+  trangThai: number;
 }

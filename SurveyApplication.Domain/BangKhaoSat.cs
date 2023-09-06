@@ -11,27 +11,25 @@ namespace SurveyApplication.Domain
     public partial class BangKhaoSat : BaseDomainEntity
     {
         [Required]
+        [MaxLength(250)]
         public string MaBangKhaoSat { get; set; }
 
-        [Required]
-        public int? MaLoaiHinh { get; set; }
+        public int IdLoaiHinh { get; set; }
+
+        public int IdDotKhaoSat { get; set; }
 
         [Required]
-        public int? MaDotKhaoSat { get; set; }
+        public string TenBangKhaoSat { get;set; }
 
         [Required]
-        public string? TenBangKhaoSat { get;set; }
+        public string MoTa { get; set; }
 
         [Required]
-        public string? MoTa { get; set; }
+        public DateTime NgayBatDau { get; set; }
 
         [Required]
-        public DateTime? NgayBatDau { get; set; }
+        public DateTime NgayKetThuc { get; set; }
 
-        [Required]
-        public DateTime? NgayKetThuc { get; set; }
-
-        [Required]
         public int? TrangThai { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace SurveyApplication.Application.DTOs.LinhVucHoatDong
 {
     public partial class LinhVucHoatDongDto : BaseDto
     {
-        public Guid MaLinhVuc { get; set; }
+        public string MaLinhVuc { get; set; }
         public string? TenLinhVuc { get; set; }
     }
 }

@@ -18,14 +18,6 @@ namespace SurveyApplication.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SurveyApplicationDbContext).Assembly);
-
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-
-            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -50,12 +42,8 @@ namespace SurveyApplication.Persistence
         public DbSet<DotKhaoSat> DotKhaoSat { get; set; }
         public DbSet<BangKhaoSat> BangKhaoSat { get; set; }
         public DbSet<NguoiDaiDien> NguoiDaiDien { get; set; }
-        public DbSet<NguoiDung> NguoiDung { get; set; }
-        public DbSet<NguoiDungVaiTro> NguoiDungVaiTro { get; set; }
-        public DbSet<Quyen> Quyen { get; set; }
-        public DbSet<VaiTro> VaiTro { get; set; }
-        public DbSet<VaiTroQuyen> VaiTroQuyen { get; set; }
         public DbSet<DonVi> DonVi { get; set; }
+        public DbSet<BangKhaoSatCauHoi> BangKhaoSatCauHoi { get; set; }
 
         #region Câu hỏi
 

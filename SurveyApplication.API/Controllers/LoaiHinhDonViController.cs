@@ -1,11 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
-using SurveyApplication.Application.Responses;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -20,14 +19,14 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("GetAllLoaiHinhDonVi")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetAllLoaiHinhDonVi()
         {
             var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViListRequest());
             return Ok(leaveAllocations);
         }
 
-        [HttpGet("GetLastRecordByMaLoaiHinh")]
+        [HttpGet("GenerateMaLoaiHinh")]
         public async Task<ActionResult<string>> GetLastRecordByMaLoaiHinh()
         {
             var record = await _mediator.Send(new GetLastRecordLoaiHinhDonViRequest());
@@ -37,21 +36,21 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        [HttpGet("GetLoaiHinhDonViByCondition")]
-        public async Task<ActionResult<PageCommandResponse<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        [HttpGet("GetByCondition")]
+        public async Task<ActionResult<PageCommandResponse<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition([FromQuery] Paging paging)
         {
-            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
+            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
-        [HttpGet("GetByLoaiHinhDonVi/{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByLoaiHinhDonVi(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViDetailRequest { Id = id });
             return Ok(leaveAllocations);
         }
 
-        [HttpPost("CreateLoaiHinhDonVi")]
+        [HttpPost("Create")]
         public async Task<ActionResult<LoaiHinhDonViDto>> CreateLoaiHinhDonVi([FromBody] CreateLoaiHinhDonViDto obj)
         {
             var command = new CreateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
@@ -59,7 +58,7 @@ namespace SurveyApplication.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost("UpdateLoaiHinhDonVi")]
+        [HttpPost("Update")]
         public async Task<ActionResult<LoaiHinhDonViDto>> UpdateLoaiHinhDonVi([FromBody] UpdateLoaiHinhDonViDto obj)
         {
             var command = new UpdateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
@@ -70,7 +69,7 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        [HttpDelete("DeleteLoaiHinhDonVi/{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(int id)
         {
             var command = new DeleteLoaiHinhDonViCommand { Id = id };

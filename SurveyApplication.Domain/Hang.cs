@@ -11,7 +11,7 @@ namespace SurveyApplication.Domain
     public class Hang : BaseDomainEntity
     {
         [Required]
-        [MaxLength(50)]
+        [MaxLength(250)]
         public string MaHang { get; set; }
         [Required]
         [MaxLength(500)]

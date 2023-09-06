@@ -10,24 +10,22 @@ namespace SurveyApplication.Domain
 {
     public partial class NguoiDaiDien : BaseDomainEntity
     {
-        public Guid MaNguoiDaiDien { get; set; }
+        [MaxLength(250)]
+        public string MaNguoiDaiDien { get; set; }
+
+        public int IdDonVi { get; set; }
 
         [Required]
-        public int? MaDonVi { get; set; }
+        public  string HoTen { get; set; }
 
         [Required]
-        public  string? HoTen { get; set; }
+        public string ChucVu { get; set; }
 
         [Required]
-        public string? ChucVu { get; set; }
+        public string SoDienThoai { get; set; }
 
         [Required]
-        public string? SoDienThoai { get; set; }
-
-        [Required]
-        public string? Email { get; set; }
-
-        [Required]
+        public string Email { get; set; }
         public string? MoTa { get; set; }
     }
 }

@@ -11,25 +11,16 @@ namespace SurveyApplication.Domain
     public partial class GuiEmail : BaseDomainEntity
     {
         [Required]
-        public Guid MaGuiEmail { get; set; }
-
+        [MaxLength(250)]
+        public string MaGuiEmail { get; set; }
         [Required]
-        public int? MaBangKhaoSat { get; set; }
-
+        public string DiaChiNhan { get; set; }
         [Required]
+        public string TieuDe { get; set; }
+        [Required]
+        public string NoiDung { get; set; }
+        public int IdBangKhaoSat { get; set; }
+        public int IdDonVi { get; set; }
         public int? TrangThai { get; set; }
-
-        [Required]
-        public DateTime? ThoiGian { get; set; }
-
-        [Required]
-        public string? DiaChiNhan { get; set; }
-
-        [Required]
-        public string? TieuDe { get; set; }
-
-        [Required]
-        public string? NoiDung { get; set; }
-      
     }
 }

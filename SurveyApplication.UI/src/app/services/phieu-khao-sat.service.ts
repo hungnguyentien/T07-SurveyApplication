@@ -2,8 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first } from 'rxjs';
 
-import { SurveyConfig, GeneralInfo, SaveSurvey, BaseCommandResponse } from '@app/models';
+import {
+  SurveyConfig,
+  GeneralInfo,
+  SaveSurvey,
+  BaseCommandResponse,
+} from '@app/models';
 import { environment } from '@environments/environment';
+import Utils from '@app/helpers/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -11,18 +17,26 @@ import { environment } from '@environments/environment';
 export class PhieuKhaoSatService {
   constructor(private http: HttpClient) {}
 
-  getSurveyConfig() {
+  getSurveyConfig(
+    idBangKhaoSat: number,
+    idDonVi: number,
+    idNguoiKhaoSat: number
+  ) {
+    let query = Utils.getParamsQuery(
+      ['idBangKhaoSat', 'idDonVi', 'idNguoiKhaoSat'],
+      [idBangKhaoSat.toString(), idDonVi.toString(), idNguoiKhaoSat.toString()]
+    );
     return this.http
-      .get<SurveyConfig[]>(
-        `${environment.apiUrl}/PhieuKhaoSat/GetConfigPhieuKhaoSat?idBangKhaoSat=1`
+      .get<SurveyConfig>(
+        `${environment.apiUrl}/PhieuKhaoSat/GetConfigPhieuKhaoSat${query}`
       )
       .pipe(first());
   }
 
-  getGeneralInfo(idDonVi: string) {
+  getGeneralInfo(data: string) {
     return this.http
       .get<GeneralInfo>(
-        `${environment.apiUrl}/PhieuKhaoSat/GetThongTinChung?idDonVi=${idDonVi}`
+        `${environment.apiUrl}/PhieuKhaoSat/GetThongTinChung?data=${data}`
       )
       .pipe(first());
   }

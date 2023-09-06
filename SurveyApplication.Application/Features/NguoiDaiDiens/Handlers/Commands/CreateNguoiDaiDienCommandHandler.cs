@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
-using SurveyApplication.Application.Contracts.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
 using SurveyApplication.Application.DTOs.NguoiDaiDien.Validators;
 using SurveyApplication.Application.Exceptions;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 {
@@ -40,9 +35,8 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
             }
 
             var NguoiDaiDien = _mapper.Map<NguoiDaiDien>(request.NguoiDaiDienDto);
-
+            NguoiDaiDien.MaNguoiDaiDien = Guid.NewGuid().ToString();
             NguoiDaiDien = await _nguoiDaiDienRepository.Create(NguoiDaiDien);
-
             response.Success = true;
             response.Message = "Tạo mới thành công";
             response.Id = NguoiDaiDien.Id;

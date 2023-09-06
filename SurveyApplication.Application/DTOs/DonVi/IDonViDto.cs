@@ -9,9 +9,9 @@ namespace SurveyApplication.Application.DTOs.DonVi
 {
     public interface IDonViDto
     {
-        public Guid MaDonVi { get; set; }
-        public int? MaLoaiHinh { get; set; }
-        public int? MaLinhVuc { get; set; }
+        public int Id { get; set; }
+        public int? IdLoaiHinh { get; set; }
+        public int? IdLinhVuc { get; set; }
         public string? TenDonVi { get; set; }
         public string? DiaChi { get; set; }
         public string? MaSoThue { get; set; }

@@ -11,9 +11,9 @@ namespace SurveyApplication.Domain
     public class CauHoi : BaseDomainEntity
     {
         [Required]
+        [MaxLength(250)]
         public string MaCauHoi { get; set; }
         public short LoaiCauHoi { get; set; }
-        public bool? BatBuoc { get; set; }
         [Required]
         public string TieuDe { get; set; }
         public string NoiDung { get; set; }
@@ -21,6 +21,5 @@ namespace SurveyApplication.Domain
         public int KichThuocFile { get; set; }
         public bool? IsOther { get; set; }
         public string LabelCauTraLoi { get; set; }
-        public int Priority { get; set; }
     }
 }

@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.DTOs.DonVi.Validators;
 using SurveyApplication.Application.Exceptions;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
 {
@@ -30,7 +25,6 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
             var response = new BaseCommandResponse();
             var validator = new CreateDonViDtoValidator(_donViRepository);
             var validatorResult = await validator.ValidateAsync(request.DonViDto);
-
             if (validatorResult.IsValid == false)
             {
                 response.Success = false;
@@ -40,9 +34,8 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
             }
 
             var donVi = _mapper.Map<DonVi>(request.DonViDto);
-
+            donVi.MaDonVi = Guid.NewGuid().ToString();
             donVi = await _donViRepository.Create(donVi);
-
             response.Success = true;
             response.Message = "Tạo mới thành công";
             response.Id = donVi.Id;

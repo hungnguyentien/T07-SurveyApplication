@@ -9,8 +9,8 @@ namespace SurveyApplication.Application.DTOs.NguoiDaiDien
 {
     public partial class NguoiDaiDienDto : BaseDto
     {
-        public Guid MaNguoiDaiDien { get; set; }
-        public int? MaDonVi { get; set; }
+        public string MaNguoiDaiDien { get; set; }
+        public int? IdDonVi { get; set; }
         public string? HoTen { get; set; }
         public string? ChucVu { get; set; }
         public string? SoDienThoai { get; set; }

@@ -10,7 +10,7 @@ export abstract class BaseService<T> {
     return this._http.get<T[]>(`${this.actionUrl}/GetAll`).pipe(first());
   }
 
-  getById(id: number): Observable<T> {
+  getById<T>(id: number): Observable<T> {
     return this._http.get<T>(`${this.actionUrl}/GetById/${id}`).pipe(first());
   }
 
@@ -68,5 +68,11 @@ export abstract class BaseService<T> {
         params: getParams,
       })
       .pipe(first());
+  }
+
+  getCities() {
+    const apiUrl =
+      'https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json';
+    return this._http.get(apiUrl);
   }
 }

@@ -43,8 +43,24 @@
       }
     }
   }
+
+  .p-disabled {
+    .p-dropdown-label {
+      padding: 8px 12px;
+    }
+  }
 }
 
 .ck.ck-editor__main > .ck-editor__editable {
   min-height: 88px;
+}
+
+#sv-nav-luu-tam {
+  input[type="button"] {
+    &.sd-btn {
+      background: rgba(36, 119, 69, 1);
+      padding-left: 8px;
+      color: white;
+    }
+  }
 }

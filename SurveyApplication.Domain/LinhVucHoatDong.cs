@@ -11,9 +11,11 @@ namespace SurveyApplication.Domain
     public partial class LinhVucHoatDong : BaseDomainEntity
     {
         [Required]
-        public Guid MaLinhVuc { get; set; }
+        [MaxLength(250)]
+        public string MaLinhVuc { get; set; }
 
         [Required]
-        public string? TenLinhVuc { get; set; }  
+        public string TenLinhVuc { get; set; }  
+        public string MoTa { get; set; }
     }
 }

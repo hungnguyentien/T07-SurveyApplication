@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
-using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.NguoiDaiDien.Validators;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 {
@@ -28,7 +22,6 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
         {
             var validator = new UpdateNguoiDaiDienDtoValidator(_nguoiDaiDienRepository);
             var validatorResult = await validator.ValidateAsync(request.NguoiDaiDienDto);
-
             if (validatorResult.IsValid == false)
             {
                 throw new ValidationException(validatorResult);

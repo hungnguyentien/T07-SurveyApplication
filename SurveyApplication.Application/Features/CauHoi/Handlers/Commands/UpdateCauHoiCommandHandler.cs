@@ -1,43 +1,38 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
-using SurveyApplication.Application.DTOs.CauHoi;
-using SurveyApplication.Application.DTOs.DonVi.Validators;
+using SurveyApplication.Application.DTOs.CauHoi.Validators;
 using SurveyApplication.Application.Features.CauHoi.Requests.Commands;
-using SurveyApplication.Application.Features.DonVis.Requests.Commands;
-using SurveyApplication.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Application.Exceptions;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.CauHoi.Handlers.Commands
 {
-    public class UpdateCauHoiCommandHandler : IRequestHandler<UpdateCauHoiCommand, BaseCommandResponse>
+    public class UpdateCauHoiCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateCauHoiCommand, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
-        private readonly ICauHoiRepository _cauHoiRepository;
-        public UpdateCauHoiCommandHandler(IMapper mapper, ICauHoiRepository cauHoiRepository)
+        public UpdateCauHoiCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
             _mapper = mapper;
-            _cauHoiRepository = cauHoiRepository;
         }
 
         public async Task<BaseCommandResponse> Handle(UpdateCauHoiCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            //var validator = new UpdateDonViDtoValidator(_donViRepository);
-            //var validatorResult = await validator.ValidateAsync(request.DonViDto);
+            var validator = new UpdateCauHoiDtoValidator(_surveyRepo, request.CauHoiDto.Id);
+            var validatorResult = await validator.ValidateAsync(request.CauHoiDto, cancellationToken);
+            if (!validatorResult.IsValid)
+            {
+                response.Success = false;
+                response.Message = "Tạo mới thất bại";
+                response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
+                return response;
+            }
 
-            //if (validatorResult.IsValid == false)
-            //{
-            //    throw new ValidationException(validatorResult);
-            //}
-
-            var cauHoi = await _cauHoiRepository.GetById(request.CauHoiDto.Id);
+            var cauHoi = await _surveyRepo.CauHoi.GetById(request.CauHoiDto.Id);
             _mapper.Map(request.CauHoiDto, cauHoi);
-            await _cauHoiRepository.Update(cauHoi);
+            await _surveyRepo.CauHoi.UpdateAsync(cauHoi);
+            await _surveyRepo.SaveAync();
             response.Message = "Cập nhật thành công!";
             response.Id = cauHoi.Id;
             return response;

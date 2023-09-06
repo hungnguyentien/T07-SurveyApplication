@@ -1,38 +1,25 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
 {
-    public class DeleteDonViCommandHandler : IRequestHandler<DeleteDonViCommand>
+    public class DeleteDonViCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteDonViCommand>
     {
-        private readonly IDonViRepository _donViRepository;
-        private readonly IMapper _mapper;
-
-        public DeleteDonViCommandHandler(IDonViRepository donViRepository, IMapper mapper)
+        public DeleteDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository) : base(surveyRepository)
         {
-            _donViRepository = donViRepository;
-            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteDonViCommand request, CancellationToken cancellationToken)
         {
-            var DonViRepository = await _donViRepository.GetById(request.Id);
-
-            if (DonViRepository == null)
-            {
-                throw new NotFoundException(nameof(DonVi), request.Id);
-            }
-            await _donViRepository.Delete(DonViRepository);
+            var donVi = await _surveyRepo.DonVi.GetById(request.Id) ?? throw new NotFoundException(nameof(DonVi), request.Id);
+            var lstNguoiDaiDien = await _surveyRepo.NguoiDaiDien.GetAllListAsync(x => x.IdDonVi == donVi.Id);
+            await _surveyRepo.DonVi.DeleteAsync(donVi);
+            await _surveyRepo.NguoiDaiDien.DeleteAsync(lstNguoiDaiDien);
+            await _surveyRepo.SaveAync();
             return Unit.Value;
         }
     }

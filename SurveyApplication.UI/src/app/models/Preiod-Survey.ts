@@ -1,6 +1,6 @@
 export interface PeriodSurvey{
     MaDotKhaoSat:string;
-    MaLoaiHinh:number;
+    IdLoaiHinh:number;
     TenDotKhaoSat:string;
     NgayBatDau:Date;
     NgayKetThuuc:Date;

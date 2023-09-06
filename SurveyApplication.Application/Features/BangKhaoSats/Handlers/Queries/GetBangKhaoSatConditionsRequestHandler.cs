@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
-using SurveyApplication.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
 {
@@ -25,7 +20,7 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
 
         public async Task<PageCommandResponse<BangKhaoSatDto>> Handle(GetBangKhaoSatConditionsRequest request, CancellationToken cancellationToken)
         {
-            var BangKhaoSats = await _bangKhaoSatRepository.GetByCondition(request.PageIndex, request.PageSize, request.Keyword, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenBangKhaoSat) && x.TenBangKhaoSat.Contains(request.Keyword), x => x.MoTa);
+            var BangKhaoSats = await _bangKhaoSatRepository.GetByConditions(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenBangKhaoSat) && x.TenBangKhaoSat.Contains(request.Keyword), x => x.MoTa);
             return _mapper.Map<PageCommandResponse<BangKhaoSatDto>>(BangKhaoSats);
         }
     }

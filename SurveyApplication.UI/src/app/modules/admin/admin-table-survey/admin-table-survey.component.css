@@ -1,41 +1,39 @@
 .custom-button {
-    background-color: #4e73df;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 13px;
-    cursor: pointer;
-    border-radius: 4px; 
-    margin-right: 20px;
-
-  }
-  .custom-button:hover {
-    background-color: #4e73df;
-  }
-  .custom-button1 {
-    background-color: #616265;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 13px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  .custom-button:hover {
-    background-color: #4e73df;
-  }
-  .custom-small-button {
-    font-size: 15px;
-    padding: 6px 12px;
-  }
-  
-.button-container {
-    display: flex; /* Sử dụng Flexbox */
-    justify-content: flex-end; /* Căn cấp độ sang bên trái */
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
 }
-  ::ng-deep .p-calendar {
-    height: 40px; /* Đặt chiều cao mong muốn */
-  }
+.custom-button:hover {
+  background-color: #4e73df;
+}
+.custom-button1 {
+  background-color: #616265;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.custom-button:hover {
+  background-color: #4e73df;
+}
+.custom-small-button {
+  font-size: 15px;
+  padding: 6px 12px;
+}
+
+.button-container {
+  display: flex; /* Sử dụng Flexbox */
+  justify-content: flex-end; /* Căn cấp độ sang bên trái */
+}
+::ng-deep .p-calendar {
+  height: 40px; /* Đặt chiều cao mong muốn */
+}
 /* Tùy chỉnh chiều cao của p-dropdown */
 ::ng-deep .p-dropdown {
   max-height: 40px; /* Đặt chiều cao mong muốn */
@@ -44,4 +42,3 @@
 input {
   height: 40px; /* Đặt chiều cao mong muốn */
 }
-

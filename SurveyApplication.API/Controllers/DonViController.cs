@@ -1,19 +1,17 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DonViAndNguoiDaiDien;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
-using SurveyApplication.Application.Responses;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
     public class DonViController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -23,39 +21,33 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("GetAllDonVi")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<DonViDto>>> GetAllDonVi()
         {
-            var leaveAllocations = await _mediator.Send(new GetDonViListRequest());
-            return Ok(leaveAllocations);
+            var lstDv = await _mediator.Send(new GetDonViListRequest());
+            return Ok(lstDv);
         }
 
-        [HttpGet("GetDonViByCondition")]
-        public async Task<ActionResult<PageCommandResponse<DonViDto>>> GetDonViByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        [HttpGet("GetByCondition")]
+        public async Task<ActionResult<BaseQuerieResponse<DonViDto>>> GetDonViByCondition([FromQuery] Paging paging)
         {
-            keyword ??= "";
-
-            var leaveAllocations = await _mediator.Send(new GetDonViConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
+            var leaveAllocations = await _mediator.Send(new GetDonViConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
-        [HttpGet("GetByDonVi/{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<List<DonViDto>>> GetByDonVi(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetDonViDetailRequest { Id = id });
             return Ok(leaveAllocations);
         }
 
-        [HttpPost("CreateDonVi")]
+        [HttpPost("Create")]
         public async Task<ActionResult<DonViDto>> CreateDonVi([FromBody] CreateDonViAndNguoiDaiDienDto obj)
         {
-            obj.DonViDto.MaDonVi = Guid.NewGuid();
             var command_1 = new CreateDonViCommand { DonViDto = obj.DonViDto };
             var response_1 = await _mediator.Send(command_1);
-
-            obj.NguoiDaiDienDto.MaDonVi = response_1.Id;
-            obj.NguoiDaiDienDto.MaNguoiDaiDien = Guid.NewGuid();
-
+            obj.NguoiDaiDienDto.IdDonVi = response_1.Id;
             var command_2 = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
             var response_2 = await _mediator.Send(command_2);
             return Ok(new
@@ -65,7 +57,7 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        [HttpPost("UpdateDonVi")]
+        [HttpPost("Update")]
         public async Task<ActionResult<DonViDto>> UpdateDonVi([FromBody] UpdateDonViAndNguoiDaiDienDto obj)
         {
             var command_1 = new UpdateDonViCommand { DonViDto = obj.DonViDto };
@@ -81,14 +73,11 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        [HttpDelete("DeleteDonVi")]
-        public async Task<ActionResult<List<DonViDto>>> DeleteDonVi(int idDonVi, int idNguoiDaiDien)
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult<List<DonViDto>>> DeleteDonVi(int id)
         {
-            var command_1 = new DeleteDonViCommand { Id = idDonVi };
-            await _mediator.Send(command_1);
-
-            var command_2 = new DeleteNguoiDaiDienCommand { Id = idNguoiDaiDien };
-            await _mediator.Send(command_2);
+            var command = new DeleteDonViCommand { Id = id };
+            await _mediator.Send(command);
             return Ok(new
             {
                 Success = true,

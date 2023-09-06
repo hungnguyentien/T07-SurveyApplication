@@ -14,175 +14,175 @@ export const jsonDataFake = {
       {
         name: 'page1',
         elements: [
-          {
-            type: 'boolean',
-            name: 'question1',
-            title: '1. Sử dụng mã GS1 (ví dụ GTIN, GLN) (Chọn ô thích hợp):',
-            defaultValue: 'false',
-            labelTrue: 'Có',
-            labelFalse: 'Không',
-          },
-          {
-            type: 'checkbox',
-            name: 'question2',
-            title: '2. Loại hình của đơn vị',
-            isRequired: true,
-            choices: [
-              {
-                value: 'Doanh nghiệp nhà nước',
-                text: 'a. Doanh nghiệp nhà nước',
-              },
-              {
-                value: 'Doanh nghiệp tư nhân',
-                text: 'b. Doanh nghiệp tư nhân',
-              },
-              {
-                value: 'Hợp tác xã',
-                text: 'c. Hợp tác xã',
-              },
-              {
-                value: 'Cổ phần',
-                text: 'd. Cổ phần',
-              },
-              {
-                value: 'Trách nhiệm hữu hạn',
-                text: 'e. Trách nhiệm hữu hạn',
-              },
-              {
-                value: 'Có vốn đầu tư nước ngoài',
-                text: 'f. Có vốn đầu tư nước ngoài',
-              },
-              {
-                value: 'Công ty liên doanh',
-                text: 'g. Công ty liên doanh',
-              },
-              {
-                value: 'Hộ kinh doanh cá thể',
-                text: 'h. Hộ kinh doanh cá thể',
-              },
-              {
-                value: 'Công ty hợp danh',
-                text: 'i. Công ty hợp danh',
-              },
-            ],
-            showOtherItem: true,
-            otherPlaceholder: 'Câu trả lời của bạn',
-            otherText: 'j. Khác',
-          },
-          {
-            type: 'comment',
-            name: 'question3',
-            title: '3. Liệt kê các sản phẩm đơn vị đang sản xuất',
-          },
-          {
-            type: 'matrixdropdown',
-            name: 'question4',
-            title: '4. [...]',
-            alternateRows: true,
-            columns: [
-              {
-                name: 'Column 1',
-                title: 'Câu trả lời 1',
-              },
-              {
-                name: 'Column 2',
-                title: 'Câu trả lời 2',
-              },
-              {
-                name: 'Column 3',
-                title: 'Câu trả lời 3',
-              },
-            ],
-            choices: [
-              {
-                value: '1',
-                text: 'Có',
-              },
-            ],
-            cellType: 'checkbox',
-            columnColCount: 1,
-            rows: [
-              {
-                value: 'Row 1',
-                text: 'Câu hỏi phụ 1',
-              },
-              {
-                value: 'Row 2',
-                text: 'Câu hỏi phụ 2',
-              },
-            ],
-          },
-          {
-            type: 'matrix',
-            name: 'question5',
-            title: '5. [...]',
-            alternateRows: true,
-            columns: [
-              {
-                value: 'Column 1',
-                text: 'Câu trả lời 1',
-              },
-              {
-                value: 'Column 2',
-                text: 'Câu trả lời 2',
-              },
-              {
-                value: 'Column 3',
-                text: 'Câu trả lời 3',
-              },
-            ],
-            rows: [
-              {
-                value: 'Row 1',
-                text: 'Câu hỏi phụ 1',
-              },
-              {
-                value: 'Row 2',
-                text: 'Câu hỏi phụ 2',
-              },
-            ],
-          },
-          {
-            type: 'matrixdropdown',
-            name: 'question6',
-            title: '6. [...]',
-            alternateRows: true,
-            columns: [
-              {
-                name: 'Column 1',
-                title: 'Câu trả lời 1',
-              },
-              {
-                name: 'Column 2',
-                title: 'Câu trả lời 2',
-              },
-              {
-                name: 'Column 3',
-                title: 'Câu trả lời 3',
-              },
-            ],
-            cellType: 'text',
-            rows: [
-              {
-                value: 'Row 1',
-                text: 'Câu hỏi phụ 1',
-              },
-              {
-                value: 'Row 2',
-                text: 'Câu hỏi phụ 2',
-              },
-            ],
-          },
-          {
-            type: 'file',
-            storeDataAsText: false,
-            allowMultiple: true,
-            maxSize: 102400,
-            name: 'question7',
-            title: '7. [...]',
-            showCommentArea: true,
-            commentText: 'Ghi chú',
-          },
+          // {
+          //   type: 'boolean',
+          //   name: 'question1',
+          //   title: '1. Sử dụng mã GS1 (ví dụ GTIN, GLN) (Chọn ô thích hợp):',
+          //   defaultValue: 'false',
+          //   labelTrue: 'Có',
+          //   labelFalse: 'Không',
+          // },
+          // {
+          //   type: 'checkbox',
+          //   name: 'question2',
+          //   title: '2. Loại hình của đơn vị',
+          //   isRequired: true,
+          //   choices: [
+          //     {
+          //       value: 'Doanh nghiệp nhà nước',
+          //       text: 'a. Doanh nghiệp nhà nước',
+          //     },
+          //     {
+          //       value: 'Doanh nghiệp tư nhân',
+          //       text: 'b. Doanh nghiệp tư nhân',
+          //     },
+          //     {
+          //       value: 'Hợp tác xã',
+          //       text: 'c. Hợp tác xã',
+          //     },
+          //     {
+          //       value: 'Cổ phần',
+          //       text: 'd. Cổ phần',
+          //     },
+          //     {
+          //       value: 'Trách nhiệm hữu hạn',
+          //       text: 'e. Trách nhiệm hữu hạn',
+          //     },
+          //     {
+          //       value: 'Có vốn đầu tư nước ngoài',
+          //       text: 'f. Có vốn đầu tư nước ngoài',
+          //     },
+          //     {
+          //       value: 'Công ty liên doanh',
+          //       text: 'g. Công ty liên doanh',
+          //     },
+          //     {
+          //       value: 'Hộ kinh doanh cá thể',
+          //       text: 'h. Hộ kinh doanh cá thể',
+          //     },
+          //     {
+          //       value: 'Công ty hợp danh',
+          //       text: 'i. Công ty hợp danh',
+          //     },
+          //   ],
+          //   showOtherItem: true,
+          //   otherPlaceholder: 'Câu trả lời của bạn',
+          //   otherText: 'j. Khác',
+          // },
+          // {
+          //   type: 'comment',
+          //   name: 'question3',
+          //   title: '3. Liệt kê các sản phẩm đơn vị đang sản xuất',
+          // },
+          // {
+          //   type: 'matrixdropdown',
+          //   name: 'question4',
+          //   title: '4. [...]',
+          //   alternateRows: true,
+          //   columns: [
+          //     {
+          //       name: 'Column 1',
+          //       title: 'Câu trả lời 1',
+          //     },
+          //     {
+          //       name: 'Column 2',
+          //       title: 'Câu trả lời 2',
+          //     },
+          //     {
+          //       name: 'Column 3',
+          //       title: 'Câu trả lời 3',
+          //     },
+          //   ],
+          //   choices: [
+          //     {
+          //       value: '1',
+          //       text: 'Có',
+          //     },
+          //   ],
+          //   cellType: 'checkbox',
+          //   columnColCount: 1,
+          //   rows: [
+          //     {
+          //       value: 'Row 1',
+          //       text: 'Câu hỏi phụ 1',
+          //     },
+          //     {
+          //       value: 'Row 2',
+          //       text: 'Câu hỏi phụ 2',
+          //     },
+          //   ],
+          // },
+          // {
+          //   type: 'matrix',
+          //   name: 'question5',
+          //   title: '5. [...]',
+          //   alternateRows: true,
+          //   columns: [
+          //     {
+          //       value: 'Column 1',
+          //       text: 'Câu trả lời 1',
+          //     },
+          //     {
+          //       value: 'Column 2',
+          //       text: 'Câu trả lời 2',
+          //     },
+          //     {
+          //       value: 'Column 3',
+          //       text: 'Câu trả lời 3',
+          //     },
+          //   ],
+          //   rows: [
+          //     {
+          //       value: 'Row 1',
+          //       text: 'Câu hỏi phụ 1',
+          //     },
+          //     {
+          //       value: 'Row 2',
+          //       text: 'Câu hỏi phụ 2',
+          //     },
+          //   ],
+          // },
+          // {
+          //   type: 'matrixdropdown',
+          //   name: 'question6',
+          //   title: '6. [...]',
+          //   alternateRows: true,
+          //   columns: [
+          //     {
+          //       name: 'Column 1',
+          //       title: 'Câu trả lời 1',
+          //     },
+          //     {
+          //       name: 'Column 2',
+          //       title: 'Câu trả lời 2',
+          //     },
+          //     {
+          //       name: 'Column 3',
+          //       title: 'Câu trả lời 3',
+          //     },
+          //   ],
+          //   cellType: 'text',
+          //   rows: [
+          //     {
+          //       value: 'Row 1',
+          //       text: 'Câu hỏi phụ 1',
+          //     },
+          //     {
+          //       value: 'Row 2',
+          //       text: 'Câu hỏi phụ 2',
+          //     },
+          //   ],
+          // },
+          // {
+          //   type: 'file',
+          //   storeDataAsText: false,
+          //   allowMultiple: true,
+          //   maxSize: 102400,
+          //   name: 'question7',
+          //   title: '7. [...]',
+          //   showCommentArea: true,
+          //   commentText: 'Ghi chú',
+          // },
         ],
         title: 'I. Thông tin sử dụng Mã số mã vạch của đơn vị',
       },

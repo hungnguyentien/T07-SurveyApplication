@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SurveyApplication.Application\SurveyApplication.Application.csproj" />
+    <ProjectReference Include="..\SurveyApplication.Domain\SurveyApplication.Domain.csproj" />
   </ItemGroup>
 
 </Project>

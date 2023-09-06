@@ -1,13 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
-using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
-using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
-using SurveyApplication.Application.Responses;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -22,30 +19,28 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("GetAllDotKhaoSat")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<DotKhaoSatDto>>> GetAllBangKhaoSat()
         {
-            var leaveAllocations = await _mediator.Send(new GetDotKhaoSatListRequest());
-            return Ok(leaveAllocations);
+            var lstDks = await _mediator.Send(new GetDotKhaoSatListRequest());
+            return Ok(lstDks);
         }
 
-        [HttpGet("GetDotKhaoSatByCondition")]
-        public async Task<ActionResult<PageCommandResponse<DotKhaoSatDto>>> GetBangKhaoSatByCondition(int pageIndex = 1, int pageSize = 5, string? keyword = "")
+        [HttpGet("GetByCondition")]
+        public async Task<ActionResult<PageCommandResponse<DotKhaoSatDto>>> GetBangKhaoSatByCondition([FromQuery] Paging paging)
         {
-            keyword ??= "";
-
-            var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest { PageIndex = pageIndex, PageSize = pageSize, Keyword = keyword });
+            var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
-        [HttpGet("GetByBangKhaoSat/{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<List<DotKhaoSatDto>>> GetByBangKhaoSat(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatDetailRequest { Id = id });
             return Ok(leaveAllocations);
         }
 
-        [HttpPost("CreateDotKhaoSat")]
+        [HttpPost("Create")]
         public async Task<ActionResult<DotKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateDotKhaoSatDto obj)
         {
             obj.TrangThai = 1;
@@ -54,7 +49,7 @@ namespace SurveyApplication.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost("UpdateDotKhaoSat")]
+        [HttpPost("Update")]
         public async Task<ActionResult<DotKhaoSatDto>> UpdateBangKhaoSat([FromBody] UpdateDotKhaoSatDto obj)
         {
             var command = new UpdateDotKhaoSatCommand { DotKhaoSatDto = obj };
@@ -65,7 +60,7 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        [HttpDelete("DeleteDotKhaoSat/{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<DotKhaoSatDto>>> DeleteBangKhaoSat(int id)
         {
             var command = new DeleteDotKhaoSatCommand { Id = id };

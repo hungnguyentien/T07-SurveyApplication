@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
-using SurveyApplication.Application.Contracts.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SurveyApplication.Application.Responses;
 using SurveyApplication.Domain;
-using SurveyApplication.Application.DTOs.GuiEmail.Validators;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands
 {

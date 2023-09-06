@@ -4,15 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using SurveyApplication.Application.Contracts.Identity;
-using SurveyApplication.Application.Models.Identity;
+using SurveyApplication.Domain.Common;
+using SurveyApplication.Domain.Interfaces.Identity;
 using SurveyApplication.Identity.Models;
 using SurveyApplication.Identity.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SurveyApplication.Identity
 {
@@ -26,10 +22,7 @@ namespace SurveyApplication.Identity
                 options.UseSqlServer(configuration.GetConnectionString("SurveyManagerIdentityConnectionString"),
                 b => b.MigrationsAssembly(typeof(SurveyApplicationIdentityDbContext).Assembly.FullName)));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-                {
-                    options.User.RequireUniqueEmail = false;
-                })
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<SurveyApplicationIdentityDbContext>().AddDefaultTokenProviders();
 
             services.AddTransient<IAuthService, AuthService>();

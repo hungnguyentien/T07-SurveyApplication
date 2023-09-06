@@ -11,7 +11,7 @@ namespace SurveyApplication.Application.DTOs.DotKhaoSat
     {
         public string MaDotKhaoSat { get; set; }
 
-        public int MaLoaiHinh { get; set; }
+        public int IdLoaiHinh { get; set; }
 
         public string TenDotKhaoSat { get; set; }
 

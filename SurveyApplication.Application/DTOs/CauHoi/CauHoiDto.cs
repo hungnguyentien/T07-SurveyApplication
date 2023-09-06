@@ -1,10 +1,5 @@
 ﻿using SurveyApplication.Application.DTOs.Common;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.CauHoi
 {
@@ -18,10 +13,6 @@ namespace SurveyApplication.Application.DTOs.CauHoi
         /// name
         /// </summary>
         public string MaCauHoi { get; set; }
-        /// <summary>
-        /// isRequired
-        /// </summary>
-        public bool? BatBuoc { get; set; }
         /// <summary>
         /// title
         /// </summary>
@@ -38,6 +29,12 @@ namespace SurveyApplication.Application.DTOs.CauHoi
         /// maxSize
         /// </summary>
         public int KichThuocFile { get; set; }
+        /// <summary>
+        /// isRequired
+        /// </summary>
+        public string Noidung { get; set; }
+        [NotMapped]
+        public bool? BatBuoc { get; set; }
         [NotMapped]
         public List<CotDto>? LstCot { get; set; }
         [NotMapped]

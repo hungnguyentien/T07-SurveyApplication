@@ -1,20 +1,15 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.DonVi;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
-using SurveyApplication.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
 {
    
-    public class GetDonViConditionsRequestHandler : IRequestHandler<GetDonViConditionsRequest, PageCommandResponse<DonViDto>>
+    public class GetDonViConditionsRequestHandler : IRequestHandler<GetDonViConditionsRequest, BaseQuerieResponse<DonViDto>>
     {
         private readonly IDonViRepository _donViRepository;
         private readonly IMapper _mapper;
@@ -24,10 +19,18 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
             _mapper = mapper;
         }
 
-        public async Task<PageCommandResponse<DonViDto>> Handle(GetDonViConditionsRequest request, CancellationToken cancellationToken)
+        public async Task<BaseQuerieResponse<DonViDto>> Handle(GetDonViConditionsRequest request, CancellationToken cancellationToken)
         {
-            var DonVis = await _donViRepository.GetByCondition(request.PageIndex, request.PageSize, request.Keyword, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenDonVi) && x.TenDonVi.Contains(request.Keyword), x => x.Created);
-            return _mapper.Map<PageCommandResponse<DonViDto>>(DonVis);
+            var donVis = await _donViRepository.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenDonVi) && x.TenDonVi.Contains(request.Keyword), "");
+            var result = _mapper.Map<List<DonViDto>>(donVis);
+            return new BaseQuerieResponse<DonViDto>
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Keyword = request.Keyword,
+                TotalFilter = donVis.TotalFilter,
+                Data = result
+            };
         }
     }
 

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SurveyApplication.Application.Contracts.Persistence;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.DTOs.BangKhaoSat.Validators
 {
@@ -16,13 +16,17 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat.Validators
             RuleFor(p => p.MaBangKhaoSat)
                 .MustAsync(async (maBangKhaoSat, token) =>
                 {
-                    var bangKhaoSatViExists = await _bangKhaoSatRepository.ExistsByMaBangKhaoSat(maBangKhaoSat);
+                    var bangKhaoSatViExists = await _bangKhaoSatRepository.Exists(x => x.MaBangKhaoSat == maBangKhaoSat);
                     return !bangKhaoSatViExists;
                 }).WithMessage("Mã bảng khảo sát đã tồn tại!");
 
-            RuleFor(p => p.MaLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
+            RuleFor(p => p.IdLoaiHinh)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
 
-            RuleFor(p => p.MaDotKhaoSat).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
+            RuleFor(p => p.IdDotKhaoSat)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
 
             RuleFor(p => p.TenBangKhaoSat)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

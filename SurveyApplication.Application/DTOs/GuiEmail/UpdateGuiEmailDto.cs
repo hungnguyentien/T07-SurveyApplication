@@ -9,10 +9,8 @@ namespace SurveyApplication.Application.DTOs.GuiEmail
 {
     public class UpdateGuiEmailDto : BaseDto,IGuiEmailDto
     {
-        public Guid MaGuiEmail { get; set; }
+        public string MaGuiEmail { get; set; }
         public int MaBangKhaoSat { get; set; }
-        public int? TrangThai { get; set; }
-        public DateTime? ThoiGian { get; set; }
         public string DiaChiNhan { get; set; }
         public string TieuDe { get; set; }
         public string NoiDung { get; set; }

@@ -1,11 +1,21 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { Model } from 'survey-core';
 import { Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
-import { Paging } from '@app/models';
+import { TranslateService } from '@ngx-translate/core';
+import { trigger } from '@angular/animations';
 
 export default class Utils {
+  static translate = (
+    lang: string,
+    service: TranslateService,
+    config: PrimeNGConfig
+  ) => {
+    service.use(lang);
+    service.get('primeng').subscribe((res) => config.setTranslation(res));
+  };
+
   static getFormControl = (
     frm: FormGroup<any>,
     name: string,
@@ -23,21 +33,35 @@ export default class Utils {
     values: any[]
   ) => {
     keys.forEach((el, i) => {
-      Utils.setValueForm(frm, nettedField, el, values[i]?.toString());
+      Utils.getFormControl(
+        frm,
+        Utils.capitalizeFirstLetter(nettedField),
+        Utils.capitalizeFirstLetter(el)
+      )?.setValue(values[i].toString());
     });
   };
 
   static setValueForm = (
     frm: FormGroup<any>,
-    name: string,
-    subName: string = '',
-    value: string = ''
+    keys: string[],
+    values: any[],
+    capitalize: boolean = false
   ) => {
-    Utils.getFormControl(
-      frm,
-      Utils.capitalizeFirstLetter(name),
-      Utils.capitalizeFirstLetter(subName)
-    )?.setValue(value);
+    !capitalize
+      ? keys.forEach((el, i) => {
+          try {
+            let value = values[i];
+            if (typeof values[i] === 'string' && !value) value = '';
+            Utils.getFormControl(frm, el)?.setValue(value);
+          } catch {}
+        })
+      : keys.forEach((el, i) => {
+          let value = values[i];
+          if (typeof values[i] === 'string' && !value) value = '';
+          Utils.getFormControl(frm, Utils.capitalizeFirstLetter(el))?.setValue(
+            value
+          );
+        });
   };
 
   static capitalizeFirstLetter = (string: string): string => {
@@ -88,9 +112,13 @@ export default class Utils {
     configJson: any,
     themeJson: any,
     router: Router,
-    subscribe: Function
+    subscribe: Function,
+    data: string = '',
+    surveyData: string = ''
   ) => {
+    let status = 1;
     const survey = new Model(configJson);
+    surveyData && survey.setDataCore(JSON.parse(surveyData));
     // You can delete the line below if you do not use a customized theme
     survey.applyTheme(themeJson);
     survey.locale = 'vi';
@@ -127,37 +155,62 @@ export default class Utils {
               'afterbegin',
               '<i class="icons icon-gui-thong-tin"></i>'
             );
+
+          if (surveyData && el.id === 'sv-nav-complete')
+            el.classList.add('d-none');
         });
     });
 
     survey.addNavigationItem({
       id: 'sv-nav-back-page',
       title: 'Quay lại',
-      visibleIndex: 48,
+      visibleIndex: 47,
       action: () => {
         //TODO quay lại trang trước
-        router.navigate(['/phieu/thong-tin-chung']);
+        router.navigate(
+          ['/phieu/thong-tin-chung'],
+          data
+            ? {
+                queryParams: { data: data },
+              }
+            : undefined
+        );
       },
       css: 'nav-button',
       innerCss: 'sd-btn nav-input',
     });
 
-    survey.addNavigationItem({
-      id: 'sv-nav-clear-page',
-      title: 'Khai lại từ đầu',
-      visibleIndex: 49,
-      action: () => {
-        survey.currentPage.questions.forEach((question: any) => {
-          question.value = undefined;
-          question.commentElements &&
-            question.commentElements.forEach(
-              (comment: any) => (comment.value = '')
-            );
-        });
-      },
-      css: 'nav-button',
-      innerCss: 'sd-btn nav-input',
-    });
+    !surveyData &&
+      survey.addNavigationItem({
+        id: 'sv-nav-clear-page',
+        title: 'Khai lại từ đầu',
+        visibleIndex: 48,
+        action: () => {
+          survey.currentPage.questions.forEach((question: any) => {
+            question.value = undefined;
+            question.commentElements &&
+              question.commentElements.forEach(
+                (comment: any) => (comment.value = '')
+              );
+          });
+        },
+        css: 'nav-button',
+        innerCss: 'sd-btn nav-input',
+      });
+
+    !surveyData &&
+      survey.addNavigationItem({
+        id: 'sv-nav-luu-tam',
+        title: 'Lưu tạm',
+        visibleIndex: 49,
+        action: () => {
+          // Lưu tạm khảo sát
+          status = 0;
+          survey.completeLastPage();
+        },
+        css: 'nav-button',
+        innerCss: 'sd-btn nav-input',
+      });
 
     survey.onClearFiles.add((survey, options) => {
       // Get temp files for this question
@@ -207,8 +260,8 @@ export default class Utils {
     });
 
     survey.onComplete.add((sender, options) => {
-      subscribe(sender);
-      // console.log(JSON.stringify(sender.data, null, 3));
+      // Hoàn thành khảo sát
+      subscribe(sender, status);
     });
 
     return survey;

@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SurveyApplication.Application.Contracts.Persistence;
 using SurveyApplication.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Persistence.Repositories
 {
@@ -20,13 +15,13 @@ namespace SurveyApplication.Persistence.Repositories
 
         public async Task<bool> ExistsByMaNguoiDaiDien(string MaNguoiDaiDien)
         {
-            var entity = await _dbContext.NguoiDaiDien.AsNoTracking().FirstOrDefaultAsync(x => x.MaNguoiDaiDien.ToString() == MaNguoiDaiDien);
+            var entity = await _dbContext.NguoiDaiDien.AsNoTracking().FirstOrDefaultAsync(x => x.MaNguoiDaiDien == MaNguoiDaiDien);
             return entity != null;
         }
 
         public async Task<NguoiDaiDien?> GetByIdDonVi(int idDonVi)
         {
-            return await _dbContext.NguoiDaiDien.AsNoTracking().FirstOrDefaultAsync(x => x.MaDonVi == idDonVi);
+            return await _dbContext.NguoiDaiDien.AsNoTracking().FirstOrDefaultAsync(x => x.IdDonVi == idDonVi);
         }
     }
 }
