@@ -30,3 +30,9 @@
   cursor: pointer;
   border-radius: 4px;
 }
+
+:host {
+  .sa-commercial {
+    display: none;
+  }
+}

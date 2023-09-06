@@ -71,13 +71,13 @@ export class AdminHomeComponent implements AfterViewInit {
   @ViewChild('surveyVizPanel') elem: ElementRef | undefined;
 
   ngAfterViewInit(): void {
-    // const survey = new Model(surveyJson);
-    // const vizPanel: any = new VisualizationPanel(
-    //   survey.getAllQuestions(),
-    //   surveyResults,
-    //   vizPanelOptions
-    // );
-    // vizPanel.showHeader = false;
-    // vizPanel.render(this.elem?.nativeElement);
+    const survey = new Model(surveyJson);
+    const vizPanel: any = new VisualizationPanel(
+      survey.getAllQuestions(),
+      surveyResults,
+      vizPanelOptions
+    );
+    vizPanel.showHeader = false;
+    vizPanel.render(this.elem?.nativeElement);
   }
 }
