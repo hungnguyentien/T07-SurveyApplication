@@ -96,7 +96,7 @@ export class AdminPeriodSurveyComponent {
 
   LoadLoaiHinh() {
     this.unitTypeService.getAll().subscribe((data) => {
-      this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
+      this.DSLoaiHinh = data;
     });
   }
 

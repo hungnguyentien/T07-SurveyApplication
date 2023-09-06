@@ -144,8 +144,8 @@
       </div>
     </ng-template>
     <ng-template pTemplate="footer">
-      <button type="button" class="btn btn-secondary" (click)="visible = false">Đóng</button>
-      <button type="submit" class="btn btn-primary">Lưu</button>
+      <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
+      <button pButton [disabled]="!FormUnitType.valid" type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
     </ng-template>
   </p-dialog>
 </form>

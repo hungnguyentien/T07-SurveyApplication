@@ -172,6 +172,9 @@
                             style="color: red;">*</span></label>
                     <input formControlName="maBangKhaoSat" type="text" pInputText class="form-control"
                         id="maBangKhaoSat">
+                    <p-message severity="error" text="Vui lòng nhập mã bảng"
+                         *ngIf="!formTableSurvey.controls['maBangKhaoSat'].valid && formTableSurvey.controls['maBangKhaoSat'].dirty">
+                    </p-message>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát </label>
@@ -179,11 +182,17 @@
                         <option value="">Chọn loại hình đơn vị</option>
                         <option *ngFor="let Lh of DSLoaiHinh" [value]="Lh.id">{{Lh.tenLoaiHinh}}</option>
                     </select>
+                    <p-message severity="error" text="Vui lòng chọn loại hình đơn vị khảo sát"
+                         *ngIf="!formTableSurvey.controls['idLoaiHinh'].valid && formTableSurvey.controls['idLoaiHinh'].dirty">
+                    </p-message>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="tenBangKhaoSat" class="col-form-label">Tên bảng: </label>
                     <input formControlName="tenBangKhaoSat" type="text" pInputText class="form-control"
                         id="tenBangKhaoSat">
+                    <p-message severity="error" text="Vui lòng nhập tên bảng"
+                         *ngIf="!formTableSurvey.controls['tenBangKhaoSat'].valid && formTableSurvey.controls['tenBangKhaoSat'].dirty">
+                    </p-message>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát:</label>
@@ -191,22 +200,34 @@
                         <option value="">Chọn đợt khảo sát</option>
                         <option *ngFor="let Lh of DSDotKhaoSat" [value]="Lh.id">{{Lh.tenDotKhaoSat}}</option>
                     </select>
+                    <p-message severity="error" text="Vui lòng chọn đợt khảo sát"
+                         *ngIf="!formTableSurvey.controls['idDotKhaoSat'].valid && formTableSurvey.controls['idDotKhaoSat'].dirty">
+                    </p-message>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="moTa" class="col-form-label">Mô tả: <span style="color: red;">*</span></label>
                     <textarea name="" pInputTextarea formControlName="moTa" id="moTa" class="w-100" rows="3"></textarea>
+                    <p-message severity="error" text="Vui lòng nhập mô tả"
+                         *ngIf="!formTableSurvey.controls['moTa'].valid && formTableSurvey.controls['moTa'].dirty">
+                    </p-message>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="ngayBatDau" class="col-form-label">Ngày bắt đầu: <span
                             style="color: red;">*</span></label>
                     <input type="date" formControlName="ngayBatDau" class="form-control" id="ngayBatDau" pInputText
                         placeholder="Ngày Bắt Đầu">
+                    <p-message severity="error" text="Vui lòng chọn ngày bắt đầu"
+                         *ngIf="!formTableSurvey.controls['ngayBatDau'].valid && formTableSurvey.controls['ngayBatDau'].dirty">
+                    </p-message>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="ngayKetThuc" class="col-form-label">Ngày kết thúc: <span
                             style="color: red;">*</span></label>
                     <input type="date" formControlName="ngayKetThuc" class="form-control" id="ngayKetThuc" pInputText
                         placeholder="Ngày kết thúc">
+                    <p-message severity="error" text="Vui lòng chọn ngày kết thúc"
+                         *ngIf="!formTableSurvey.controls['ngayKetThuc'].valid && formTableSurvey.controls['ngayKetThuc'].dirty">
+                    </p-message>
                 </div>
                 <div class="form-group">
                     <label class="col-form-label">
@@ -222,7 +243,7 @@
                                 <th style="width: 7rem">Mã câu hỏi</th>
                                 <th>Tiêu đề</th>
                                 <th>Bắt buộc</th>
-                                <th>Chức năng</th>
+                                <th>Chức năng</th>  
                             </tr>
                         </thead>
                         <tbody formArrayName="bangKhaoSatCauHoi">
@@ -259,8 +280,8 @@
 
         <ng-template pTemplate="footer">
             <input type="hidden" formControlName="id">
-            <button type="button" class="btn btn-secondary" (click)="visible = false">Đóng</button>
-            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
+            <button pButton [disabled]="!formTableSurvey.valid" type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
         </ng-template>
     </p-dialog>
 </form>

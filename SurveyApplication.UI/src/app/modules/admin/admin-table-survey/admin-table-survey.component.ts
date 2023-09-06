@@ -72,14 +72,14 @@ export class AdminTableSurveyComponent {
     this.LoadPeriodSurvey();
     this.formTableSurvey = this.FormBuilder.group({
       id: [''],
-      maBangKhaoSat: [''],
+      maBangKhaoSat: ['', Validators.required],
       idLoaiHinh: ['', Validators.required],
       idDotKhaoSat: ['', Validators.required],
       tenBangKhaoSat: ['', Validators.required],
       moTa: ['', Validators.required],
       ngayBatDau: ['', Validators.required],
       ngayKetThuc: ['', Validators.required],
-      bangKhaoSatCauHoi: this.FormBuilder.array([]),
+      bangKhaoSatCauHoi: this.FormBuilder.array([],Validators.required),
     });
   }
 

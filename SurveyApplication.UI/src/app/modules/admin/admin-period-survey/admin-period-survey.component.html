@@ -34,6 +34,10 @@
             <i class="pi pi-search"></i>
         </button>
     </form>
+   
+
+
+
 </div>
 <div class="card mt-3">
     <p-table #dt [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
@@ -149,20 +153,31 @@
                             style="color: red;">*</span></label>
                     <input type="text" formControlName="MaDotKhaoSat" class="form-control" id="recipient-name"
                         pInputText placeholder="Nhập mã đợt khảo sát">
+                        <p-message severity="error" text="Vui lòng nhập mã đợt"
+                            *ngIf="!FormPeriodSurvey.controls['MaDotKhaoSat'].valid && FormPeriodSurvey.controls['MaDotKhaoSat'].dirty">
+                        </p-message>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span
                             style="color: red;">*</span> </label>
-                    <select formControlName="IdLoaiHinh" class="custom-select">
-                        <option value="">Chọn loại hình đơn vị</option>
-                        <option *ngFor="let Lh of DSLoaiHinh" [value]="Lh.id">{{Lh.tenLoaiHinh}}</option>
-                    </select>
+                    <p-dropdown id="loaicauhoi" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh"optionValue="id"
+                        [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
+                        emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                        placeholder="-- Chọn loại hình đơn vị --"formControlName="IdLoaiHinh">
+                    </p-dropdown>
+                    <p-message severity="error" text="Vui lòng chọn loại hình"
+                            *ngIf="!FormPeriodSurvey.controls['IdLoaiHinh'].valid && FormPeriodSurvey.controls['IdLoaiHinh'].dirty">
+                    </p-message>
+
                 </div>
             </div>
             <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Tên đợt: <span style="color: red;">*</span></label>
                 <input type="text" formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText
                     placeholder="Nhập tên đợt khảo sát">
+                <p-message severity="error" text="Vui lòng chọn tên đợt"
+                        *ngIf="!FormPeriodSurvey.controls['TenDotKhaoSat'].valid && FormPeriodSurvey.controls['TenDotKhaoSat'].dirty">
+                </p-message>
             </div>
             <div class="row">
                 <div class="form-group col-md-6">
@@ -170,19 +185,24 @@
                             style="color: red;">*</span></label>
                     <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name" pInputText
                         placeholder="Ngày Bắt Đầu">
+                    <p-message severity="error" text="Vui lòng chọn ngày bắt đầu"
+                        *ngIf="!FormPeriodSurvey.controls['NgayBatDau'].valid && FormPeriodSurvey.controls['NgayBatDau'].dirty">
+                    </p-message>
                 </div>
-
                 <div class="form-group col-md-6">
                     <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span
                             style="color: red;">*</span></label>
                     <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name"
                         pInputText placeholder="Ngày bắt đầu">
+                    <p-message severity="error" text="Vui lòng chọn ngày kết thúc"
+                        *ngIf="!FormPeriodSurvey.controls['NgayKetThuuc'].valid && FormPeriodSurvey.controls['NgayKetThuuc'].dirty">
+                    </p-message>
                 </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button type="button" class="btn btn-secondary" (click)="visible = false">Đóng</button>
-            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
+            <button pButton [disabled]="!FormPeriodSurvey.valid" type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
         </ng-template>
     </p-dialog>
 </form>
