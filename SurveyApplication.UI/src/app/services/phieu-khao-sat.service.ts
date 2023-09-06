@@ -7,6 +7,7 @@ import {
   GeneralInfo,
   SaveSurvey,
   BaseCommandResponse,
+  HanhChinhVn,
 } from '@app/models';
 import { environment } from '@environments/environment';
 import Utils from '@app/helpers/utils';
@@ -37,6 +38,30 @@ export class PhieuKhaoSatService {
     return this.http
       .get<GeneralInfo>(
         `${environment.apiUrl}/PhieuKhaoSat/GetThongTinChung?data=${data}`
+      )
+      .pipe(first());
+  }
+
+  getTinh() {
+    return this.http
+      .get<HanhChinhVn[]>(
+        `${environment.apiUrl}/PhieuKhaoSat/GetTinh`
+      )
+      .pipe(first());
+  }
+
+  getQuanHuyen(idTinh: string) {
+    return this.http
+      .get<HanhChinhVn[]>(
+        `${environment.apiUrl}/PhieuKhaoSat/GetQuanHuyen?idTinh=${idTinh}`
+      )
+      .pipe(first());
+  }
+
+  getPhuongXa(idQuanHuyen: string) {
+    return this.http
+      .get<HanhChinhVn[]>(
+        `${environment.apiUrl}/PhieuKhaoSat/GetPhuongXa?idQuanHuyen=${idQuanHuyen}`
       )
       .pipe(first());
   }
