@@ -7,20 +7,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
 {
    
-    public class GetDonViListRequestHandler : IRequestHandler<GetDonViListRequest, List<DonViDto>>
+    public class GetDonViListRequestHandler : BaseMasterFeatures, IRequestHandler<GetDonViListRequest, List<DonViDto>>
     {
-        private readonly IDonViRepository _donViRepository;
         private readonly IMapper _mapper;
 
-        public GetDonViListRequestHandler(IDonViRepository donViRepository, IMapper mapper)
+        public GetDonViListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _donViRepository = donViRepository;
             _mapper = mapper;
         }
 
         public async Task<List<DonViDto>> Handle(GetDonViListRequest request, CancellationToken cancellationToken)
         {
-            var DonVis = await _donViRepository.GetAll();
+            var DonVis = await _surveyRepo.DonVi.GetAll();
             return _mapper.Map<List<DonViDto>>(DonVis);
         }
     }

@@ -27,7 +27,7 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize,
                 Keyword = request.Keyword,
-                TotalFilter = lstCauHoi.TotalFilter,
+                TotalCount = lstCauHoi.TotalCount,
                 Data = result
             };
         }

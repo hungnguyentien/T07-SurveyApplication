@@ -8,25 +8,25 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 {
    
-    public class DeleteDotKhaoSatCommandHandler : IRequestHandler<DeleteDotKhaoSatCommand>
+    public class DeleteDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteDotKhaoSatCommand>
     {
-        private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
         private readonly IMapper _mapper;
 
-        public DeleteDotKhaoSatCommandHandler(IDotKhaoSatRepository dotKhaoSatRepository, IMapper mapper)
+        public DeleteDotKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _dotKhaoSatRepository = dotKhaoSatRepository;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteDotKhaoSatCommand request, CancellationToken cancellationToken)
         {
-            var dotKhaoSatRepository = await _dotKhaoSatRepository.GetById(request.Id);
+            var dotKhaoSatRepository = await _surveyRepo.DotKhaoSat.GetById(request.Id);
             if (dotKhaoSatRepository == null)
             {
                 throw new NotFoundException(nameof(DotKhaoSat), request.Id);
             }
-            await _dotKhaoSatRepository.Delete(dotKhaoSatRepository);
+            await _surveyRepo.DotKhaoSat.Delete(dotKhaoSatRepository);
+            await _surveyRepo.SaveAync();
+
             return Unit.Value;
         }
     }

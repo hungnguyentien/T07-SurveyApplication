@@ -9,21 +9,19 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 {
-    public class CreateNguoiDaiDienCommandHandler : IRequestHandler<CreateNguoiDaiDienCommand, BaseCommandResponse>
+    public class CreateNguoiDaiDienCommandHandler : BaseMasterFeatures, IRequestHandler<CreateNguoiDaiDienCommand, BaseCommandResponse>
     {
-        private readonly INguoiDaiDienRepository _nguoiDaiDienRepository;
         private readonly IMapper _mapper;
 
-        public CreateNguoiDaiDienCommandHandler(INguoiDaiDienRepository nguoiDaiDienRepository, IMapper mapper)
+        public CreateNguoiDaiDienCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _nguoiDaiDienRepository = nguoiDaiDienRepository;
             _mapper = mapper;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateNguoiDaiDienCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new CreateNguoiDaiDienDtoValidator(_nguoiDaiDienRepository);
+            var validator = new CreateNguoiDaiDienDtoValidator(_surveyRepo.NguoiDaiDien);
             var validatorResult = await validator.ValidateAsync(request.NguoiDaiDienDto);
 
             if (validatorResult.IsValid == false)
@@ -36,7 +34,8 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 
             var NguoiDaiDien = _mapper.Map<NguoiDaiDien>(request.NguoiDaiDienDto);
             NguoiDaiDien.MaNguoiDaiDien = Guid.NewGuid().ToString();
-            NguoiDaiDien = await _nguoiDaiDienRepository.Create(NguoiDaiDien);
+            NguoiDaiDien = await _surveyRepo.NguoiDaiDien.Create(NguoiDaiDien);
+            await _surveyRepo.SaveAync();
             response.Success = true;
             response.Message = "Tạo mới thành công";
             response.Id = NguoiDaiDien.Id;

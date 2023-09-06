@@ -27,7 +27,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<PageCommandResponse<DotKhaoSatDto>>> GetBangKhaoSatByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<DotKhaoSatDto>>> GetBangKhaoSatByCondition([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
