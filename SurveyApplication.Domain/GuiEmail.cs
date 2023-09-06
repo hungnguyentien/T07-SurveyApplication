@@ -21,6 +21,7 @@ namespace SurveyApplication.Domain
         public string NoiDung { get; set; }
         public int IdBangKhaoSat { get; set; }
         public int IdDonVi { get; set; }
-        public int? TrangThai { get; set; }
+        public int TrangThai { get; set; }
+        public DateTime ThoiGian { get; set; }
     }
 }

@@ -11,11 +11,11 @@ namespace SurveyApplication.Persistence.Repositories
 
     public class GuiEmailRepository : GenericRepository<GuiEmail>, IGuiEmailRepository
     {
-        private readonly IConfiguration _configuration;
-        public GuiEmailRepository(SurveyApplicationDbContext dbContext, IConfiguration configuration) : base(dbContext)
+        //private readonly IConfiguration _configuration;
+        public GuiEmailRepository(SurveyApplicationDbContext dbContext/*, IConfiguration configuration*/) : base(dbContext)
         {
             DbContext = dbContext;
-            _configuration = configuration;
+            //_configuration = configuration;
         }
 
         public async Task<bool> ExistsByMaGuiEmail(string maGuiEmail)

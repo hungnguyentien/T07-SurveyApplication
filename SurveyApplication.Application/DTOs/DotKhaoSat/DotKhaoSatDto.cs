@@ -17,5 +17,6 @@ namespace SurveyApplication.Application.DTOs.DotKhaoSat
         public int? TrangThai { get; set; }
 
         public string? TenLoaiHinh { get; set; }
+        public string? MoTa { get; set; }
     }
 }

@@ -7,25 +7,24 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands
 {
-    public class DeleteLoaiHinhDonViCommandHandler : IRequestHandler<DeleteLoaiHinhDonViCommand>
+    public class DeleteLoaiHinhDonViCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteLoaiHinhDonViCommand>
     {
-        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
         private readonly IMapper _mapper;
 
-        public DeleteLoaiHinhDonViCommandHandler(ILoaiHinhDonViRepository LoaiHinhDonViRepository, IMapper mapper)
+        public DeleteLoaiHinhDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
-            var LoaiHinhDonViRepository = await _LoaiHinhDonViRepository.GetById(request.Id);
+            var LoaiHinhDonViRepository = await _surveyRepo.LoaiHinhDonVi.GetById(request.Id);
             if (LoaiHinhDonViRepository == null)
             {
                 throw new NotFoundException(nameof(LoaiHinhDonVi), request.Id);
             }
-            await _LoaiHinhDonViRepository.Delete(LoaiHinhDonViRepository);
+            await _surveyRepo.LoaiHinhDonVi.Delete(LoaiHinhDonViRepository);
+            await _surveyRepo.SaveAync();
             return Unit.Value;
         }
     }

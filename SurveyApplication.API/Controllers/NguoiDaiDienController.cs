@@ -5,6 +5,7 @@ using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Queries;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -27,7 +28,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<List<NguoiDaiDienDto>>> GetNguoiDaiDienByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<NguoiDaiDienDto>>> GetNguoiDaiDienByCondition([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetNguoiDaiDienConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return Ok(leaveAllocations);

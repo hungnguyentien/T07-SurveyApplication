@@ -6,20 +6,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LinhVucHoatDong.Handlers.Queries
 {
-    public class GetLinhVucHoatDongAllRequestHandlers : IRequestHandler<GetLinhVucHoatDongAllRequest, List<LinhVucHoatDongDto>>
+    public class GetLinhVucHoatDongAllRequestHandlers : BaseMasterFeatures, IRequestHandler<GetLinhVucHoatDongAllRequest, List<LinhVucHoatDongDto>>
     {
         private readonly IMapper _mapper;
-        private readonly ILinhVucHoatDongRepository _linhVucHoatDongRepository;
 
-        public GetLinhVucHoatDongAllRequestHandlers(IMapper mapper, ILinhVucHoatDongRepository linhVucHoatDongRepository)
+        public GetLinhVucHoatDongAllRequestHandlers(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
             _mapper = mapper;
-            _linhVucHoatDongRepository = linhVucHoatDongRepository;
         }
 
         public async Task<List<LinhVucHoatDongDto>> Handle(GetLinhVucHoatDongAllRequest request, CancellationToken cancellationToken)
         {
-            var data = await _linhVucHoatDongRepository.GetAll();
+            var data = await _surveyRepo.LinhVucHoatDong.GetAll();
             return _mapper.Map<List<LinhVucHoatDongDto>>(data);
         }
     }

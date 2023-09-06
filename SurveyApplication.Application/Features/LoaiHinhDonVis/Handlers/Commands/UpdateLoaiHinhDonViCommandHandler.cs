@@ -7,20 +7,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands
 {
-    public class UpdateLoaiHinhDonViCommandHandler : IRequestHandler<UpdateLoaiHinhDonViCommand, Unit>
+    public class UpdateLoaiHinhDonViCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateLoaiHinhDonViCommand, Unit>
     {
-        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
         private readonly IMapper _mapper;
 
-        public UpdateLoaiHinhDonViCommandHandler(ILoaiHinhDonViRepository LoaiHinhDonViRepository, IMapper mapper)
+        public UpdateLoaiHinhDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateLoaiHinhDonViDtoValidator(_LoaiHinhDonViRepository);
+            var validator = new UpdateLoaiHinhDonViDtoValidator(_surveyRepo.LoaiHinhDonVi);
             var validatorResult = await validator.ValidateAsync(request.LoaiHinhDonViDto);
 
             if (validatorResult.IsValid == false)
@@ -28,9 +26,10 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
                 throw new ValidationException(validatorResult);
             }
 
-            var LoaiHinhDonVi = await _LoaiHinhDonViRepository.GetById(request.LoaiHinhDonViDto?.Id ?? 0);
+            var LoaiHinhDonVi = await _surveyRepo.LoaiHinhDonVi.GetById(request.LoaiHinhDonViDto?.Id ?? 0);
             _mapper.Map(request.LoaiHinhDonViDto, LoaiHinhDonVi);
-            await _LoaiHinhDonViRepository.Update(LoaiHinhDonVi);
+            await _surveyRepo.LoaiHinhDonVi.Update(LoaiHinhDonVi);
+            await _surveyRepo.SaveAync();
             return Unit.Value;
         }
     }

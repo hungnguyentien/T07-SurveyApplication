@@ -7,29 +7,28 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
 {
-    public class UpdateDonViCommandHandler : IRequestHandler<UpdateDonViCommand, Unit>
+    public class UpdateDonViCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateDonViCommand, Unit>
     {
-        private readonly IDonViRepository _donViRepository;
         private readonly IMapper _mapper;
 
-        public UpdateDonViCommandHandler(IDonViRepository donViRepository, IMapper mapper)
+        public UpdateDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _donViRepository = donViRepository;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateDonViCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateDonViDtoValidator(_donViRepository);
+            var validator = new UpdateDonViDtoValidator(_surveyRepo.DonVi);
             var validatorResult = await validator.ValidateAsync(request.DonViDto);
             if (validatorResult.IsValid == false)
             {
                 throw new ValidationException(validatorResult);
             }
 
-            var DonVi = await _donViRepository.GetById(request.DonViDto?.Id ?? 0);
+            var DonVi = await _surveyRepo.DonVi.GetById(request.DonViDto?.Id ?? 0);
             _mapper.Map(request.DonViDto, DonVi);
-            await _donViRepository.Update(DonVi);
+            await _surveyRepo.DonVi.Update(DonVi);
+            await _surveyRepo.SaveAync();
             return Unit.Value;
         }
     }

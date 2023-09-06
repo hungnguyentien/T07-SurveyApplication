@@ -5,7 +5,7 @@ using SurveyApplication.Domain.Common.Responses;
 namespace SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries
 {
     
-    public class GetBangKhaoSatConditionsRequest : IRequest<PageCommandResponse<BangKhaoSatDto>>
+    public class GetBangKhaoSatConditionsRequest : IRequest<BaseQuerieResponse<BangKhaoSatDto>>
     {
         public List<BangKhaoSatDto> Data { get; set; }
         public int PageCount { get; set; }

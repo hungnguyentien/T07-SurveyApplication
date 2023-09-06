@@ -21,6 +21,8 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat
 
         public string? TenDotKhaoSat { get; set; }
         public string? TenLoaiHinh { get; set; }
+        public int? TrangThaiEmail { get; set; }
+
         /// <summary>
         /// Bảng n-n lưu thông tin câu hỏi và bảng khảo sát
         /// </summary>

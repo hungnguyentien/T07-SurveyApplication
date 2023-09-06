@@ -37,7 +37,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<PageCommandResponse<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
