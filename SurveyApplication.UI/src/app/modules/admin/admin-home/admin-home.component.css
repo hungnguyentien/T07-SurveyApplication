@@ -1,23 +1,32 @@
 .container {
-    position: relative;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .divider {
-    width: 100%;
-    border: none;
-    border-top: 1px solid #333;
-    position: absolute;
-    top: 20%;
-    left: 0;
-    z-index: 1;
-  }
-  
-  .over-line {
-    position: relative;
-    z-index: 2;
-    background-color: white; /* Đảm bảo văn bản không bị che bởi kẻ ngang */
-    padding: 0 10px;
-  }
-  
+  position: relative;
+  padding: 20px;
+  text-align: center;
+}
+
+.divider {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #333;
+  position: absolute;
+  top: 20%;
+  left: 0;
+  z-index: 1;
+}
+
+.over-line {
+  position: relative;
+  z-index: 2;
+  background-color: white; /* Đảm bảo văn bản không bị che bởi kẻ ngang */
+  padding: 0 10px;
+}
+
+.custom-button {
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}

@@ -56,9 +56,9 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("SendEmail")]
-        public async Task<ActionResult> SendEmail(int id)
+        public async Task<ActionResult> SendEmail(int idGuiMail)
         {
-            var command = new SendMailCommand { Id = id };
+            var command = new SendMailCommand { Id = idGuiMail };
             var response = await _mediator.Send(command);
             return Ok(response);
         }

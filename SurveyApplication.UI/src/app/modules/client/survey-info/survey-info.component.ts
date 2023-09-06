@@ -31,7 +31,11 @@ export class SurveyInfoComponent {
 
   ngOnInit() {
     this.generalInfo = history.state;
-    const configSurvey = (configJson: any, surveyData: string) => {
+    const configSurvey = (
+      configJson: any,
+      surveyData: string,
+      trangThai: number
+    ) => {
       this.model = Utils.configSurvey(
         configJson,
         themeJson,
@@ -64,7 +68,8 @@ export class SurveyInfoComponent {
           });
         },
         `${this.generalInfo.data}`,
-        surveyData
+        surveyData,
+        trangThai
       );
     };
 
@@ -88,14 +93,18 @@ export class SurveyInfoComponent {
             ? 'Vui lòng nhập câu trả lời của bạn!'
             : '';
           let description = el.noidung;
-
-          let labelTrue = el.lstCot[0]?.noidung;
-          let labelFalse = el.lstCot[1]?.noidung;
+          let choicesRadio = new Array();
+          el.lstCot.forEach((el, i) => {
+            choicesRadio.push({
+              value: el.noidung,
+              text: `${el.noidung}`,
+            });
+          });
           let choices = new Array();
           el.lstCot.forEach((el, i) => {
             choices.push({
               value: el.noidung,
-              text: `${i + 1}. ${el.noidung}`,
+              text: `${el.noidung}`,
             });
           });
           let showOtherItem = el.isOther ?? false;
@@ -128,15 +137,16 @@ export class SurveyInfoComponent {
           let maxSize = el.kichThuocFile;
           if (loaiCauHoi === 0) {
             els.push({
-              type: 'boolean',
+              type: 'radiogroup',
               name: name,
               title: title,
-              defaultValue: 'true',
-              labelTrue: labelTrue,
-              labelFalse: labelFalse,
               isRequired: isRequired,
               requiredErrorText: requiredErrorText,
               description: description,
+              choices: choicesRadio,
+              showOtherItem: showOtherItem,
+              otherPlaceholder: otherPlaceholder,
+              otherText: otherText,
               readOnly: readOnly,
             });
           } else if (loaiCauHoi === 1) {
@@ -250,7 +260,7 @@ export class SurveyInfoComponent {
         els.map((el) => {
           (pages.elements as any[]).push(el);
         });
-        configSurvey(defaultJson, res.kqSurvey);
+        configSurvey(defaultJson, res.kqSurvey, res.trangThai);
         this.loading = false;
       });
   }

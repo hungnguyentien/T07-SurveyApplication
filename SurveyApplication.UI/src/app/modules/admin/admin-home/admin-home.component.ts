@@ -4,8 +4,8 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-// import { Model } from 'survey-core';
-// import { VisualizationPanel } from 'survey-analytics';
+import { Model } from 'survey-core';
+import { VisualizationPanel } from 'survey-analytics';
 
 const surveyJson = {
   elements: [

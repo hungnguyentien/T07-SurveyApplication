@@ -9,23 +9,26 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 {
-    public class CreateKetQuaCommandHandler : IRequestHandler<CreateKetQuaCommand, BaseCommandResponse>
+    public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<CreateKetQuaCommand, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
-        private readonly IKetQuaRepository _ketQuaRepository;
-        private readonly IBangKhaoSatRepository _bangKhaoSatRepository;
-        public CreateKetQuaCommandHandler(IMapper mapper, IKetQuaRepository ketQuaRepository, IBangKhaoSatRepository bangKhaoSatRepository)
+        public CreateKetQuaCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
             _mapper = mapper;
-            _ketQuaRepository = ketQuaRepository;
-            _bangKhaoSatRepository = bangKhaoSatRepository;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateKetQuaCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new CreateKetQuaDtoValidator(_ketQuaRepository);
-            var validationResult = await validator.ValidateAsync(request.CreateKetQuaDto);
+            if (request == null)
+            {
+                response.Success = false;
+                response.Message = "Không tìm thấy kết quả!";
+                return response;
+            }
+
+            var validator = new CreateKetQuaDtoValidator(_surveyRepo.KetQua);
+            var validationResult = await validator.ValidateAsync(request.CreateKetQuaDto ?? new DTOs.PhieuKhaoSat.CreateKetQuaDto());
             if (validationResult.IsValid == false)
             {
                 response.Success = false;
@@ -34,7 +37,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 return response;
             }
 
-            var bangKs = await _bangKhaoSatRepository.GetById(request.CreateKetQuaDto.IdBangKhaoSat);
+            var bangKs = await _surveyRepo.BangKhaoSat.GetById(request?.CreateKetQuaDto?.IdBangKhaoSat ?? 0);
             if (bangKs == null)
             {
                 response.Success = false;
@@ -42,11 +45,20 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 return response;
             }
 
-            bangKs.TrangThai = (int)EnumTrangThai.TrangThai.HoanThanh;
-            await _bangKhaoSatRepository.Update(bangKs);
+            bangKs.TrangThai = request?.CreateKetQuaDto?.TrangThai ?? 0;
+            await _surveyRepo.BangKhaoSat.Update(bangKs);
             var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
-            ketQua.ActiveFlag = request.CreateKetQuaDto.Status;
-            ketQua = await _ketQuaRepository.Create(ketQua);
+            var kqDb = await _surveyRepo.KetQua.FirstOrDefaultAsync(x => x.IdBangKhaoSat == request.CreateKetQuaDto.IdBangKhaoSat && x.IdDonVi == request.CreateKetQuaDto.IdDonVi && x.IdNguoiDaiDien == request.CreateKetQuaDto.IdNguoiDaiDien && !x.Deleted);
+            if (kqDb == null)
+            {
+                await _surveyRepo.KetQua.Create(ketQua);
+            }
+            else
+            {
+                await _surveyRepo.KetQua.UpdateAsync(_mapper.Map(request.CreateKetQuaDto, kqDb));
+            }
+
+            await _surveyRepo.SaveAync();
             response.Success = true;
             response.Message = "Gửi thông tin thành công!";
             response.Id = ketQua.Id;
