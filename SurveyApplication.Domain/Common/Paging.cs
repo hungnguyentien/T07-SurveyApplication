@@ -5,7 +5,7 @@
         public int PageIndex { get; set; }
         public int TotalPages { get; set; }
         public int PageSize { get; set; }
-        public long TotalFilter { get; set; }
+        public long TotalCount { get; set; }
         public T Param { get; set; }
 
         public Paging(List<T> items, long count, int pageIndex, int pageSize)
@@ -13,7 +13,7 @@
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             PageSize = pageSize;
-            TotalFilter = count;
+            TotalCount = count;
             AddRange(items);
         }
         public Paging(List<T> items)
@@ -21,7 +21,7 @@
             PageIndex = 1;
             TotalPages = 1;
             PageSize = items.Count;
-            TotalFilter = items.Count;
+            TotalCount = items.Count;
             AddRange(items);
         }
 
@@ -30,7 +30,7 @@
             PageIndex = 1;
             TotalPages = 1;
             PageSize = 0;
-            TotalFilter = 0;
+            TotalCount = 0;
         }
     }
 }

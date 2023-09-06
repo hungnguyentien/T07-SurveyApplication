@@ -7,20 +7,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
 {
    
-    public class GetLoaiHinhDonViListRequestHandler : IRequestHandler<GetLoaiHinhDonViListRequest, List<LoaiHinhDonViDto>>
+    public class GetLoaiHinhDonViListRequestHandler : BaseMasterFeatures, IRequestHandler<GetLoaiHinhDonViListRequest, List<LoaiHinhDonViDto>>
     {
-        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
         private readonly IMapper _mapper;
 
-        public GetLoaiHinhDonViListRequestHandler(ILoaiHinhDonViRepository LoaiHinhDonViRepository, IMapper mapper)
+        public GetLoaiHinhDonViListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
             _mapper = mapper;
         }
 
         public async Task<List<LoaiHinhDonViDto>> Handle(GetLoaiHinhDonViListRequest request, CancellationToken cancellationToken)
         {
-            var LoaiHinhDonVis = await _LoaiHinhDonViRepository.GetAll();
+            var LoaiHinhDonVis = await _surveyRepo.LoaiHinhDonVi.GetAll();
             return _mapper.Map<List<LoaiHinhDonViDto>>(LoaiHinhDonVis);
         }
     }

@@ -5,20 +5,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
 {
-    public class GetLastRecordLoaiHinhDonViRequestHandler : IRequestHandler<GetLastRecordLoaiHinhDonViRequest, string>
+    public class GetLastRecordLoaiHinhDonViRequestHandler : BaseMasterFeatures, IRequestHandler<GetLastRecordLoaiHinhDonViRequest, string>
     {
-        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
         private readonly IMapper _mapper;
 
-        public GetLastRecordLoaiHinhDonViRequestHandler(ILoaiHinhDonViRepository LoaiHinhDonViRepository, IMapper mapper)
+        public GetLastRecordLoaiHinhDonViRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
             _mapper = mapper;
         }
 
         public async Task<string> Handle(GetLastRecordLoaiHinhDonViRequest request, CancellationToken cancellationToken)
         {
-            var LoaiHinhDonVis = await _LoaiHinhDonViRepository.GetLastRecordByMaLoaiHinh();
+            var LoaiHinhDonVis = await _surveyRepo.LoaiHinhDonVi.GetLastRecordByMaLoaiHinh();
             return LoaiHinhDonVis;
         }
     }

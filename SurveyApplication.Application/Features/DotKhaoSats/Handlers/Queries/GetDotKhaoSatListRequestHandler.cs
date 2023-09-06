@@ -7,20 +7,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Queries
 {
     
-    public class GetDotKhaoSatListRequestHandler : IRequestHandler<GetDotKhaoSatListRequest, List<DotKhaoSatDto>>
+    public class GetDotKhaoSatListRequestHandler : BaseMasterFeatures, IRequestHandler<GetDotKhaoSatListRequest, List<DotKhaoSatDto>>
     {
-        private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
         private readonly IMapper _mapper;
 
-        public GetDotKhaoSatListRequestHandler(IDotKhaoSatRepository dotKhaoSatRepository, IMapper mapper)
+        public GetDotKhaoSatListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _dotKhaoSatRepository = dotKhaoSatRepository;
             _mapper = mapper;
         }
 
         public async Task<List<DotKhaoSatDto>> Handle(GetDotKhaoSatListRequest request, CancellationToken cancellationToken)
         {
-            var dotKhaoSats = await _dotKhaoSatRepository.GetAll();
+            var dotKhaoSats = await _surveyRepo.DotKhaoSat.GetAll();
             return _mapper.Map<List<DotKhaoSatDto>>(dotKhaoSats);
         }
     }
