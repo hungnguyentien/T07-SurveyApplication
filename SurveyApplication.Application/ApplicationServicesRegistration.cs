@@ -15,7 +15,6 @@ public static class ApplicationServicesRegistration
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatR(Assembly.GetExecutingAssembly());
-        services.ConfigureIdentityServices(configuration);
         services.ConfigureInfrastructureServices(configuration);
         services.ConfigurePersistenceServices(configuration);
         return services;
