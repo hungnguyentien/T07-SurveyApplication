@@ -19,7 +19,8 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries
 
         public async Task<PhieuKhaoSatDto> Handle(GetConfigCauHoiRequest request, CancellationToken cancellationToken)
         {
-            var bks = await _surveyRepo.BangKhaoSat.GetById(request.IdBangKhaoSat) ?? throw new ValidationException("Không tồn tại bảng khảo sát");
+            var mailInfo = await _surveyRepo.GuiEmail.GetById(request.IdGuiEmail) ?? throw new ValidationException("Không tìm thấy thông tin gửi mail");
+            var bks = await _surveyRepo.BangKhaoSat.GetById(mailInfo.IdBangKhaoSat) ?? throw new ValidationException("Không tồn tại bảng khảo sát");
             var query = from a in _surveyRepo.BangKhaoSatCauHoi.GetAllQueryable()
                         join b in _surveyRepo.CauHoi.GetAllQueryable() on a.IdCauHoi equals b.Id
                         where a.IdBangKhaoSat == bks.Id && b.ActiveFlag == (int)EnumCommon.ActiveFlag.Active && !a.Deleted && !b.Deleted
@@ -47,12 +48,11 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries
             });
             var result = new PhieuKhaoSatDto
             {
-                IdBangKhaoSat = request.IdBangKhaoSat,
+                IdBangKhaoSat = mailInfo.IdBangKhaoSat,
                 TrangThai = bks.TrangThai ?? 0,
-                LstCauHoi = lstCauHoi
+                LstCauHoi = lstCauHoi,
+                KqSurvey = (await _surveyRepo.KetQua.FirstOrDefaultAsync(x => x.IdGuiEmail == request.IdGuiEmail && !x.Deleted))?.Data ?? ""
             };
-            if (request.IdDonVi > 0 && request.IdNguoiDaiDien > 0)
-                result.KqSurvey = (await _surveyRepo.KetQua.FirstOrDefaultAsync(x => x.IdBangKhaoSat == request.IdBangKhaoSat && x.IdDonVi == request.IdDonVi && x.IdNguoiDaiDien == request.IdNguoiDaiDien && !x.Deleted))?.Data ?? "";
 
             return result;
         }

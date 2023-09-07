@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat.Validators;
 using SurveyApplication.Application.Enums;
@@ -20,10 +21,10 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
         public async Task<BaseCommandResponse> Handle(CreateKetQuaCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            if (request == null)
+            if (request.CreateKetQuaDto == null)
             {
                 response.Success = false;
-                response.Message = "Không tìm thấy kết quả!";
+                response.Message = "Không có kết quả!";
                 return response;
             }
 
@@ -37,26 +38,30 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 return response;
             }
 
-            var bangKs = await _surveyRepo.BangKhaoSat.GetById(request?.CreateKetQuaDto?.IdBangKhaoSat ?? 0);
-            if (bangKs == null)
+            var guiEmail = await _surveyRepo.GuiEmail.GetById(request.CreateKetQuaDto?.IdGuiEmail ?? 0);
+            var bks = await _surveyRepo.BangKhaoSat.GetById(guiEmail.IdBangKhaoSat);
+            switch (bks.TrangThai)
             {
-                response.Success = false;
-                response.Message = "Không tồn tại bảng khảo sát!";
-                return response;
+                case (int)EnumTrangThai.TrangThai.HoanThanh:
+                    throw new ValidationException("Bảng khảo sát đã hoàn thành");
+                case (int)EnumTrangThai.TrangThai.TamDung:
+                    throw new ValidationException("Bảng khảo sát đã tạm dừng");
             }
 
-            bangKs.TrangThai = request?.CreateKetQuaDto?.TrangThai ?? 0;
-            await _surveyRepo.BangKhaoSat.Update(bangKs);
+            var countBks = await _surveyRepo.GuiEmail.CountAsync(x => x.IdBangKhaoSat == guiEmail.IdBangKhaoSat);
+            var countKq = await _surveyRepo.KetQua.CountAsync(x => x.IdGuiEmail == guiEmail.Id);
+            if (countBks == countKq)
+            {
+                bks.TrangThai = (int)EnumTrangThai.TrangThai.HoanThanh;
+                await _surveyRepo.BangKhaoSat.UpdateAsync(bks);
+            }
+
             var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
-            var kqDb = await _surveyRepo.KetQua.FirstOrDefaultAsync(x => x.IdBangKhaoSat == request.CreateKetQuaDto.IdBangKhaoSat && x.IdDonVi == request.CreateKetQuaDto.IdDonVi && x.IdNguoiDaiDien == request.CreateKetQuaDto.IdNguoiDaiDien && !x.Deleted);
+            var kqDb = await _surveyRepo.KetQua.FirstOrDefaultAsync(x => request.CreateKetQuaDto != null && x.IdGuiEmail == request.CreateKetQuaDto.IdGuiEmail && !x.Deleted);
             if (kqDb == null)
-            {
                 await _surveyRepo.KetQua.Create(ketQua);
-            }
             else
-            {
                 await _surveyRepo.KetQua.UpdateAsync(_mapper.Map(request.CreateKetQuaDto, kqDb));
-            }
 
             await _surveyRepo.SaveAync();
             response.Success = true;

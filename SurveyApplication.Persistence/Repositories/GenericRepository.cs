@@ -203,12 +203,12 @@ namespace SurveyApplication.Persistence.Repositories
             return await GetAllQueryable().SingleOrDefaultAsync(predicate);
         }
 
-        public T FirstOrDefault(Expression<Func<T, bool>> predicate)
+        public T? FirstOrDefault(Expression<Func<T, bool>> predicate)
         {
             return GetAllQueryable().FirstOrDefault(predicate);
         }
 
-        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             return await GetAllQueryable().FirstOrDefaultAsync(predicate);
         }

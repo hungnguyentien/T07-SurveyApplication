@@ -10,7 +10,6 @@
 
     public class EmailThongTinChungDto
     {
-        public int? IdBangKhaoSat { get; set; }
-        public int? IdDonVi { get; set; }
+        public int? IdGuiEmail { get; set; }
     }
 }

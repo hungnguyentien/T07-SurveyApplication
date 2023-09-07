@@ -8,9 +8,9 @@ namespace SurveyApplication.Application.DTOs.PhieuKhaoSat
         public DonViDto DonVi { get; set; }
         public NguoiDaiDienDto NguoiDaiDien { get; set; }
         /// <summary>
-        /// Id bảng khảo sát
+        /// Id gửi email
         /// </summary>
-        public int BangKhaoSat { get; set; }
+        public int IdGuiEmail { get; set; }
         /// <summary>
         /// Tráng thái bảng khảo sát
         /// </summary>

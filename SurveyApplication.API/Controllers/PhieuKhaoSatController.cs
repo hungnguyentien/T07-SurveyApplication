@@ -36,20 +36,16 @@ public class PhieuKhaoSatController : ControllerBase
         var thongTinChung =
             JsonConvert.DeserializeObject<EmailThongTinChungDto>(
                 StringUltils.DecryptWithKey(data, EmailSettings.SecretKey));
-        var result = await _mediator.Send(new GetThongTinChungRequest
-            { IdDonVi = thongTinChung?.IdDonVi ?? 0, IdBangKhaoSat = thongTinChung?.IdBangKhaoSat ?? 0 });
+        var result = await _mediator.Send(new GetThongTinChungRequest { IdGuiEmail = thongTinChung?.IdGuiEmail ?? 0 });
         return Ok(result);
     }
 
     [HttpGet("GetConfigPhieuKhaoSat")]
-    public async Task<ActionResult<PhieuKhaoSatDto>> GetConfigPhieuKhaoSat(int idBangKhaoSat, int idDonVi,
-        int idNguoiKhaoSat)
+    public async Task<ActionResult<PhieuKhaoSatDto>> GetConfigPhieuKhaoSat(int idGuiEmail)
     {
         var result = await _mediator.Send(new GetConfigCauHoiRequest
         {
-            IdBangKhaoSat = idBangKhaoSat,
-            IdDonVi = idDonVi,
-            IdNguoiDaiDien = idNguoiKhaoSat
+            IdGuiEmail = idGuiEmail
         });
         return Ok(result);
     }

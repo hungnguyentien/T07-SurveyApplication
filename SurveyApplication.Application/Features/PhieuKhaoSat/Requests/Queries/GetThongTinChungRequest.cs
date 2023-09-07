@@ -11,7 +11,6 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Queries
 {
     public class GetThongTinChungRequest : IRequest<ThongTinChungDto>
     {
-        public int IdDonVi { get; set; }
-        public int IdBangKhaoSat { get; set; }
+        public int IdGuiEmail { get; set; }
     }
 }

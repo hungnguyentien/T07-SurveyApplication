@@ -11,5 +11,15 @@ namespace SurveyApplication.Application.Enums
             [Description("Hiệu lực")]
             Active = 1,
        }
+
+       public enum KetQua
+       {
+           [Description("Đang thực hiện")]
+           Processing = 0,
+           [Description("Lưu nháp")]
+           Temporary = 0,
+           [Description("Hoàn thành")]
+           Complete = 1,
+       }
     }
 }
