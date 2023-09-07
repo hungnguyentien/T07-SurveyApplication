@@ -138,6 +138,7 @@ export class AdminObjectSurveyComponent {
       next: (res) => {
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
+        console.log("res1",res)
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);

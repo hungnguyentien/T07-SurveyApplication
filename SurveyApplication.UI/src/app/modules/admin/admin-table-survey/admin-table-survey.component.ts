@@ -98,7 +98,7 @@ export class AdminTableSurveyComponent {
     this.TableSurveyService.getByCondition(this.paging).subscribe({
       next: (res) => {
         this.datas = res.data;
-        this.dataTotalRecords = res.totalFilter;
+        this.dataTotalRecords = res.totalCount;
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);
