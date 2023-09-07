@@ -41,6 +41,7 @@
             "allowedCommonJsDependencies": [
               "Utils",
               "survey-core",
+              "survey-analytics",
               "survey-creator-core",
               "survey-core/survey.i18n",
               "@ckeditor/ckeditor5-build-classic"
@@ -52,7 +53,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",

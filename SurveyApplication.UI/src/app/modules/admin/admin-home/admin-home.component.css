@@ -35,4 +35,7 @@
   .sa-commercial {
     display: none;
   }
+  .sa-visualizer__toolbar {
+    display: none;
+  }
 }

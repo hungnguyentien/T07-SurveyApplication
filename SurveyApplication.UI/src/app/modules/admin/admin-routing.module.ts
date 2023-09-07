@@ -17,7 +17,7 @@ const routes: Routes = [
       {
         path: 'home',
         component: AdminHomeComponent,
-        title: 'Quản lý dashboard',
+        title: 'Dashboard',
         data: {
           title: 'Dashboard',
         },

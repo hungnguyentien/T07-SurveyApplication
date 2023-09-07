@@ -231,16 +231,6 @@ export class GeneralInfoComponent {
             this.loading = false;
           },
         });
-        // let arr = Object.entries(
-        //   this.dataArr?.find((x) => x.at(0) == e.value).at(1)['quan-huyen']
-        // );
-        // arr.forEach((el, i) => {
-        //   let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
-        //   this.quanHuyen?.push({
-        //     name: tinhQuanHuyen.name,
-        //     code: tinhQuanHuyen.code,
-        //   });
-        // });
       }
     }
   };
@@ -262,18 +252,6 @@ export class GeneralInfoComponent {
             this.loading = false;
           },
         });
-        // let arr = Object.entries(
-        //   this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)[
-        //     'quan-huyen'
-        //   ][this.selectedQuanHuyen ?? '']['xa-phuong']
-        // );
-        // arr.forEach((el, i) => {
-        //   let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
-        //   this.phuongXa?.push({
-        //     name: tinhQuanHuyen.name,
-        //     code: tinhQuanHuyen.code,
-        //   });
-        // });
       }
     }
   };

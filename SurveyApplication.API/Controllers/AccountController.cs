@@ -2,28 +2,28 @@
 using SurveyApplication.Domain.Common.Identity;
 using SurveyApplication.Domain.Interfaces.Identity;
 
-namespace SurveyApplication.API.Controllers
+namespace SurveyApplication.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AccountController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountController : ControllerBase
+    private readonly IAuthService _authenticationService;
+
+    public AccountController(IAuthService authenticationService)
     {
-        private readonly IAuthService _authenticationService;
-        public AccountController(IAuthService authenticationService)
-        {
-            _authenticationService = authenticationService;
-        }
+        _authenticationService = authenticationService;
+    }
 
-        [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login(AuthRequest request)
-        {
-            return Ok(await _authenticationService.Login(request));
-        }
+    [HttpPost("login")]
+    public async Task<ActionResult<AuthResponse>> Login(AuthRequest request)
+    {
+        return Ok(await _authenticationService.Login(request));
+    }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
-        {
-            return Ok(await _authenticationService.Register(request));
-        }
+    [HttpPost("register")]
+    public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+    {
+        return Ok(await _authenticationService.Register(request));
     }
 }

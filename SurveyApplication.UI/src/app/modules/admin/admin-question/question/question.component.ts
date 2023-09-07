@@ -105,6 +105,7 @@ export class QuestionComponent {
       next: (res) => {
         this.lstQuestion = res.data;
         this.dataTotalRecords = res.totalFilter;
+        debugger
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);

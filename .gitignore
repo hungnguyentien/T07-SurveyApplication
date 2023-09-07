@@ -57,3 +57,4 @@
 /SurveyApplication.API/.config
 /SurveyApplication.API/Properties
 /SurveyApplication.UI/dist
+/SurveyApplication.Application/obj/Debug/net6.0/SurveyApplication.Application.csproj.CopyComplete

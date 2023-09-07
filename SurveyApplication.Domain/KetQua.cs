@@ -14,5 +14,6 @@ namespace SurveyApplication.Domain
         public int IdDonVi { get; set; }
         public int IdNguoiDaiDien { get; set; }
         public int IdBangKhaoSat { get; set; }
+        public int IdGuiEmail { get; set; }
     }
 }

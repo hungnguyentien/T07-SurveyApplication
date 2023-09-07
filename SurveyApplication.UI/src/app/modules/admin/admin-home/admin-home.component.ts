@@ -1,63 +1,9 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
-import { Model } from 'survey-core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { VisualizationPanel } from 'survey-analytics';
+import Utils from '@app/helpers/utils';
+import { PhieuKhaoSatService } from '@app/services';
 
-const surveyJson = {
-  elements: [
-    {
-      name: 'satisfaction-score',
-      title: 'How would you describe your experience with our product?',
-      type: 'radiogroup',
-      choices: [
-        { value: 5, text: 'Fully satisfying' },
-        { value: 4, text: 'Generally satisfying' },
-        { value: 3, text: 'Neutral' },
-        { value: 2, text: 'Rather unsatisfying' },
-        { value: 1, text: 'Not satisfying at all' },
-      ],
-      isRequired: true,
-    },
-    {
-      name: 'nps-score',
-      title:
-        'On a scale of zero to ten, how likely are you to recommend our product to a friend or colleague?',
-      type: 'rating',
-      rateMin: 0,
-      rateMax: 10,
-    },
-  ],
-  showQuestionNumbers: 'off',
-  completedHtml: 'Thank you for your feedback!',
-};
-
-const surveyResults = [
-  {
-    'satisfaction-score': 5,
-    'nps-score': 10,
-  },
-  {
-    'satisfaction-score': 5,
-    'nps-score': 9,
-  },
-  {
-    'satisfaction-score': 3,
-    'nps-score': 6,
-  },
-  {
-    'satisfaction-score': 3,
-    'nps-score': 6,
-  },
-  {
-    'satisfaction-score': 2,
-    'nps-score': 3,
-  },
-];
-
+const surveyResults: any[] = [];
 const vizPanelOptions = {
   allowHideQuestions: false,
 };
@@ -67,17 +13,34 @@ const vizPanelOptions = {
   templateUrl: './admin-home.component.html',
   styleUrls: ['./admin-home.component.css'],
 })
-export class AdminHomeComponent implements AfterViewInit {
+export class AdminHomeComponent {
   @ViewChild('surveyVizPanel') elem: ElementRef | undefined;
+  constructor(private phieuKhaoSatService: PhieuKhaoSatService) {}
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
-    const survey = new Model(surveyJson);
-    const vizPanel: any = new VisualizationPanel(
-      survey.getAllQuestions(),
-      surveyResults,
-      vizPanelOptions
-    );
-    vizPanel.showHeader = false;
-    vizPanel.render(this.elem?.nativeElement);
+    this.phieuKhaoSatService.getSurveyConfig(1, 1, 2).subscribe((res) => {
+      let defaultJson = Utils.getJsonSurvey(res);
+      const survey = Utils.configSurvey(defaultJson, undefined, undefined);
+      //Add list kết quả Survey
+      surveyResults.push({
+        question1: 'other',
+        'question1-Comment': 'LOL',
+        question2: ['Doanh nghiệp nhà nước'],
+        question6: {
+          'Row 1 _MultiTextMatrix': { 'columns1 _MultiTextMatrix': '1' },
+        },
+        question4: {
+          'Row 2 _MultiSelectMatrix': { 'columns1 _MultiSelectMatrix': ['1'] },
+        },
+      });
+      const vizPanel: any = new VisualizationPanel(
+        survey.getAllQuestions(),
+        surveyResults,
+        vizPanelOptions
+      );
+      vizPanel.showHeader = false;
+      vizPanel.render(this.elem?.nativeElement);
+    });
   }
 }

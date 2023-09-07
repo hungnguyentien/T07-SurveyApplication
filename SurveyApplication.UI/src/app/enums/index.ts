@@ -1,1 +1,2 @@
-export * from './BangKhaoSat'
+export * from './BangKhaoSat';
+export * from './CauHoi';
