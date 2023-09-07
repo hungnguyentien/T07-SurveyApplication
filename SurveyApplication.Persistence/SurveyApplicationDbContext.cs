@@ -31,12 +31,23 @@ namespace SurveyApplication.Persistence
         {
             foreach (var entry in ChangeTracker.Entries<BaseDomainEntity>())
             {
-                entry.Entity.Modified = DateTime.Now;
-
-                if (entry.State == EntityState.Added)
+                switch (entry.State)
                 {
-                    entry.Entity.Created = DateTime.Now;
-                    entry.Entity.ActiveFlag = 1;
+                    case EntityState.Added:
+                        entry.Entity.Created = DateTime.Now;
+                        entry.Entity.ActiveFlag = 1;
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.Modified = DateTime.Now;
+                        break;
+                    case EntityState.Detached:
+                        break;
+                    case EntityState.Unchanged:
+                        break;
+                    case EntityState.Deleted:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 
