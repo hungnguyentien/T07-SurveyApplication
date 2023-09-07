@@ -7,20 +7,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Queries
 {
    
-    public class GetNguoiDaiDienListRequestHandler : IRequestHandler<GetNguoiDaiDienListRequest, List<NguoiDaiDienDto>>
+    public class GetNguoiDaiDienListRequestHandler : BaseMasterFeatures, IRequestHandler<GetNguoiDaiDienListRequest, List<NguoiDaiDienDto>>
     {
-        private readonly INguoiDaiDienRepository _nguoiDaiDienRepository;
         private readonly IMapper _mapper;
 
-        public GetNguoiDaiDienListRequestHandler(INguoiDaiDienRepository nguoiDaiDienRepository, IMapper mapper)
+        public GetNguoiDaiDienListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _nguoiDaiDienRepository = nguoiDaiDienRepository;
             _mapper = mapper;
         }
 
         public async Task<List<NguoiDaiDienDto>> Handle(GetNguoiDaiDienListRequest request, CancellationToken cancellationToken)
         {
-            var NguoiDaiDiens = await _nguoiDaiDienRepository.GetAll();
+            var NguoiDaiDiens = await _surveyRepo.NguoiDaiDien.GetAll();
             return _mapper.Map<List<NguoiDaiDienDto>>(NguoiDaiDiens);
         }
     }

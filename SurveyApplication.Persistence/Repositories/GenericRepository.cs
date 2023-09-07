@@ -136,8 +136,8 @@ namespace SurveyApplication.Persistence.Repositories
 
             var query = DbContext.Set<T>().AsNoTracking().Where(conditions);
             var items = await query.OrderBy(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
-            var totalFilter = await query.LongCountAsync();
-            return new Paging<T>(items, totalFilter, pageIndex, pageSize);
+            var totalCount = await query.LongCountAsync();
+            return new Paging<T>(items, totalCount, pageIndex, pageSize);
         }
 
         #endregion

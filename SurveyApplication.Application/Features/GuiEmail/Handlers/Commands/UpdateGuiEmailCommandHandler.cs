@@ -8,20 +8,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 {
    
-    public class UpdateGuiEmailCommandHandler : IRequestHandler<UpdateGuiEmailCommand, Unit>
+    public class UpdateGuiEmailCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateGuiEmailCommand, Unit>
     {
-        private readonly IGuiEmailRepository _guiEmailRepository;
         private readonly IMapper _mapper;
 
-        public UpdateGuiEmailCommandHandler(IGuiEmailRepository guiEmailRepository, IMapper mapper)
+        public UpdateGuiEmailCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _guiEmailRepository = guiEmailRepository;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateGuiEmailCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateGuiEmailDtoValidator(_guiEmailRepository);
+            var validator = new UpdateGuiEmailDtoValidator(_surveyRepo.GuiEmail);
             var validatorResult = await validator.ValidateAsync(request.GuiEmailDto);
 
             if (validatorResult.IsValid == false)
@@ -29,9 +27,10 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
                 throw new ValidationException(validatorResult);
             }
 
-            var guiEmail = await _guiEmailRepository.GetById(request.GuiEmailDto?.Id ?? 0);
+            var guiEmail = await _surveyRepo.GuiEmail.GetById(request.GuiEmailDto?.Id ?? 0);
             _mapper.Map(request.GuiEmailDto, guiEmail);
-            await _guiEmailRepository.Update(guiEmail);
+            await _surveyRepo.GuiEmail.Update(guiEmail);
+            await _surveyRepo.SaveAync();
             return Unit.Value;
         }
     }

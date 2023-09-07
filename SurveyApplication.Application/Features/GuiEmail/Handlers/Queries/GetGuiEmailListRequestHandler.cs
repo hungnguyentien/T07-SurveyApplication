@@ -7,20 +7,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Queries
 {
     
-    public class GetGuiEmailListRequestHandler : IRequestHandler<GetGuiEmailListRequest, List<GuiEmailDto>>
+    public class GetGuiEmailListRequestHandler : BaseMasterFeatures, IRequestHandler<GetGuiEmailListRequest, List<GuiEmailDto>>
     {
-        private readonly IGuiEmailRepository _guiEmailRepository;
         private readonly IMapper _mapper;
 
-        public GetGuiEmailListRequestHandler(IGuiEmailRepository guiEmailRepository, IMapper mapper)
+        public GetGuiEmailListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _guiEmailRepository = guiEmailRepository;
             _mapper = mapper;
         }
 
         public async Task<List<GuiEmailDto>> Handle(GetGuiEmailListRequest request, CancellationToken cancellationToken)
         {
-            var guiEmails = await _guiEmailRepository.GetAll();
+            var guiEmails = await _surveyRepo.GuiEmail.GetAll();
             return _mapper.Map<List<GuiEmailDto>>(guiEmails);
         }
     }

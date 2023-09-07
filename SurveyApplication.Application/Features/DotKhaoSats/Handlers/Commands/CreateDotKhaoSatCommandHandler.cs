@@ -10,21 +10,19 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 {
     
-    public class CreateDotKhaoSatCommandHandler : IRequestHandler<CreateDotKhaoSatCommand, BaseCommandResponse>
+    public class CreateDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<CreateDotKhaoSatCommand, BaseCommandResponse>
     {
-        private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
         private readonly IMapper _mapper;
 
-        public CreateDotKhaoSatCommandHandler(IDotKhaoSatRepository dotKhaoSatRepository, IMapper mapper)
+        public CreateDotKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _dotKhaoSatRepository = dotKhaoSatRepository;
             _mapper = mapper;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateDotKhaoSatCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new CreateDotKhaoSatDtoValidator(_dotKhaoSatRepository);
+            var validator = new CreateDotKhaoSatDtoValidator(_surveyRepo.DotKhaoSat);
             var validatorResult = await validator.ValidateAsync(request.DotKhaoSatDto);
 
             if (validatorResult.IsValid == false)
@@ -37,7 +35,8 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 
             var dotKhaoSat = _mapper.Map<DotKhaoSat>(request.DotKhaoSatDto);
 
-            dotKhaoSat = await _dotKhaoSatRepository.Create(dotKhaoSat);
+            dotKhaoSat = await _surveyRepo.DotKhaoSat.Create(dotKhaoSat);
+            await _surveyRepo.SaveAync();
 
             response.Success = true;
             response.Message = "Tạo mới thành công";

@@ -7,29 +7,28 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 {
-    public class UpdateNguoiDaiDienCommandHandler : IRequestHandler<UpdateNguoiDaiDienCommand, Unit>
+    public class UpdateNguoiDaiDienCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateNguoiDaiDienCommand, Unit>
     {
-        private readonly INguoiDaiDienRepository _nguoiDaiDienRepository;
         private readonly IMapper _mapper;
 
-        public UpdateNguoiDaiDienCommandHandler(INguoiDaiDienRepository nguoiDaiDienRepository, IMapper mapper)
+        public UpdateNguoiDaiDienCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _nguoiDaiDienRepository = nguoiDaiDienRepository;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateNguoiDaiDienCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateNguoiDaiDienDtoValidator(_nguoiDaiDienRepository);
+            var validator = new UpdateNguoiDaiDienDtoValidator(_surveyRepo.NguoiDaiDien);
             var validatorResult = await validator.ValidateAsync(request.NguoiDaiDienDto);
             if (validatorResult.IsValid == false)
             {
                 throw new ValidationException(validatorResult);
             }
 
-            var NguoiDaiDien = await _nguoiDaiDienRepository.GetById(request.NguoiDaiDienDto?.Id ?? 0);
+            var NguoiDaiDien = await _surveyRepo.NguoiDaiDien.GetById(request.NguoiDaiDienDto?.Id ?? 0);
             _mapper.Map(request.NguoiDaiDienDto, NguoiDaiDien);
-            await _nguoiDaiDienRepository.Update(NguoiDaiDien);
+            await _surveyRepo.NguoiDaiDien.Update(NguoiDaiDien);
+            await _surveyRepo.SaveAync();
             return Unit.Value;
         }
     }

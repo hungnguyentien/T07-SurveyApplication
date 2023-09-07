@@ -46,7 +46,6 @@ export class QuestionComponent {
   isCreate?: boolean;
   visible: boolean = false;
   submitted: boolean = false;
-
   constructor(
     private cauHoiService: CauHoiService,
     private messageService: MessageService,
@@ -154,7 +153,6 @@ export class QuestionComponent {
     this.createForm();
     this.selectedLoaiCauHoi = '0';
   };
-
   updateDialog = (id: number) => {
     this.isCreate = false;
     this.visible = true;

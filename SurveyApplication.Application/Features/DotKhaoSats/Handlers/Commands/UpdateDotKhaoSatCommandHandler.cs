@@ -8,20 +8,18 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 {
    
-    public class UpdateDotKhaoSatCommandHandler : IRequestHandler<UpdateDotKhaoSatCommand, Unit>
+    public class UpdateDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateDotKhaoSatCommand, Unit>
     {
-        private readonly IDotKhaoSatRepository _dotKhaoSatRepository;
         private readonly IMapper _mapper;
 
-        public UpdateDotKhaoSatCommandHandler(IDotKhaoSatRepository dotKhaoSatRepository, IMapper mapper)
+        public UpdateDotKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _dotKhaoSatRepository = dotKhaoSatRepository;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateDotKhaoSatCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateDotKhaoSatDtoValidator(_dotKhaoSatRepository);
+            var validator = new UpdateDotKhaoSatDtoValidator(_surveyRepo.DotKhaoSat);
             var validatorResult = await validator.ValidateAsync(request.DotKhaoSatDto);
 
             if (validatorResult.IsValid == false)
@@ -29,9 +27,10 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
                 throw new ValidationException(validatorResult);
             }
 
-            var dotKhaoSat = await _dotKhaoSatRepository.GetById(request.DotKhaoSatDto?.Id ?? 0);
+            var dotKhaoSat = await _surveyRepo.DotKhaoSat.GetById(request.DotKhaoSatDto?.Id ?? 0);
             _mapper.Map(request.DotKhaoSatDto, dotKhaoSat);
-            await _dotKhaoSatRepository.Update(dotKhaoSat);
+            await _surveyRepo.DotKhaoSat.Update(dotKhaoSat);
+            await _surveyRepo.SaveAync();
             return Unit.Value;
         }
     }

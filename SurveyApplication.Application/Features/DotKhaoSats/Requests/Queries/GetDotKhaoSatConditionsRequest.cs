@@ -4,7 +4,7 @@ using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries
 {
-    public class GetDotKhaoSatConditionsRequest : IRequest<PageCommandResponse<DotKhaoSatDto>>
+    public class GetDotKhaoSatConditionsRequest : IRequest<BaseQuerieResponse<DotKhaoSatDto>>
     {
         public List<DotKhaoSatDto> Data { get; set; }
         public int PageCount { get; set; }

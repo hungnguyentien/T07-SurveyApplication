@@ -9,21 +9,19 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands
 {
-    public class CreateLoaiHinhDonViCommandHandler : IRequestHandler<CreateLoaiHinhDonViCommand, BaseCommandResponse>
+    public class CreateLoaiHinhDonViCommandHandler : BaseMasterFeatures, IRequestHandler<CreateLoaiHinhDonViCommand, BaseCommandResponse>
     {
-        private readonly ILoaiHinhDonViRepository _LoaiHinhDonViRepository;
         private readonly IMapper _mapper;
 
-        public CreateLoaiHinhDonViCommandHandler(ILoaiHinhDonViRepository LoaiHinhDonViRepository, IMapper mapper)
+        public CreateLoaiHinhDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
-            _LoaiHinhDonViRepository = LoaiHinhDonViRepository;
             _mapper = mapper;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new CreateLoaiHinhDonViDtoValidator(_LoaiHinhDonViRepository);
+            var validator = new CreateLoaiHinhDonViDtoValidator(_surveyRepo.LoaiHinhDonVi);
             var validatorResult = await validator.ValidateAsync(request.LoaiHinhDonViDto);
 
             if (validatorResult.IsValid == false)
@@ -36,7 +34,8 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Command
 
             var LoaiHinhDonVi = _mapper.Map<LoaiHinhDonVi>(request.LoaiHinhDonViDto);
 
-            LoaiHinhDonVi = await _LoaiHinhDonViRepository.Create(LoaiHinhDonVi);
+            LoaiHinhDonVi = await _surveyRepo.LoaiHinhDonVi.Create(LoaiHinhDonVi);
+            await _surveyRepo.SaveAync();
 
             response.Success = true;
             response.Message = "Tạo mới thành công";

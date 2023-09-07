@@ -42,6 +42,18 @@ namespace SurveyApplication.Persistence.Repositories
 
         private INguoiDaiDienRepository _nDaiDienRepository;
         public INguoiDaiDienRepository NguoiDaiDien => _nDaiDienRepository ??= new NguoiDaiDienRepository(_repoContext);
+        
+        public ILoaiHinhDonViRepository _loaiHinhDonViRepository;
+        public ILoaiHinhDonViRepository LoaiHinhDonVi => _loaiHinhDonViRepository ??= new LoaiHinhDonViRepository(_repoContext);
+        
+        public ILinhVucHoatDongRepository _linhVucHoatDongRepository;
+        public ILinhVucHoatDongRepository LinhVucHoatDong => _linhVucHoatDongRepository ??= new LinhVucHoatDongRepository(_repoContext);
+
+        public IDotKhaoSatRepository _dotKhaoSatRepository;
+        public IDotKhaoSatRepository DotKhaoSat => _dotKhaoSatRepository ??= new DotKhaoSatRepository(_repoContext);
+
+        public IGuiEmailRepository _guiEmailRepository;
+        public IGuiEmailRepository GuiEmail => _guiEmailRepository ??= new GuiEmailRepository(_repoContext);
 
         #endregion
 
