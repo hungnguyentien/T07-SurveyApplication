@@ -7,7 +7,8 @@ namespace SurveyApplication.Application.DTOs.BangKhaoSat
         public int IdCauHoi { get; set; }
         public int? Priority { get; set; }
         public bool? IsRequired { get; set; } = false;
-        public string MaCauHoi { get; set; }
-        public string TieuDe { get; set; }
+
+        public string? MaCauHoi { get; set; }
+        public string? TieuDe { get; set; }
     }
 }

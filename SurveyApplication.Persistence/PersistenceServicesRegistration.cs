@@ -26,7 +26,7 @@ namespace SurveyApplication.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString"),
                 b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<SurveyApplicationDbContext>().AddDefaultTokenProviders();
 
             //services.AddTransient<IAuthService, AuthService>();
@@ -67,7 +67,7 @@ namespace SurveyApplication.Persistence
             services.AddScoped<ICotRepository, CotRepository>();
             services.AddScoped<IHangRepository, HangRepository>();
             services.AddScoped<IBangKhaoSatCauHoiRepository, BangKhaoSatCauHoiRepository>();
-            //services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             //TODO Lĩnh vục hoạt động
             services.AddScoped<ILinhVucHoatDongRepository, LinhVucHoatDongRepository>();

@@ -1,29 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.Application.DTOs.Account;
+using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Domain.Common.Identity;
 using SurveyApplication.Domain.Interfaces.Identity;
 
-namespace SurveyApplication.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class AccountController : ControllerBase
+namespace SurveyApplication.API.Controllers
 {
-    private readonly IAuthService _authenticationService;
-
-    public AccountController(IAuthService authenticationService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AccountController : ControllerBase
     {
-        _authenticationService = authenticationService;
-    }
+        private readonly IMediator _mediator;
 
-    [HttpPost("login")]
-    public async Task<ActionResult<AuthResponse>> Login(AuthRequest request)
-    {
-        return Ok(await _authenticationService.Login(request));
-    }
+        public AccountController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
-    [HttpPost("register")]
-    public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
-    {
-        return Ok(await _authenticationService.Register(request));
+        [HttpPost("login")]
+        public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
     }
 }
