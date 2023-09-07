@@ -38,9 +38,7 @@ export class SurveyInfoComponent {
         (sender: Model, status: number) => {
           this.saveSurvey = {
             data: JSON.stringify(sender.data),
-            idBangKhaoSat: this.generalInfo.bangKhaoSat,
-            idDonVi: this.generalInfo.donVi.id,
-            idNguoiDaiDien: this.generalInfo.nguoiDaiDien.id,
+            guiEmail: this.generalInfo.data ?? '',
             trangThai: status,
           };
           this.loading = true;
@@ -71,9 +69,7 @@ export class SurveyInfoComponent {
     this.loading = true;
     this.phieuKhaoSatService
       .getSurveyConfig(
-        this.generalInfo.bangKhaoSat,
-        this.generalInfo.donVi.id,
-        this.generalInfo.nguoiDaiDien.id
+        this.generalInfo.data
       )
       .subscribe((res) => {
         configSurvey(Utils.getJsonSurvey(res), res.kqSurvey, res.trangThai);

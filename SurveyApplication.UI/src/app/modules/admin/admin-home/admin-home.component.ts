@@ -19,7 +19,7 @@ export class AdminHomeComponent {
   ngOnInit() {}
 
   ngAfterViewInit(): void {
-    this.phieuKhaoSatService.getSurveyConfig(1, 1, 2).subscribe((res) => {
+    this.phieuKhaoSatService.getSurveyConfig(`0dAdviHHkd7WnsjW2TM0vQCHq//WZ6EH`).subscribe((res) => {
       let defaultJson = Utils.getJsonSurvey(res);
       const survey = Utils.configSurvey(defaultJson, undefined, undefined);
       //Add list kết quả Survey

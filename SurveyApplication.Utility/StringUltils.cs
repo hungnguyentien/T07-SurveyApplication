@@ -45,5 +45,31 @@ namespace SurveyApplication.Utility
             var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
             return Encoding.UTF8.GetString(resultArray);
         }
+
+        /// <summary>
+        /// Decode url formatted
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string DecodeUrlString(string url)
+        {
+            string newUrl;
+            while ((newUrl = Uri.UnescapeDataString(url)) != url)
+                url = newUrl;
+            return newUrl;
+        }
+
+        /// <summary>
+        /// Encode url formatted
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string EncodeUrlString(string url)
+        {
+            string newUrl;
+            while ((newUrl = Uri.EscapeDataString(url)) != url)
+                url = newUrl;
+            return newUrl;
+        }
     }
 }

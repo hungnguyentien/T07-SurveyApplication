@@ -127,6 +127,9 @@ export default class Utils {
     survey.locale = 'vi';
     // Set label for btn Complete
     survey.completeText = 'Gửi thông tin';
+    if (trangThai !== BksTrangThai.HoanThanh)
+      survey.completedHtml = `<div style="margin: 40px 0 0 0; width:100%"><a href="phieu/thong-tin-khao-sat" style="margin: auto">Khảo sát lại</a></div>`;
+    
     survey.onErrorCustomText.add((sender, options) => {
       if (options.name === 'exceedsize')
         options.text = options.text.replaceAll(

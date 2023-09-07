@@ -6,8 +6,10 @@ namespace SurveyApplication.Application.Enums
     {
         public enum TrangThai
         {
+            [Description("Chưa lưu")]
+            ChuaLuu = 0,
             [Description("Lưu nháp")]
-            DangKhaoSat = 1,
+            LuuNhap = 1,
             [Description("Hoàn thành")]
             HoanThanh = 2
         }

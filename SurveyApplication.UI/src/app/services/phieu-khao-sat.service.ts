@@ -18,15 +18,8 @@ import Utils from '@app/helpers/utils';
 export class PhieuKhaoSatService {
   constructor(private http: HttpClient) {}
 
-  getSurveyConfig(
-    idBangKhaoSat: number,
-    idDonVi: number,
-    idNguoiKhaoSat: number
-  ) {
-    let query = Utils.getParamsQuery(
-      ['idBangKhaoSat', 'idDonVi', 'idNguoiKhaoSat'],
-      [idBangKhaoSat.toString(), idDonVi.toString(), idNguoiKhaoSat.toString()]
-    );
+  getSurveyConfig(data: string | undefined) {
+    let query = Utils.getParamsQuery(['data'], [data ?? '']);
     return this.http
       .get<SurveyConfig>(
         `${environment.apiUrl}/PhieuKhaoSat/GetConfigPhieuKhaoSat${query}`
@@ -44,9 +37,7 @@ export class PhieuKhaoSatService {
 
   getTinh() {
     return this.http
-      .get<HanhChinhVn[]>(
-        `${environment.apiUrl}/PhieuKhaoSat/GetTinh`
-      )
+      .get<HanhChinhVn[]>(`${environment.apiUrl}/PhieuKhaoSat/GetTinh`)
       .pipe(first());
   }
 

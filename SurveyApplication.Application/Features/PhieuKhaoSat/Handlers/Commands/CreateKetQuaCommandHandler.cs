@@ -1,21 +1,28 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat.Validators;
 using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 using SurveyApplication.Domain;
+using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 {
     public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<CreateKetQuaCommand, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
-        public CreateKetQuaCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+        private EmailSettings EmailSettings { get; }
+        public CreateKetQuaCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, IOptions<EmailSettings> emailSettings) : base(surveyRepository)
         {
             _mapper = mapper;
+            EmailSettings = emailSettings.Value;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateKetQuaCommand request, CancellationToken cancellationToken)
@@ -29,7 +36,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             }
 
             var validator = new CreateKetQuaDtoValidator(_surveyRepo.KetQua);
-            var validationResult = await validator.ValidateAsync(request.CreateKetQuaDto ?? new DTOs.PhieuKhaoSat.CreateKetQuaDto());
+            var validationResult = await validator.ValidateAsync(request.CreateKetQuaDto ?? new DTOs.PhieuKhaoSat.CreateKetQuaDto(), cancellationToken);
             if (validationResult.IsValid == false)
             {
                 response.Success = false;
@@ -38,7 +45,10 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 return response;
             }
 
-            var guiEmail = await _surveyRepo.GuiEmail.GetById(request.CreateKetQuaDto?.IdGuiEmail ?? 0);
+            var thongTinChung =
+                JsonConvert.DeserializeObject<EmailThongTinChungDto>(
+                    StringUltils.DecryptWithKey(request.CreateKetQuaDto?.GuiEmail, EmailSettings.SecretKey));
+            var guiEmail = await _surveyRepo.GuiEmail.GetById(thongTinChung?.IdGuiEmail ?? 0);
             var bks = await _surveyRepo.BangKhaoSat.GetById(guiEmail.IdBangKhaoSat);
             switch (bks.TrangThai)
             {
@@ -48,8 +58,8 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                     throw new ValidationException("Bảng khảo sát đã tạm dừng");
             }
 
-            var countBks = await _surveyRepo.GuiEmail.CountAsync(x => x.IdBangKhaoSat == guiEmail.IdBangKhaoSat);
-            var countKq = await _surveyRepo.KetQua.CountAsync(x => x.IdGuiEmail == guiEmail.Id);
+            var countBks = await _surveyRepo.GuiEmail.CountAsync(x => x.IdBangKhaoSat == guiEmail.IdBangKhaoSat && !x.Deleted);
+            var countKq = await _surveyRepo.KetQua.CountAsync(x => x.IdGuiEmail == guiEmail.Id && !x.Deleted && x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh);
             if (countBks == countKq)
             {
                 bks.TrangThai = (int)EnumTrangThai.TrangThai.HoanThanh;
@@ -57,7 +67,8 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             }
 
             var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
-            var kqDb = await _surveyRepo.KetQua.FirstOrDefaultAsync(x => request.CreateKetQuaDto != null && x.IdGuiEmail == request.CreateKetQuaDto.IdGuiEmail && !x.Deleted);
+            ketQua.IdGuiEmail = guiEmail.Id;
+            var kqDb = await _surveyRepo.KetQua.FirstOrDefaultAsync(x => request.CreateKetQuaDto != null && x.IdGuiEmail == guiEmail.Id && !x.Deleted);
             if (kqDb == null)
                 await _surveyRepo.KetQua.Create(ketQua);
             else

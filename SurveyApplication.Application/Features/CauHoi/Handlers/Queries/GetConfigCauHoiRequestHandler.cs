@@ -41,6 +41,7 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries
             var lstId = lstCauHoi.Select(x => x.Id ?? 0).ToList();
             var lstCot = await _surveyRepo.Cot.GetAllListAsync(x => lstId.Contains(x.IdCauHoi));
             var lstHang = await _surveyRepo.Hang.GetAllListAsync(x => lstId.Contains(x.IdCauHoi));
+            var kq = await _surveyRepo.KetQua.FirstOrDefaultAsync(x => x.IdGuiEmail == request.IdGuiEmail && !x.Deleted);
             lstCauHoi.ForEach(x =>
             {
                 x.LstCot = _mapper.Map<List<CotDto>>(lstCot.Where(c => c.IdCauHoi == x.Id).Select(c => c));
@@ -49,9 +50,10 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries
             var result = new PhieuKhaoSatDto
             {
                 IdBangKhaoSat = mailInfo.IdBangKhaoSat,
-                TrangThai = bks.TrangThai ?? 0,
+                TrangThaiKhaoSat = bks.TrangThai ?? (int)EnumTrangThai.TrangThai.ChoKhaoSat,
                 LstCauHoi = lstCauHoi,
-                KqSurvey = (await _surveyRepo.KetQua.FirstOrDefaultAsync(x => x.IdGuiEmail == request.IdGuiEmail && !x.Deleted))?.Data ?? ""
+                KqSurvey = kq?.Data ?? "",
+                TrangThaiKq = kq?.TrangThai ?? (int)EnumKetQua.TrangThai.ChuaLuu,
             };
 
             return result;

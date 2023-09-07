@@ -172,8 +172,8 @@ export class GeneralInfoComponent {
         );
         this.selectedLoaiHinhDonVi = res.donVi.idLoaiHinh;
         this.selectedLinhVuc = res.donVi.idLinhVuc;
-        this.generalInfo.trangThai === 2 && this.frmGeneralInfo.disable();
-        this.showBtnReset = this.generalInfo.trangThai !== 2;
+        this.generalInfo.trangThaiKq === 2 && this.frmGeneralInfo.disable();
+        this.showBtnReset = this.generalInfo.trangThaiKq !== 2;
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);

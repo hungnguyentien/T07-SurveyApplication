@@ -1,7 +1,5 @@
 export interface SaveSurvey {
-  idDonVi: number;
-  idNguoiDaiDien: number;
-  idBangKhaoSat: number;
+  guiEmail: string;
   data: string;
   trangThai: number;
 }

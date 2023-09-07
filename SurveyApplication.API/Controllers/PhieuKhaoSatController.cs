@@ -21,14 +21,13 @@ public class PhieuKhaoSatController : ControllerBase
     private const string PathJsonQuanHuyen = @"TempData\quan_huyen.json";
     private const string PathJsonPhuongXa = @"TempData\xa_phuong.json";
     private readonly IMediator _mediator;
+    private EmailSettings EmailSettings { get; }
 
     public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings)
     {
         _mediator = mediator;
         EmailSettings = emailSettings.Value;
     }
-
-    private EmailSettings EmailSettings { get; }
 
     [HttpGet("GetThongTinChung")]
     public async Task<ActionResult<ThongTinChungDto>> GetThongTinChung(string data)
@@ -41,11 +40,14 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     [HttpGet("GetConfigPhieuKhaoSat")]
-    public async Task<ActionResult<PhieuKhaoSatDto>> GetConfigPhieuKhaoSat(int idGuiEmail)
+    public async Task<ActionResult<PhieuKhaoSatDto>> GetConfigPhieuKhaoSat(string data)
     {
+        var thongTinChung =
+            JsonConvert.DeserializeObject<EmailThongTinChungDto>(
+                StringUltils.DecryptWithKey(data, EmailSettings.SecretKey));
         var result = await _mediator.Send(new GetConfigCauHoiRequest
         {
-            IdGuiEmail = idGuiEmail
+            IdGuiEmail = thongTinChung.IdGuiEmail ?? 0
         });
         return Ok(result);
     }
