@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SurveyApplication.Domain.Common.Identity;
 using SurveyApplication.Domain.Interfaces.Identity;
-using SurveyApplication.Identity.Models;
+using SurveyApplication.Domain.Models;
 
 namespace SurveyApplication.Identity.Services
 {

@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common;
+using SurveyApplication.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Persistence
 {
-    public class SurveyApplicationDbContext : DbContext
+    public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public SurveyApplicationDbContext(DbContextOptions<SurveyApplicationDbContext> options) : base(options)
         {

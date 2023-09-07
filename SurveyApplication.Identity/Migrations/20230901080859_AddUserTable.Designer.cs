@@ -11,7 +11,7 @@ using SurveyApplication.Identity;
 
 namespace SurveyApplication.Identity.Migrations
 {
-    [DbContext(typeof(SurveyApplicationIdentityDbContext))]
+    //[DbContext(typeof(SurveyApplicationIdentityDbContext))]
     [Migration("20230901080859_AddUserTable")]
     partial class AddUserTable
     {
