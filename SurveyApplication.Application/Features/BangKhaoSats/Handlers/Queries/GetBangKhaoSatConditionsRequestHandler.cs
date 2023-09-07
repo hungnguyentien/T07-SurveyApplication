@@ -26,8 +26,8 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
                         join o in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
                         on d.IdLoaiHinh equals o.Id
 
-                        join s in _surveyRepo.GuiEmail.GetAllQueryable()
-                        on d.Id equals s.IdBangKhaoSat
+                        //join s in _surveyRepo.GuiEmail.GetAllQueryable()
+                        //on d.Id equals s.IdBangKhaoSat
                         where d.MaBangKhaoSat.Contains(request.Keyword) || d.TenBangKhaoSat.Contains(request.Keyword) ||
                         b.TenDotKhaoSat.Contains(request.Keyword) || o.TenLoaiHinh.Contains(request.Keyword)
                         select new BangKhaoSatDto
@@ -46,7 +46,7 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
                             IdLoaiHinh = o.Id,
                             TenLoaiHinh = o.TenLoaiHinh,
 
-                            TrangThaiEmail = s.TrangThai,
+                            //TrangThaiEmail = s.TrangThai,
                         };
             var totalCount = await query.LongCountAsync();
             var pageCount = (int)Math.Ceiling(totalCount / (double)request.PageSize);

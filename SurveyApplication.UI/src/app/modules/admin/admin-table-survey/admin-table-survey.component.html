@@ -142,8 +142,7 @@
                             aria-hidden="true"></span></a>
                     <a class="m-3"><span class="pi pi-caret-right" title="Dừng" style="color: rgb(32, 154, 60);"
                             aria-hidden="true"></span></a>
-                    <a class="m-3"><span class="pi pi-eye" title="Xem" style="color: rgb(25, 150, 222);"
-                            aria-hidden="true"></span></a>
+                            <a class="m-3" *ngIf="rowData.trangThai === '1'"><span class="pi pi-caret-right" title="Dừng" style="color: rgb(32, 154, 60);" aria-hidden="true"></span></a>
                 </td>
             </tr>
         </ng-template>

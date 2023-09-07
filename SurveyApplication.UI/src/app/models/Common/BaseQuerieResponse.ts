@@ -3,5 +3,6 @@ export interface BaseQuerieResponse<T> {
   pageSize: number;
   keyword: number;
   totalFilter: number;
+  totalCount:number;
   data: T[];
 }
