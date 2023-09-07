@@ -14,6 +14,9 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
         private readonly IMapper _mapper;
         public UpdateBangKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
+
+
+
             _mapper = mapper;
         }
 
