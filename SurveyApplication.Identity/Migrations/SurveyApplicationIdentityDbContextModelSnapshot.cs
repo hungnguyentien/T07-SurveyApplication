@@ -10,7 +10,7 @@ using SurveyApplication.Identity;
 
 namespace SurveyApplication.Identity.Migrations
 {
-    [DbContext(typeof(SurveyApplicationIdentityDbContext))]
+    //[DbContext(typeof(SurveyApplicationIdentityDbContext))]
     partial class SurveyApplicationIdentityDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

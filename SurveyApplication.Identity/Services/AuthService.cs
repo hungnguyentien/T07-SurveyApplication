@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Common.Identity;
 using SurveyApplication.Domain.Interfaces.Identity;
-using SurveyApplication.Identity.Models;
+using SurveyApplication.Domain.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -113,7 +113,7 @@ namespace SurveyApplication.Identity.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 //new Claim(CustomClaimTypes.Uid, user.Id)
-                new Claim("uid", user.Id)
+                new Claim("uid", user.Id.ToString())
             }
             .Union(userClaims)
             .Union(roleClaims);

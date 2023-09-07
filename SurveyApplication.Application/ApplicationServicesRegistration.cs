@@ -16,7 +16,7 @@ namespace SurveyApplication.Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.ConfigureInfrastructureServices(configuration);
             services.ConfigurePersistenceServices(configuration);
-            services.ConfigureIdentityServices(configuration);
+            //services.ConfigureIdentityServices(configuration);
             return services;
         }
     }
