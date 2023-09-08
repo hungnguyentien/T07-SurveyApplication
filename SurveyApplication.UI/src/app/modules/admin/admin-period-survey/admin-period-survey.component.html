@@ -114,7 +114,7 @@
                 </td>
                 <td>
                     <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy'
-                        }}-{{rowData.ngayKetThuuc| date:'dd/MM/yyyy'}}</span>
+                        }}-{{rowData.ngayKetThuc| date:'dd/MM/yyyy'}}</span>
                 </td>
                 <td>
                     <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 0" style="color:rgb(84, 84, 226)">Chờ khảo sát</span>
@@ -200,10 +200,10 @@
                 <div class="form-group col-md-6">
                     <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span
                             style="color: red;">*</span></label>
-                    <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name"
+                    <input type="date" formControlName="NgayKetThuc" class="form-control" id="recipient-name"
                         pInputText placeholder="Ngày bắt đầu">
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['NgayKetThuuc'].valid && 
-                        FormPeriodSurvey.controls['NgayKetThuuc'].dirty" >
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['NgayKetThuc'].valid && 
+                        FormPeriodSurvey.controls['NgayKetThuc'].dirty" >
                        Vui lòng nhập Ngày kết thúc
                    </small>
                 </div>
@@ -219,9 +219,9 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span style="color: red;">*</span></label>
-                  <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name" 
+                  <input type="date" formControlName="NgayKetThuc" class="form-control" id="recipient-name" 
                     placeholder="Ngày kết thúc" >
-                  <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.get('NgayKetThuuc')?.valid && FormPeriodSurvey.get('NgayKetThuuc')?.dirty">
+                  <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.get('NgayKetThuc')?.valid && FormPeriodSurvey.get('NgayKetThuc')?.dirty">
                     Vui lòng nhập Ngày kết thúc
                   </small>
                   <small style="color: #e24c4c;" class="ml-2" *ngIf="FormPeriodSurvey.hasError('dateRangeError')">
