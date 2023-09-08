@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Accounts\Handlers\Commands\**" />
+    <Compile Remove="Features\Accounts\Requests\Commands\**" />
+    <EmbeddedResource Remove="Features\Accounts\Handlers\Commands\**" />
+    <EmbeddedResource Remove="Features\Accounts\Requests\Commands\**" />
+    <None Remove="Features\Accounts\Handlers\Commands\**" />
+    <None Remove="Features\Accounts\Requests\Commands\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Features\CauHoi\Handlers\Queries\GetCauHoiConditionsRequestHandler.cs~RF3b9665.TMP" />
   </ItemGroup>
 
@@ -29,10 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Accounts\Handlers\Commands\" />
-    <Folder Include="Features\Accounts\Handlers\Commands\" />
-    <Folder Include="Features\Accounts\Requests\Commands\" />
-    <Folder Include="Features\Accounts\Requests\Commands\" />
     <Folder Include="Features\LinhVucHoatDong\Handlers\Commands\" />
     <Folder Include="Features\LinhVucHoatDong\Requests\Commands\" />
   </ItemGroup>

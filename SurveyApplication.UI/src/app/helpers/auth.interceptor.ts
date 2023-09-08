@@ -13,12 +13,12 @@ import Utils from './utils';
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
-    private loginserviceService: LoginService,
+    private loginService: LoginService,
     private messageService: MessageService
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentUserRole = this.loginserviceService.getRoleUser();
+    const currentUserRole = this.loginService.getRoleUser();
     if (currentUserRole) {
       // kiểm tra quyền có được truy xuất vào trang không
       if (
@@ -30,6 +30,7 @@ export class AuthGuard implements CanActivate {
           this.messageService,
           'Bạn không có quyền vào trang!'
         );
+        
         this.router.navigate(['/']);
         return false; // Mặc định là false
       }

@@ -12,7 +12,7 @@ import { environment } from '@environments/environment';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private loginserviceService: LoginService) {}
+  constructor(private loginService: LoginService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -23,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         let message = err.error || err.statusText;
         if (err.status === 401) {
           message = 'Bạn không có quyền';
-          this.loginserviceService.logout();
+          this.loginService.logout();
         } else if (err.status === 0) {
           message = 'Sever không hoạt động';
         }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { LoginService } from '@app/services';
 
 @Component({
@@ -8,7 +7,7 @@ import { LoginService } from '@app/services';
   styleUrls: ['./admin-templete.component.css'],
 })
 export class AdminTempleteComponent {
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor(private loginService: LoginService) {}
   logout() {
     this.loginService.logout();
   }

@@ -12,7 +12,7 @@ using SurveyApplication.Persistence;
 namespace SurveyApplication.Persistence.Migrations
 {
     [DbContext(typeof(SurveyApplicationDbContext))]
-    [Migration("20230908102742_Initial")]
+    [Migration("20230908113225_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

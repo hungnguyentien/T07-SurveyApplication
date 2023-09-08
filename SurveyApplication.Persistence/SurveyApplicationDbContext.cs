@@ -47,23 +47,6 @@ namespace SurveyApplication.Persistence
             return base.SaveChangesAsync(cancellationToken);
         }
 
-        //public DbSet<ApiResourceProperty> ApiResourceProperty { get; set; }
-        //public DbSet<IdentityResourceProperty> IdentityResourceProperty { get; set; }
-        //public DbSet<ApiResourceSecret> ApiResourceSecret { get; set; }
-        //public DbSet<ApiScopeClaim> ApiScopeClaim { get; set; }
-        //public DbSet<IdentityResourceClaim> IdentityResourceClaim { get; set; }
-        //public DbSet<ApiResourceClaim> ApiResourceClaim { get; set; }
-        //public DbSet<ClientGrantType> ClientGrantType { get; set; }
-        //public DbSet<ClientScope> ClientScope { get; set; }
-        //public DbSet<ClientSecret> ClientSecret { get; set; }
-        //public DbSet<ClientPostLogoutRedirectUri> ClientPostLogoutRedirectUri { get; set; }
-        //public DbSet<ClientIdPRestriction> ClientIdPRestriction { get; set; }
-        //public DbSet<ClientRedirectUri> ClientRedirectUri { get; set; }
-        //public DbSet<ClientClaim> ClientClaim { get; set; }
-        //public DbSet<ClientProperty> ClientProperty { get; set; }
-        //public DbSet<ApiScopeProperty> ApiScopeProperty { get; set; }
-        //public DbSet<ApiResourceScope> ApiResourceScope { get; set; }
-
         public DbSet<ApplicationUser> Account { get; set; }
         public DbSet<LoaiHinhDonVi> LoaiHinhDonVi { get; set; }
         public DbSet<LinhVucHoatDong> LinhVucHoatDong { get; set; }
