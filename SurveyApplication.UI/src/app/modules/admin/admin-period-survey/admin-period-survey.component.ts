@@ -47,7 +47,7 @@ export class AdminPeriodSurveyComponent {
       IdLoaiHinh: ['', Validators.required],
       TenDotKhaoSat: ['', Validators.required],
       NgayBatDau: ['', Validators.required],
-      NgayKetThuc: ['', Validators.required],
+      ngayKetThuc: ['', Validators.required],
       TrangThai: []
     }, { validator: this.dateRangeValidator });   
       }
@@ -55,7 +55,7 @@ export class AdminPeriodSurveyComponent {
   dateRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
     
     const startDate = control.get('NgayBatDau')?.value;
-    const endDate = control.get('NgayKetThuuc')?.value;
+    const endDate = control.get('ngayKetThuc')?.value;
   
     if (startDate && endDate && startDate > endDate) {
       return { 'dateRangeError': true };
