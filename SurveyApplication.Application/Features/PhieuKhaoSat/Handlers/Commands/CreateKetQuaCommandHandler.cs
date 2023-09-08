@@ -42,7 +42,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 return response;
             }
 
-            bangKs.TrangThai = (int)EnumTrangThai.TrangThai.HoanThanh;
+            bangKs.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
             await _bangKhaoSatRepository.Update(bangKs);
             var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
             ketQua.ActiveFlag = request.CreateKetQuaDto.Status;

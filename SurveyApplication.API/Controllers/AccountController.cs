@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.Application.DTOs.Account;
+using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Domain.Common.Identity;
-using SurveyApplication.Domain.Interfaces.Identity;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -8,22 +10,23 @@ namespace SurveyApplication.API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IAuthService _authenticationService;
-        public AccountController(IAuthService authenticationService)
+        private readonly IMediator _mediator;
+
+        public AccountController(IMediator mediator)
         {
-            _authenticationService = authenticationService;
+            _mediator = mediator;
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login(AuthRequest request)
+        public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
         {
-            return Ok(await _authenticationService.Login(request));
+            return Ok(await _mediator.Send(request));
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
         {
-            return Ok(await _authenticationService.Register(request));
+            return Ok(await _mediator.Send(request));
         }
     }
 }

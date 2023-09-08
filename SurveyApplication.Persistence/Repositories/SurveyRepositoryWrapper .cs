@@ -55,6 +55,9 @@ namespace SurveyApplication.Persistence.Repositories
         public IGuiEmailRepository _guiEmailRepository;
         public IGuiEmailRepository GuiEmail => _guiEmailRepository ??= new GuiEmailRepository(_repoContext);
 
+        public IAccountRepository _accountRepository;
+        public IAccountRepository Account => _accountRepository ??= new AccountRepository(_repoContext);
+
         #endregion
 
         //RenderHere
