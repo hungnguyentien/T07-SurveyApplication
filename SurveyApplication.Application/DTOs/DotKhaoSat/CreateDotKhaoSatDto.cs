@@ -11,7 +11,7 @@
 
         public DateTime NgayBatDau { get; set; }
 
-        public DateTime NgayKetThuuc { get; set; }
+        public DateTime NgayKetThuc { get; set; }
         public int? TrangThai { get; set; }
 
     }

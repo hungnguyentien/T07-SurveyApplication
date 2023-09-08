@@ -4,7 +4,6 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using SurveyApplication.Infrastructure;
 using SurveyApplication.Persistence;
-using SurveyApplication.Identity;
 
 namespace SurveyApplication.Application
 {
@@ -16,7 +15,7 @@ namespace SurveyApplication.Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.ConfigureInfrastructureServices(configuration);
             services.ConfigurePersistenceServices(configuration);
-            services.ConfigureIdentityServices(configuration);
+
             return services;
         }
     }

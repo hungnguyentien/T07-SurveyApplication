@@ -31,7 +31,7 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Queries
                             MaDotKhaoSat = d.MaDotKhaoSat,
                             TenDotKhaoSat = d.TenDotKhaoSat,
                             NgayBatDau = d.NgayBatDau,
-                            NgayKetThuuc = d.NgayKetThuuc,
+                            NgayKetThuc = d.NgayKetThuc,
                             TrangThai = d.TrangThai,
 
                             IdLoaiHinh = b.Id,

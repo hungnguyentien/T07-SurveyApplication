@@ -14,6 +14,7 @@
         IKetQuaRepository KetQua { get; }
         IDonViRepository DonVi { get; }
         INguoiDaiDienRepository NguoiDaiDien { get; }
+        IAccountRepository Account { get; }
 
         //RenderHere
         Task SaveAync();
