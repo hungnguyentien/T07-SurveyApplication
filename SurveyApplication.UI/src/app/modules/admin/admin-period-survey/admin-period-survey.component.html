@@ -17,10 +17,11 @@
     <div class="d-flex mt-3">
         <div>
             <button (click)=" Add()" pButton type="button" icon="pi pi-plus" label="Thêm mới"
-                class="custom-button"></button>
+                class="custom-button">
+            </button>
         </div>
         <div class="ml-3">
-            <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"
+            <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
                 style="background-color: #ea5c5c;"></button>
         </div>
     </div>
@@ -109,14 +110,17 @@
                 </td>
 
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ GetNameById(rowData.maLoaiHinh) }}</span>
+                    <span class="ml-1 vertical-align-middle">{{rowData.tenLoaiHinh}}</span>
                 </td>
                 <td>
                     <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy'
                         }}-{{rowData.ngayKetThuuc| date:'dd/MM/yyyy'}}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle"></span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 0" style="color:rgb(84, 84, 226)">Chờ khảo sát</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 1" style="color: rgb(218, 159, 82);">Đang khảo sát</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 2" style="color: green;">Hoàn thành</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 3" style="color: #e24c4c">Tạm dừng</span>
                 </td>
                 <td>
                     <a class="m-3"><span (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật"
@@ -153,9 +157,10 @@
                             style="color: red;">*</span></label>
                     <input type="text" formControlName="MaDotKhaoSat" class="form-control" id="recipient-name"
                         pInputText placeholder="Nhập mã đợt khảo sát">
-                        <p-message severity="error" text="Vui lòng nhập mã đợt"
-                            *ngIf="!FormPeriodSurvey.controls['MaDotKhaoSat'].valid && FormPeriodSurvey.controls['MaDotKhaoSat'].dirty">
-                        </p-message>
+                        <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['MaDotKhaoSat'].valid && 
+                         FormPeriodSurvey.controls['MaDotKhaoSat'].dirty" >
+                            Vui lòng nhập mã đợt
+                        </small>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span
@@ -165,9 +170,10 @@
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
                         placeholder="-- Chọn loại hình đơn vị --"formControlName="IdLoaiHinh">
                     </p-dropdown>
-                    <p-message severity="error" text="Vui lòng chọn loại hình"
-                            *ngIf="!FormPeriodSurvey.controls['IdLoaiHinh'].valid && FormPeriodSurvey.controls['IdLoaiHinh'].dirty">
-                    </p-message>
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['IdLoaiHinh'].valid && 
+                         FormPeriodSurvey.controls['IdLoaiHinh'].dirty" >
+                            Vui lòng chọn Loại hình đơn vị
+                    </small>
 
                 </div>
             </div>
@@ -175,30 +181,55 @@
                 <label for="recipient-name" class="col-form-label">Tên đợt: <span style="color: red;">*</span></label>
                 <input type="text" formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText
                     placeholder="Nhập tên đợt khảo sát">
-                <p-message severity="error" text="Vui lòng chọn tên đợt"
-                        *ngIf="!FormPeriodSurvey.controls['TenDotKhaoSat'].valid && FormPeriodSurvey.controls['TenDotKhaoSat'].dirty">
-                </p-message>
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['TenDotKhaoSat'].valid && 
+                        FormPeriodSurvey.controls['TenDotKhaoSat'].dirty" >
+                       Vui lòng nhập Tên đợt
+                   </small>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="form-group col-md-6">
                     <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span
                             style="color: red;">*</span></label>
                     <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name" pInputText
                         placeholder="Ngày Bắt Đầu">
-                    <p-message severity="error" text="Vui lòng chọn ngày bắt đầu"
-                        *ngIf="!FormPeriodSurvey.controls['NgayBatDau'].valid && FormPeriodSurvey.controls['NgayBatDau'].dirty">
-                    </p-message>
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['NgayBatDau'].valid && 
+                        FormPeriodSurvey.controls['NgayBatDau'].dirty" >
+                       Vui lòng nhập Ngày bắt đầu
+                   </small>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span
                             style="color: red;">*</span></label>
                     <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name"
                         pInputText placeholder="Ngày bắt đầu">
-                    <p-message severity="error" text="Vui lòng chọn ngày kết thúc"
-                        *ngIf="!FormPeriodSurvey.controls['NgayKetThuuc'].valid && FormPeriodSurvey.controls['NgayKetThuuc'].dirty">
-                    </p-message>
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['NgayKetThuuc'].valid && 
+                        FormPeriodSurvey.controls['NgayKetThuuc'].dirty" >
+                       Vui lòng nhập Ngày kết thúc
+                   </small>
                 </div>
-            </div>
+            </div> -->
+            <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span style="color: red;">*</span></label>
+                  <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name" 
+                    placeholder="Ngày Bắt Đầu" >
+                  <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.get('NgayBatDau')?.valid && FormPeriodSurvey.get('NgayBatDau')?.dirty">
+                    Vui lòng nhập Ngày bắt đầu
+                  </small>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span style="color: red;">*</span></label>
+                  <input type="date" formControlName="NgayKetThuuc" class="form-control" id="recipient-name" 
+                    placeholder="Ngày kết thúc" >
+                  <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.get('NgayKetThuuc')?.valid && FormPeriodSurvey.get('NgayKetThuuc')?.dirty">
+                    Vui lòng nhập Ngày kết thúc
+                  </small>
+                  <small style="color: #e24c4c;" class="ml-2" *ngIf="FormPeriodSurvey.hasError('dateRangeError')">
+                    Ngày bắt đầu phải nhỏ hơn ngày kết thúc
+                  </small>
+                </div>
+              </div>
+              
         </ng-template>
         <ng-template pTemplate="footer">
             <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
@@ -206,26 +237,3 @@
         </ng-template>
     </p-dialog>
 </form>
-<!-- <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd == true">Thêm mới đợt khảo sát</h5>
-                <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd == false">Cập nhật loại hình đơn vị</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" [formGroup]="FormPeriodSurvey">
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="Save()">Lưu</button>
-            </div>
-        </div>
-    </div>
-</div> -->

@@ -59,7 +59,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpPost("Update")]
         public async Task<ActionResult<DonViDto>> UpdateDonVi([FromBody] UpdateDonViAndNguoiDaiDienDto obj)
-        {
+            {
             var command_1 = new UpdateDonViCommand { DonViDto = obj.DonViDto };
             var response_1 = await _mediator.Send(command_1);
 

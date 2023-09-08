@@ -112,7 +112,7 @@
           <a class="m-3"><span data-toggle="modal" data-target="#createForm" (click)="Edit(rowData)"
               class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
 
-          <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData.id)"
+          <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData.idDonVi)"
               style="color: red;" aria-hidden="true"></span></a>
         </td>
       </tr>
@@ -164,13 +164,16 @@
            </small>
             </div>
             <div class="form-group col-md-6">
-              <label for="loaihinhdonvi" class="col-form-label">Lĩnh vực hoạt động: </label>
-              <select formControlName="IdLinhVuc" class="custom-select" id="loaihinhdonvi">
-                <option selected value=" ">Chọn lĩnh vực hoạt động</option>
-                <option value="1">Doanh nghiệp</option>
-                <option value="2">Giáo dục</option>
-                <option value="3">Nhà Nước</option>
-              </select>
+              <label for="IdLinhVuc" class="col-form-label">Lĩnh vực hoạt động: </label>
+              <p-dropdown id="IdLinhVuc" [options]="listlinhvuchoatdong" optionLabel="tenLinhVuc" optionValue="id"
+                        [filter]="true" filterBy="tenLinhVuc" emptyMessage="Không có kết quả nào"
+                        emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                        placeholder="-- Chọn Lĩnh vực hoạt động --"formControlName="IdLinhVuc">
+              </p-dropdown>
+              <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['IdLinhVuc'].valid && 
+              FormObjectSurvey.controls['IdLinhVuc'].dirty" >
+              Vui lòng chọn Lĩnh vực hoạt động
+           </small>
             </div>
             
             <div class="form-group col-md-6">
@@ -282,7 +285,8 @@
     </div>
     <p-footer>
          <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
-         <button  pButton [disabled]="!FormObjectSurvey.valid  && !FormRepresentative.valid" type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
+         <button  pButton [disabled]="!FormObjectSurvey.valid && !FormRepresentative.valid"
+         type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
     </p-footer>
   </p-dialog>
 </form>
