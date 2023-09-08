@@ -6,10 +6,10 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { LoginserviceService } from '../services/login.service';
+import { LoginService } from '../services/login.service';
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private loginService: LoginserviceService) {}
+  constructor(private loginService: LoginService) {}
 
   intercept(
     request: HttpRequest<any>,

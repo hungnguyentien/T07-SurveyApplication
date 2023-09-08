@@ -7,12 +7,12 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { LoginserviceService } from '../services/login.service';
+import { LoginService } from '../services/login.service';
 import { environment } from '@environments/environment';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private loginserviceService: LoginserviceService) {}
+  constructor(private loginserviceService: LoginService) {}
 
   intercept(
     request: HttpRequest<any>,

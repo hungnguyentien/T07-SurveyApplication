@@ -5,7 +5,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
-import { LoginserviceService } from '../services/login.service';
+import { LoginService } from '../services/login.service';
 import { MessageService } from 'primeng/api';
 import Utils from './utils';
 
@@ -13,7 +13,7 @@ import Utils from './utils';
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
-    private loginserviceService: LoginserviceService,
+    private loginserviceService: LoginService,
     private messageService: MessageService
   ) {}
 

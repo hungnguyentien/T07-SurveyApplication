@@ -5,19 +5,19 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { Login } from '../models';
 import { CookieService } from 'ngx-cookie-service';
-import { AuthService } from '@app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LoginserviceService {
+export class LoginService {
   private currentUserSubject: BehaviorSubject<string>;
   public currentUser: Observable<string>;
 
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
-    private authService: AuthService
+    private router: Router
   ) {
     this.currentUserSubject = new BehaviorSubject<string>(
       this.cookieService.get('currentUser')
@@ -27,8 +27,8 @@ export class LoginserviceService {
 
   login(model: Login) {
     const loginData = {
-      Email: model.UserName,
-      Password: model.Password,
+      email: model.UserName,
+      password: model.Password,
       grant_type: 'password',
     };
     let options = {
@@ -46,7 +46,6 @@ export class LoginserviceService {
             // lưu token vào Cookie
             this.cookieService.set('currentUser', JSON.stringify(req));
             this.currentUserSubject.next(JSON.stringify(req));
-            this.authService.login();
           }
 
           return req;
@@ -68,7 +67,8 @@ export class LoginserviceService {
 
   logout() {
     // remove user from local storage to log user out
-    this.cookieService.delete('currentUser');
+    this.cookieService.delete('currentUser', '/');
     this.currentUserSubject.next('');
+    this.router.navigate(['/login']);
   }
 }
