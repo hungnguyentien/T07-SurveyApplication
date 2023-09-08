@@ -31,6 +31,7 @@ export class LoginComponent {
   }
 
   login() {
+    debugger
     this.loginService.login(this.model).subscribe((result: any) => {
       if (result) {
         // alert("Đăng nhập thành công !")
