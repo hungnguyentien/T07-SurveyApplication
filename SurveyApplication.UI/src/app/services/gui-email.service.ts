@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { BaseCommandResponse, CreateGuiEmail, SurveyConfig } from '@app/models';
+import { BaseCommandResponse, CreateGuiEmail } from '@app/models';
 import { Observable, first } from 'rxjs';
 
 @Injectable({

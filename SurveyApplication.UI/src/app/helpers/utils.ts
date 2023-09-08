@@ -8,6 +8,7 @@ import { KqTrangThai, TypeCauHoi } from '@app/enums';
 import { SurveyConfig } from '@app/models';
 import { jsonDataFake } from './json';
 import { themeJson } from './theme';
+import { environment } from '@environments/environment';
 
 export default class Utils {
   static translate = (
@@ -81,12 +82,14 @@ export default class Utils {
   };
 
   static messageError = (messageService: MessageService, message: string) => {
-    messageService.clear();
-    messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message,
-    });
+    if (message || !environment.production) {
+      messageService.clear();
+      messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: message,
+      });
+    }
   };
 
   static messageInfo = (messageService: MessageService, message: string) => {

@@ -5,9 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class AuthService {
-
   private loggedIn: boolean = false;
-
   constructor(private cookieService: CookieService) {
     // Kiểm tra cookie khi ứng dụng khởi động
     this.checkCookie();

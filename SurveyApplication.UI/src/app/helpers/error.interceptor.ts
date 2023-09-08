@@ -7,15 +7,12 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { LoginserviceService } from '../services/login.service';
+import { environment } from '@environments/environment';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(
-    private loginserviceService: LoginserviceService,
-    private router: Router
-  ) {}
+  constructor(private loginserviceService: LoginserviceService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -23,18 +20,19 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err) => {
-        let error = err.error || err.statusText;
+        let message = err.error || err.statusText;
         if (err.status === 401) {
-          error = 'Bạn không có quyền';
+          message = 'Bạn không có quyền';
           this.loginserviceService.logout();
         } else if (err.status === 0) {
-          error = 'Sever không hoạt động';
+          message = 'Sever không hoạt động';
         }
 
+        console.log(message);
         // Xóa Console log
-        console.clear();
+        environment.production && console.clear();
 
-        return throwError(error);
+        return throwError(err);
       })
     );
   }

@@ -26,23 +26,74 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
     {
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
-        public LoginRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtSettings, SignInManager<ApplicationUser> signInManager) : base(surveyRepository)
+        public LoginRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtSettings, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager) : base(surveyRepository)
         {
             _mapper = mapper;
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public async Task<AuthResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            //var hasher = new PasswordHasher<ApplicationUser>();
+            //var userAdmin = new ApplicationUser
+            //{
+            //    Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+            //    Email = "admin@gmail.com",
+            //    NormalizedEmail = "ADMIN@GAMAIL.COM",
+            //    FirstName = "System",
+            //    LastName = "Admin",
+            //    UserName = "admin",
+            //    NormalizedUserName = "ADMIN",
+            //    PasswordHash = hasher.HashPassword(null, "123qwe"),
+            //    EmailConfirmed = true
+            //};
+            //var t = await _userManager.CreateAsync(userAdmin);
+            //var role = await _roleManager.CreateAsync(new IdentityRole
+            //{
+            //    Id = "cbc43a8e-f7bb-4445-baaf-1add431ffbbf",
+            //    Name = "Administrator",
+            //    NormalizedName = "ADMINISTRATOR"
+            //});
+            //await _userManager.AddToRoleAsync(userAdmin, "Administrator");
 
+            var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                throw new Exception($"User with {request.Email} not found.");
+                if (request.Email == "admin@gmail.com")
+                {
+                    var hasher = new PasswordHasher<ApplicationUser>();
+                    var userAdmin = new ApplicationUser
+                    {
+                        Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                        Email = "admin@gmail.com",
+                        NormalizedEmail = "ADMIN@GAMAIL.COM",
+                        FirstName = "System",
+                        LastName = "Admin",
+                        UserName = "admin",
+                        NormalizedUserName = "ADMIN",
+                        PasswordHash = hasher.HashPassword(null, "123qwe"),
+                        EmailConfirmed = true
+                    };
+                    await _userManager.CreateAsync(userAdmin);
+                    await _roleManager.CreateAsync(new IdentityRole
+                    {
+                        Id = "cbc43a8e-f7bb-4445-baaf-1add431ffbbf",
+                        Name = "Administrator",
+                        NormalizedName = "ADMINISTRATOR"
+                    });
+                    await _userManager.AddToRoleAsync(userAdmin, "Administrator");
+                    user = await _userManager.FindByEmailAsync(request.Email);
+                }
+                else
+                {
+                    throw new Exception($"User with {request.Email} not found.");
+                }
             }
 
             var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
