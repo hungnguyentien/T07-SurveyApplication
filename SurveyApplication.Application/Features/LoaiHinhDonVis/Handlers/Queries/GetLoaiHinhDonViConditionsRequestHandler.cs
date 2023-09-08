@@ -25,7 +25,7 @@ namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize,
                 Keyword = request.Keyword,
-                TotalCount = LoaiHinhDonVis.TotalCount,
+                TotalFilter = LoaiHinhDonVis.TotalFilter,
                 Data = result
             };
         }

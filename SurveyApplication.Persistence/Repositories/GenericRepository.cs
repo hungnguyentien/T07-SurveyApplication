@@ -94,7 +94,7 @@ namespace SurveyApplication.Persistence.Repositories
                 return new PageCommandResponse<T>
                 {
                     PageSize = 0,
-                    PageCount = 0,
+                    TotalFilter = 0,
                     PageIndex = pageIndex,
                     Data = new List<T>(),
                 };
@@ -111,7 +111,7 @@ namespace SurveyApplication.Persistence.Repositories
             var response = new PageCommandResponse<T>
             {
                 PageSize = pageSize,
-                PageCount = totalCount,
+                TotalFilter = totalCount,
                 PageIndex = pageIndex,
                 Data = pageResults,
             };
