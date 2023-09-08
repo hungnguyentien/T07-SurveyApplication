@@ -33,7 +33,7 @@ export class LoginComponent {
   };
   login() {
     this.loginService.login(this.model).subscribe((result: any) => {
-      debugger
+  
       if (result) {
         // alert("Đăng nhập thành công !")
         this.router.navigate(['admin/home']);

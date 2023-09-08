@@ -29,7 +29,6 @@ export class AuthService {
   }
 
   logout(): void {
-    debugger
     this.loggedIn = false;
     // Xóa cookie khi đăng xuất
     this.cookieService.delete('currentUser');

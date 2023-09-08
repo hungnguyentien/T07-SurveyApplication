@@ -12,7 +12,7 @@ export class AuthGuardService {
   ) {}
 
   canActivate(): boolean {
-    debugger
+    
     if (this.authService.isLoggedIn()) {
       return true;
     } else {

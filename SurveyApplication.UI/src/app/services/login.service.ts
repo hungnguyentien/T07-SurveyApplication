@@ -25,7 +25,7 @@ export class LoginserviceService {
   }
   
   login(model: Login) {
-    debugger
+    
     // model.grant_type = 'password';
     // let body = new URLSearchParams();
     // body.set('Email', model.UserName);
@@ -42,7 +42,7 @@ export class LoginserviceService {
     };
     return this.http.post(`${environment.apiUrl}`+ '/Account/login', loginData, options)
       .pipe(map(req => {
-        debugger
+        
         // đăng nhập thành công lưu lại token
         if (req) {
           // Xóa hết cookie
