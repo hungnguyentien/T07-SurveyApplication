@@ -1,10 +1,9 @@
-﻿using IdentityServer4.EntityFramework.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Models;
-using SurveyApplication.Persistence.Configurations;
 
 namespace SurveyApplication.Persistence
 {

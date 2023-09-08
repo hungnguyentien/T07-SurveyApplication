@@ -47,7 +47,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 
             if (await _surveyRepo.DotKhaoSat.AnyAsync(x =>
                    !x.Deleted && lstBangKhaoSat.Select(b => b.IdDotKhaoSat).Contains(x.Id) &&
-                   (x.NgayBatDau.Date > dateNow || x.NgayKetThuuc.Date < dateNow)))
+                   (x.NgayBatDau.Date > dateNow || x.NgayKetThuc.Date < dateNow)))
                 throw new FluentValidation.ValidationException("Có đợt khảo sát chưa đến hạn hoặc đã hết hạn");
 
             var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto) ?? throw new FluentValidation.ValidationException("Gửi email không mapping được");

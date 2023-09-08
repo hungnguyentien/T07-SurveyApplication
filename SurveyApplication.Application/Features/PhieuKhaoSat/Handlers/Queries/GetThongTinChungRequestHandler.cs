@@ -23,9 +23,9 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
         {
             var guiEmail = await _surveyRepo.GuiEmail.GetById(request.IdGuiEmail) ?? throw new ValidationException("Không tìm thấy thông tin gửi mail");
             var bangKs = await _surveyRepo.BangKhaoSat.GetById(guiEmail.IdBangKhaoSat);
-            if (bangKs.TrangThai == (int)EnumTrangThai.TrangThai.HoanThanh)
+            if (bangKs.TrangThai == (int)EnumBangKhaoSat.TrangThai.HoanThanh)
                 throw new ValidationException("Bảng khảo sát này đã hoàn thành");
-            if (bangKs.TrangThai == (int)EnumTrangThai.TrangThai.TamDung)
+            if (bangKs.TrangThai == (int)EnumBangKhaoSat.TrangThai.TamDung)
                 throw new ValidationException("Bảng khảo sát này đang tạm dừng");
 
             var donVi = await _surveyRepo.DonVi.GetById(guiEmail.IdDonVi);

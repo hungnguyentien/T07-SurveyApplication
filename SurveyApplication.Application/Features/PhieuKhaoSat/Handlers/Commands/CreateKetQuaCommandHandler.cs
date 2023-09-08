@@ -52,9 +52,9 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             var bks = await _surveyRepo.BangKhaoSat.GetById(guiEmail.IdBangKhaoSat);
             switch (bks.TrangThai)
             {
-                case (int)EnumTrangThai.TrangThai.HoanThanh:
+                case (int)EnumBangKhaoSat.TrangThai.HoanThanh:
                     throw new ValidationException("Bảng khảo sát đã hoàn thành");
-                case (int)EnumTrangThai.TrangThai.TamDung:
+                case (int)EnumBangKhaoSat.TrangThai.TamDung:
                     throw new ValidationException("Bảng khảo sát đã tạm dừng");
             }
 
@@ -62,7 +62,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             var countKq = await _surveyRepo.KetQua.CountAsync(x => x.IdGuiEmail == guiEmail.Id && !x.Deleted && x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh);
             if (countBks == countKq)
             {
-                bks.TrangThai = (int)EnumTrangThai.TrangThai.HoanThanh;
+                bks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
                 await _surveyRepo.BangKhaoSat.UpdateAsync(bks);
             }
 

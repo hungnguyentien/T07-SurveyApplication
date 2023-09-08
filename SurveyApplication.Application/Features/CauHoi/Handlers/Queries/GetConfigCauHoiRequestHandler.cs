@@ -50,7 +50,7 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries
             var result = new PhieuKhaoSatDto
             {
                 IdBangKhaoSat = mailInfo.IdBangKhaoSat,
-                TrangThaiKhaoSat = bks.TrangThai ?? (int)EnumTrangThai.TrangThai.ChoKhaoSat,
+                TrangThaiKhaoSat = bks.TrangThai ?? (int)EnumBangKhaoSat.TrangThai.ChoKhaoSat,
                 LstCauHoi = lstCauHoi,
                 KqSurvey = kq?.Data ?? "",
                 TrangThaiKq = kq?.TrangThai ?? (int)EnumKetQua.TrangThai.ChuaLuu,

@@ -29,7 +29,6 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtSettings _jwtSettings;
         public LoginRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtSettings, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager) : base(surveyRepository)
         {
@@ -42,28 +41,6 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
 
         public async Task<AuthResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
-            //var hasher = new PasswordHasher<ApplicationUser>();
-            //var userAdmin = new ApplicationUser
-            //{
-            //    Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-            //    Email = "admin@gmail.com",
-            //    NormalizedEmail = "ADMIN@GAMAIL.COM",
-            //    FirstName = "System",
-            //    LastName = "Admin",
-            //    UserName = "admin",
-            //    NormalizedUserName = "ADMIN",
-            //    PasswordHash = hasher.HashPassword(null, "123qwe"),
-            //    EmailConfirmed = true
-            //};
-            //var t = await _userManager.CreateAsync(userAdmin);
-            //var role = await _roleManager.CreateAsync(new IdentityRole
-            //{
-            //    Id = "cbc43a8e-f7bb-4445-baaf-1add431ffbbf",
-            //    Name = "Administrator",
-            //    NormalizedName = "ADMINISTRATOR"
-            //});
-            //await _userManager.AddToRoleAsync(userAdmin, "Administrator");
-
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
