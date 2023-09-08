@@ -3,5 +3,5 @@ export interface PeriodSurvey{
     IdLoaiHinh:number;
     TenDotKhaoSat:string;
     NgayBatDau:Date;
-    NgayKetThuuc:Date;
+    NgayKetThuc:Date;
 }

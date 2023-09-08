@@ -59,11 +59,11 @@ export class AdminObjectSurveyComponent {
       IdLoaiHinh: new FormControl('', Validators.required),
       IdLinhVuc: new FormControl('', Validators.required),
       TenDonVi: new FormControl('', Validators.required),
-      MaSoThue: new FormControl(''),
+      MaSoThue: new FormControl('', Validators.required),
       Email: new FormControl('', Validators.required),
-      WebSite: new FormControl(''),
+      WebSite: new FormControl('', Validators.required),
       SoDienThoai: new FormControl('', Validators.required),
-      DiaChi: new FormControl(''),
+      DiaChi: new FormControl('', Validators.required),
       // DiaChi: new FormGroup({
       //   TinhThanh: new FormControl(''),
       //   QuanHuyen: new FormControl(''),
@@ -138,6 +138,7 @@ export class AdminObjectSurveyComponent {
       next: (res) => {
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
+        console.log("res1",res)
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);

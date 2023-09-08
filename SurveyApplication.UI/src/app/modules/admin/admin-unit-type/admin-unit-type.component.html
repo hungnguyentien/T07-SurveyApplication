@@ -128,9 +128,10 @@
           placeholder="Nhập tên loại hình đơn vị" [ngClass]="{
             'is-invalid': submitted && f('TenLoaiHinh').errors
           }">
-        <p-message severity="error" text="Vui lòng nhập tên loại hình"
-          *ngIf="!FormUnitType.controls['TenLoaiHinh'].valid && FormUnitType.controls['TenLoaiHinh'].dirty">
-        </p-message>
+        <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormUnitType.controls['TenLoaiHinh'].valid && 
+          FormUnitType.controls['TenLoaiHinh'].dirty" >
+                Vui lòng nhập tên loại hình
+        </small>
       </div>
 
       <div class="form-group">
@@ -138,14 +139,15 @@
         <textarea class="form-control" formControlName="MoTa" id="MoTa" pInputText placeholder="Nhập mô tả" [ngClass]="{
           'is-invalid': submitted && f('MoTa').errors
         }"></textarea>
-        <p-message severity="error" text="Vui lòng nhập mô tả"
-          *ngIf="!FormUnitType.controls['MoTa'].valid && FormUnitType.controls['MoTa'].dirty">
-        </p-message>
+        <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormUnitType.controls['MoTa'].valid && 
+          FormUnitType.controls['MoTa'].dirty" >
+                Vui lòng nhập Mô tả
+        </small>
       </div>
     </ng-template>
     <ng-template pTemplate="footer">
-      <button type="button" class="btn btn-secondary" (click)="visible = false">Đóng</button>
-      <button type="submit" class="btn btn-primary">Lưu</button>
+      <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
+      <button pButton [disabled]="!FormUnitType.valid" type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
     </ng-template>
   </p-dialog>
 </form>

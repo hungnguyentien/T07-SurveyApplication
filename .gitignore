@@ -51,3 +51,9 @@
 /SurveyApplication.UI/.vscode/extensions.json
 /SurveyApplication.Utility/bin
 /SurveyApplication.Utility/obj
+/SurveyApplication.API/.config/dotnet-tools.json
+/SurveyApplication.API/Properties/PublishProfiles/FolderProfile.pubxml
+/SurveyApplication.API/Properties/PublishProfiles/FolderProfile.pubxml.user
+/SurveyApplication.API/.config
+/SurveyApplication.API/Properties
+/SurveyApplication.UI/dist
