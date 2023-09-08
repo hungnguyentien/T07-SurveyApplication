@@ -113,7 +113,8 @@
                     <span class="ml-1 vertical-align-middle">{{rowData.tenLoaiHinh}}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy'}}-{{rowData.ngayKetThuc| date:'dd/MM/yyyy'}}</span>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy'
+                        }}-{{rowData.ngayKetThuc| date:'dd/MM/yyyy'}}</span>
                 </td>
                 <td>
                     <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 0" style="color:rgb(84, 84, 226)">Chờ khảo sát</span>
