@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Enums
 {
-    public static class EnumTrangThai
+    public static class EnumDotKhaoSat
     {
         public enum TrangThai
         {
@@ -17,8 +17,6 @@ namespace SurveyApplication.Application.Enums
             DangKhaoSat = 1,
             [Description("Hoàn thành")]
             HoanThanh = 2,
-            [Description("Tạm dừng")]
-            TamDung = 3,
         }
     }
 }

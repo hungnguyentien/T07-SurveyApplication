@@ -9,7 +9,6 @@ namespace SurveyApplication.Application.DTOs.Account
 {
     public partial class AccountDto : IdentityUser
     {
-        public string Email { get; set; }
         public string Password { get; set; }
     }
 }

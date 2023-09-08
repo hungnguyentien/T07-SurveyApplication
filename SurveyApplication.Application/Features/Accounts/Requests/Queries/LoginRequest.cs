@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.Accounts.Requests.Queries
 {
-    public class LoginRequest : IRequest<AuthResponse>
+    public class LoginRequest : IdentityUser, IRequest<AuthResponse>
     {
-        public string Email { get; set; }
         public string Password { get; set; }
     }
 }

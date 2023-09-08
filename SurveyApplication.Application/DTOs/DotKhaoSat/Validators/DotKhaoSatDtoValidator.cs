@@ -28,11 +28,24 @@ namespace SurveyApplication.Application.DTOs.DotKhaoSat.Validators
 
             RuleFor(p => p.NgayBatDau)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+                .NotNull()
+                .Must((rootObject, ngayBatDau) => BeAValidDate(ngayBatDau, rootObject.NgayKetThuc))
+                .WithMessage("{PropertyName} must be a valid date and earlier than NgayKetThuc.");
 
-            RuleFor(p => p.NgayKetThuuc)
+            RuleFor(p => p.NgayKetThuc)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+                .NotNull()
+                .Must((rootObject, ngayKetThuc) => BeAValidDate(rootObject.NgayBatDau, ngayKetThuc))
+                .WithMessage("{PropertyName} must be a valid date and later than NgayBatDau.");
+        }
+
+        private bool BeAValidDate(DateTime? ngayBatDau, DateTime? ngayKetThuc)
+        {
+            if (ngayBatDau.HasValue && ngayKetThuc.HasValue)
+            {
+                return ngayBatDau <= ngayKetThuc;
+            }
+            return true;
         }
     }
 }
