@@ -5,6 +5,7 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterClientComponent } from './footer-client/footer-client.component';
 import { HeaderClientComponent } from './header-client/header-client.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { HeaderClientComponent } from './header-client/header-client.component';
     FooterClientComponent,
     HeaderClientComponent,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   exports: [
     HeaderComponent,
     FooterComponent,

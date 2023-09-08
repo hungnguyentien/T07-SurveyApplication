@@ -6,10 +6,14 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ObjectSurveyService, UnitTypeService } from '@app/services';
+import {
+  LinhVucHoatDongService,
+  ObjectSurveyService,
+  UnitTypeService,
+} from '@app/services';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { Table } from 'primeng/table';
-import { Paging } from '@app/models';
+import { LinhVucHoatDong, Paging } from '@app/models';
 import Utils from '@app/helpers/utils';
 
 @Component({
@@ -44,13 +48,14 @@ export class AdminObjectSurveyComponent {
   wards: any[] = [];
 
   visible: boolean = false;
+  lstLinhVuc: LinhVucHoatDong[] | undefined;
 
-  selectedCountry: string | undefined;
   constructor(
     private objectSurveyService: ObjectSurveyService,
     private unitTypeService: UnitTypeService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private linhVucHoatDongService: LinhVucHoatDongService
   ) {}
   ngOnInit() {
     // this.GetObjectSurvey();
@@ -80,6 +85,20 @@ export class AdminObjectSurveyComponent {
     });
     this.objectSurveyService.getCities().subscribe((data: any) => {
       this.cities = data;
+    });
+
+    this.linhVucHoatDongService.getAll().subscribe({
+      next: (res) => {
+        this.loading = true;
+        this.lstLinhVuc = res;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 
@@ -138,7 +157,7 @@ export class AdminObjectSurveyComponent {
       next: (res) => {
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
-        console.log("res1",res)
+        console.log('res1', res);
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);

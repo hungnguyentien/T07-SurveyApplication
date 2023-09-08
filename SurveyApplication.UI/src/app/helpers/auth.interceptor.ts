@@ -6,14 +6,15 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { LoginserviceService } from '../services/login.service';
-import { ToastrService } from 'ngx-toastr';
+import { MessageService } from 'primeng/api';
+import Utils from './utils';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private loginserviceService: LoginserviceService,
-    private toastr: ToastrService
+    private messageService: MessageService
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -25,7 +26,10 @@ export class AuthGuard implements CanActivate {
         route.data['roles'].indexOf(currentUserRole) === -1
       ) {
         // nếu không có quyền quay về trang chủ
-        this.toastr.error('Bạn không có quyền vào trang!');
+        Utils.messageError(
+          this.messageService,
+          'Bạn không có quyền vào trang!'
+        );
         this.router.navigate(['/']);
         return false; // Mặc định là false
       }

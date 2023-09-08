@@ -17,6 +17,7 @@ import {
 import { LinhVucHoatDongService, PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { UnitTypeService } from '@app/services/unit-type.service';
+import { lstRegExp } from '@app/helpers';
 
 @Component({
   selector: 'app-general-info',
@@ -91,22 +92,12 @@ export class GeneralInfoComponent {
         MaSoThue: [''],
         WebSite: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
-            ),
-          ],
+          [Validators.required, Validators.pattern(lstRegExp.webSite)],
         ],
         Email: ['', [Validators.required, Validators.email]],
         SoDienThoai: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
-            ),
-          ],
+          [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
         ],
       }),
       NguoiDaiDien: this.formBuilder.group({
@@ -115,12 +106,7 @@ export class GeneralInfoComponent {
         Email: ['', [Validators.required, Validators.email]],
         SoDienThoai: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
-            ),
-          ],
+          [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
         ],
       }),
     });

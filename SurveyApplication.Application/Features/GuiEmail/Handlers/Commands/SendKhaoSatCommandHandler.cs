@@ -19,6 +19,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 
         public async Task<BaseCommandResponse> Handle(SendKhaoSatCommand request, CancellationToken cancellationToken)
         {
+            var dateNow = DateTime.Now.Date;
             var response = new BaseCommandResponse();
             if (request.GuiEmailDto == null)
                 throw new FluentValidation.ValidationException("Gửi email không được để trống");
@@ -35,19 +36,25 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 
             if (await _surveyRepo.BangKhaoSat.AnyAsync(x =>
                     !x.Deleted && request.GuiEmailDto.LstBangKhaoSat.Contains(x.Id) &&
-                    (x.NgayBatDau > DateTime.Now || x.NgayKetThuc < DateTime.Now)))
+                    (x.NgayBatDau.Date > dateNow || x.NgayKetThuc.Date < dateNow)))
                 throw new FluentValidation.ValidationException("Có bảng khảo sát chưa đến hạn hoặc đã hết hạn");
 
             var lstBangKhaoSat = await _surveyRepo.BangKhaoSat.GetAllListAsync(x =>
-                !x.Deleted && x.NgayBatDau < DateTime.Now && x.NgayKetThuc > DateTime.Now &&
+                !x.Deleted && x.NgayBatDau.Date <= dateNow && x.NgayKetThuc.Date >= dateNow &&
                 request.GuiEmailDto.LstBangKhaoSat.Contains(x.Id)) ?? throw new FluentValidation.ValidationException("Bảng khảo sát đã hết hạn");
+            if (!lstBangKhaoSat.Any())
+                throw new FluentValidation.ValidationException("Không tìm thấy bảng khảo sát");
+
             if (await _surveyRepo.DotKhaoSat.AnyAsync(x =>
                    !x.Deleted && lstBangKhaoSat.Select(b => b.IdDotKhaoSat).Contains(x.Id) &&
-                   (x.NgayBatDau > DateTime.Now || x.NgayKetThuuc < DateTime.Now)))
+                   (x.NgayBatDau.Date > dateNow || x.NgayKetThuuc.Date < dateNow)))
                 throw new FluentValidation.ValidationException("Có đợt khảo sát chưa đến hạn hoặc đã hết hạn");
 
             var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto) ?? throw new FluentValidation.ValidationException("Gửi email không mapping được");
-            var lstDonVi = await _surveyRepo.DonVi.GetAllListAsync(x => request.GuiEmailDto.LstIdDonVi.Contains(x.Id) && !x.Deleted);
+            var lstDonVi = await _surveyRepo.DonVi.GetAllListAsync(x => request.GuiEmailDto.LstIdDonVi.Contains(x.Id) && !x.Deleted) ?? throw new FluentValidation.ValidationException("Không tìm thấy đơn vị");
+
+            if (!lstDonVi.Any())
+                throw new FluentValidation.ValidationException("Không tìm thấy đơn vị");
             var lstGuiEmail = new List<Domain.GuiEmail>();
             foreach (var bangKhaoSat in lstBangKhaoSat)
             {
@@ -61,6 +68,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
                     lstGuiEmail.Add(guiEmail);
                 }
             }
+
 
 
             await _surveyRepo.GuiEmail.InsertAsync(lstGuiEmail);

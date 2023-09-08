@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import {
   CauHoi,
+  CreateGuiEmail,
   CreateUpdateBangKhaoSat,
   ObjectSurvey,
   Paging,
@@ -59,6 +60,7 @@ export class AdminTableSurveyComponent {
   visibleGuiEmail: boolean = false;
   lstDonVi!: ObjectSurvey[];
   selectedDonVi!: number[];
+  lstIdDonViError: boolean = false;
   public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
 
   constructor(
@@ -325,6 +327,13 @@ export class AdminTableSurveyComponent {
 
   openGuiEmail = () => {
     this.visibleGuiEmail = true;
+    this.selectedDonVi = [];
+    if (this.frmGuiEmail) {
+      this.frmGuiEmail.reset();
+      this.frmGuiEmail.get('lstIdDonVi')?.reset();
+      this.frmGuiEmail.get('lstBangKhaoSat')?.reset();
+    }
+
     this.frmGuiEmail = this.FormBuilder.group({
       noidung: ['', Validators.required],
       tieuDe: ['', Validators.required],
@@ -341,13 +350,27 @@ export class AdminTableSurveyComponent {
   };
 
   onSubmitGuiEmail = () => {
-    this.selectedDonVi.forEach((el) => {
-      const newItem = this.FormBuilder.control(el);
-      (this.frmGuiEmail.get('lstIdDonVi') as FormArray).push(newItem);
-    });
-    let data = this.frmGuiEmail.value;
-    this.guiEmailService.createByDonVi(data).subscribe((res) => {
-      debugger;
+    this.selectedDonVi.forEach((el) =>
+      (this.frmGuiEmail.get('lstIdDonVi') as FormArray).push(
+        this.FormBuilder.control(el)
+      )
+    );
+    let data = this.frmGuiEmail.value as CreateGuiEmail;
+    this.lstIdDonViError = data.lstIdDonVi.length === 0;
+    this.guiEmailService.createByDonVi(data).subscribe({
+      next: (res) => {
+        Utils.messageSuccess(this.messageService, res.message);
+      },
+      error: (e) => {
+        if (e.error && e.error.ErrorMessage) {
+          Utils.messageError(this.messageService, e.error.ErrorMessage);
+        } else {
+          Utils.messageError(this.messageService, e.message);
+        }
+      },
+      complete: () => {
+        this.visibleGuiEmail = false;
+      },
     });
   };
 

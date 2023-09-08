@@ -102,6 +102,7 @@ import { QuestionComponent } from './admin-question/question/question.component'
 import { AdminObjectSurveyComponent } from './admin-object-survey/admin-object-survey.component';
 import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.component';
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
+import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-s
     AdminUnitTypeComponent,
     AdminPeriodSurveyComponent,
     QuestionComponent,
+    AdminStatisticalComponent,
   ],
   imports: [
     CommonModule,

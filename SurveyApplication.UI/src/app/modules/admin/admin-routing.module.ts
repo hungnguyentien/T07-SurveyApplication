@@ -7,6 +7,7 @@ import { QuestionComponent } from './admin-question/question/question.component'
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
 import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
 import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';
+import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
 const routes: Routes = [
   {
     path: '',
@@ -68,6 +69,13 @@ const routes: Routes = [
         title: 'Quản lý gửi email',
         data: {
           title: 'gui-email',
+        },
+      }, {
+        path: 'thong-ke-khao-sat',
+        component:AdminStatisticalComponent,
+        title: 'Danh sách thống kê khảo sát',
+        data: {
+          title: 'thong-ke-khao-sat',
         },
       },
     ],

@@ -116,7 +116,7 @@
 </div>
 
 <!-- modal create update -->
-<form #cauHoiForm="ngForm" [formGroup]="frmCauHoi" (ngSubmit)="onSubmit(cauHoiForm)">
+<form *ngIf="frmCauHoi" #cauHoiForm="ngForm" [formGroup]="frmCauHoi" (ngSubmit)="onSubmit(cauHoiForm)">
   <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
     [resizable]="true" [maximizable]="true">
     <ng-template pTemplate="header">

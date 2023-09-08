@@ -1,5 +1,5 @@
 <div class="thong-tin-chung">
-  <form [formGroup]="frmGeneralInfo" (ngSubmit)="onSubmit()">
+  <form *ngIf="frmGeneralInfo" [formGroup]="frmGeneralInfo" (ngSubmit)="onSubmit()">
     <div class="box-info">
       <h2 class="text-uppercase">PHẦN 1: THÔNG TIN CHUNG</h2>
       <ng-container formGroupName="DonVi">
