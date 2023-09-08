@@ -4,7 +4,7 @@ import { Model } from 'survey-core';
 import { Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
-import { BksTrangThai, TypeCauHoi } from '@app/enums';
+import { KqTrangThai, TypeCauHoi } from '@app/enums';
 import { SurveyConfig } from '@app/models';
 import { jsonDataFake } from './json';
 import { themeJson } from './theme';
@@ -127,9 +127,6 @@ export default class Utils {
     survey.locale = 'vi';
     // Set label for btn Complete
     survey.completeText = 'Gửi thông tin';
-    if (trangThai !== BksTrangThai.HoanThanh)
-      survey.completedHtml = `<div style="margin: 40px 0 0 0; width:100%"><a href="phieu/thong-tin-khao-sat" style="margin: auto">Khảo sát lại</a></div>`;
-    
     survey.onErrorCustomText.add((sender, options) => {
       if (options.name === 'exceedsize')
         options.text = options.text.replaceAll(
@@ -163,7 +160,7 @@ export default class Utils {
             );
 
           if (
-            trangThai === BksTrangThai.HoanThanh &&
+            trangThai === KqTrangThai.HoanThanh &&
             el.id === 'sv-nav-complete'
           )
             el.classList.add('d-none');
@@ -190,7 +187,7 @@ export default class Utils {
       innerCss: 'sd-btn nav-input',
     });
 
-    trangThai !== BksTrangThai.HoanThanh &&
+    trangThai !== KqTrangThai.HoanThanh &&
       survey.addNavigationItem({
         id: 'sv-nav-clear-page',
         title: 'Khai lại từ đầu',
@@ -208,7 +205,7 @@ export default class Utils {
         innerCss: 'sd-btn nav-input',
       });
 
-    trangThai !== BksTrangThai.HoanThanh &&
+    trangThai !== KqTrangThai.HoanThanh &&
       survey.addNavigationItem({
         id: 'sv-nav-luu-tam',
         title: 'Lưu tạm',
@@ -271,6 +268,9 @@ export default class Utils {
 
     survey.onComplete.add((sender, options) => {
       // Hoàn thành khảo sát
+      if (status !== KqTrangThai.HoanThanh)
+        survey.completedHtml = `<div style="margin: 40px 0 0 0; width:100%"><a href="phieu/thong-tin-khao-sat" style="margin: auto">Khảo sát lại</a></div>`;
+
       subscribe && subscribe(sender, status);
     });
 
@@ -279,7 +279,7 @@ export default class Utils {
 
   static configCauHoi = (res: SurveyConfig) => {
     let els = new Array();
-    let readOnly = res.trangThai === BksTrangThai.HoanThanh;
+    let readOnly = res.trangThaiKq === KqTrangThai.HoanThanh;
     res.lstCauHoi.forEach((el, i) => {
       let loaiCauHoi = el.loaiCauHoi;
       let name = el.maCauHoi;

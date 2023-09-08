@@ -40,7 +40,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                     DonVi = _mapper.Map<DonViDto>(donVi),
                     NguoiDaiDien = _mapper.Map<NguoiDaiDienDto>(nguoiDaiDien),
                     IdGuiEmail = request.IdGuiEmail,
-                    TrangThai = ketQua?.TrangThai ?? 0
+                    TrangThaiKq = ketQua?.TrangThai ?? 0
                 };
         }
     }

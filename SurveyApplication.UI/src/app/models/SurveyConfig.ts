@@ -25,7 +25,8 @@ export interface CauHoiConfig {
 
 export interface SurveyConfig {
   idBangKhaoSat: number;
-  trangThai: number;
+  trangThaiKhaoSat: number;
   lstCauHoi: CauHoiConfig[];
   kqSurvey: string;
+  trangThaiKq: number;
 }

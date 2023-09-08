@@ -200,15 +200,15 @@ export class GeneralInfoComponent {
       return;
     }
 
-    Utils.messageSuccess(
-      this.messageService,
-      'Nhập thông tin chung thành công!'
-    );
+    // Utils.messageSuccess(
+    //   this.messageService,
+    //   'Nhập thông tin chung thành công!'
+    // );
     setTimeout(() => {
       this.router.navigateByUrl('/phieu/thong-tin-khao-sat', {
         state: this.generalInfo,
       });
-    }, 1000);
+    }, 500);
   };
 
   resetForm = () => Utils.resetForm(this.frmGeneralInfo);

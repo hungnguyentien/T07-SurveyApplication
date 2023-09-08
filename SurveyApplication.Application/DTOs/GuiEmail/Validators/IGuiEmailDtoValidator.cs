@@ -13,9 +13,9 @@ namespace SurveyApplication.Application.DTOs.GuiEmail.Validators
         {
             _guiEmailRepository = guiEmailRepository;
 
-            RuleFor(p => p.DiaChiNhan)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+            //RuleFor(p => p.DiaChiNhan)
+            //    .NotEmpty().WithMessage("{PropertyName} is required.")
+            //    .NotNull();
 
             RuleFor(p => p.TieuDe)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

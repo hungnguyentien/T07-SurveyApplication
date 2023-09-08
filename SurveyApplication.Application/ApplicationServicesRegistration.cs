@@ -4,7 +4,6 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using SurveyApplication.Infrastructure;
 using SurveyApplication.Persistence;
-using SurveyApplication.Identity;
 using SurveyApplication.Application.Features.Accounts.Handlers.Queries;
 using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Domain.Common.Identity;
@@ -20,8 +19,6 @@ namespace SurveyApplication.Application
             services.ConfigureInfrastructureServices(configuration);
             services.ConfigurePersistenceServices(configuration);
             services.AddTransient<IRequestHandler<LoginRequest, AuthResponse>, LoginRequestHandler>();
-
-            //services.ConfigureIdentityServices(configuration);
             return services;
         }
     }

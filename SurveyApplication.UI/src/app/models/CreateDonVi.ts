@@ -22,7 +22,6 @@ export interface CreateNguoiDaiDien {
 export interface GeneralInfo {
   donVi: CreateDonVi;
   nguoiDaiDien: CreateNguoiDaiDien;
-  bangKhaoSat: number;
   trangThaiKhaoSat: number;
   trangThaiKq: number;
   data: string | undefined;

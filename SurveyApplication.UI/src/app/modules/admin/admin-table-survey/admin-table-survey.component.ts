@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import {
   CauHoi,
   CreateUpdateBangKhaoSat,
+  ObjectSurvey,
   Paging,
   TableSurvey,
 } from '@app/models';
@@ -13,9 +14,12 @@ import {
   TableSurveyService,
   PeriodSurveyService,
   CauHoiService,
+  ObjectSurveyService,
+  GuiEmailService,
 } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -30,12 +34,6 @@ export class AdminTableSurveyComponent {
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
-
-  // first: number = 0;
-  // TotalCount: number = 0;
-  // pageIndex: number = 1;
-  // pageSize: number = 5;
-  // keyword: string = '';
 
   showadd: boolean = false;
   formTableSurvey!: FormGroup;
@@ -57,6 +55,12 @@ export class AdminTableSurveyComponent {
   keyWordCauHoi!: string;
   visibleCauHoi: boolean = false;
 
+  frmGuiEmail!: FormGroup;
+  visibleGuiEmail: boolean = false;
+  lstDonVi!: ObjectSurvey[];
+  selectedDonVi!: number[];
+  public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
+
   constructor(
     private FormBuilder: FormBuilder,
     private TableSurveyService: TableSurveyService,
@@ -64,7 +68,9 @@ export class AdminTableSurveyComponent {
     private confirmationService: ConfirmationService,
     private periodSurveyService: PeriodSurveyService,
     private unitTypeService: UnitTypeService,
+    private objectSurveyService: ObjectSurveyService,
     private cauHoiService: CauHoiService,
+    private guiEmailService: GuiEmailService,
     private datePipe: DatePipe
   ) {}
   ngOnInit() {
@@ -79,7 +85,7 @@ export class AdminTableSurveyComponent {
       moTa: ['', Validators.required],
       ngayBatDau: ['', Validators.required],
       ngayKetThuc: ['', Validators.required],
-      bangKhaoSatCauHoi: this.FormBuilder.array([],Validators.required),
+      bangKhaoSatCauHoi: this.FormBuilder.array([], Validators.required),
     });
   }
 
@@ -194,11 +200,15 @@ export class AdminTableSurveyComponent {
   Add() {
     this.showadd = true;
     this.visible = !this.visible;
+    this.formTableSurvey.reset();
+    this.lstBangKhaoSatCauHoi.clear();
   }
 
   Edit(data: any) {
     this.showadd = false;
     this.visible = !this.visible;
+    this.formTableSurvey.reset();
+    this.lstBangKhaoSatCauHoi.clear();
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
       {
         next: (res) => {
@@ -312,6 +322,34 @@ export class AdminTableSurveyComponent {
       },
     });
   }
+
+  openGuiEmail = () => {
+    this.visibleGuiEmail = true;
+    this.frmGuiEmail = this.FormBuilder.group({
+      noidung: ['', Validators.required],
+      tieuDe: ['', Validators.required],
+      lstIdDonVi: this.FormBuilder.array([] as number[], Validators.required),
+      lstBangKhaoSat: this.FormBuilder.array(
+        this.selectedTableSurvey?.map((x) => x.id) ?? ([] as number[]),
+        Validators.required
+      ),
+    });
+
+    this.objectSurveyService.getAllByObj<ObjectSurvey>().subscribe((res) => {
+      this.lstDonVi = res;
+    });
+  };
+
+  onSubmitGuiEmail = () => {
+    this.selectedDonVi.forEach((el) => {
+      const newItem = this.FormBuilder.control(el);
+      (this.frmGuiEmail.get('lstIdDonVi') as FormArray).push(newItem);
+    });
+    let data = this.frmGuiEmail.value;
+    this.guiEmailService.createByDonVi(data).subscribe((res) => {
+      debugger;
+    });
+  };
 
   get lstBangKhaoSatCauHoi(): FormArray {
     return this.formTableSurvey.get('bangKhaoSatCauHoi') as FormArray;

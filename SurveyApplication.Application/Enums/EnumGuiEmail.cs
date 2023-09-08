@@ -11,7 +11,9 @@ namespace SurveyApplication.Application.Enums
             [Description("Đã gửi")]
             DaGui = 1,
             [Description("Thu hồi")]
-            ThuHoi = 2
+            ThuHoi = 2,
+            [Description("Đang gửi")]
+            DangGui = 3
         }
     }
 }

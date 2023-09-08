@@ -24,13 +24,14 @@
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\SurveyApplication.Infrastructure.csproj" />
     <ProjectReference Include="..\SurveyApplication.Domain\SurveyApplication.Domain.csproj" />
-    <ProjectReference Include="..\SurveyApplication.Identity\SurveyApplication.Identity.csproj" />
     <ProjectReference Include="..\SurveyApplication.Persistence\SurveyApplication.Persistence.csproj" />
     <ProjectReference Include="..\SurveyApplication.Utility\SurveyApplication.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Features\Accounts\Handlers\Commands\" />
+    <Folder Include="Features\Accounts\Handlers\Commands\" />
+    <Folder Include="Features\Accounts\Requests\Commands\" />
     <Folder Include="Features\Accounts\Requests\Commands\" />
     <Folder Include="Features\LinhVucHoatDong\Handlers\Commands\" />
     <Folder Include="Features\LinhVucHoatDong\Requests\Commands\" />

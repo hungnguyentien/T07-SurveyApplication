@@ -12,8 +12,8 @@ namespace SurveyApplication.Application.DTOs.PhieuKhaoSat
         /// </summary>
         public int IdGuiEmail { get; set; }
         /// <summary>
-        /// Tráng thái bảng khảo sát
+        /// Tráng thái kết quả
         /// </summary>
-        public int TrangThai { get; set; }
+        public int TrangThaiKq { get; set; }
     }
 }

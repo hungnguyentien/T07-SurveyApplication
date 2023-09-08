@@ -72,7 +72,7 @@ export class SurveyInfoComponent {
         this.generalInfo.data
       )
       .subscribe((res) => {
-        configSurvey(Utils.getJsonSurvey(res), res.kqSurvey, res.trangThai);
+        configSurvey(Utils.getJsonSurvey(res), res.kqSurvey, res.trangThaiKq);
         this.loading = false;
       });
   }

@@ -11,4 +11,5 @@ export interface ObjectSurvey{
     WebSite:string
     SoDienThoai:string
     listRepresentative:Representative
+    id:number
 }
