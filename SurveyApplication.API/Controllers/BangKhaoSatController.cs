@@ -60,6 +60,7 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
+
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<BangKhaoSatDto>>> DeleteBangKhaoSat(int id)
         {
