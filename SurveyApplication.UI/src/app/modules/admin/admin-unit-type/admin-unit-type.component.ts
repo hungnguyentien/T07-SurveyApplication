@@ -197,4 +197,29 @@ export class AdminUnitTypeComponent {
       },
     });
   }
+  confirmDeleteMultiple() {
+    let ids: number[] = [];
+    this.selectedUnitType.forEach((el) => {
+      ids.push(el.Id);
+    });
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} loại đơn vị này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // this.cauHoiService.deleteMultiple(ids).subscribe({
+        //   next: (res) => {
+        //     Utils.messageSuccess(
+        //       this.messageService,
+        //       `Xoá câu hỏi ${ids.length} thành công!`
+        //     );
+        //   },
+        //   error: (e) => Utils.messageError(this.messageService, e.message),
+        //   complete: () => {
+        //     this.table.reset();
+        //   },
+        // });
+      },
+      reject: () => {},
+    });
+  }
 }

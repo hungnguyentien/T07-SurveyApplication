@@ -36,13 +36,13 @@ export class AdminObjectSurveyComponent {
   MaNguoiDaiDien!: string;
   IdLoaiHinh!: string;
   listloaihinhdonvi: any[] = [];
+  listlinhvuchoatdong: any[]= [];
   ContainerAdd: any[] = [];
 
   combinedArray: any[] = [];
   cities: any[] = [];
   districts: any[] = [];
   wards: any[] = [];
-
   visible: boolean = false;
 
   selectedCountry: string | undefined;
@@ -54,6 +54,7 @@ export class AdminObjectSurveyComponent {
   ) {}
   ngOnInit() {
     // this.GetObjectSurvey();
+    this.GetAllFieldOfActivity();
     this.GetUnitType();
     this.FormObjectSurvey = new FormGroup({
       IdLoaiHinh: new FormControl('', Validators.required),
@@ -121,8 +122,15 @@ export class AdminObjectSurveyComponent {
       this.listloaihinhdonvi = response;
     });
   }
+  GetAllFieldOfActivity(){
+    
+    this.objectSurveyService.GetAllFieldOfActivity().subscribe((response:any)=>{
+      this.listlinhvuchoatdong = response;
+    })
+  }
 
   loadListLazy = (event: any) => {
+    
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
@@ -175,10 +183,10 @@ export class AdminObjectSurveyComponent {
   }
 
   Edit(data: any) {
+    
     this.showadd = false;
     this.visible = !this.visible;
-
-    this.objectSurveyService.getById<CreateUnitAndRep>(data.id).subscribe({
+    this.objectSurveyService.getById<CreateUnitAndRep>(data.idDonVi).subscribe({
       next: (res) => {
         Utils.setValueForm(
           this.FormObjectSurvey,
@@ -188,7 +196,7 @@ export class AdminObjectSurveyComponent {
         );
         Utils.setValueForm(
           this.FormRepresentative,
-          Object.keys(res.nguoiDaiDienDto),
+          Object.keys(res.nguoiDaiDienDto), 
           Object.values(res.nguoiDaiDienDto),
           true
         );
@@ -208,6 +216,7 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveAdd() {
+    debugger
     if (this.FormObjectSurvey.valid && this.FormRepresentative.valid) {
       const obj: CreateUnitAndRep = {
         donViDto: this.FormObjectSurvey.value,
@@ -242,11 +251,11 @@ export class AdminObjectSurveyComponent {
     updatedFormObjectSurveyValue['Id'] = this.IdDonVi;
     const updatedFormRepresentativeValue = { ...this.FormRepresentative.value };
     updatedFormRepresentativeValue['Id'] = this.IdNguoiDaiDien;
+    updatedFormRepresentativeValue['IdDonVi'] = this.IdDonVi;
     const obj: CreateUnitAndRep = {
       donViDto: updatedFormObjectSurveyValue,
       nguoiDaiDienDto: updatedFormRepresentativeValue,
     };
-    debugger;
     this.objectSurveyService.update(obj).subscribe({
       next: (res) => {
         if (res != null) {

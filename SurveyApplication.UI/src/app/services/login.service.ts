@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { Login } from '../models';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from '@app/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,24 +17,32 @@ export class LoginserviceService {
 
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private authService: AuthService
   ) {
     this.currentUserSubject = new BehaviorSubject<string>(this.cookieService.get('currentUser'));
     this.currentUser = this.currentUserSubject.asObservable();
   }
-
+  
   login(model: Login) {
-    model.grant_type = 'password';
-    let body = new URLSearchParams();
-    body.set('username', model.UserName);
-    body.set('password', model.Password);
-    body.set('grant_type', model.grant_type);
-   
-    let options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+    
+    // model.grant_type = 'password';
+    // let body = new URLSearchParams();
+    // body.set('Email', model.UserName);
+    // body.set('Password', model.Password);
+    // body.set('grant_type', model.grant_type);
+    const loginData = {
+      Email: model.UserName,
+      Password: model.Password,
+      grant_type: 'password'
     };
-    return this.http.post(`${environment.apiUrl}`, body.toString(), options)
+    let options = {
+      // headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    };
+    return this.http.post(`${environment.apiUrl}`+ '/Account/login', loginData, options)
       .pipe(map(req => {
+        
         // đăng nhập thành công lưu lại token
         if (req) {
           // Xóa hết cookie
@@ -41,13 +50,11 @@ export class LoginserviceService {
           // lưu token vào Cookie
           this.cookieService.set('currentUser', JSON.stringify(req));
           this.currentUserSubject.next(JSON.stringify(req));
+          this.authService.login();
         }
-
         return req;
       }));
   }
-
-  // Lấy token trong localStorage value currentUserHrm
   currentUserValue(): string {
     return this.currentUserSubject.value;
   }
@@ -57,9 +64,7 @@ export class LoginserviceService {
     if (token) {
       return "Admin";
     } 
-
     return null;
- 
   }
 
   logout() {
