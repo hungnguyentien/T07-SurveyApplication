@@ -8,6 +8,8 @@ import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-s
 import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
 import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';
 import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
+import { AuthGuardService } from '@app/helpers/auth-guard.service';
+
 const routes: Routes = [
   {
     path: '',
@@ -17,7 +19,7 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        component: AdminHomeComponent,
+        component: AdminHomeComponent, canActivate: [AuthGuardService],
         title: 'Dashboard',
         data: {
           title: 'Dashboard',
@@ -25,7 +27,7 @@ const routes: Routes = [
       },
       {
         path: 'loai-hinh-don-vi',
-        component: AdminUnitTypeComponent,
+        component: AdminUnitTypeComponent, canActivate: [AuthGuardService],
         title: 'Quản lý loại hình đơn vị',
         data: {
           title: 'loai-hinh-don-vi',
@@ -33,7 +35,7 @@ const routes: Routes = [
       },
       {
         path: 'quan-ly-don-vi',
-        component: AdminObjectSurveyComponent,
+        component: AdminObjectSurveyComponent, canActivate: [AuthGuardService],
         title: 'Quản lý đơn vị',
         data: {
           title: 'quan-ly-don-vi',
@@ -41,7 +43,7 @@ const routes: Routes = [
       },
       {
         path: 'quan-ly-cau-hoi',
-        component: QuestionComponent,
+        component: QuestionComponent, canActivate: [AuthGuardService],
         title: 'Quản lý câu hỏi',
         data: {
           title: 'Quản lý câu hỏi',
@@ -49,7 +51,7 @@ const routes: Routes = [
       },
       {
         path: 'dot-khao-sat',
-        component: AdminPeriodSurveyComponent,
+        component: AdminPeriodSurveyComponent, canActivate: [AuthGuardService],
         title: 'Quản lý đợt khảo sát',
         data: {
           title: 'dot-khao-sat',
@@ -57,7 +59,7 @@ const routes: Routes = [
       },
       {
         path: 'bang-khao-sat',
-        component:AdminTableSurveyComponent,
+        component:AdminTableSurveyComponent, canActivate: [AuthGuardService],
         title: 'Quản lý bảng khảo sát',
         data: {
           title: 'bang-khao-sat',
@@ -65,7 +67,7 @@ const routes: Routes = [
       },
       {
         path: 'gui-email',
-        component:AdminSendEmailComponent,
+        component:AdminSendEmailComponent, canActivate: [AuthGuardService],
         title: 'Quản lý gửi email',
         data: {
           title: 'gui-email',
@@ -78,6 +80,7 @@ const routes: Routes = [
           title: 'thong-ke-khao-sat',
         },
       },
+      
     ],
   },
 ];
