@@ -47,7 +47,7 @@ export class AdminPeriodSurveyComponent {
       IdLoaiHinh: ['', Validators.required],
       TenDotKhaoSat: ['', Validators.required],
       NgayBatDau: ['', Validators.required],
-      ngayKetThuc: ['', Validators.required],
+      NgayKetThuc: ['', Validators.required],
       TrangThai: []
     }, { validator: this.dateRangeValidator });
     
@@ -57,7 +57,7 @@ export class AdminPeriodSurveyComponent {
   dateRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
     
     const startDate = control.get('NgayBatDau')?.value;
-    const endDate = control.get('ngayKetThuc')?.value;
+    const endDate = control.get('NgayKetThuc')?.value;
   
     if (startDate && endDate && startDate > endDate) {
       return { 'dateRangeError': true };
@@ -148,9 +148,7 @@ export class AdminPeriodSurveyComponent {
       'yyyy-MM-dd'
     );
     this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
-    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(
-      ngayKetThucFormatted
-    );
+    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(ngayKetThucFormatted);
     console.log(ngayKetThucFormatted);
   }
 

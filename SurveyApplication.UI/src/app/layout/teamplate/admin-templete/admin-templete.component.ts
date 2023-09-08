@@ -13,8 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class AdminTempleteComponent {
  constructor(private loginService: AuthService,private router: Router){}
  logout(){
-  
     this.loginService.logout()
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 }
