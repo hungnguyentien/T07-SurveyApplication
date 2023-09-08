@@ -9,6 +9,7 @@ using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
+using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Models;
@@ -47,7 +48,7 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<Cot, CotDto>().ReverseMap();
             CreateMap<Hang, HangDto>().ReverseMap();
             CreateMap<KetQua, CreateKetQuaDto>().ReverseMap();
-             CreateMap<CauHoi, CreateCauHoiDto>().ReverseMap();
+            CreateMap<CauHoi, CreateCauHoiDto>().ReverseMap();
             CreateMap<CauHoi, UpdateCauHoiDto>().ReverseMap();
 
             CreateMap<DonVi, DonViDto>().ReverseMap();
@@ -59,7 +60,8 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<LinhVucHoatDong, LinhVucHoatDongDto>().ReverseMap();
 
             CreateMap<ApplicationUser, AccountDto>().ReverseMap();
-
+            CreateMap<AccountDto, LoginRequest>().ReverseMap();
+            CreateMap<ApplicationUser, LoginRequest>().ReverseMap();
         }
     }
 }

@@ -9,7 +9,6 @@ using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Interfaces;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using Microsoft.AspNetCore.Identity;
-using SurveyApplication.Domain.Interfaces.Identity;
 using SurveyApplication.Domain.Models;
 
 namespace SurveyApplication.Persistence
@@ -18,19 +17,12 @@ namespace SurveyApplication.Persistence
     {
         public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<SurveyApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString")));
-
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
-            services.AddDbContext<SurveyApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString"),
-                b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
+            services.AddDbContext<SurveyApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString"), b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<SurveyApplicationDbContext>().AddDefaultTokenProviders();
-
-            //services.AddTransient<IAuthService, AuthService>();
-            //services.AddTransient<IUserService, UserService>();
 
             services.AddAuthentication(options =>
             {

@@ -48,7 +48,7 @@ namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Queries
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize,
                 Keyword = request.Keyword,
-                TotalCount = totalCount,
+                TotalFilter = totalCount,
                 Data = pageResults
             };
         }

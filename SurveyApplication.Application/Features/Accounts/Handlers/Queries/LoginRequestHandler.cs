@@ -14,6 +14,7 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -28,6 +29,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtSettings _jwtSettings;
         public LoginRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtSettings, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager) : base(surveyRepository)
         {
@@ -118,14 +120,15 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
 
         private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
         {
-            var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
-
+            var userClaims = new List<Claim>();
             var roleClaims = new List<Claim>();
 
             for (int i = 0; i < roles.Count; i++)
             {
                 roleClaims.Add(new Claim(ClaimTypes.Role, roles[i]));
+                var roleClaim = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(roles[i]));
+                userClaims.AddRange(roleClaim);
             }
 
             var claims = new[]
@@ -134,7 +137,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 //new Claim(CustomClaimTypes.Uid, user.Id)
-                new Claim("uid", user.Id.ToString())
+                new Claim("uid", user.Id)
             }
             .Union(userClaims)
             .Union(roleClaims);

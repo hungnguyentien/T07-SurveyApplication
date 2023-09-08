@@ -26,6 +26,7 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
                                    select new BangKhaoSatCauHoiDto
                                    {
                                        Id = a.Id,
+                                       IdBangKhaoSat = a.IdBangKhaoSat,
                                        IdCauHoi = a.IdCauHoi,
                                        Priority = a.Priority,
                                        IsRequired = a.IsRequired,

@@ -2,7 +2,7 @@
 
 namespace SurveyApplication.Application.Enums
 {
-    public static class EnumTrangThai
+    public static class EnumBangKhaoSat
     {
         public enum TrangThai
         {

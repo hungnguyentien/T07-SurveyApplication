@@ -28,7 +28,8 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
                 throw new ValidationException(validatorResult);
 
             var bangKhaoSat = await _surveyRepo.BangKhaoSat.GetById(request.BangKhaoSatDto?.Id ?? 0);
-            bangKhaoSat = await _surveyRepo.BangKhaoSat.Create(bangKhaoSat);
+            _mapper.Map(request.BangKhaoSatDto, bangKhaoSat);
+            await _surveyRepo.BangKhaoSat.UpdateAsync(bangKhaoSat);
             await _surveyRepo.SaveAync();
             if (request.BangKhaoSatDto?.BangKhaoSatCauHoi == null) return Unit.Value;
             var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto.BangKhaoSatCauHoi);

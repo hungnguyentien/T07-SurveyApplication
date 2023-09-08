@@ -47,12 +47,10 @@ export class AdminPeriodSurveyComponent {
       IdLoaiHinh: ['', Validators.required],
       TenDotKhaoSat: ['', Validators.required],
       NgayBatDau: ['', Validators.required],
-      NgayKetThuuc: ['', Validators.required],
+      NgayKetThuc: ['', Validators.required],
       TrangThai: []
-    }, { validator: this.dateRangeValidator });
-    
-    
-  }
+    }, { validator: this.dateRangeValidator });   
+      }
   
   dateRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
     
@@ -143,15 +141,15 @@ export class AdminPeriodSurveyComponent {
       data.ngayBatDau,
       'yyyy-MM-dd'
     );
-    const ngayKetThuucFormatted = this.datePipe.transform(
-      data.ngayKetThuuc,
+    const ngayKetThucFormatted = this.datePipe.transform(
+      data.ngayKetThuc,
       'yyyy-MM-dd'
     );
     this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
-    this.FormPeriodSurvey.controls['NgayKetThuuc'].setValue(
-      ngayKetThuucFormatted
+    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(
+      ngayKetThucFormatted
     );
-    console.log(ngayKetThuucFormatted);
+    console.log(ngayKetThucFormatted);
   }
 
   Save() {

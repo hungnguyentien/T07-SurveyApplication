@@ -104,6 +104,9 @@ import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.compon
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
 import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
 
+
+
+
 @NgModule({
   declarations: [
     AdminHomeComponent,
@@ -210,7 +213,12 @@ import { AdminStatisticalComponent } from './admin-statistical/admin-statistical
     TreeTableModule,
     AnimateModule,
     CardModule,
+
+    
+
+  
   ],
+ 
   providers: [DatePipe],
 })
 export class AdminModule {}
