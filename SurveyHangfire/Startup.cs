@@ -32,6 +32,7 @@ namespace Hangfire
     public class Startup
     {
         private IConfiguration Configuration { get; }
+        [Obsolete("Obsolete")]
         public Startup(IConfiguration configuration)
         {
             //Config NLog
@@ -175,7 +176,7 @@ namespace Hangfire
             return lstSetup;
         }
 
-        private void AddSwaggerDoc(IServiceCollection services)
+        private static void AddSwaggerDoc(IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {

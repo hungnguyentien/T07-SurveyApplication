@@ -51,9 +51,10 @@ public class Startup
         app.UseCors("CorsPolicy");
 
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        
     }
 
-    private void AddSwaggerDoc(IServiceCollection services)
+    private static void AddSwaggerDoc(IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
         {
