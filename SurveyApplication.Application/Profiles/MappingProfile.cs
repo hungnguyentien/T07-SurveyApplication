@@ -58,10 +58,10 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<BangKhaoSatCauHoi, BangKhaoSatCauHoiDto>().ReverseMap();
 
             CreateMap<LinhVucHoatDong, LinhVucHoatDongDto>().ReverseMap();
+            //CreateMap<LinhVucHoatDong, CreateLinhVucHoatDongDto>().ReverseMap();
+            //CreateMap<LinhVucHoatDong, UpdateLinhVucHoatDongDto>().ReverseMap();
 
-            CreateMap<ApplicationUser, AccountDto>().ReverseMap();
-            CreateMap<AccountDto, LoginRequest>().ReverseMap();
-            CreateMap<ApplicationUser, LoginRequest>().ReverseMap();
+            CreateMap<CreateAccountDto, ApplicationUser>();
         }
     }
 }

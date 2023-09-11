@@ -19,10 +19,22 @@ namespace SurveyApplication.Persistence
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 8;
+            });
+
+            services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
+
             services.AddDbContext<SurveyApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString"), b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<SurveyApplicationDbContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<SurveyApplicationDbContext>().AddDefaultTokenProviders()
+                .AddPasswordValidator<PasswordValidator<ApplicationUser>>();
 
             services.AddAuthentication(options =>
             {

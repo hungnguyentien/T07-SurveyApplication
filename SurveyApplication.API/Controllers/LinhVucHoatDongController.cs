@@ -19,7 +19,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<List<LinhVucHoatDongDto>>> GetAllLoaiHinhDonVi()
+        public async Task<ActionResult<List<LinhVucHoatDongDto>>> GetAllLinhVucHoatDong()
         {
             var rs = await _mediator.Send(new GetLinhVucHoatDongAllRequest());
             return Ok(rs);

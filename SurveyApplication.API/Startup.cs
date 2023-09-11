@@ -45,6 +45,8 @@ namespace SurveyApplication.API
 
             app.UseMiddleware<ExceptionMiddleware>();
 
+            //app.UseMiddleware<AuthorizationMiddleware>();
+
             app.UseAuthentication();
 
             app.UseSwagger();

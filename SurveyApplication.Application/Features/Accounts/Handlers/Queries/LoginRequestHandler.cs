@@ -48,13 +48,6 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
                 throw new Exception($"User with {request.Email} not found.");
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-
-            if (!result.Succeeded)
-            {
-                throw new Exception($"Credentials for '{request.Email} aren't valid'.");
-            }
-
             JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
 
             AuthResponse response = new AuthResponse
