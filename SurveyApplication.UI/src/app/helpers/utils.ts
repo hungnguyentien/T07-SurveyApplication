@@ -4,7 +4,7 @@ import { Model } from 'survey-core';
 import { Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
-import { trigger } from '@angular/animations';
+import { BksTrangThai } from '@app/enums';
 
 export default class Utils {
   static translate = (
@@ -114,9 +114,10 @@ export default class Utils {
     router: Router,
     subscribe: Function,
     data: string = '',
-    surveyData: string = ''
+    surveyData: string = '',
+    trangThai: number = 0
   ) => {
-    let status = 1;
+    let status = 2;
     const survey = new Model(configJson);
     surveyData && survey.setDataCore(JSON.parse(surveyData));
     // You can delete the line below if you do not use a customized theme
@@ -156,7 +157,7 @@ export default class Utils {
               '<i class="icons icon-gui-thong-tin"></i>'
             );
 
-          if (surveyData && el.id === 'sv-nav-complete')
+          if (trangThai === BksTrangThai.HoanThanh && el.id === 'sv-nav-complete')
             el.classList.add('d-none');
         });
     });
@@ -180,7 +181,7 @@ export default class Utils {
       innerCss: 'sd-btn nav-input',
     });
 
-    !surveyData &&
+    trangThai !== BksTrangThai.HoanThanh &&
       survey.addNavigationItem({
         id: 'sv-nav-clear-page',
         title: 'Khai lại từ đầu',
@@ -198,7 +199,7 @@ export default class Utils {
         innerCss: 'sd-btn nav-input',
       });
 
-    !surveyData &&
+    trangThai !== BksTrangThai.HoanThanh &&
       survey.addNavigationItem({
         id: 'sv-nav-luu-tam',
         title: 'Lưu tạm',

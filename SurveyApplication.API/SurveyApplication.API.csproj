@@ -21,4 +21,8 @@
     <ProjectReference Include="..\SurveyApplication.Application\SurveyApplication.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TempData\" />
+  </ItemGroup>
+
 </Project>

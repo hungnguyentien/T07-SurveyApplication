@@ -5,6 +5,7 @@ using SurveyApplication.Application.Features.CauHoi.Requests.Commands;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Domain;
 
 namespace SurveyApplication.Application.Features.CauHoi.Handlers.Commands
 {
@@ -32,9 +33,31 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Commands
             var cauHoi = await _surveyRepo.CauHoi.GetById(request.CauHoiDto.Id);
             _mapper.Map(request.CauHoiDto, cauHoi);
             await _surveyRepo.CauHoi.UpdateAsync(cauHoi);
+
+            if (cauHoi != null)
+            {
+                if (request.CauHoiDto.LstCot != null && request.CauHoiDto.LstCot.Any())
+                {
+                    var lstCot = _mapper.Map<List<Cot>>(request.CauHoiDto.LstCot);
+                    lstCot.ForEach(x => x.IdCauHoi = cauHoi.Id);
+                    await _surveyRepo.Cot.UpdateAsync(lstCot.Where(x => x.Id > 0));
+                    await _surveyRepo.Cot.InsertAsync(lstCot.Where(x => x.Id == 0));
+                    await _surveyRepo.Cot.DeleteAsync(await _surveyRepo.Cot.GetAllListAsync(x => x.IdCauHoi == cauHoi.Id && !lstCot.Select(c => c.Id).Contains(x.Id) && !x.Deleted));
+                }
+
+                if (request.CauHoiDto.LstHang != null && request.CauHoiDto.LstHang.Any())
+                {
+                    var lstHang = _mapper.Map<List<Hang>>(request.CauHoiDto.LstHang);
+                    lstHang.ForEach(x => x.IdCauHoi = cauHoi.Id);
+                    await _surveyRepo.Hang.InsertAsync(lstHang.Where(x => x.Id > 0));
+                    await _surveyRepo.Hang.InsertAsync(lstHang.Where(x => x.Id == 0));
+                    await _surveyRepo.Hang.DeleteAsync(await _surveyRepo.Hang.GetAllListAsync(x => x.IdCauHoi == cauHoi.Id && !lstHang.Select(c => c.Id).Contains(x.Id) && !x.Deleted));
+                }
+            }
+
             await _surveyRepo.SaveAync();
             response.Message = "Cập nhật thành công!";
-            response.Id = cauHoi.Id;
+            response.Id = cauHoi?.Id ?? 0;
             return response;
         }
     }

@@ -14,8 +14,6 @@
   <h5>Danh mục câu hỏi</h5>
   <div class="d-flex mt-3">
     <div>
-      <!--<button data-toggle="modal" data-target="#cauHoiForm" pButton type="button" icon="pi pi-plus" label="Thêm mới"
-        class="custom-button" (click)="createDialog()"></button> -->
       <button pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"
         (click)="createDialog()"></button>
     </div>
@@ -153,8 +151,7 @@
           <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red">*</span></label>
           <p-dropdown id="loaicauhoi" [options]="lstLoaiCauHoi" [(ngModel)]="selectedLoaiCauHoi" optionLabel="text"
             optionValue="value" [filter]="true" filterBy="text" emptyMessage="Không có kết quả nào"
-            emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-            placeholder="-- Chọn loại câu hỏi --" [ngClass]="{
+            emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom" [ngClass]="{
             'is-invalid': submitted && f('loaiCauHoi').errors
           }" formControlName="loaiCauHoi" (onChange)="handlerChangeLCh($event)">
           </p-dropdown>
@@ -174,14 +171,12 @@
 
       <ng-container *ngIf="selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1'">
         <div class="row">
-          <div class="col-md-6">
-            <p-checkbox formControlName="isOther" [(ngModel)]="isOther" [binary]="true" inputId="isOther"
-              (change)="handlerChange($event)"></p-checkbox>
-            <label for="isOther">Câu trả lời khác</label>
-            <!-- <label class="checkbox-inline" style="margin-top: 40px">
-              <input type="checkbox" formControlName="isOther" (change)="handlerChange($event)" data-toggle="toggle" />
-              Câu trả lời khác
-            </label> -->
+          <div class="col-md-6 d-flex align-items-center">
+            <div class="d-flex justify-content-start align-items-center">
+              <p-checkbox formControlName="isOther" [(ngModel)]="isOther" [binary]="true" inputId="isOther"
+                (change)="handlerChange($event)"></p-checkbox>
+              <label for="isOther" class="mb-0 ml-2">Câu trả lời khác</label>
+            </div>
           </div>
           <div class="col-md-6">
             <div class="form-group" *ngIf="isOther">
