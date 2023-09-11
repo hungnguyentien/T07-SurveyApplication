@@ -207,8 +207,13 @@
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['maBangKhaoSat'].valid && 
                         formTableSurvey.controls['maBangKhaoSat'].dirty">
-                        Vui lòng nhập mã bảng
+                        Vui lòng nhập mã bảng  
                     </small>
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="serverError">
+                        {{ serverError }}
+                    </small>
+
+                    
                 </div>
                 <div class="form-group col-md-6">
                     <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát </label>
@@ -297,7 +302,7 @@
                     <button type="button" class="btn btn-add float-end" (click)="showSialogCh()">
                         Thêm câu hỏi
                     </button>
-                    <table class="table table-bordered">
+                    <table #viewtable class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>STT</th>
