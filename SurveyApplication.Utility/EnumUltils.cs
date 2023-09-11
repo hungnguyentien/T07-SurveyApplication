@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace SurveyApplication.Utility
 {
-    public class EnumUltils
+    public static class EnumUltils
     {
         public static Dictionary<T, string> GetDescription<T>() where T : Enum
         {

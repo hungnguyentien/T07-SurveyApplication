@@ -15,6 +15,7 @@ public interface ISurveyRepositoryWrapper
     IDonViRepository DonVi { get; }
     INguoiDaiDienRepository NguoiDaiDien { get; }
     IAccountRepository Account { get; }
+    IBaoCaoCauHoiRepository BaoCaoCauHoi { get; }
 
     //RenderHere
     Task SaveAync();

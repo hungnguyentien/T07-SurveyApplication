@@ -12,7 +12,7 @@ using SurveyApplication.Persistence;
 namespace SurveyApplication.Persistence.Migrations
 {
     [DbContext(typeof(SurveyApplicationDbContext))]
-    [Migration("20230908113225_Initial")]
+    [Migration("20230911085935_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -257,6 +257,79 @@ namespace SurveyApplication.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BangKhaoSatCauHoi");
+                });
+
+            modelBuilder.Entity("SurveyApplication.Domain.BaoCaoCauHoi", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ActiveFlag")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CauHoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CauHoiPhu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CauTraLoi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DauThoiGian")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("IdBangKhaoSat")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdCauHoi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdDotKhaoSat")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLoaiHinhDonVi")
+                        .HasColumnType("int");
+
+                    b.Property<short>("LoaiCauHoi")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("MaCauHoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaCauHoiPhu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaCauTraLoi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenDaiDienCq")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BaoCaoCauHoi");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.CauHoi", b =>
@@ -605,6 +678,9 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<string>("Data")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DauThoiGian")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");

@@ -107,4 +107,12 @@ public class PhieuKhaoSatController : ControllerBase
         var phuongXa = datas.Values.Where(x => x.parent_code == idQuanHuyen);
         return Ok(phuongXa);
     }
+
+    [HttpPost("DongBoBaoCaoCauHoi")]
+    public async Task<ActionResult> DongBoBaoCaoCauHoi()
+    {
+        var command = new DongBoBaoCaoCommand();
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
 }

@@ -71,5 +71,8 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IAccountRepository _accountRepository;
     public IAccountRepository Account => _accountRepository ??= new AccountRepository(_repoContext);
 
+    public IBaoCaoCauHoiRepository _baoCaoCauHoiRepository;
+    public IBaoCaoCauHoiRepository BaoCaoCauHoi => _baoCaoCauHoiRepository ??= new BaoCaoCauHoiRepository(_repoContext);
+
     #endregion
 }

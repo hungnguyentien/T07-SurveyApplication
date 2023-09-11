@@ -60,6 +60,7 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Ide
     public DbSet<Cot> Cot { get; set; }
     public DbSet<Hang> Hang { get; set; }
     public DbSet<KetQua> KetQua { get; set; }
+    public DbSet<BaoCaoCauHoi> BaoCaoCauHoi { get; set; }
 
     #endregion
 }

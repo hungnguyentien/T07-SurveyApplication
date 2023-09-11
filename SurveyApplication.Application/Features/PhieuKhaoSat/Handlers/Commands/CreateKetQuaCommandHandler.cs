@@ -75,6 +75,9 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
 
         var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
         ketQua.IdGuiEmail = guiEmail.Id;
+        if (ketQua.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh)
+            ketQua.DauThoiGian = DateTime.Now;
+
         var kqDb = await _surveyRepo.KetQua.FirstOrDefaultAsync(x =>
             request.CreateKetQuaDto != null && x.IdGuiEmail == guiEmail.Id && !x.Deleted);
         if (kqDb == null)

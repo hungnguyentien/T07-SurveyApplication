@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace SurveyApplication.Utility
 {
-    public class StringUltils
+    public static  class StringUltils
     {
         /// <summary>
         ///     Mã hóa chuỗi có mật khẩu (có các ký tự đặc biệt)
