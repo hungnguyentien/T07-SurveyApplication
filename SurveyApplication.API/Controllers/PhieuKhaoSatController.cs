@@ -83,6 +83,14 @@ namespace SurveyApplication.API.Controllers
             return Ok(quanHuyen);
         }
 
+        [HttpGet("GetAllQuanHuyen")]
+        public ActionResult GetAllQuanHuyen()
+        {
+            using StreamReader r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PathJsonQuanHuyen));
+            var datas = JsonConvert.DeserializeObject<Dictionary<string, HanhChinhVn>>(r.ReadToEnd());
+            return Ok(datas.Values);
+        }
+
         [HttpGet("GetPhuongXa")]
         public ActionResult GetPhuongXa(string idQuanHuyen)
         {
