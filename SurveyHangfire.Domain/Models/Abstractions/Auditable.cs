@@ -1,5 +1,4 @@
 ﻿using System;
-using Hangfire.Domain.Models.Abstractions;
 
 namespace Hangfire.Domain.Models.Abstractions
 {

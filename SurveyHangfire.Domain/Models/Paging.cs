@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Hangfire.Application.Models.ViewModels
+namespace Hangfire.Domain.Models
 {
     public class PaginatedList<T> : List<T>
     {
@@ -20,7 +17,7 @@ namespace Hangfire.Application.Models.ViewModels
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             PageSize = pageSize;
             TotalFilter = count;
-            this.AddRange(items);
+            AddRange(items);
         }
         public PaginatedList(List<T> items)
         {
@@ -28,7 +25,7 @@ namespace Hangfire.Application.Models.ViewModels
             TotalPages = 1;
             PageSize = items.Count;
             TotalFilter = items.Count;
-            this.AddRange(items);
+            AddRange(items);
         }
         public PaginatedList()
         {
@@ -36,28 +33,6 @@ namespace Hangfire.Application.Models.ViewModels
             TotalPages = 1;
             PageSize = 0;
             TotalFilter = 0;
-        }
-        public bool HasPreviousPage
-        {
-            get
-            {
-                return (PageIndex > 1);
-            }
-        }
-
-        public bool HasNextPage
-        {
-            get
-            {
-                return (PageIndex < TotalPages);
-            }
-        }
-
-        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
-        {
-            var count = await source.CountAsync();
-            var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
-            return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }
     }
 }
