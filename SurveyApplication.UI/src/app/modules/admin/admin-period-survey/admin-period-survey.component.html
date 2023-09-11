@@ -113,8 +113,7 @@
                     <span class="ml-1 vertical-align-middle">{{rowData.tenLoaiHinh}}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy'
-                        }}-{{rowData.ngayKetThuc| date:'dd/MM/yyyy'}}</span>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy'}}-{{rowData.ngayKetThuc| date:'dd/MM/yyyy'}}</span>
                 </td>
                 <td>
                     <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 0" style="color:rgb(84, 84, 226)">Chờ khảo sát</span>
@@ -186,28 +185,6 @@
                        Vui lòng nhập Tên đợt
                    </small>
             </div>
-            <!-- <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span
-                            style="color: red;">*</span></label>
-                    <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name" pInputText
-                        placeholder="Ngày Bắt Đầu">
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['NgayBatDau'].valid && 
-                        FormPeriodSurvey.controls['NgayBatDau'].dirty" >
-                       Vui lòng nhập Ngày bắt đầu
-                   </small>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span
-                            style="color: red;">*</span></label>
-                    <input type="date" formControlName="NgayKetThuc" class="form-control" id="recipient-name"
-                        pInputText placeholder="Ngày bắt đầu">
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['NgayKetThuc'].valid && 
-                        FormPeriodSurvey.controls['NgayKetThuc'].dirty" >
-                       Vui lòng nhập Ngày kết thúc
-                   </small>
-                </div>
-            </div> -->
             <div class="row">
                 <div class="form-group col-md-6">
                   <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span style="color: red;">*</span></label>

@@ -17,7 +17,7 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'home',
+        path: 'dashboard',
         component: AdminHomeComponent, canActivate: [AuthGuardService],
         title: 'Quản lý dashboard',
         data: {

@@ -1,4 +1,5 @@
 <div>
+  <h4 class="m-4">Dashboard</h4>  
   <!-- <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" [editable]="true" optionLabel="name"></p-dropdown> -->
     <div class="row">
         <div class="form-group ml-3 col-md-2">
@@ -39,12 +40,17 @@
               <option>5</option>
             </select>
           </div>
-          <div class="form-group ml-3 col-md-1">
-            <a href="#" class="btn btn-primary btn-icon-split" style="margin-top: 33px;">
-                <span class="text">Reset</span>
-            </a>
+          <div class="form-group ml-3 col-md-1" style="margin-top: 30px;">
+            
+            <button pButton type="button" icon="pi pi-refresh"
+                label="Reset" class="custom-button"></button>
           </div>
     </div>
 
     <div id="surveyDashboardContainer"></div>
+</div>
+
+<div>
+  <hr>
+  <h4>Thống kê</h4>
 </div>
