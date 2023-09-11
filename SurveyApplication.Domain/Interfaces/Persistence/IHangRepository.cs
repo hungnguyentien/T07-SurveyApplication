@@ -1,6 +1,5 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface IHangRepository : IGenericRepository<Hang>
 {
-    public interface IHangRepository: IGenericRepository<Hang>
-    {
-    }
 }

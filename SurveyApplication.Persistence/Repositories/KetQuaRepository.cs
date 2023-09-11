@@ -1,13 +1,12 @@
 ﻿using SurveyApplication.Domain;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Persistence.Repositories
+namespace SurveyApplication.Persistence.Repositories;
+
+public class KetQuaRepository : GenericRepository<KetQua>, IKetQuaRepository
 {
-    public class KetQuaRepository : GenericRepository<KetQua>, IKetQuaRepository
+    public KetQuaRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
     {
-        public KetQuaRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
-        {
-            DbContext = dbContext;
-        }
+        DbContext = dbContext;
     }
 }

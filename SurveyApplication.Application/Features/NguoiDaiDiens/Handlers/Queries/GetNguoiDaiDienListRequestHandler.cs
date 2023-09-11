@@ -4,22 +4,23 @@ using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Queries
+namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Queries;
+
+public class GetNguoiDaiDienListRequestHandler : BaseMasterFeatures,
+    IRequestHandler<GetNguoiDaiDienListRequest, List<NguoiDaiDienDto>>
 {
-   
-    public class GetNguoiDaiDienListRequestHandler : BaseMasterFeatures, IRequestHandler<GetNguoiDaiDienListRequest, List<NguoiDaiDienDto>>
+    private readonly IMapper _mapper;
+
+    public GetNguoiDaiDienListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
     {
-        private readonly IMapper _mapper;
+        _mapper = mapper;
+    }
 
-        public GetNguoiDaiDienListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
-        {
-            _mapper = mapper;
-        }
-
-        public async Task<List<NguoiDaiDienDto>> Handle(GetNguoiDaiDienListRequest request, CancellationToken cancellationToken)
-        {
-            var NguoiDaiDiens = await _surveyRepo.NguoiDaiDien.GetAll();
-            return _mapper.Map<List<NguoiDaiDienDto>>(NguoiDaiDiens);
-        }
+    public async Task<List<NguoiDaiDienDto>> Handle(GetNguoiDaiDienListRequest request,
+        CancellationToken cancellationToken)
+    {
+        var NguoiDaiDiens = await _surveyRepo.NguoiDaiDien.GetAll();
+        return _mapper.Map<List<NguoiDaiDienDto>>(NguoiDaiDiens);
     }
 }

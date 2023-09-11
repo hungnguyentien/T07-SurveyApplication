@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TemplatePublicComponent } from './public-template/public-template.component';
 import { AdminTempleteComponent } from './admin-templete/admin-templete.component';
 import { LoginComponent } from '../share/login/login.component';
+import { AuthGuardService } from '@app/helpers';
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const routes: Routes = [
         children: [
           {
             path: 'admin',
+            canActivate: [AuthGuardService],
             loadChildren: () =>
               import('../../modules/admin/admin.module').then(
                 (x) => x.AdminModule

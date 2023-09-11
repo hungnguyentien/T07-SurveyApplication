@@ -1,13 +1,13 @@
 ﻿using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features
+namespace SurveyApplication.Application.Features;
+
+public class BaseMasterFeatures
 {
-    public  class BaseMasterFeatures
+    protected ISurveyRepositoryWrapper _surveyRepo;
+
+    public BaseMasterFeatures(ISurveyRepositoryWrapper surveyRepository)
     {
-        protected ISurveyRepositoryWrapper _surveyRepo;
-        public BaseMasterFeatures(ISurveyRepositoryWrapper surveyRepository)
-        {
-            _surveyRepo = surveyRepository;
-        }
+        _surveyRepo = surveyRepository;
     }
 }

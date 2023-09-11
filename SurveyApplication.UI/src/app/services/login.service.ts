@@ -20,7 +20,9 @@ export class LoginService {
     private messageService: MessageService
   ) {
     this.currentUserSubject = new BehaviorSubject<string>(
-      this.cookieService.get('currentUser')
+      localStorage.getItem('isRememberMe') === 'true'
+        ? this.cookieService.get('currentUser')
+        : sessionStorage.getItem('currentUser') ?? ''
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -42,8 +44,15 @@ export class LoginService {
           if (req) {
             // Xóa hết cookie
             this.cookieService.delete('currentUser');
+            localStorage.setItem('isRememberMe', model.isRememberMe.toString());
             // lưu token vào Cookie
-            this.cookieService.set('currentUser', JSON.stringify(req.token));
+            if (model.isRememberMe) {
+              this.cookieService.set('currentUser', JSON.stringify(req.token));
+              sessionStorage.removeItem('currentUser');
+            } else {
+              sessionStorage.setItem('currentUser', JSON.stringify(req.token));
+              this.cookieService.delete('currentUser', '/');
+            }
             this.currentUserSubject.next(JSON.stringify(req.token));
           }
 
@@ -80,7 +89,7 @@ export class LoginService {
 
   logout() {
     // remove user from local storage to log user out
-    this.cookieService.delete('currentUser');
+    this.cookieService.delete('currentUser', '/');
     this.currentUserSubject.next('');
   }
 }

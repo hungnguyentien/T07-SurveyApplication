@@ -1,6 +1,5 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface ILinhVucHoatDongRepository : IGenericRepository<LinhVucHoatDong>
 {
-    public interface ILinhVucHoatDongRepository : IGenericRepository<LinhVucHoatDong>
-    {
-    }
 }

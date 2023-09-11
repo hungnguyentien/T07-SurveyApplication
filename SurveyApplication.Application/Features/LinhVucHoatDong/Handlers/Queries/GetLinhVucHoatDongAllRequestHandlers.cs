@@ -4,21 +4,23 @@ using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.LinhVucHoatDong.Handlers.Queries
+namespace SurveyApplication.Application.Features.LinhVucHoatDong.Handlers.Queries;
+
+public class GetLinhVucHoatDongAllRequestHandlers : BaseMasterFeatures,
+    IRequestHandler<GetLinhVucHoatDongAllRequest, List<LinhVucHoatDongDto>>
 {
-    public class GetLinhVucHoatDongAllRequestHandlers : BaseMasterFeatures, IRequestHandler<GetLinhVucHoatDongAllRequest, List<LinhVucHoatDongDto>>
+    private readonly IMapper _mapper;
+
+    public GetLinhVucHoatDongAllRequestHandlers(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
     {
-        private readonly IMapper _mapper;
+        _mapper = mapper;
+    }
 
-        public GetLinhVucHoatDongAllRequestHandlers(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
-        {
-            _mapper = mapper;
-        }
-
-        public async Task<List<LinhVucHoatDongDto>> Handle(GetLinhVucHoatDongAllRequest request, CancellationToken cancellationToken)
-        {
-            var data = await _surveyRepo.LinhVucHoatDong.GetAll();
-            return _mapper.Map<List<LinhVucHoatDongDto>>(data);
-        }
+    public async Task<List<LinhVucHoatDongDto>> Handle(GetLinhVucHoatDongAllRequest request,
+        CancellationToken cancellationToken)
+    {
+        var data = await _surveyRepo.LinhVucHoatDong.GetAll();
+        return _mapper.Map<List<LinhVucHoatDongDto>>(data);
     }
 }

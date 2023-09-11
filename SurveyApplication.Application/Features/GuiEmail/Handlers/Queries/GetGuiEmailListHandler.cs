@@ -1,25 +1,23 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.GuiEmail;
-using SurveyApplication.Application.Features.GuiEmails.Requests.Queries;
+using SurveyApplication.Application.Features.GuiEmail.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Queries
+namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries;
+
+public class GetGuiEmailListHandler : BaseMasterFeatures, IRequestHandler<GetGuiEmailDetailRequest, GuiEmailDto>
 {
-    
-    public class GetGuiEmailListHandler : BaseMasterFeatures, IRequestHandler<GetGuiEmailDetailRequest, GuiEmailDto>
+    private readonly IMapper _mapper;
+
+    public GetGuiEmailListHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
     {
-        private readonly IMapper _mapper;
+        _mapper = mapper;
+    }
 
-        public GetGuiEmailListHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
-        {
-            _mapper = mapper;
-        }
-
-        public async Task<GuiEmailDto> Handle(GetGuiEmailDetailRequest request, CancellationToken cancellationToken)
-        {
-            var guiEmailRepository = await _surveyRepo.GuiEmail.GetById(request.Id);
-            return _mapper.Map<GuiEmailDto>(guiEmailRepository);
-        }
+    public async Task<GuiEmailDto> Handle(GetGuiEmailDetailRequest request, CancellationToken cancellationToken)
+    {
+        var guiEmailRepository = await _surveyRepo.GuiEmail.GetById(request.Id);
+        return _mapper.Map<GuiEmailDto>(guiEmailRepository);
     }
 }

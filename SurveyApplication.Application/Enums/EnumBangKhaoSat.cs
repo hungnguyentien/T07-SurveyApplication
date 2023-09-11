@@ -1,19 +1,14 @@
 ﻿using System.ComponentModel;
 
-namespace SurveyApplication.Application.Enums
+namespace SurveyApplication.Application.Enums;
+
+public static class EnumBangKhaoSat
 {
-    public static class EnumBangKhaoSat
+    public enum TrangThai
     {
-        public enum TrangThai
-        {
-            [Description("Chờ khảo sát")]
-            ChoKhaoSat = 0,
-            [Description("Đang khảo sát")]
-            DangKhaoSat = 1,
-            [Description("Hoàn thành")]
-            HoanThanh = 2,
-            [Description("Tạm dừng")]
-            TamDung = 3,
-        }
+        [Description("Chờ khảo sát")] ChoKhaoSat = 0,
+        [Description("Đang khảo sát")] DangKhaoSat = 1,
+        [Description("Hoàn thành")] HoanThanh = 2,
+        [Description("Tạm dừng")] TamDung = 3
     }
 }

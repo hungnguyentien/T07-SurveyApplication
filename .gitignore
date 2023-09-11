@@ -20,3 +20,16 @@
 /SurveyApplication.UI/.angular
 /SurveyApplication.UI/.vscode
 /SurveyApplication.UI/node_modules
+/obj/Debug/netcoreapp3.1
+/SurveyApplication.Hangfire/bin
+/SurveyApplication.Hangfire/obj
+/SurveyApplication.Utility/bin/Debug/netcoreapp3.1/SurveyApplication.Utility.deps.json
+/SurveyHangfire/bin
+/SurveyHangfire/obj
+/SurveyHangfire.Application/bin
+/SurveyHangfire.Application/obj
+/SurveyHangfire.Domain/bin
+/SurveyHangfire.Domain/obj
+/SurveyHangfire.Infrastructure/bin
+/SurveyHangfire.Infrastructure/obj
+/SurveyHangfire/logs

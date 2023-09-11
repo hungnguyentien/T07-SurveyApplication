@@ -6,6 +6,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterClientComponent } from './footer-client/footer-client.component';
 import { HeaderClientComponent } from './header-client/header-client.component';
 import { RouterModule } from '@angular/router';
+import { ShareModule } from '../share/share.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { RouterModule } from '@angular/router';
     FooterClientComponent,
     HeaderClientComponent,
   ],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ShareModule],
   exports: [
     HeaderComponent,
     FooterComponent,

@@ -8,16 +8,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
   constructor(private router: Router) {}
-  handlerClick = (link: string) => {
-    this.router.navigate([link]);
-  };
   ngOnInit(): void {
+    document.querySelectorAll(`a[href="${this.router.url}"]`).forEach((el) => {
+      el.parentElement?.classList.add('active');
+    });
     const navItems = document.querySelectorAll('.nav-item');
+    const removeActive = () => {
+      navItems.forEach((navItem) => {
+        navItem.classList.remove('active');
+      });
+    };
     navItems.forEach((item) => {
       item.addEventListener('click', () => {
-        navItems.forEach((navItem) => {
-          navItem.classList.remove('active');
-        });
+        removeActive();
         item.classList.add('active');
       });
     });

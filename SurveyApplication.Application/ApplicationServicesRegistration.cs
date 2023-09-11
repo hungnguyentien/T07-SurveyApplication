@@ -1,25 +1,25 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
 using MediatR;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using SurveyApplication.Infrastructure;
-using SurveyApplication.Persistence;
+using Microsoft.Extensions.DependencyInjection;
 using SurveyApplication.Application.Features.Accounts.Handlers.Queries;
 using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Domain.Common.Identity;
+using SurveyApplication.Infrastructure;
+using SurveyApplication.Persistence;
 
-namespace SurveyApplication.Application
+namespace SurveyApplication.Application;
+
+public static class ApplicationServicesRegistration
 {
-    public static class ApplicationServicesRegistration
+    public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.ConfigureInfrastructureServices(configuration);
-            services.ConfigurePersistenceServices(configuration);
-            services.AddTransient<IRequestHandler<LoginRequest, AuthResponse>, LoginRequestHandler>();
-            return services;
-        }
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.ConfigureInfrastructureServices(configuration);
+        services.ConfigurePersistenceServices(configuration);
+        services.AddTransient<IRequestHandler<LoginRequest, AuthResponse>, LoginRequestHandler>();
+        return services;
     }
 }

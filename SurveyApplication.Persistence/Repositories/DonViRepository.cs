@@ -2,22 +2,20 @@
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Persistence.Repositories
+namespace SurveyApplication.Persistence.Repositories;
+
+public class DonViRepository : GenericRepository<DonVi>, IDonViRepository
 {
+    private readonly SurveyApplicationDbContext _dbContext;
 
-    public class DonViRepository : GenericRepository<DonVi>, IDonViRepository
+    public DonViRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
     {
-        private readonly SurveyApplicationDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public DonViRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-        public async Task<bool> ExistsByMaDonVi(string maDonVi)
-        {
-            var entity = await _dbContext.DonVi.AsNoTracking().FirstOrDefaultAsync(x => x.MaDonVi == maDonVi);
-            return entity != null;
-        }
+    public async Task<bool> ExistsByMaDonVi(string maDonVi)
+    {
+        var entity = await _dbContext.DonVi.AsNoTracking().FirstOrDefaultAsync(x => x.MaDonVi == maDonVi);
+        return entity != null;
     }
 }

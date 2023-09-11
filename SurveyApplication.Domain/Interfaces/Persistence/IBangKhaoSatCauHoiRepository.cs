@@ -1,6 +1,5 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface IBangKhaoSatCauHoiRepository : IGenericRepository<BangKhaoSatCauHoi>
 {
-    public interface IBangKhaoSatCauHoiRepository : IGenericRepository<BangKhaoSatCauHoi>
-    {
-    }
 }

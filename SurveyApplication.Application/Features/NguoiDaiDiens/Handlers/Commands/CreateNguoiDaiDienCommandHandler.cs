@@ -1,45 +1,47 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
-using SurveyApplication.Domain;
 using SurveyApplication.Application.DTOs.NguoiDaiDien.Validators;
 using SurveyApplication.Application.Exceptions;
+using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
+namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands;
+
+public class CreateNguoiDaiDienCommandHandler : BaseMasterFeatures,
+    IRequestHandler<CreateNguoiDaiDienCommand, BaseCommandResponse>
 {
-    public class CreateNguoiDaiDienCommandHandler : BaseMasterFeatures, IRequestHandler<CreateNguoiDaiDienCommand, BaseCommandResponse>
+    private readonly IMapper _mapper;
+
+    public CreateNguoiDaiDienCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
     {
-        private readonly IMapper _mapper;
+        _mapper = mapper;
+    }
 
-        public CreateNguoiDaiDienCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+    public async Task<BaseCommandResponse> Handle(CreateNguoiDaiDienCommand request,
+        CancellationToken cancellationToken)
+    {
+        var response = new BaseCommandResponse();
+        var validator = new CreateNguoiDaiDienDtoValidator(_surveyRepo.NguoiDaiDien);
+        var validatorResult = await validator.ValidateAsync(request.NguoiDaiDienDto);
+
+        if (validatorResult.IsValid == false)
         {
-            _mapper = mapper;
+            response.Success = false;
+            response.Message = "Tạo mới thất bại";
+            response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
+            throw new ValidationException(validatorResult);
         }
 
-        public async Task<BaseCommandResponse> Handle(CreateNguoiDaiDienCommand request, CancellationToken cancellationToken)
-        {
-            var response = new BaseCommandResponse();
-            var validator = new CreateNguoiDaiDienDtoValidator(_surveyRepo.NguoiDaiDien);
-            var validatorResult = await validator.ValidateAsync(request.NguoiDaiDienDto);
-
-            if (validatorResult.IsValid == false)
-            {
-                response.Success = false;
-                response.Message = "Tạo mới thất bại";
-                response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
-                throw new ValidationException(validatorResult);
-            }
-
-            var NguoiDaiDien = _mapper.Map<NguoiDaiDien>(request.NguoiDaiDienDto);
-            NguoiDaiDien.MaNguoiDaiDien = Guid.NewGuid().ToString();
-            NguoiDaiDien = await _surveyRepo.NguoiDaiDien.Create(NguoiDaiDien);
-            await _surveyRepo.SaveAync();
-            response.Success = true;
-            response.Message = "Tạo mới thành công";
-            response.Id = NguoiDaiDien.Id;
-            return response;
-        }
+        var NguoiDaiDien = _mapper.Map<NguoiDaiDien>(request.NguoiDaiDienDto);
+        NguoiDaiDien.MaNguoiDaiDien = Guid.NewGuid().ToString();
+        NguoiDaiDien = await _surveyRepo.NguoiDaiDien.Create(NguoiDaiDien);
+        await _surveyRepo.SaveAync();
+        response.Success = true;
+        response.Message = "Tạo mới thành công";
+        response.Id = NguoiDaiDien.Id;
+        return response;
     }
 }

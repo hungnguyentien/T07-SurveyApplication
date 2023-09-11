@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.CauHoi;
@@ -10,6 +11,7 @@ using SurveyApplication.Utility;
 
 namespace SurveyApplication.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CauHoiController : ControllerBase

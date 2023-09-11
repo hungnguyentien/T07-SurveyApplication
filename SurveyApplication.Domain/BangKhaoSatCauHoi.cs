@@ -1,13 +1,11 @@
 ﻿using SurveyApplication.Domain.Common;
-using System.ComponentModel.DataAnnotations;
 
-namespace SurveyApplication.Domain
+namespace SurveyApplication.Domain;
+
+public class BangKhaoSatCauHoi : BaseDomainEntity
 {
-    public class BangKhaoSatCauHoi : BaseDomainEntity
-    {
-        public int IdBangKhaoSat { get; set; }
-        public int IdCauHoi { get; set; }
-        public int? Priority { get; set; }
-        public bool? IsRequired { get; set; }
-    }
+    public int IdBangKhaoSat { get; set; }
+    public int IdCauHoi { get; set; }
+    public int? Priority { get; set; }
+    public bool? IsRequired { get; set; }
 }

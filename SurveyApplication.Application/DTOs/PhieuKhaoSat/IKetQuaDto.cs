@@ -1,8 +1,7 @@
-﻿namespace SurveyApplication.Application.DTOs.PhieuKhaoSat
+﻿namespace SurveyApplication.Application.DTOs.PhieuKhaoSat;
+
+public interface IKetQuaDto
 {
-    public interface IKetQuaDto
-    {
-        public string GuiEmail { get; set; }
-        public string Data { get; set; }
-    }
+    public string GuiEmail { get; set; }
+    public string Data { get; set; }
 }

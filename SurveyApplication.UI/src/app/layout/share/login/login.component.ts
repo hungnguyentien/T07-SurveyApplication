@@ -13,6 +13,7 @@ export class LoginComponent {
     UserName: '',
     Password: '',
     grant_type: '',
+    isRememberMe: true
   };
 
   constructor(private router: Router, private loginService: LoginService) {
@@ -21,19 +22,11 @@ export class LoginComponent {
     }
   }
 
-  ngOnInit(): void {
-    // const tokenExists = this.cookieService.check('currentUser');
-    // if (tokenExists) {
-    //   console.log('Token đã tồn tại trong cookie.');
-    // } else {
-    //   console.log('Token không tồn tại trong cookie.');
-    // }
-  }
+  ngOnInit(): void {}
 
   login() {
     this.loginService.login(this.model).subscribe((result: any) => {
       if (result) {
-        // alert("Đăng nhập thành công !")
         this.router.navigate(['admin/home']);
       } else {
         alert('Lỗi không thành công !');

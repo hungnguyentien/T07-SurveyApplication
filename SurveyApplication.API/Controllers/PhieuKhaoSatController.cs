@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
@@ -21,13 +23,14 @@ public class PhieuKhaoSatController : ControllerBase
     private const string PathJsonQuanHuyen = @"TempData\quan_huyen.json";
     private const string PathJsonPhuongXa = @"TempData\xa_phuong.json";
     private readonly IMediator _mediator;
-    private EmailSettings EmailSettings { get; }
 
     public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings)
     {
         _mediator = mediator;
         EmailSettings = emailSettings.Value;
     }
+
+    private EmailSettings EmailSettings { get; }
 
     [HttpGet("GetThongTinChung")]
     public async Task<ActionResult<ThongTinChungDto>> GetThongTinChung(string data)
@@ -64,6 +67,17 @@ public class PhieuKhaoSatController : ControllerBase
     public async Task<ActionResult> SendEmail(int idGuiMail)
     {
         var command = new SendMailCommand { Id = idGuiMail };
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [ValidSecretKey]
+    [HttpPost("ScheduleSendEmail")]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public async Task<ActionResult> ScheduleSendEmail()
+    {
+        var command = new ScheduleSendMailCommand();
         var response = await _mediator.Send(command);
         return Ok(response);
     }

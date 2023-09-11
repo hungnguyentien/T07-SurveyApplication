@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace SurveyApplication.Application.Enums
+namespace SurveyApplication.Application.Enums;
+
+public static class EnumGuiEmail
 {
-    public static class EnumGuiEmail
+    public enum TrangThai
     {
-        public enum TrangThai
-        {
-            [Description("Thành công")]
-            ThanhCong = 0,
-            [Description("Gửi lỗi")]
-            GuiLoi = 1,
-            [Description("Thu hồi")]
-            ThuHoi = 2,
-            [Description("Đang gửi")]
-            DangGui = 3
-        }
+        [Description("Thành công")] ThanhCong = 0,
+        [Description("Gửi lỗi")] GuiLoi = 1,
+        [Description("Thu hồi")] ThuHoi = 2,
+        [Description("Đang gửi")] DangGui = 3
     }
 }

@@ -20,7 +20,6 @@ import { ConfirmationService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TextBoxComponent } from './components';
 import { ErrorInterceptor, JwtInterceptor } from './helpers';
 
 // AoT requires an exported function for factories
@@ -30,12 +29,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [
-    AppComponent,
-    ChooseAnAnswerComponent,
-    LongTextComponent,
-    TextBoxComponent,
-  ],
+  declarations: [AppComponent, ChooseAnAnswerComponent, LongTextComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

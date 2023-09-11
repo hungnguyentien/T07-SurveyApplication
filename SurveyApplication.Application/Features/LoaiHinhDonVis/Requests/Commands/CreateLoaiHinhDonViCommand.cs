@@ -2,10 +2,9 @@
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands
+namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
+
+public class CreateLoaiHinhDonViCommand : IRequest<BaseCommandResponse>
 {
-    public class CreateLoaiHinhDonViCommand : IRequest<BaseCommandResponse>
-    {
-        public CreateLoaiHinhDonViDto? LoaiHinhDonViDto { get; set; }
-    }
+    public CreateLoaiHinhDonViDto? LoaiHinhDonViDto { get; set; }
 }

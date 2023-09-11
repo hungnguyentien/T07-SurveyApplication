@@ -85,6 +85,17 @@
   }
 }
 
+.cust-tbl {
+  .p-paginator {
+    .p-dropdown {
+      .p-dropdown-label {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
 .ck.ck-editor__main > .ck-editor__editable {
   min-height: 88px;
 }
@@ -105,4 +116,8 @@
       display: block !important;
     }
   }
+}
+
+.p-inputtext::placeholder {
+  color: #ced4da;
 }

@@ -1,20 +1,13 @@
-﻿using SurveyApplication.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using SurveyApplication.Domain.Common;
 
-namespace SurveyApplication.Domain
+namespace SurveyApplication.Domain;
+
+public class LoaiHinhDonVi : BaseDomainEntity
 {
-    public partial class LoaiHinhDonVi : BaseDomainEntity
-    {
-        [Required]
-        [MaxLength(250)]
-        public string MaLoaiHinh { get; set; } = null!;
+    [Required] [MaxLength(250)] public string MaLoaiHinh { get; set; } = null!;
 
-        [Required]
-        public string TenLoaiHinh { get; set; }
+    [Required] public string TenLoaiHinh { get; set; }
 
-        [Required]
-        public string MoTa { get; set; }
-    }
+    [Required] public string MoTa { get; set; }
 }

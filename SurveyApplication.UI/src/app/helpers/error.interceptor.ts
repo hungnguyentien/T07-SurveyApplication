@@ -9,10 +9,15 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { LoginService } from '../services/login.service';
 import { environment } from '@environments/environment';
+import { MessageService } from 'primeng/api';
+import Utils from './utils';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private loginService: LoginService) {}
+  constructor(
+    private loginService: LoginService,
+    private messageService: MessageService
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -31,7 +36,10 @@ export class ErrorInterceptor implements HttpInterceptor {
         console.log(message);
         // Xóa Console log
         environment.production && console.clear();
-
+        if (err.errors)
+          Utils.messageError(this.messageService, err.errors.at(0) ?? '');
+        else if (err.error)
+          Utils.messageError(this.messageService, err.error.ErrorMessage ?? err.message);
         return throwError(err);
       })
     );
