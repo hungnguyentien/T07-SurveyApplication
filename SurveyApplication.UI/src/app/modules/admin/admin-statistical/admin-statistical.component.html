@@ -1,1 +1,108 @@
-<p>admin-statistical works!</p>
+<div>
+    <h5>Bảng thống kê khảo sát</h5>
+    <div class="d-flex mt-3">
+        <form class="mt-4 w-100" [formGroup]="frmStatiscal" (ngSubmit)="search()">
+            <div class="col-12">
+                <div class="row">
+                    <div class="form-group form-inline col-4">
+                        <div class="col-3">
+                            <label for="idDotKhaoSat">Đợt khảo sát <span style="color: red;">*</span></label>
+                        </div>
+                        <div class="col-9">
+                            <p-dropdown id="idDotKhaoSat" [options]="LstDotKhaoSat" optionLabel="tenDotKhaoSat"
+                                optionValue="id" [filter]="true" filterBy="tenDotKhaoSat"
+                                emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
+                                [showClear]="true" class="form-select-custom" placeholder="-- Chọn đợt khảo sát --"
+                                formControlName="idDotKhaoSat">
+                            </p-dropdown>
+
+                            <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmStatiscal.controls['idDotKhaoSat'].valid && 
+                            frmStatiscal.controls['idDotKhaoSat'].dirty">
+                                Vui lòng chọn đợt khảo sát
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-4">
+                        <div class="col-3">
+                            <label for="idBangKhaoSat">Bảng khảo sát <span style="color: red;">*</span></label>
+                        </div>
+                        <div class="col-9">
+                            <p-dropdown id="idBangKhaoSat" [options]="LstBangKhaoSat" optionLabel="tenBangKhaoSat"
+                                optionValue="id" [filter]="true" filterBy="tenBangKhaoSat"
+                                emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
+                                [showClear]="true" class="form-select-custom" placeholder="-- Chọn bảng khảo sát --"
+                                formControlName="idBangKhaoSat">
+                            </p-dropdown>
+
+                            <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmStatiscal.controls['idBangKhaoSat'].valid && 
+                            frmStatiscal.controls['idBangKhaoSat'].dirty">
+                                Vui lòng chọn bảng khảo sát
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-4">
+                        <div class="col-3">
+                            <label for="idLoaiHinh">Đối tượng</label>
+                        </div>
+                        <div class="col-9">
+                            <p-dropdown id="idLoaiHinh" [options]="LstLoaiHinhDv" optionLabel="tenLoaiHinh"
+                                optionValue="id" [filter]="true" filterBy="tenLoaiHinh"
+                                emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
+                                [showClear]="true" class="form-select-custom" placeholder="-- Chọn loại hình đơn vị --"
+                                formControlName="idLoaiHinh">
+                            </p-dropdown>
+
+                            <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmStatiscal.controls['idLoaiHinh'].valid && 
+                            frmStatiscal.controls['idLoaiHinh'].dirty">
+                                Vui lòng chọn bảng khảo sát
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group form-inline col-4">
+                        <div class="col-3">
+                            <label for="ngayBatDau">Ngày bắt đầu</label>
+                        </div>
+                        <div class="col-9">
+                            <p-calendar formControlName="ngayBatDau" id="ngayBatDau" class="input-date-custom"
+                                dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-4">
+                        <div class="col-3">
+                            <label for="ngayKetThuc">Ngày kết thúc</label>
+                        </div>
+                        <div class="col-9">
+                            <p-calendar formControlName="ngayKetThuc" id="ngayKetThuc" class="input-date-custom"
+                                dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-4">
+                        <button pButton type="submit" icon="pi pi-search" label="Tìm kiếm"
+                            class="btn btn-primary custom-button mr-2" style="margin-top: 30px;padding: 9.25px 20px;">
+                        </button>
+                        <button pButton type="button" icon="pi pi-refresh" label="Reset"
+                            class="btn btn-primary custom-button" style="margin-top: 30px;padding: 9.25px 20px;">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="row">
+        <div class="col-6">
+            <div class="flex justify-content-center">
+                <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions"></p-chart>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="flex justify-content-center h-100">
+                <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+            </div>
+        </div>
+    </div>
+</div>

@@ -137,7 +137,7 @@ import { AdminStatisticalComponent } from './admin-statistical/admin-statistical
     CalendarModule,
     CarouselModule,
     CascadeSelectModule,
-    // ChartModule,
+    ChartModule,
     CheckboxModule,
     ChipsModule,
     ChipModule,

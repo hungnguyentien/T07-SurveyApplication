@@ -68,9 +68,7 @@ export class SurveyInfoComponent {
 
     this.loading = true;
     this.phieuKhaoSatService
-      .getSurveyConfig(
-        this.generalInfo.data
-      )
+      .getSurveyConfig(this.generalInfo.data)
       .subscribe((res) => {
         configSurvey(Utils.getJsonSurvey(res), res.kqSurvey, res.trangThaiKq);
         this.loading = false;

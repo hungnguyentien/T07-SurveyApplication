@@ -232,6 +232,12 @@ export class QuestionComponent {
     this.submitted = true;
     if (this.frmCauHoi.invalid) return;
     this.question = data.value;
+    this.question.kichThuocFile = this.question.kichThuocFile
+      ? this.question.kichThuocFile
+      : 0;
+    this.question.soLuongFileToiDa = this.question.soLuongFileToiDa
+      ? this.question.soLuongFileToiDa
+      : 0;
     this.question.batBuoc = false;
     this.question.priority = 0;
     this.cauHoiService.create<CreateUpdateCauHoi>(this.question).subscribe({
@@ -251,6 +257,12 @@ export class QuestionComponent {
     this.submitted = true;
     if (this.frmCauHoi.invalid) return;
     this.question = data.value;
+    this.question.kichThuocFile = this.question.kichThuocFile
+      ? this.question.kichThuocFile
+      : 0;
+    this.question.soLuongFileToiDa = this.question.soLuongFileToiDa
+      ? this.question.soLuongFileToiDa
+      : 0;
     this.question.batBuoc = false;
     this.question.priority = 0;
     this.cauHoiService.update<CreateUpdateCauHoi>(this.question).subscribe({

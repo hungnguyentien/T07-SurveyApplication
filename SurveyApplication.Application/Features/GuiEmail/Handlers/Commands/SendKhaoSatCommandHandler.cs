@@ -52,8 +52,6 @@ public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<Sen
                 (x.NgayBatDau.Date > dateNow || x.NgayKetThuc.Date < dateNow)))
             throw new ValidationException("Có đợt khảo sát chưa đến hạn hoặc đã hết hạn");
 
-        var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto) ??
-                       throw new ValidationException("Gửi email không mapping được");
         var lstDonVi =
             await _surveyRepo.DonVi.GetAllListAsync(x => request.GuiEmailDto.LstIdDonVi.Contains(x.Id) && !x.Deleted) ??
             throw new ValidationException("Không tìm thấy đơn vị");
@@ -62,15 +60,17 @@ public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<Sen
             throw new ValidationException("Không tìm thấy đơn vị");
         var lstGuiEmail = new List<Domain.GuiEmail>();
         foreach (var bangKhaoSat in lstBangKhaoSat)
-        foreach (var donVi in lstDonVi)
-        {
-            guiEmail.IdDonVi = donVi.Id;
-            guiEmail.IdBangKhaoSat = bangKhaoSat.Id;
-            guiEmail.MaGuiEmail = Guid.NewGuid().ToString();
-            guiEmail.DiaChiNhan = donVi.Email;
-            guiEmail.TrangThai = (int)EnumGuiEmail.TrangThai.DangGui;
-            lstGuiEmail.Add(guiEmail);
-        }
+            foreach (var donVi in lstDonVi)
+            {
+                var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto) ??
+                               throw new ValidationException("Gửi email không mapping được");
+                guiEmail.IdBangKhaoSat = bangKhaoSat.Id;
+                guiEmail.IdDonVi = donVi.Id;
+                guiEmail.MaGuiEmail = Guid.NewGuid().ToString();
+                guiEmail.DiaChiNhan = donVi.Email;
+                guiEmail.TrangThai = (int)EnumGuiEmail.TrangThai.DangGui;
+                lstGuiEmail.Add(guiEmail);
+            }
 
 
         await _surveyRepo.GuiEmail.InsertAsync(lstGuiEmail);

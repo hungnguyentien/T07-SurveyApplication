@@ -88,6 +88,7 @@ export class AdminTableSurveyComponent {
     private objectSurveyService: ObjectSurveyService,
     private guiEmailService: GuiEmailService
   ) {}
+
   ngOnInit() {
     this.form = this.fb.group({
       searchText: [''], // Khởi tạo FormControl searchText
@@ -111,6 +112,7 @@ export class AdminTableSurveyComponent {
       { validator: this.dateRangeValidator }
     );
   }
+
   dateRangeValidator(
     control: AbstractControl
   ): { [key: string]: boolean } | null {
@@ -475,11 +477,17 @@ export class AdminTableSurveyComponent {
         this.FormBuilder.control(el)
       )
     );
+
+    if (this.frmGuiEmail.invalid) return;
     let data = this.frmGuiEmail.value as CreateGuiEmail;
     this.lstIdDonViError = data.lstIdDonVi.length === 0;
     this.guiEmailService.createByDonVi(data).subscribe({
       next: (res) => {
-        Utils.messageSuccess(this.messageService, res.message);
+        if (res.success) {
+          Utils.messageSuccess(this.messageService, res.message);
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
       },
       error: (e) => {
         if (e.error && e.error.ErrorMessage) {
