@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.Features.QuanHuyens.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -18,15 +20,32 @@ namespace SurveyApplication.Application.Features.QuanHuyens.Handlers.Queries
 
         public async Task<BaseQuerieResponse<QuanHuyenDto>> Handle(GetQuanHuyenConditionsRequest request, CancellationToken cancellationToken)
         {
-            var QuanHuyens = await _surveyRepo.QuanHuyen.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.Name) && x.Name.Contains(request.Keyword), "");
-            var result = _mapper.Map<List<QuanHuyenDto>>(QuanHuyens);
+            var query = from d in _surveyRepo.QuanHuyen.GetAllQueryable()
+                        join b in _surveyRepo.TinhTp.GetAllQueryable()
+                        on d.ParentCode equals b.Code
+                        where d.Code.Contains(request.Keyword) || d.Name.Contains(request.Keyword) ||
+                             b.Code.Contains(request.Keyword) || b.Name.Contains(request.Keyword)
+                        select new QuanHuyenDto
+                        {
+                            Id = d.Id,
+                            Code = d.Code,
+                            Name = d.Name,
+
+                            parent_code = d.ParentCode,
+                            NameTinhTp = b.Name,
+                        };
+            var totalCount = await query.LongCountAsync();
+            var pageCount = (int)Math.Ceiling(totalCount / (double)request.PageSize);
+
+            var pageResults = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+
             return new BaseQuerieResponse<QuanHuyenDto>
             {
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize,
                 Keyword = request.Keyword,
-                TotalFilter = QuanHuyens.TotalFilter,
-                Data = result
+                TotalFilter = totalCount,
+                Data = pageResults
             };
         }
     }

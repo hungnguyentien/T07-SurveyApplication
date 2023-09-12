@@ -953,8 +953,10 @@ namespace SurveyApplication.Persistence.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("ParentCode")
-                        .HasColumnType("int");
+                    b.Property<string>("ParentCode")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -1048,8 +1050,10 @@ namespace SurveyApplication.Persistence.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("ParentCode")
-                        .HasColumnType("int");
+                    b.Property<string>("ParentCode")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Type")
                         .IsRequired()

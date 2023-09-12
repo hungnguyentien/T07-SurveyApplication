@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.DTOs.TinhTp;
+using SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
 using SurveyApplication.Application.Features.TinhTps.Requests.Commands;
 using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -64,6 +66,17 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<List<TinhTpDto>>> DeleteTinhTp(int id)
         {
             var command = new DeleteTinhTpCommand { Id = id };
+            await _mediator.Send(command);
+            return Ok(new
+            {
+                Success = true,
+            });
+        }
+
+        [HttpPost("Import")]
+        public async Task<IActionResult> ImportJsonFile([FromForm] ImportTinhTpDto obj)
+        {
+            var command = new ImportTinhTpCommand { File = obj.File };
             await _mediator.Send(command);
             return Ok(new
             {
