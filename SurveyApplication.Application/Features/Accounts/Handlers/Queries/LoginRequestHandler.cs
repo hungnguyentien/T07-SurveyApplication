@@ -46,8 +46,8 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
                     Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                     Email = "admin@gmail.com",
                     NormalizedEmail = "ADMIN@GAMAIL.COM",
-                    FirstName = "System",
-                    LastName = "Admin",
+                    Name = "System Admin",
+                    Address = "Việt Nam",
                     UserName = "admin",
                     NormalizedUserName = "ADMIN",
                     PasswordHash = hasher.HashPassword(null, "123qwe"),
@@ -92,10 +92,10 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
         var userClaims = new List<Claim>();
         var roleClaims = new List<Claim>();
 
-        for (var i = 0; i < roles.Count; i++)
+        foreach (var t in roles)
         {
-            roleClaims.Add(new Claim(ClaimTypes.Role, roles[i]));
-            var roleClaim = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(roles[i]));
+            roleClaims.Add(new Claim(ClaimTypes.Role, t));
+            var roleClaim = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(t));
             userClaims.AddRange(roleClaim);
         }
 

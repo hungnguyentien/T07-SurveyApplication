@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.LinhVucHoatDong;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Queries;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
 
 namespace SurveyApplication.API.Controllers
 {

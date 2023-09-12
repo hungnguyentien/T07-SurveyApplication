@@ -17,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SurveyApplication.Application\SurveyApplication.Application.csproj" />
+    <Folder Include="TempData\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TempData\" />
+    <ProjectReference Include="..\SurveyApplication.Application\SurveyApplication.Application.csproj" />
   </ItemGroup>
 
 </Project>

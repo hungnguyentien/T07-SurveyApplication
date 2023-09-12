@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.GuiEmail;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
-using SurveyApplication.Application.Features.GuiEmails.Requests.Queries;
+using SurveyApplication.Application.Features.GuiEmail.Requests.Queries;
 
 namespace SurveyApplication.API.Controllers
 {
