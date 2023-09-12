@@ -34,9 +34,10 @@ export class LoginComponent {
   login() {
     debugger
     this.loginService.login(this.model).subscribe((result: any) => {
+      debugger
       if (result) {
         // alert("Đăng nhập thành công !")
-        this.router.navigate(['admin/home']);
+        this.router.navigate(['admin/dashboard']);
       } else {
         alert("Lỗi không thành công !")
       }

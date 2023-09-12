@@ -151,6 +151,7 @@ export class QuestionComponent {
     this.visible = true;
     this.submitted = false;
     this.createForm();
+    this.selectedLoaiCauHoi = '0';
   };
   updateDialog = (id: number) => {
     this.isCreate = false;

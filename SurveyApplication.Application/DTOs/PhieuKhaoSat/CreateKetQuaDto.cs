@@ -6,6 +6,6 @@
         public int IdNguoiDaiDien { get; set; }
         public int IdBangKhaoSat { get; set; }
         public string Data { get; set; }
-        public int Status { get; set; }
+        public int TrangThai { get; set; }
     }
 }

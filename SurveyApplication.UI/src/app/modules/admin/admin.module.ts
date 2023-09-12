@@ -102,6 +102,10 @@ import { QuestionComponent } from './admin-question/question/question.component'
 import { AdminObjectSurveyComponent } from './admin-object-survey/admin-object-survey.component';
 import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.component';
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
+import { FieldOfActivityComponent } from './admin-categories/field-of-activity/field-of-activity.component';
+import { ProvinceComponent } from './admin-categories/province/province.component';
+import { DistrictComponent } from './admin-categories/district/district.component';
+import { WardsComponent } from './admin-categories/wards/wards.component';
 
 
 
@@ -115,6 +119,10 @@ import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-s
     AdminUnitTypeComponent,
     AdminPeriodSurveyComponent,
     QuestionComponent,
+    FieldOfActivityComponent,
+    ProvinceComponent,
+    DistrictComponent,
+    WardsComponent,
   ],
   imports: [
     CommonModule,
