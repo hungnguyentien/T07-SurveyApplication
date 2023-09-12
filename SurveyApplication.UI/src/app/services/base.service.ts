@@ -28,6 +28,16 @@ export abstract class BaseService<T> {
       .pipe(first());
   }
 
+  getByConditionTepm<T>(paging: Paging): Observable<BaseQuerieResponse<T>> {
+    let query = Utils.getParamsQuery(
+      Object.keys(paging),
+      Object.values(paging)
+    );
+    return this._http
+      .get<BaseQuerieResponse<T>>(`${this.actionUrl}/GetByCondition${query}`)
+      .pipe(first());
+  }
+
   create<T>(data: T): Observable<BaseCommandResponse> {
     return this._http
       .post<BaseCommandResponse>(`${this.actionUrl}/Create`, data)

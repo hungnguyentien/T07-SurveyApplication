@@ -16,3 +16,17 @@ public class GuiEmailDto : BaseDto
     public string TenBangKhaoSat { get; set; }
     public int IdDonVi { get; set; }
 }
+
+public class GuiEmailBksDto
+{
+    public int IdBangKhaoSat { get; set; }
+    public string MaBangKhaoSat { get; set; }
+    public string TenBangKhaoSat { get; set; }
+    public int CountSendEmail { get; set; }
+    public int CountSendThanhCong { get; set; }
+    public int CountSendLoi { get; set; }
+    public int CountSendThuHoi { get; set; }
+    public DateTime NgayBatDau { get; set; }
+    public DateTime NgayKetThuc { get; set; }
+
+}

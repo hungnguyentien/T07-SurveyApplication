@@ -27,9 +27,9 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<List<GuiEmailDto>>> GetGuiEmailByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<List<GuiEmailBksDto>>> GetGuiEmailByCondition([FromQuery] Paging paging)
         {
-            var lstGuiMail = await _mediator.Send(new GetGuiEmailConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+            var lstGuiMail = await _mediator.Send(new GetGuiEmailBksConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return Ok(lstGuiMail);
         }
 
