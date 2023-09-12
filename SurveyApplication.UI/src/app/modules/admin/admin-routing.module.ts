@@ -9,6 +9,10 @@ import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.com
 import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';
 import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
 import { AuthGuardService } from '@app/helpers/auth-guard.service';
+import { FieldOfActivityComponent } from './admin-categories/field-of-activity/field-of-activity.component';
+import { ProvinceComponent } from './admin-categories/province/province.component';
+import { DistrictComponent } from './admin-categories/district/district.component';
+import { WardsComponent } from './admin-categories/wards/wards.component';
 
 const routes: Routes = [
   {
@@ -18,7 +22,7 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'home',
+        path: 'dashboard',
         component: AdminHomeComponent, canActivate: [AuthGuardService],
         title: 'Dashboard',
         data: {
@@ -80,6 +84,39 @@ const routes: Routes = [
           title: 'thong-ke-khao-sat',
         },
       },
+
+      {
+        path: 'linh-vuc-hoat-dong',
+        component: FieldOfActivityComponent, canActivate: [AuthGuardService],
+        title: 'Quản lý lĩnh vực hoạt động',
+        data: {
+          title: 'Quản lý lĩnh vực hoạt động',
+        },
+      },
+      {
+        path: 'tinh-thanh',
+        component: ProvinceComponent, canActivate: [AuthGuardService],
+        title: 'Quản lý tỉnh thành',
+        data: {
+          title: 'Quản lý tỉnh thành',
+        },
+      },
+      {
+        path: 'quan-huyen',
+        component:DistrictComponent, canActivate: [AuthGuardService],
+        title: 'Quản lý quận/huyện',
+        data: {
+          title: 'Quản lý quận/huyện',
+        },
+      },
+      {
+        path: 'xa-phuong',
+        component:WardsComponent, canActivate: [AuthGuardService],
+        title: 'Quản lý xã/phường',
+        data: {
+          title: 'Quản lý xã/phường',
+        },
+      }
       
     ],
   },
