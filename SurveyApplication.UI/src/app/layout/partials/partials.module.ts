@@ -5,6 +5,7 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterClientComponent } from './footer-client/footer-client.component';
 import { HeaderClientComponent } from './header-client/header-client.component';
+import { Error403Component } from './error403/error403.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { HeaderClientComponent } from './header-client/header-client.component';
     SidebarComponent,
     FooterClientComponent,
     HeaderClientComponent,
+    Error403Component,
   ],
   imports: [CommonModule],
   exports: [

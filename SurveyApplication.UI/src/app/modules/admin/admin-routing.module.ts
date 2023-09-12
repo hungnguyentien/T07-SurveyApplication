@@ -12,6 +12,7 @@ import { FieldOfActivityComponent } from './admin-categories/field-of-activity/f
 import { ProvinceComponent } from './admin-categories/province/province.component';
 import { DistrictComponent } from './admin-categories/district/district.component';
 import { WardsComponent } from './admin-categories/wards/wards.component';
+import { Error403Component } from '@app/layout/partials/error403/error403.component';
 
 const routes: Routes = [
   {
@@ -108,8 +109,15 @@ const routes: Routes = [
         data: {
           title: 'Quản lý xã/phường',
         },
+      },
+      {
+        path: 'error-403',
+        component:Error403Component,
+        title: 'error-403',
+        data: {
+          title: 'error-403',
+        },
       }
-      
     ],
   },
 ];

@@ -48,7 +48,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       },
     }),
   ],
-  providers: [MessageService, ConfirmationService, JwtInterceptor],
+  providers: [MessageService, ConfirmationService,{provide: HTTP_INTERCEPTORS,useClass: JwtInterceptor,multi: true,
+  },],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
