@@ -71,8 +71,24 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IAccountRepository _accountRepository;
     public IAccountRepository Account => _accountRepository ??= new AccountRepository(_repoContext);
 
-    public IBaoCaoCauHoiRepository _baoCaoCauHoiRepository;
-    public IBaoCaoCauHoiRepository BaoCaoCauHoi => _baoCaoCauHoiRepository ??= new BaoCaoCauHoiRepository(_repoContext);
+        public IXaPhuongRepository _xaPhuongRepository;
+        public IXaPhuongRepository XaPhuong => _xaPhuongRepository ??= new XaPhuongRepository(_repoContext);
 
-    #endregion
+        public IQuanHuyenRepository _quanHuyenRepository;
+        public IQuanHuyenRepository QuanHuyen => _quanHuyenRepository ??= new QuanHuyenRepository(_repoContext);
+
+        public ITinhTpRepository _tinhTpRepository;
+        public ITinhTpRepository TinhTp => _tinhTpRepository ??= new TinhTpRepository(_repoContext);
+
+        public IBaoCaoCauHoiRepository _baoCaoCauHoiRepository;
+        public IBaoCaoCauHoiRepository BaoCaoCauHoi => _baoCaoCauHoiRepository ??= new BaoCaoCauHoiRepository(_repoContext);
+
+        #endregion
+
+        //RenderHere
+        public async Task SaveAync()
+        {
+            await _repoContext.SaveChangesAsync();
+        }
+    }
 }
