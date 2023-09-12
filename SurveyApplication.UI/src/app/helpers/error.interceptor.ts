@@ -31,6 +31,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.loginService.logout();
         } else if (err.status === 0) {
           message = 'Sever không hoạt động';
+          environment.production && this.loginService.logout();
         }
 
         console.log(message);

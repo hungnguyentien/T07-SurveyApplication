@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.Exceptions;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands;
+namespace SurveyApplication.Application.Features.LoaiHinhDonVi.Handlers.Commands;
 
 public class DeleteLoaiHinhDonViCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteLoaiHinhDonViCommand>
 {

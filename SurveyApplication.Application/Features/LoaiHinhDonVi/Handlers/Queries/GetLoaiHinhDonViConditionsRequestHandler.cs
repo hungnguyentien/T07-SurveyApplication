@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries;
+namespace SurveyApplication.Application.Features.LoaiHinhDonVi.Handlers.Queries;
 
 public class GetLoaiHinhDonViConditionsRequestHandler : BaseMasterFeatures,
     IRequestHandler<GetLoaiHinhDonViConditionsRequest, BaseQuerieResponse<LoaiHinhDonViDto>>

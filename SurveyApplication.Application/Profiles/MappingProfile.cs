@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SurveyApplication.Application.DTOs.Account;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
@@ -61,5 +62,7 @@ public class MappingProfile : Profile
         CreateMap<ApplicationUser, AccountDto>().ReverseMap();
         CreateMap<AccountDto, LoginRequest>().ReverseMap();
         CreateMap<ApplicationUser, LoginRequest>().ReverseMap();
+
+        CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
     }
 }

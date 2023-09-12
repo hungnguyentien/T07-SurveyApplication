@@ -5,8 +5,10 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
+using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Commands;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Queries;
@@ -109,9 +111,12 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     [HttpPost("DongBoBaoCaoCauHoi")]
-    public async Task<ActionResult> DongBoBaoCaoCauHoi()
+    public async Task<ActionResult> DongBoBaoCaoCauHoi(List<CreateBaoCaoCauHoiDto> lstBaoCaoCauHoi, string data)
     {
-        var command = new DongBoBaoCaoCommand();
+        var thongTinChung =
+            JsonConvert.DeserializeObject<EmailThongTinChungDto>(
+                StringUltils.DecryptWithKey(data, EmailSettings.SecretKey));
+        var command = new CreateBaoCaoCauHoiCommand { LstBaoCaoCauHoi = lstBaoCaoCauHoi, IdGuiEmail = thongTinChung?.IdGuiEmail ?? 0 };
         var response = await _mediator.Send(command);
         return Ok(response);
     }

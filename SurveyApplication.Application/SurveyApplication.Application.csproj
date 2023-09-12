@@ -38,6 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\BaoCaoCauHoi\Handlers\Queries\" />
+    <Folder Include="Features\BaoCaoCauHoi\Requests\Queries\" />
     <Folder Include="Features\LinhVucHoatDong\Handlers\Commands\" />
     <Folder Include="Features\LinhVucHoatDong\Requests\Commands\" />
   </ItemGroup>

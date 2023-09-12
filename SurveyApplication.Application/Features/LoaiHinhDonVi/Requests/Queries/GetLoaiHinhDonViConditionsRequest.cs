@@ -2,7 +2,7 @@
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
+namespace SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 
 public class GetLoaiHinhDonViConditionsRequest : IRequest<BaseQuerieResponse<LoaiHinhDonViDto>>
 {

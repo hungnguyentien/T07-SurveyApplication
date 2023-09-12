@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Queries;
+namespace SurveyApplication.Application.Features.LoaiHinhDonVi.Handlers.Queries;
 
 public class GetLastRecordLoaiHinhDonViRequestHandler : BaseMasterFeatures,
     IRequestHandler<GetLastRecordLoaiHinhDonViRequest, string>

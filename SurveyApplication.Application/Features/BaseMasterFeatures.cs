@@ -6,7 +6,7 @@ public class BaseMasterFeatures
 {
     protected ISurveyRepositoryWrapper _surveyRepo;
 
-    public BaseMasterFeatures(ISurveyRepositoryWrapper surveyRepository)
+    protected BaseMasterFeatures(ISurveyRepositoryWrapper surveyRepository)
     {
         _surveyRepo = surveyRepository;
     }

@@ -2,12 +2,11 @@
 using MediatR;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
 using SurveyApplication.Application.Exceptions;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
-using SurveyApplication.Domain;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Handlers.Commands;
+namespace SurveyApplication.Application.Features.LoaiHinhDonVi.Handlers.Commands;
 
 public class CreateLoaiHinhDonViCommandHandler : BaseMasterFeatures,
     IRequestHandler<CreateLoaiHinhDonViCommand, BaseCommandResponse>
@@ -35,7 +34,7 @@ public class CreateLoaiHinhDonViCommandHandler : BaseMasterFeatures,
             throw new ValidationException(validatorResult);
         }
 
-        var LoaiHinhDonVi = _mapper.Map<LoaiHinhDonVi>(request.LoaiHinhDonViDto);
+        var LoaiHinhDonVi = _mapper.Map<Domain.LoaiHinhDonVi>(request.LoaiHinhDonViDto);
 
         LoaiHinhDonVi = await _surveyRepo.LoaiHinhDonVi.Create(LoaiHinhDonVi);
         await _surveyRepo.SaveAync();
