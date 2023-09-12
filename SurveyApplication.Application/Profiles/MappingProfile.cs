@@ -57,12 +57,12 @@ public class MappingProfile : Profile
 
         CreateMap<BangKhaoSatCauHoi, BangKhaoSatCauHoiDto>().ReverseMap();
 
-        CreateMap<LinhVucHoatDong, LinhVucHoatDongDto>().ReverseMap();
+            CreateMap<LinhVucHoatDong, LinhVucHoatDongDto>().ReverseMap();
+            //CreateMap<LinhVucHoatDong, CreateLinhVucHoatDongDto>().ReverseMap();
+            //CreateMap<LinhVucHoatDong, UpdateLinhVucHoatDongDto>().ReverseMap();
 
-        CreateMap<ApplicationUser, AccountDto>().ReverseMap();
-        CreateMap<AccountDto, LoginRequest>().ReverseMap();
-        CreateMap<ApplicationUser, LoginRequest>().ReverseMap();
-
-        CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
+            CreateMap<CreateAccountDto, ApplicationUser>();
+            CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
+        }
     }
 }

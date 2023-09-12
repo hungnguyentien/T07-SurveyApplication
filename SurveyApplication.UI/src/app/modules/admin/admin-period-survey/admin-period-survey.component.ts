@@ -2,12 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { Paging, PeriodSurvey } from '@app/models';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder,AbstractControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { UnitTypeService, PeriodSurveyService } from '@app/services';
 import { Table } from 'primeng/table';
 import Utils from '@app/helpers/utils';
-
 
 @Component({
   selector: 'app-admin-period-survey',
@@ -28,7 +27,7 @@ export class AdminPeriodSurveyComponent {
   FormPeriodSurvey!: FormGroup;
   MaDotKhaoSat!: string;
   IdDotKhaoSat!: number;
-  Trangthai!: any;
+  Trangthai!:any;
   DSLoaiHinh: any[] = [];
   dateRangeError = false;
   constructor(
@@ -38,9 +37,9 @@ export class AdminPeriodSurveyComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private datePipe: DatePipe
-
-  ) { }
-
+    
+  ) {}
+    
   ngOnInit() {
     this.LoadLoaiHinh();
     this.FormPeriodSurvey = this.FormBuilder.group({
@@ -48,24 +47,26 @@ export class AdminPeriodSurveyComponent {
       IdLoaiHinh: ['', Validators.required],
       TenDotKhaoSat: ['', Validators.required],
       NgayBatDau: ['', Validators.required],
-      NgayKetThuc: ['', Validators.required],
+      ngayKetThuc: ['', Validators.required],
       TrangThai: []
     }, { validator: this.dateRangeValidator });
+    
+    
   }
-
+  
   dateRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
-
+    
     const startDate = control.get('NgayBatDau')?.value;
-    const endDate = control.get('NgayKetThuc')?.value;
-
+    const endDate = control.get('ngayKetThuc')?.value;
+  
     if (startDate && endDate && startDate > endDate) {
       return { 'dateRangeError': true };
     }
-
+  
     return null;
   }
   loadListLazy = (event: any) => {
-
+    
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
@@ -79,11 +80,11 @@ export class AdminPeriodSurveyComponent {
     };
     this.PeriodSurveyService.getByCondition(this.paging).subscribe({
       next: (res) => {
-
+        
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
       },
-      error: (e) => {
+      error: (e) => { 
         Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
@@ -147,7 +148,9 @@ export class AdminPeriodSurveyComponent {
       'yyyy-MM-dd'
     );
     this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
-    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(ngayKetThucFormatted);
+    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(
+      ngayKetThucFormatted
+    );
     console.log(ngayKetThucFormatted);
   }
 
@@ -249,7 +252,7 @@ export class AdminPeriodSurveyComponent {
         //   },
         // });
       },
-      reject: () => { },
+      reject: () => {},
     });
   }
 }
