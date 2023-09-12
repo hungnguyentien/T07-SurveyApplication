@@ -271,10 +271,16 @@ export default class Utils {
 
     survey.onComplete.add((sender, options) => {
       // Hoàn thành khảo sát
+      debugger;
+      let data = sender.data;
       if (status !== KqTrangThai.HoanThanh)
-        survey.completedHtml = `<div style="margin: 40px 0 0 0; width:100%"><a href="phieu/thong-tin-khao-sat" style="margin: auto">Khảo sát lại</a></div>`;
+        survey.completedHtml = `<div class='custom-complete'> ${
+          Object.keys(data).length !== 0
+            ? ''
+            : `<div><b>Bạn chưa nhập câu trả lời vui lòng khảo sát lại!</b></div>`
+        } <a href="phieu/thong-tin-khao-sat">Khảo sát lại</a></div>`;
 
-      subscribe && subscribe(sender, status);
+      Object.keys(data).length !== 0 && subscribe && subscribe(sender, status);
     });
 
     return survey;
@@ -427,12 +433,6 @@ export default class Utils {
           alternateRows: true,
           columns: columns,
           rows: rows,
-          choices: [
-            {
-              value: '1',
-              text: 'Có',
-            },
-          ],
           cellType: 'text',
           columnColCount: 1,
           readOnly: readOnly,

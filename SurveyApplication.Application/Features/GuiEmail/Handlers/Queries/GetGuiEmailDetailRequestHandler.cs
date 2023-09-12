@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.GuiEmail;
-using SurveyApplication.Application.Features.GuiEmails.Requests.Queries;
+using SurveyApplication.Application.Features.GuiEmail.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Queries
+namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
 {
     
     public class GetGuiEmailDetailRequestHandler : BaseMasterFeatures, IRequestHandler<GetGuiEmailDetailRequest, GuiEmailDto>

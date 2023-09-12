@@ -60,24 +60,23 @@ public class MappingProfile : Profile
 
         CreateMap<BangKhaoSatCauHoi, BangKhaoSatCauHoiDto>().ReverseMap();
 
-            CreateMap<LinhVucHoatDong, LinhVucHoatDongDto>().ReverseMap();
-            CreateMap<LinhVucHoatDong, CreateLinhVucHoatDongDto>().ReverseMap();
-            CreateMap<LinhVucHoatDong, UpdateLinhVucHoatDongDto>().ReverseMap();
+        CreateMap<LinhVucHoatDong, LinhVucHoatDongDto>().ReverseMap();
+        CreateMap<LinhVucHoatDong, CreateLinhVucHoatDongDto>().ReverseMap();
+        CreateMap<LinhVucHoatDong, UpdateLinhVucHoatDongDto>().ReverseMap();
 
-            CreateMap<CreateAccountDto, ApplicationUser>();
+        CreateMap<CreateAccountDto, ApplicationUser>();
 
-            CreateMap<XaPhuong, XaPhuongDto>().ReverseMap();
-            CreateMap<XaPhuong, CreateXaPhuongDto>().ReverseMap();
-            CreateMap<XaPhuong, UpdateXaPhuongDto>().ReverseMap();
+        CreateMap<XaPhuong, XaPhuongDto>().ReverseMap();
+        CreateMap<XaPhuong, CreateXaPhuongDto>().ReverseMap();
+        CreateMap<XaPhuong, UpdateXaPhuongDto>().ReverseMap();
 
-            CreateMap<QuanHuyen, QuanHuyenDto>().ReverseMap();
-            CreateMap<QuanHuyen, CreateQuanHuyenDto>().ReverseMap();
-            CreateMap<QuanHuyen, UpdateQuanHuyenDto>().ReverseMap();
+        CreateMap<QuanHuyen, QuanHuyenDto>().ReverseMap();
+        CreateMap<QuanHuyen, CreateQuanHuyenDto>().ReverseMap();
+        CreateMap<QuanHuyen, UpdateQuanHuyenDto>().ReverseMap();
 
-            CreateMap<TinhTp, TinhTpDto>().ReverseMap();
-            CreateMap<TinhTp, CreateTinhTpDto>().ReverseMap();
-            CreateMap<TinhTp, UpdateTinhTpDto>().ReverseMap();
-            CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
-        }
+        CreateMap<TinhTp, TinhTpDto>().ReverseMap();
+        CreateMap<TinhTp, CreateTinhTpDto>().ReverseMap();
+        CreateMap<TinhTp, UpdateTinhTpDto>().ReverseMap();
+        CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
     }
 }

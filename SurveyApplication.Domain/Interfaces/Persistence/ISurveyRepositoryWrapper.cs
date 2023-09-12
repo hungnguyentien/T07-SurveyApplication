@@ -20,6 +20,7 @@
         ITinhTpRepository TinhTp { get; }
         IBaoCaoCauHoiRepository BaoCaoCauHoi { get; }
 
-    //RenderHere
-    Task SaveAync();
+        //RenderHere
+        Task SaveAync();
+    }
 }

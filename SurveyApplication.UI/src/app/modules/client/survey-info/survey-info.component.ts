@@ -7,7 +7,7 @@ import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { CreateBaoCaoCauHoi, GeneralInfo, SaveSurvey } from '@app/models';
 import 'survey-core/survey.i18n';
-import { TypeCauHoi } from '@app/enums';
+import { KqTrangThai, TypeCauHoi } from '@app/enums';
 
 @Component({
   selector: 'app-survey-info',
@@ -48,6 +48,121 @@ export class SurveyInfoComponent {
     }
   };
 
+  addDataBaoCao = (...args: any[]) => {
+    const [configCauHoi, dataKq, status] = args;
+    // if (configCauHoi && dataKq && status == KqTrangThai.HoanThanh) {
+    if (configCauHoi) {
+      (configCauHoi as any[]).forEach((el) => {
+        if (el.type === 'radiogroup' || el.type === 'checkbox') {
+          (el.choices as any[]).forEach((choice) => {
+            this.lstBaoCaoCauHoi.push({
+              idBangKhaoSat: 0,
+              idCauHoi: 0,
+              idDotKhaoSat: 0,
+              idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+              tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+
+              maCauHoi: el.name,
+              cauHoi: el.title,
+              cauHoiPhu: '',
+              maCauHoiPhu: '',
+              loaiCauHoi:
+                el.type === 'radiogroup'
+                  ? TypeCauHoi.Radio
+                  : TypeCauHoi.CheckBox,
+              maCauTraLoi: choice.text,
+              cauTraLoi:
+                dataKq[el.name] === choice.value ? dataKq[el.name] : '',
+            } as CreateBaoCaoCauHoi);
+          });
+          this.addOtherItem(el, dataKq);
+        } else if (el.type === 'comment' || el.type === 'text') {
+          this.lstBaoCaoCauHoi.push({
+            idBangKhaoSat: 0,
+            idCauHoi: 0,
+            idDotKhaoSat: 0,
+            idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+            tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+
+            maCauHoi: el.name,
+            cauHoi: el.title,
+            cauHoiPhu: '',
+            maCauHoiPhu: '',
+            loaiCauHoi:
+              el.type === 'comment' ? TypeCauHoi.LongText : TypeCauHoi.Text,
+            maCauTraLoi: '',
+            cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
+          } as CreateBaoCaoCauHoi);
+        } else if (el.type === 'matrixdropdown') {
+          (el.rows as any[]).forEach((rEl) => {
+            (el.columns as any[]).forEach((cEl) => {
+              this.lstBaoCaoCauHoi.push({
+                idBangKhaoSat: 0,
+                idCauHoi: 0,
+                idDotKhaoSat: 0,
+                idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+                tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+
+                maCauHoi: el.name,
+                cauHoi: el.title,
+                cauHoiPhu: rEl.text,
+                maCauHoiPhu: rEl.value,
+                loaiCauHoi:
+                  el.cellType === 'checkbox'
+                    ? TypeCauHoi.MultiSelectMatrix
+                    : TypeCauHoi.MultiTextMatrix,
+                maCauTraLoi: cEl.name,
+                cauTraLoi: dataKq[el.name][rEl.value][cEl.value]
+                  ? JSON.stringify(dataKq[el.name][rEl.value][cEl.value])
+                  : '',
+              } as CreateBaoCaoCauHoi);
+            });
+          });
+        } else if (el.type === 'matrix') {
+          (el.rows as any[]).forEach((rEl) => {
+            (el.columns as any[]).forEach((cEl) => {
+              this.lstBaoCaoCauHoi.push({
+                idBangKhaoSat: 0,
+                idCauHoi: 0,
+                idDotKhaoSat: 0,
+                idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+                tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+
+                maCauHoi: el.name,
+                cauHoi: el.title,
+                cauHoiPhu: rEl.title,
+                maCauHoiPhu: rEl.name,
+                loaiCauHoi: TypeCauHoi.SingleSelectMatrix,
+                maCauTraLoi: cEl.name,
+                cauTraLoi: dataKq[el.name][rEl.name]
+                  ? cEl.value == dataKq[el.name][rEl.name]
+                    ? cEl.text
+                    : ''
+                  : '',
+              } as CreateBaoCaoCauHoi);
+            });
+          });
+        } else if (el.type === 'file') {
+          this.lstBaoCaoCauHoi.push({
+            idBangKhaoSat: 0,
+            idCauHoi: 0,
+            idDotKhaoSat: 0,
+            idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+            tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+
+            maCauHoi: el.name,
+            cauHoi: el.title,
+            cauHoiPhu: '',
+            maCauHoiPhu: '',
+            loaiCauHoi: TypeCauHoi.UploadFile,
+            maCauTraLoi: '',
+            cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
+          } as CreateBaoCaoCauHoi);
+        }
+      });
+    }
+  };
+
   ngOnInit() {
     this.generalInfo = history.state;
     const configSurvey = (
@@ -61,69 +176,7 @@ export class SurveyInfoComponent {
         (sender: Model, status: number) => {
           let dataKq = sender.data;
           let configCauHoi: any[] = (sender as any).jsonObj?.pages[0]?.elements;
-          // if(configCauHoi && dataKq && status == KqTrangThai.HoanThanh){
-          // if (configCauHoi && dataKq) {
-          //   configCauHoi.forEach((el) => {
-          //     if (el.type === 'radiogroup' || el.type === 'checkbox') {
-          //       (el.choices as any[]).forEach((choice) => {
-          //         this.lstBaoCaoCauHoi.push({
-          //           idBangKhaoSat: 0,
-          //           idCauHoi: 0,
-          //           idDotKhaoSat: 0,
-          //           idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-          //           tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-          //           maCauHoi: el.name,
-          //           cauHoi: el.title,
-          //           cauHoiPhu: '',
-          //           maCauHoiPhu: '',
-          //           loaiCauHoi: TypeCauHoi.Radio,
-          //           maCauTraLoi: choice.text,
-          //           cauTraLoi:
-          //             dataKq[el.name] === choice.value ? dataKq[el.name] : '',
-          //         } as CreateBaoCaoCauHoi);
-          //       });
-          //       this.addOtherItem(el, dataKq);
-          //     } else if (el.type === 'comment') {
-          //       this.lstBaoCaoCauHoi.push({
-          //         idBangKhaoSat: 0,
-          //         idCauHoi: 0,
-          //         idDotKhaoSat: 0,
-          //         idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-          //         tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-          //         maCauHoi: el.name,
-          //         cauHoi: el.title,
-          //         cauHoiPhu: '',
-          //         maCauHoiPhu: '',
-          //         loaiCauHoi: TypeCauHoi.Radio,
-          //         maCauTraLoi: '',
-          //         cauTraLoi: dataKq[el.name],
-          //       } as CreateBaoCaoCauHoi);
-          //       this.addOtherItem(el, dataKq);
-          //     }
-          //     else if (el.type === 'matrixdropdown') {
-          //       this.lstBaoCaoCauHoi.push({
-          //         idBangKhaoSat: 0,
-          //         idCauHoi: 0,
-          //         idDotKhaoSat: 0,
-          //         idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-          //         tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-          //         maCauHoi: el.name,
-          //         cauHoi: el.title,
-          //         cauHoiPhu: '',
-          //         maCauHoiPhu: '',
-          //         loaiCauHoi: TypeCauHoi.Radio,
-          //         maCauTraLoi: '',
-          //         cauTraLoi: dataKq[el.name],
-          //       } as CreateBaoCaoCauHoi);
-          //       this.addOtherItem(el, dataKq);
-          //     }
-          //   });
-          // }
-          debugger;
-
+          this.addDataBaoCao(configCauHoi, dataKq, status);
           this.saveSurvey = {
             data: JSON.stringify(dataKq),
             guiEmail: this.generalInfo.data ?? '',
@@ -162,4 +215,8 @@ export class SurveyInfoComponent {
         this.loading = false;
       });
   }
+
+  handlerClick = (link: string) => {
+    this.router.navigate([link]);
+  };
 }

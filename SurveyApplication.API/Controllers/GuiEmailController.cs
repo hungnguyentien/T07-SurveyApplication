@@ -4,6 +4,7 @@ using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.GuiEmail;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Queries;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -67,6 +68,14 @@ namespace SurveyApplication.API.Controllers
             {
                 Success = true,
             });
+        }
+
+        [HttpPost("CreateByDonVi")]
+        public async Task<ActionResult<BaseCommandResponse>> CreateByDonVi([FromBody] CreateGuiEmailDto obj)
+        {
+            var command = new SendKhaoSatCommand { GuiEmailDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

@@ -1,25 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
-using SurveyApplication.Domain.Interfaces.Persistence;
+﻿using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Persistence.Repositories;
 
 public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
 {
-    //RenderHere
-    public async Task SaveAync()
-    {
-        await _repoContext.SaveChangesAsync();
-    }
-
     #region Ctor
 
     private readonly SurveyApplicationDbContext _repoContext;
-    private readonly IConfiguration _configuration;
 
-    public SurveyRepositoryWrapper(SurveyApplicationDbContext repositoryContext, IConfiguration configuration)
+    public SurveyRepositoryWrapper(SurveyApplicationDbContext repositoryContext)
     {
         _repoContext = repositoryContext;
-        _configuration = configuration;
     }
 
     #endregion
@@ -71,24 +62,23 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IAccountRepository _accountRepository;
     public IAccountRepository Account => _accountRepository ??= new AccountRepository(_repoContext);
 
-        public IXaPhuongRepository _xaPhuongRepository;
-        public IXaPhuongRepository XaPhuong => _xaPhuongRepository ??= new XaPhuongRepository(_repoContext);
+    public IXaPhuongRepository _xaPhuongRepository;
+    public IXaPhuongRepository XaPhuong => _xaPhuongRepository ??= new XaPhuongRepository(_repoContext);
 
-        public IQuanHuyenRepository _quanHuyenRepository;
-        public IQuanHuyenRepository QuanHuyen => _quanHuyenRepository ??= new QuanHuyenRepository(_repoContext);
+    public IQuanHuyenRepository _quanHuyenRepository;
+    public IQuanHuyenRepository QuanHuyen => _quanHuyenRepository ??= new QuanHuyenRepository(_repoContext);
 
-        public ITinhTpRepository _tinhTpRepository;
-        public ITinhTpRepository TinhTp => _tinhTpRepository ??= new TinhTpRepository(_repoContext);
+    public ITinhTpRepository _tinhTpRepository;
+    public ITinhTpRepository TinhTp => _tinhTpRepository ??= new TinhTpRepository(_repoContext);
 
-        public IBaoCaoCauHoiRepository _baoCaoCauHoiRepository;
-        public IBaoCaoCauHoiRepository BaoCaoCauHoi => _baoCaoCauHoiRepository ??= new BaoCaoCauHoiRepository(_repoContext);
+    public IBaoCaoCauHoiRepository _baoCaoCauHoiRepository;
+    public IBaoCaoCauHoiRepository BaoCaoCauHoi => _baoCaoCauHoiRepository ??= new BaoCaoCauHoiRepository(_repoContext);
 
-        #endregion
+    #endregion
 
-        //RenderHere
-        public async Task SaveAync()
-        {
-            await _repoContext.SaveChangesAsync();
-        }
+    //RenderHere
+    public async Task SaveAync()
+    {
+        await _repoContext.SaveChangesAsync();
     }
 }

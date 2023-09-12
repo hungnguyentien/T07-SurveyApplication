@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.DotKhaoSat.Validators;
+using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
 using SurveyApplication.Domain;
@@ -35,7 +36,7 @@ public class CreateDotKhaoSatCommandHandler : BaseMasterFeatures,
         }
 
         var dotKhaoSat = _mapper.Map<DotKhaoSat>(request.DotKhaoSatDto);
-
+        dotKhaoSat.TrangThai = (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat;
         dotKhaoSat = await _surveyRepo.DotKhaoSat.Create(dotKhaoSat);
         await _surveyRepo.SaveAync();
 
