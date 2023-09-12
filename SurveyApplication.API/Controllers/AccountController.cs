@@ -21,11 +21,5 @@ namespace SurveyApplication.API.Controllers
         {
             return Ok(await _mediator.Send(request));
         }
-
-        //[HttpPost("register")]
-        //public async Task<ActionResult<RegistrationResponse>> Register(RegistrationCommand request)
-        //{
-        //    return Ok(await _mediator.Send(request));
-        //}
     }
 }
