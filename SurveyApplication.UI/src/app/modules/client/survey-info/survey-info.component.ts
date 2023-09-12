@@ -193,7 +193,6 @@ export class SurveyInfoComponent {
                   );
             },
             error: (e) => {
-              Utils.messageError(this.messageService, e.message);
               this.loading = false;
             },
             complete: () => {
@@ -215,8 +214,4 @@ export class SurveyInfoComponent {
         this.loading = false;
       });
   }
-
-  handlerClick = (link: string) => {
-    this.router.navigate([link]);
-  };
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SurveyApplication.Domain.Interfaces.Persistence;
+﻿using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Domain;
 using System;
 using System.Collections.Generic;
@@ -18,10 +17,6 @@ namespace SurveyApplication.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<bool> ExistsByCode(string code)
-        {
-            var entity = await _dbContext.TinhTp.AsNoTracking().FirstOrDefaultAsync(x => x.Code == code);
-            return entity != null;
-        }
+       
     }
 }

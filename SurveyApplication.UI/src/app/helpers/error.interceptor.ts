@@ -33,14 +33,17 @@ export class ErrorInterceptor implements HttpInterceptor {
           message = 'Sever không hoạt động';
           environment.production && this.loginService.logout();
         }
-
+        
         console.log(message);
         // Xóa Console log
         environment.production && console.clear();
         if (err.errors)
           Utils.messageError(this.messageService, err.errors.at(0) ?? '');
         else if (err.error)
-          Utils.messageError(this.messageService, err.error.ErrorMessage ?? err.message);
+          Utils.messageError(
+            this.messageService,
+            err.error.ErrorMessage ?? err.message
+          );
         return throwError(err);
       })
     );

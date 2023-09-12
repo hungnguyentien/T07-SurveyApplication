@@ -271,7 +271,6 @@ export default class Utils {
 
     survey.onComplete.add((sender, options) => {
       // Hoàn thành khảo sát
-      debugger;
       let data = sender.data;
       if (status !== KqTrangThai.HoanThanh)
         survey.completedHtml = `<div class='custom-complete'> ${
