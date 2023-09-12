@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.Features.TinhTps.Requests.Commands;
 using SurveyApplication.Domain;
-using SurveyApplication.Application.Exceptions;
+using SurveyApplication.Application.Features.TinhTps.Requests.Commands;
 using SurveyApplication.Application.DTOs.TinhTp.Validators;
+using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+
+
 
 namespace SurveyApplication.Application.Features.TinhTps.Handlers.Commands
 {
@@ -21,7 +23,7 @@ namespace SurveyApplication.Application.Features.TinhTps.Handlers.Commands
         public async Task<BaseCommandResponse> Handle(CreateTinhTpCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new CreateTinhTpDtoValidator(_surveyRepo.TinhTp);
+            var validator = new CreateTinhTpValidator(_surveyRepo.TinhTp);
             var validatorResult = await validator.ValidateAsync(request.TinhTpDto);
 
             if (validatorResult.IsValid == false)
@@ -32,14 +34,14 @@ namespace SurveyApplication.Application.Features.TinhTps.Handlers.Commands
                 throw new ValidationException(validatorResult);
             }
 
-            var TinhTp = _mapper.Map<TinhTp>(request.TinhTpDto);
-
-            TinhTp = await _surveyRepo.TinhTp.Create(TinhTp);
+            var tinhTp = _mapper.Map<TinhTp>(request.TinhTpDto);
+            
+            tinhTp = await _surveyRepo.TinhTp.Create(tinhTp);
             await _surveyRepo.SaveAync();
 
             response.Success = true;
             response.Message = "Tạo mới thành công";
-            response.Id = TinhTp.Id;
+            response.Id = tinhTp.Id;
             return response;
         }
     }

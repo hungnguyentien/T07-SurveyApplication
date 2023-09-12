@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.TinhTp;
 using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -18,14 +19,14 @@ namespace SurveyApplication.Application.Features.TinhTps.Handlers.Queries
 
         public async Task<BaseQuerieResponse<TinhTpDto>> Handle(GetTinhTpConditionsRequest request, CancellationToken cancellationToken)
         {
-            var TinhTps = await _surveyRepo.TinhTp.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.Name) && x.Name.Contains(request.Keyword), "");
-            var result = _mapper.Map<List<TinhTpDto>>(TinhTps);
+            var tinhTP = await _surveyRepo.LoaiHinhDonVi.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenLoaiHinh) && x.TenLoaiHinh.Contains(request.Keyword), "");
+            var result = _mapper.Map<List<TinhTpDto>>(tinhTP);
             return new BaseQuerieResponse<TinhTpDto>
             {
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize,
                 Keyword = request.Keyword,
-                TotalFilter = TinhTps.TotalFilter,
+                TotalFilter = tinhTP.TotalFilter,
                 Data = result
             };
         }

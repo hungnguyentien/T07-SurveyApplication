@@ -7,19 +7,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.TinhTp.Validators
 {
-  
-    public class UpdateTinhTpDtoValidator : AbstractValidator<UpdateTinhTpDto>
+    public class CreateTinhTpValidator : AbstractValidator<CreateTinhTpDto>
     {
         private readonly ITinhTpRepository _tinhTpRepository;
 
-        public UpdateTinhTpDtoValidator(ITinhTpRepository tinhTpRepository)
+        public CreateTinhTpValidator(ITinhTpRepository tinhTpRepository)
         {
             _tinhTpRepository = tinhTpRepository;
             Include(new TinhTpDtoValidator(_tinhTpRepository));
-            RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
+          
         }
     }
 }

@@ -33,3 +33,4 @@
 /SurveyHangfire.Infrastructure/bin
 /SurveyHangfire.Infrastructure/obj
 /SurveyHangfire/logs
+/SurveyApplication.UI/package-lock.json

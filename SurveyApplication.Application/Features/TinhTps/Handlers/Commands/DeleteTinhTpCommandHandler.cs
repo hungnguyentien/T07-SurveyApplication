@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.TinhTps.Requests.Commands;
 using SurveyApplication.Domain;
@@ -9,11 +8,8 @@ namespace SurveyApplication.Application.Features.TinhTps.Handlers.Commands
 {
     public class DeleteTinhTpCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteTinhTpCommand>
     {
-        private readonly IMapper _mapper;
-
-        public DeleteTinhTpCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+        public DeleteTinhTpCommandHandler(ISurveyRepositoryWrapper surveyRepository) : base(surveyRepository)
         {
-            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteTinhTpCommand request, CancellationToken cancellationToken)

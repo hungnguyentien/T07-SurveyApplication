@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using SurveyApplication.Application.DTOs.TinhTp;
 using SurveyApplication.Application.DTOs.TinhTp.Validators;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.TinhTps.Requests.Commands;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.TinhTps.Handlers.Commands
@@ -10,7 +12,6 @@ namespace SurveyApplication.Application.Features.TinhTps.Handlers.Commands
     public class UpdateTinhTpCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateTinhTpCommand, Unit>
     {
         private readonly IMapper _mapper;
-
         public UpdateTinhTpCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
             _mapper = mapper;

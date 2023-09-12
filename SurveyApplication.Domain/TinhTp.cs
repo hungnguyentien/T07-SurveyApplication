@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Domain
 {
-    public class TinhTp : BaseDomainEntity
+    public partial class TinhTp : BaseDomainEntity
     {
-        [MaxLength(250)]
-        public string Code { get; set; }
-        [MaxLength(250)]
+        [MaxLength(50)]
         public string Name { get; set; }
-        [MaxLength(250)]
+        [MaxLength(50)]
+        public string Code { get; set; }
+        [MaxLength(50)]
         public string Type { get; set; }
     }
 }

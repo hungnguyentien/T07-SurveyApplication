@@ -10,9 +10,11 @@ namespace SurveyApplication.Application.DTOs.TinhTp
 {
     public partial class TinhTpDto : BaseDto
     {
-        public string Code { get; set; }
-        public int ParentCode { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
+        
+        public string? Name { get; set; }
+        
+        public string? Code { get; set; }
+       
+        public string? Type { get; set; }
     }
 }
