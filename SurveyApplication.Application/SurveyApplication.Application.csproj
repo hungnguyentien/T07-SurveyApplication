@@ -28,11 +28,4 @@
     <ProjectReference Include="..\SurveyApplication.Utility\SurveyApplication.Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Accounts\Handlers\Commands\" />
-    <Folder Include="Features\Accounts\Requests\Commands\" />
-    <Folder Include="Features\LinhVucHoatDong\Handlers\Commands\" />
-    <Folder Include="Features\LinhVucHoatDong\Requests\Commands\" />
-  </ItemGroup>
-
 </Project>

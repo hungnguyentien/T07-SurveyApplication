@@ -7,11 +7,11 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Queries
 {
     
-    public class GetGuiEmailListHandler : BaseMasterFeatures, IRequestHandler<GetGuiEmailDetailRequest, GuiEmailDto>
+    public class GetGuiEmailDetailRequestHandler : BaseMasterFeatures, IRequestHandler<GetGuiEmailDetailRequest, GuiEmailDto>
     {
         private readonly IMapper _mapper;
 
-        public GetGuiEmailListHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+        public GetGuiEmailDetailRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
             _mapper = mapper;
         }

@@ -9,7 +9,7 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 {
     
-    public class CreateGuiEmailCommandHandler : BaseMasterFeatures, IRequestHandler<CreatGuiEmailCommand, BaseCommandResponse>
+    public class CreateGuiEmailCommandHandler : BaseMasterFeatures, IRequestHandler<CreateGuiEmailCommand, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
 
@@ -18,7 +18,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
             _mapper = mapper;
         }
 
-        public async Task<BaseCommandResponse> Handle(CreatGuiEmailCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(CreateGuiEmailCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
             var validator = new CreateGuiEmailDtoValidator(_surveyRepo.GuiEmail);
