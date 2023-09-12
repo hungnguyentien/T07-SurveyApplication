@@ -42,12 +42,13 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures,
         if (request.BangKhaoSatDto?.BangKhaoSatCauHoi != null)
         {
             var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto.BangKhaoSatCauHoi);
-            lstBangKhaoSatCauHoi?.ForEach(x => x.IdBangKhaoSat = bangKhaoSat.Id);
-            if (lstBangKhaoSatCauHoi != null)
+            lstBangKhaoSatCauHoi.ForEach(x =>
             {
-                await _surveyRepo.BangKhaoSatCauHoi.Creates(lstBangKhaoSatCauHoi);
-                await _surveyRepo.SaveAync();
-            }
+                x.IdBangKhaoSat = bangKhaoSat.Id; x.Priority =
+                    lstBangKhaoSatCauHoi.FindIndex(iBks => iBks == x);
+            });
+            await _surveyRepo.BangKhaoSatCauHoi.Creates(lstBangKhaoSatCauHoi);
+            await _surveyRepo.SaveAync();
         }
 
         response.Success = true;

@@ -33,11 +33,14 @@ public class UpdateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
         await _surveyRepo.SaveAync();
         if (request.BangKhaoSatDto?.BangKhaoSatCauHoi == null) return Unit.Value;
         var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto.BangKhaoSatCauHoi);
-        lstBangKhaoSatCauHoi?.ForEach(x => x.IdBangKhaoSat = bangKhaoSat.Id);
         if (lstBangKhaoSatCauHoi == null) return Unit.Value;
         var lstRemove = await _surveyRepo.BangKhaoSatCauHoi.GetAllListAsync(x => x.IdBangKhaoSat == bangKhaoSat.Id);
         await _surveyRepo.BangKhaoSatCauHoi.DeleteAsync(lstRemove);
-        lstBangKhaoSatCauHoi.ForEach(x => x.IdBangKhaoSat = bangKhaoSat.Id);
+        lstBangKhaoSatCauHoi.ForEach(x =>
+        {
+            x.IdBangKhaoSat = bangKhaoSat.Id;
+            x.Priority = lstBangKhaoSatCauHoi.FindIndex(iBks => iBks == x);
+        });
         await _surveyRepo.BangKhaoSatCauHoi.Creates(lstBangKhaoSatCauHoi);
         await _surveyRepo.SaveAync();
         return Unit.Value;

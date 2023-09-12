@@ -174,7 +174,7 @@ export class QuestionComponent {
         res.lstHang.forEach((el, i) => {
           const newItem = this.formBuilder.group({
             id: el.id,
-            maCot: el.maHang,
+            maHang: el.maHang,
             noidung: el.noidung,
           });
           this.lstHang.push(newItem);

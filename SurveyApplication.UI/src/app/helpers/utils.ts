@@ -311,7 +311,7 @@ export default class Utils {
       let otherText = showOtherItem ? el.labelCauTraLoi : '';
 
       let columns = new Array();
-      let isMatrixdropdown = loaiCauHoi == 4;
+      let isMatrixdropdown = loaiCauHoi == TypeCauHoi.SingleSelectMatrix;
       el.lstCot.forEach((el, i) => {
         columns.push(
           isMatrixdropdown

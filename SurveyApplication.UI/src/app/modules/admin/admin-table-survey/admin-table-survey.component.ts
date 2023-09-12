@@ -293,7 +293,7 @@ export class AdminTableSurveyComponent {
                 id: 0,
                 idCauHoi: idCauHoi,
                 priority: i,
-                isRequired: false,
+                isRequired: el.isRequired,
                 maCauHoi: el.maCauHoi,
                 tieuDe: el.tieuDe,
               });

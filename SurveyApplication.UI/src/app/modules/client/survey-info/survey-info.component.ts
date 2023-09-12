@@ -7,7 +7,7 @@ import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { CreateBaoCaoCauHoi, GeneralInfo, SaveSurvey } from '@app/models';
 import 'survey-core/survey.i18n';
-import { KqTrangThai, TypeCauHoi } from '@app/enums';
+import { TypeCauHoi } from '@app/enums';
 
 @Component({
   selector: 'app-survey-info',
@@ -19,13 +19,34 @@ export class SurveyInfoComponent {
   loading!: boolean;
   generalInfo!: GeneralInfo;
   saveSurvey!: SaveSurvey;
-  lstBaoCaoCauHoi!: CreateBaoCaoCauHoi[];
+  lstBaoCaoCauHoi: CreateBaoCaoCauHoi[] = [];
 
   constructor(
     private phieuKhaoSatService: PhieuKhaoSatService,
     private router: Router,
     private messageService: MessageService
   ) {}
+
+  addOtherItem = (...args: any[]) => {
+    const [el, dataKq] = args;
+    if (el && el.showOtherItem && dataKq) {
+      this.lstBaoCaoCauHoi.push({
+        idBangKhaoSat: 0,
+        idCauHoi: 0,
+        idDotKhaoSat: 0,
+        idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+        tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+
+        maCauHoi: el.name,
+        cauHoi: el.title,
+        cauHoiPhu: '',
+        maCauHoiPhu: '',
+        loaiCauHoi: TypeCauHoi.Radio,
+        maCauTraLoi: `${el.name}-Comment`,
+        cauTraLoi: dataKq[`${el.name}-Comment`],
+      } as CreateBaoCaoCauHoi);
+    }
+  };
 
   ngOnInit() {
     this.generalInfo = history.state;
@@ -41,47 +62,66 @@ export class SurveyInfoComponent {
           let dataKq = sender.data;
           let configCauHoi: any[] = (sender as any).jsonObj?.pages[0]?.elements;
           // if(configCauHoi && dataKq && status == KqTrangThai.HoanThanh){
-          if (configCauHoi && dataKq) {
-            configCauHoi.forEach((el) => {
-              if (el.type === 'radiogroup') {
-                (el.choices as any[]).forEach((choice) => {
-                  this.lstBaoCaoCauHoi.push({
-                    idBangKhaoSat: 0,
-                    idCauHoi: 0,
-                    idDotKhaoSat: 0,
-                    idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-                    tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+          // if (configCauHoi && dataKq) {
+          //   configCauHoi.forEach((el) => {
+          //     if (el.type === 'radiogroup' || el.type === 'checkbox') {
+          //       (el.choices as any[]).forEach((choice) => {
+          //         this.lstBaoCaoCauHoi.push({
+          //           idBangKhaoSat: 0,
+          //           idCauHoi: 0,
+          //           idDotKhaoSat: 0,
+          //           idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+          //           tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
 
-                    maCauHoi: el.name,
-                    cauHoi: el.title,
-                    cauHoiPhu: '',
-                    maCauHoiPhu: '',
-                    loaiCauHoi: TypeCauHoi.Radio,
-                    maCauTraLoi: choice.text,
-                    cauTraLoi:
-                      dataKq[el.name] === choice.value ? dataKq[el.name] : '',
-                  } as CreateBaoCaoCauHoi);
-                });
-                if (el.showOtherItem) {
-                  this.lstBaoCaoCauHoi.push({
-                    idBangKhaoSat: 0,
-                    idCauHoi: 0,
-                    idDotKhaoSat: 0,
-                    idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-                    tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+          //           maCauHoi: el.name,
+          //           cauHoi: el.title,
+          //           cauHoiPhu: '',
+          //           maCauHoiPhu: '',
+          //           loaiCauHoi: TypeCauHoi.Radio,
+          //           maCauTraLoi: choice.text,
+          //           cauTraLoi:
+          //             dataKq[el.name] === choice.value ? dataKq[el.name] : '',
+          //         } as CreateBaoCaoCauHoi);
+          //       });
+          //       this.addOtherItem(el, dataKq);
+          //     } else if (el.type === 'comment') {
+          //       this.lstBaoCaoCauHoi.push({
+          //         idBangKhaoSat: 0,
+          //         idCauHoi: 0,
+          //         idDotKhaoSat: 0,
+          //         idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+          //         tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
 
-                    maCauHoi: el.name,
-                    cauHoi: el.title,
-                    cauHoiPhu: '',
-                    maCauHoiPhu: '',
-                    loaiCauHoi: TypeCauHoi.Radio,
-                    maCauTraLoi: `${el.name}-Comment`,
-                    cauTraLoi: dataKq[`${el.name}-Comment`],
-                  } as CreateBaoCaoCauHoi);
-                }
-              }
-            });
-          }
+          //         maCauHoi: el.name,
+          //         cauHoi: el.title,
+          //         cauHoiPhu: '',
+          //         maCauHoiPhu: '',
+          //         loaiCauHoi: TypeCauHoi.Radio,
+          //         maCauTraLoi: '',
+          //         cauTraLoi: dataKq[el.name],
+          //       } as CreateBaoCaoCauHoi);
+          //       this.addOtherItem(el, dataKq);
+          //     }
+          //     else if (el.type === 'matrixdropdown') {
+          //       this.lstBaoCaoCauHoi.push({
+          //         idBangKhaoSat: 0,
+          //         idCauHoi: 0,
+          //         idDotKhaoSat: 0,
+          //         idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
+          //         tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
+
+          //         maCauHoi: el.name,
+          //         cauHoi: el.title,
+          //         cauHoiPhu: '',
+          //         maCauHoiPhu: '',
+          //         loaiCauHoi: TypeCauHoi.Radio,
+          //         maCauTraLoi: '',
+          //         cauTraLoi: dataKq[el.name],
+          //       } as CreateBaoCaoCauHoi);
+          //       this.addOtherItem(el, dataKq);
+          //     }
+          //   });
+          // }
           debugger;
 
           this.saveSurvey = {
@@ -90,23 +130,23 @@ export class SurveyInfoComponent {
             trangThai: status,
           };
           this.loading = true;
-          // this.phieuKhaoSatService.saveSurvey(this.saveSurvey).subscribe({
-          //   next: (res) => {
-          //     res.success
-          //       ? Utils.messageSuccess(this.messageService, res.message)
-          //       : Utils.messageError(
-          //           this.messageService,
-          //           res.errors?.at(0) ?? ''
-          //         );
-          //   },
-          //   error: (e) => {
-          //     Utils.messageError(this.messageService, e.message);
-          //     this.loading = false;
-          //   },
-          //   complete: () => {
-          //     this.loading = false;
-          //   },
-          // });
+          this.phieuKhaoSatService.saveSurvey(this.saveSurvey).subscribe({
+            next: (res) => {
+              res.success
+                ? Utils.messageSuccess(this.messageService, res.message)
+                : Utils.messageError(
+                    this.messageService,
+                    res.errors?.at(0) ?? ''
+                  );
+            },
+            error: (e) => {
+              Utils.messageError(this.messageService, e.message);
+              this.loading = false;
+            },
+            complete: () => {
+              this.loading = false;
+            },
+          });
         },
         `${this.generalInfo.data}`,
         surveyData,
