@@ -15,6 +15,10 @@
         IDonViRepository DonVi { get; }
         INguoiDaiDienRepository NguoiDaiDien { get; }
         IAccountRepository Account { get; }
+        IXaPhuongRepository XaPhuong { get; }
+        IQuanHuyenRepository QuanHuyen { get; }
+        ITinhTpRepository TinhTp { get; }
+
 
         //RenderHere
         Task SaveAync();

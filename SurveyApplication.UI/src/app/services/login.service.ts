@@ -38,14 +38,13 @@ export class LoginserviceService {
     };
     return this.http.post(`${environment.apiUrl}`+ '/Account/login', body.toString(), options)
       .pipe(map((req:any) => {
-        debugger
         // đăng nhập thành công lưu lại token
         if (req) {
           // Xóa hết cookie
           this.cookieService.delete('currentUser');
           // lưu token vào Cookie
-          this.cookieService.set('currentUser', JSON.stringify(req.token));
-          this.currentUserSubject.next(JSON.stringify(req.token));
+          this.cookieService.set('currentUser', req.token);
+          this.currentUserSubject.next(req.token);
           this.authService.login();
         }
         return req;
@@ -75,6 +74,7 @@ export class LoginserviceService {
   //get token
   currentUserValue(): string {
     return this.currentUserSubject.value;
+    
   }
 
   // getRoleUser() {

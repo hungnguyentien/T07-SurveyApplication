@@ -42,7 +42,7 @@ namespace SurveyApplication.API.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<GuiEmailDto>> CreateGuiEmail([FromBody] CreateGuiEmailDto obj)
         {
-            var command = new CreatGuiEmailCommand { GuiEmailDto = obj };
+            var command = new CreateGuiEmailCommand { GuiEmailDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
         }

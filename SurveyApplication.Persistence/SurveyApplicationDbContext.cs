@@ -68,6 +68,9 @@ namespace SurveyApplication.Persistence
         public DbSet<NguoiDaiDien> NguoiDaiDien { get; set; }
         public DbSet<DonVi> DonVi { get; set; }
         public DbSet<BangKhaoSatCauHoi> BangKhaoSatCauHoi { get; set; }
+        public DbSet<XaPhuong> XaPhuong { get; set; }
+        public DbSet<QuanHuyen> QuanHuyen { get; set; }
+        public DbSet<TinhTp> TinhTp { get; set; }
 
         #region Câu hỏi
 

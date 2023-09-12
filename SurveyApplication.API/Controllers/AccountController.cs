@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.Application.DTOs.Account;
+using SurveyApplication.Application.Features.Accounts.Requests.Commands;
 using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Domain.Common.Identity;
 
@@ -24,7 +25,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationCommand request)
         {
             return Ok(await _mediator.Send(request));
         }

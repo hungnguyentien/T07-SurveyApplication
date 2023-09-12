@@ -2,5 +2,6 @@
 {
     public interface ILinhVucHoatDongRepository : IGenericRepository<LinhVucHoatDong>
     {
+        Task<bool> ExistsByMaLinhVuc(string maLinhVuc);
     }
 }

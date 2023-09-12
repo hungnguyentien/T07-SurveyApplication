@@ -7,9 +7,10 @@ import {
 } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LoginserviceService } from '../services/login.service';
+import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private loginService: LoginserviceService) {}
+  constructor(private loginService: LoginserviceService,private cookieService: CookieService,) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -21,7 +22,7 @@ export class JwtInterceptor implements HttpInterceptor {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${currentUser}`,
-        },
+        },  
       });
     }
 
