@@ -7,6 +7,7 @@ import { FooterClientComponent } from './footer-client/footer-client.component';
 import { HeaderClientComponent } from './header-client/header-client.component';
 import { RouterModule } from '@angular/router';
 import { ShareModule } from '../share/share.module';
+import { Error403Component } from './error403/error403.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { ShareModule } from '../share/share.module';
     SidebarComponent,
     FooterClientComponent,
     HeaderClientComponent,
+    Error403Component,
   ],
   imports: [CommonModule, RouterModule, ShareModule],
   exports: [

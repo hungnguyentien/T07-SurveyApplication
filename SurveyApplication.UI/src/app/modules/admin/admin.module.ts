@@ -108,7 +108,8 @@ import { DistrictComponent } from './admin-categories/district/district.componen
 import { WardsComponent } from './admin-categories/wards/wards.component';
 import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
 
-
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { JwtInterceptor } from '@app/helpers';
 
 
 @NgModule({
@@ -221,10 +222,7 @@ import { AdminStatisticalComponent } from './admin-statistical/admin-statistical
     TreeTableModule,
     AnimateModule,
     CardModule,
-
-    
-
-  
+    HttpClientModule
   ],
  
   providers: [DatePipe],
