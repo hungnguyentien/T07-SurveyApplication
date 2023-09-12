@@ -26,7 +26,12 @@ namespace SurveyApplication.API.Middleware
         {
             context.Response.ContentType = "application/json";
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
-            string result = null;
+            string result = JsonConvert.SerializeObject(new ErrorDeatils 
+                { 
+                    ErrorMessage = exception.Message, 
+                    ErrorType = "Failure" 
+                });
+
             switch (exception)
             {
                 case BadRequestException badRequestException:
@@ -34,28 +39,13 @@ namespace SurveyApplication.API.Middleware
                     break;
                 case ValidationException validationException:
                     statusCode = HttpStatusCode.BadRequest;
-                    result = JsonConvert.SerializeObject(new ErrorDeatils
-                    {
-                        ErrorMessage = exception.Message,
-                        ErrorType = "Failure",
-                        ErrorStatus = (int)statusCode,
-                    });
+                    result = JsonConvert.SerializeObject(validationException.Errors);
                     break;
                 case NotFoundException notFoundException:
                     statusCode = HttpStatusCode.NotFound;
                     break;
                 default:
                     break;
-            }
-
-            if (result == null)
-            {
-                result = JsonConvert.SerializeObject(new ErrorDeatils
-                {
-                    ErrorMessage = exception.Message,
-                    ErrorType = "Failure",
-                    ErrorStatus = (int)statusCode,
-                });
             }
 
             context.Response.StatusCode = (int)statusCode;
@@ -67,6 +57,5 @@ namespace SurveyApplication.API.Middleware
     {
         public string ErrorType { get; set; }
         public string ErrorMessage { get; set; }
-        public int ErrorStatus { get; set; }
     }
 }
