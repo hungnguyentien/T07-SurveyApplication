@@ -1,0 +1,37 @@
+﻿using AutoMapper;
+using MediatR;
+using SurveyApplication.Application.DTOs.LinhVucHoatDong;
+using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Queries;
+using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Domain.Interfaces.Persistence;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SurveyApplication.Application.Features.LinhVucHoatDong.Handlers.Queries
+{
+    public class GetLinhVucHoatDongConditionsRequestHandler : BaseMasterFeatures, IRequestHandler<GetLinhVucHoatDongConditionsRequest, BaseQuerieResponse<LinhVucHoatDongDto>>
+    {
+        private readonly IMapper _mapper;
+        public GetLinhVucHoatDongConditionsRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+        {
+            _mapper = mapper;
+        }
+
+        public async Task<BaseQuerieResponse<LinhVucHoatDongDto>> Handle(GetLinhVucHoatDongConditionsRequest request, CancellationToken cancellationToken)
+        {
+            var LinhVucHoatDongs = await _surveyRepo.LinhVucHoatDong.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenLinhVuc) && x.TenLinhVuc.Contains(request.Keyword), "");
+            var result = _mapper.Map<List<LinhVucHoatDongDto>>(LinhVucHoatDongs);
+            return new BaseQuerieResponse<LinhVucHoatDongDto>
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Keyword = request.Keyword,
+                TotalFilter = LinhVucHoatDongs.TotalFilter,
+                Data = result
+            };
+        }
+    }
+}

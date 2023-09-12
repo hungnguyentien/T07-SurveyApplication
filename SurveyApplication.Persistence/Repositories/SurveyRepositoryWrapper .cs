@@ -58,6 +58,15 @@ namespace SurveyApplication.Persistence.Repositories
         public IAccountRepository _accountRepository;
         public IAccountRepository Account => _accountRepository ??= new AccountRepository(_repoContext);
 
+        public IXaPhuongRepository _xaPhuongRepository;
+        public IXaPhuongRepository XaPhuong => _xaPhuongRepository ??= new XaPhuongRepository(_repoContext);
+
+        public IQuanHuyenRepository _quanHuyenRepository;
+        public IQuanHuyenRepository QuanHuyen => _quanHuyenRepository ??= new QuanHuyenRepository(_repoContext);
+
+        public ITinhTpRepository _tinhTpRepository;
+        public ITinhTpRepository TinhTp => _tinhTpRepository ??= new TinhTpRepository(_repoContext);
+
         #endregion
 
         //RenderHere

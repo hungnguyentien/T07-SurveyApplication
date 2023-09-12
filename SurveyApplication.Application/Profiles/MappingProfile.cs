@@ -9,6 +9,9 @@ using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
+using SurveyApplication.Application.DTOs.QuanHuyen;
+using SurveyApplication.Application.DTOs.TinhTp;
+using SurveyApplication.Application.DTOs.XaPhuong;
 using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
@@ -58,10 +61,22 @@ namespace SurveyApplication.Application.Profiles
             CreateMap<BangKhaoSatCauHoi, BangKhaoSatCauHoiDto>().ReverseMap();
 
             CreateMap<LinhVucHoatDong, LinhVucHoatDongDto>().ReverseMap();
-            //CreateMap<LinhVucHoatDong, CreateLinhVucHoatDongDto>().ReverseMap();
-            //CreateMap<LinhVucHoatDong, UpdateLinhVucHoatDongDto>().ReverseMap();
+            CreateMap<LinhVucHoatDong, CreateLinhVucHoatDongDto>().ReverseMap();
+            CreateMap<LinhVucHoatDong, UpdateLinhVucHoatDongDto>().ReverseMap();
 
             CreateMap<CreateAccountDto, ApplicationUser>();
+
+            CreateMap<XaPhuong, XaPhuongDto>().ReverseMap();
+            CreateMap<XaPhuong, CreateXaPhuongDto>().ReverseMap();
+            CreateMap<XaPhuong, UpdateXaPhuongDto>().ReverseMap();
+
+            CreateMap<QuanHuyen, QuanHuyenDto>().ReverseMap();
+            CreateMap<QuanHuyen, CreateQuanHuyenDto>().ReverseMap();
+            CreateMap<QuanHuyen, UpdateQuanHuyenDto>().ReverseMap();
+
+            CreateMap<TinhTp, TinhTpDto>().ReverseMap();
+            CreateMap<TinhTp, CreateTinhTpDto>().ReverseMap();
+            CreateMap<TinhTp, UpdateTinhTpDto>().ReverseMap();
         }
     }
 }
