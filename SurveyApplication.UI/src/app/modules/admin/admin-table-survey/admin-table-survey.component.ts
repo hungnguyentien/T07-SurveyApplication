@@ -27,6 +27,7 @@ import {
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
@@ -36,6 +37,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 })
 export class AdminTableSurveyComponent {
   @ViewChild('dt') table!: Table;
+  @ViewChild('viewtable') viewtable!: Table;
   loading: boolean = true;
   selectedTableSurvey!: TableSurvey[];
   datas: TableSurvey[] = [];
@@ -57,6 +59,10 @@ export class AdminTableSurveyComponent {
   form: FormGroup = new FormGroup({});
 
   searchText = new FormControl('');
+  serverError: string = '';
+  
+
+
   visible: boolean = false;
 
   @ViewChild('dtq') tableQ!: Table;
@@ -86,7 +92,8 @@ export class AdminTableSurveyComponent {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
-    private guiEmailService: GuiEmailService
+    private guiEmailService: GuiEmailService,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -235,8 +242,18 @@ export class AdminTableSurveyComponent {
   }
 
   Add() {
+    this.formTableSurvey.reset();
     this.showadd = true;
     this.visible = !this.visible;
+    for (let i = this.lstBangKhaoSatCauHoi.length - 1; i >= 0; i--) {
+      const control = this.lstBangKhaoSatCauHoi.at(i).get('idCauHoi');
+      if (control !== null) {
+        const idCauHoi = control.value;
+        if (idCauHoi === null) {
+          this.lstBangKhaoSatCauHoi.removeAt(i);
+        }
+      }
+    }
   }
 
   Edit(data: any) {
@@ -264,19 +281,39 @@ export class AdminTableSurveyComponent {
           this.formTableSurvey.controls['ngayKetThuc'].setValue(
             ngayKetThuFormatted
           );
-
           res.bangKhaoSatCauHoi?.forEach((el, i) => {
-            const newItem = this.FormBuilder.group({
-              id: 0,
-              idCauHoi: el.id,
-              priority: i,
-              isRequired: false,
-              maCauHoi: el.maCauHoi,
-              tieuDe: el.tieuDe,
+            const idCauHoi = el.idCauHoi;
+            // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
+            const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some((control) => {
+            const idCauHoiControl = control.get('idCauHoi');
+            return idCauHoiControl ? idCauHoiControl.value === idCauHoi : false;
             });
-
-            this.lstBangKhaoSatCauHoi.push(newItem);
+            if (!idCauHoiExists) { // Nếu idCauHoi chưa tồn tại, thêm mới
+              const newItem = this.FormBuilder.group({
+                id: 0,
+                idCauHoi: idCauHoi,
+                priority: i,
+                isRequired: false,
+                maCauHoi: el.maCauHoi,
+                tieuDe: el.tieuDe,
+              });
+              this.lstBangKhaoSatCauHoi.push(newItem);
+            }
           });
+          // Lọc bỏ các giá trị null sau khi thêm mới
+          for (let i = this.lstBangKhaoSatCauHoi.length - 1; i >= 0; i--) {
+            const control = this.lstBangKhaoSatCauHoi.at(i).get('idCauHoi');
+            if (control !== null) {
+              const idCauHoi = control.value;
+              if (idCauHoi === null) {
+                this.lstBangKhaoSatCauHoi.removeAt(i);
+              }
+            }
+          }
+
+
+          console.log("Danh sách sau khi xử lý:", this.lstBangKhaoSatCauHoi);
+
         },
         error: (e) => Utils.messageError(this.messageService, e.message),
       }
@@ -291,11 +328,39 @@ export class AdminTableSurveyComponent {
     }
   }
 
+  // SaveAdd() {
+    
+  //   if (this.formTableSurvey.valid) {
+  //     const ObjTableSurvey = this.formTableSurvey.value;
+  //     this.TableSurveyService.create(ObjTableSurvey).subscribe({
+  //       next: (res) => {
+  //         debugger
+  //         if (res != null) {
+  //           this.messageService.add({
+  //             severity: 'success',
+  //             summary: 'Thành Công',
+  //             detail: 'Thêm thành Công !',
+  //           });
+  //           this.table.reset();
+  //           this.formTableSurvey.reset();
+  //           this.visible = false;
+  //         } else {
+  //           this.messageService.add({
+  //             severity: 'error',
+  //             summary: 'Lỗi',
+  //             detail: 'Lỗi vui Lòng kiểm tra lại !',
+  //           });
+  //         }
+  //       },
+  //     });
+  //   }
+  // }
   SaveAdd() {
     if (this.formTableSurvey.valid) {
       const ObjTableSurvey = this.formTableSurvey.value;
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
+          debugger
           if (res != null) {
             this.messageService.add({
               severity: 'success',
@@ -305,18 +370,31 @@ export class AdminTableSurveyComponent {
             this.table.reset();
             this.formTableSurvey.reset();
             this.visible = false;
+          }
+        },
+        error: (error) => {
+          // Xử lý lỗi từ máy chủ ở đây      
+          if (error instanceof HttpErrorResponse) {
+            const httpError: HttpErrorResponse = error;
+            if (httpError.error) {
+              // Đây là nơi bạn có thể truy cập thông báo lỗi từ máy chủ
+              const serverErrorMessage = httpError.error;
+              console.error("Lỗi từ máy chủ:", serverErrorMessage);
+              this.serverError = serverErrorMessage;
+              // Hiển thị thông báo lỗi cho người dùng hoặc thực hiện các hành động xử lý lỗi
+              setTimeout(() => {
+                this.serverError = ""; // Xóa thông báo lỗi sau 3 giây
+              }, 3000); 
+            }
           } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Lỗi',
-              detail: 'Lỗi vui Lòng kiểm tra lại !',
-            });
+            console.error("Lỗi không xác định:", error);
+            // Xử lý lỗi không xác định (không phải lỗi từ máy chủ)
           }
         },
       });
     }
   }
-
+  
   SaveEdit() {
     this.visible = !this.visible;
     const objTableSurvey = this.formTableSurvey.value;
@@ -429,6 +507,7 @@ export class AdminTableSurveyComponent {
   };
 
   addItem() {
+
     this.selectedCauHoi.forEach((el, i) => {
       const newItem = this.FormBuilder.group({
         id: 0,
