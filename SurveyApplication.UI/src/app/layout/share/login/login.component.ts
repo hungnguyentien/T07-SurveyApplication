@@ -13,23 +13,21 @@ export class LoginComponent {
     UserName: '',
     Password: '',
     grant_type: '',
-    isRememberMe: true
+    isRememberMe: true,
   };
 
   constructor(private router: Router, private loginService: LoginService) {
     if (this.loginService.currentUserValue()) {
-      this.router.navigate(['admin/home']);
+      this.router.navigate(['admin/dashboard']);
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   login() {
     this.loginService.login(this.model).subscribe((result: any) => {
       if (result) {
-        this.router.navigate(['admin/home']);
-      } else {
-        alert('Lỗi không thành công !');
+        this.router.navigate(['admin/dashboard']);
       }
     });
   }

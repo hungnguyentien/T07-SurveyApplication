@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
   Router,
-  CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
@@ -10,7 +9,7 @@ import { MessageService } from 'primeng/api';
 import Utils from './utils';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
   constructor(
     private router: Router,
     private loginService: LoginService,
@@ -30,7 +29,7 @@ export class AuthGuard implements CanActivate {
           this.messageService,
           'Bạn không có quyền vào trang!'
         );
-        
+
         this.router.navigate(['/']);
         return false; // Mặc định là false
       }
