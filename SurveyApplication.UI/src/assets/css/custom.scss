@@ -121,3 +121,15 @@
 .p-inputtext::placeholder {
   color: #ced4da;
 }
+
+.custom {
+  .p-tabview {
+    .p-tabview-nav {
+      li {
+        .p-tabview-nav-link {
+          padding: 0;
+        }
+      }
+    }
+  }
+}

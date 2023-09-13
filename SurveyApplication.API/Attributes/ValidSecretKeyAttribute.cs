@@ -19,8 +19,8 @@ namespace SurveyApplication.API.Attributes
                 };
                 return Task.CompletedTask;
             }
-            var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
 
+            var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
             var token = extractedApiKey.ToString();
             if (!string.IsNullOrEmpty(token))
             {

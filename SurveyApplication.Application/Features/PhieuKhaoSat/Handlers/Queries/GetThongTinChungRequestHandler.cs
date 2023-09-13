@@ -25,6 +25,12 @@ public class GetThongTinChungRequestHandler : BaseMasterFeatures,
     {
         var guiEmail = await _surveyRepo.GuiEmail.GetById(request.IdGuiEmail) ??
                        throw new ValidationException("Không tìm thấy thông tin gửi mail");
+        if (guiEmail.Deleted)
+            throw new ValidationException("Email này không còn tồn tại");
+
+        if (guiEmail.TrangThai == (int)EnumGuiEmail.TrangThai.ThuHoi)
+            throw new ValidationException("Email này đã bị thu hồi");
+
         var bangKs = await _surveyRepo.BangKhaoSat.GetById(guiEmail.IdBangKhaoSat);
         if (bangKs.TrangThai == (int)EnumBangKhaoSat.TrangThai.HoanThanh)
             throw new ValidationException("Bảng khảo sát này đã hoàn thành");

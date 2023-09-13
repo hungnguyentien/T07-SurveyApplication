@@ -6,7 +6,6 @@ import {
   Validators,
   FormControl,
 } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 
 import {
   GeneralInfo,
@@ -52,7 +51,6 @@ export class GeneralInfoComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private messageService: MessageService,
     private phieuKhaoSatService: PhieuKhaoSatService,
     private loaiHinhDonViService: UnitTypeService,
     private linhVucHoatDongService: LinhVucHoatDongService,
@@ -72,7 +70,6 @@ export class GeneralInfoComponent {
         this.tinh = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -117,7 +114,6 @@ export class GeneralInfoComponent {
         this.lstLoaiHinhDonVi = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -131,7 +127,6 @@ export class GeneralInfoComponent {
         this.lstLinhVuc = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -162,7 +157,6 @@ export class GeneralInfoComponent {
         this.showBtnReset = this.generalInfo.trangThaiKq !== 2;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -182,14 +176,7 @@ export class GeneralInfoComponent {
   onSubmit = () => {
     this.submitted = true;
     this.submitCount++;
-    if (this.frmGeneralInfo.invalid) {
-      return;
-    }
-
-    // Utils.messageSuccess(
-    //   this.messageService,
-    //   'Nhập thông tin chung thành công!'
-    // );
+    if (this.frmGeneralInfo.invalid) return;
     setTimeout(() => {
       this.router.navigateByUrl('/phieu/thong-tin-khao-sat', {
         state: this.generalInfo,
@@ -210,7 +197,6 @@ export class GeneralInfoComponent {
             this.quanHuyen = res;
           },
           error: (e) => {
-            Utils.messageError(this.messageService, e.message);
             this.loading = false;
           },
           complete: () => {
@@ -231,7 +217,6 @@ export class GeneralInfoComponent {
             this.phuongXa = res;
           },
           error: (e) => {
-            Utils.messageError(this.messageService, e.message);
             this.loading = false;
           },
           complete: () => {

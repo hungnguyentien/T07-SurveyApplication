@@ -60,8 +60,6 @@ export class AdminTableSurveyComponent {
 
   searchText = new FormControl('');
   serverError: string = '';
-  
-
 
   visible: boolean = false;
 
@@ -284,11 +282,16 @@ export class AdminTableSurveyComponent {
           res.bangKhaoSatCauHoi?.forEach((el, i) => {
             const idCauHoi = el.idCauHoi;
             // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
-            const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some((control) => {
-            const idCauHoiControl = control.get('idCauHoi');
-            return idCauHoiControl ? idCauHoiControl.value === idCauHoi : false;
-            });
-            if (!idCauHoiExists) { // Nếu idCauHoi chưa tồn tại, thêm mới
+            const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some(
+              (control) => {
+                const idCauHoiControl = control.get('idCauHoi');
+                return idCauHoiControl
+                  ? idCauHoiControl.value === idCauHoi
+                  : false;
+              }
+            );
+            if (!idCauHoiExists) {
+              // Nếu idCauHoi chưa tồn tại, thêm mới
               const newItem = this.FormBuilder.group({
                 id: 0,
                 idCauHoi: idCauHoi,
@@ -311,9 +314,7 @@ export class AdminTableSurveyComponent {
             }
           }
 
-
-          console.log("Danh sách sau khi xử lý:", this.lstBangKhaoSatCauHoi);
-
+          console.log('Danh sách sau khi xử lý:', this.lstBangKhaoSatCauHoi);
         },
         error: (e) => Utils.messageError(this.messageService, e.message),
       }
@@ -328,39 +329,12 @@ export class AdminTableSurveyComponent {
     }
   }
 
-  // SaveAdd() {
-    
-  //   if (this.formTableSurvey.valid) {
-  //     const ObjTableSurvey = this.formTableSurvey.value;
-  //     this.TableSurveyService.create(ObjTableSurvey).subscribe({
-  //       next: (res) => {
-  //         debugger
-  //         if (res != null) {
-  //           this.messageService.add({
-  //             severity: 'success',
-  //             summary: 'Thành Công',
-  //             detail: 'Thêm thành Công !',
-  //           });
-  //           this.table.reset();
-  //           this.formTableSurvey.reset();
-  //           this.visible = false;
-  //         } else {
-  //           this.messageService.add({
-  //             severity: 'error',
-  //             summary: 'Lỗi',
-  //             detail: 'Lỗi vui Lòng kiểm tra lại !',
-  //           });
-  //         }
-  //       },
-  //     });
-  //   }
-  // }
   SaveAdd() {
     if (this.formTableSurvey.valid) {
       const ObjTableSurvey = this.formTableSurvey.value;
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
-          debugger
+          debugger;
           if (res != null) {
             this.messageService.add({
               severity: 'success',
@@ -373,28 +347,28 @@ export class AdminTableSurveyComponent {
           }
         },
         error: (error) => {
-          // Xử lý lỗi từ máy chủ ở đây      
+          // Xử lý lỗi từ máy chủ ở đây
           if (error instanceof HttpErrorResponse) {
             const httpError: HttpErrorResponse = error;
             if (httpError.error) {
               // Đây là nơi bạn có thể truy cập thông báo lỗi từ máy chủ
               const serverErrorMessage = httpError.error;
-              console.error("Lỗi từ máy chủ:", serverErrorMessage);
+              console.error('Lỗi từ máy chủ:', serverErrorMessage);
               this.serverError = serverErrorMessage;
               // Hiển thị thông báo lỗi cho người dùng hoặc thực hiện các hành động xử lý lỗi
               setTimeout(() => {
-                this.serverError = ""; // Xóa thông báo lỗi sau 3 giây
-              }, 3000); 
+                this.serverError = ''; // Xóa thông báo lỗi sau 3 giây
+              }, 3000);
             }
           } else {
-            console.error("Lỗi không xác định:", error);
+            console.error('Lỗi không xác định:', error);
             // Xử lý lỗi không xác định (không phải lỗi từ máy chủ)
           }
         },
       });
     }
   }
-  
+
   SaveEdit() {
     this.visible = !this.visible;
     const objTableSurvey = this.formTableSurvey.value;
@@ -507,7 +481,6 @@ export class AdminTableSurveyComponent {
   };
 
   addItem() {
-
     this.selectedCauHoi.forEach((el, i) => {
       const newItem = this.FormBuilder.group({
         id: 0,

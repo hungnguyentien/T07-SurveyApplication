@@ -484,4 +484,8 @@ export default class Utils {
     });
     return `?${params.join('&')}`;
   };
+
+  static onlyUnique = (value: any, index: number, array: any[]) => {
+    return array.indexOf(value) === index;
+  };
 }

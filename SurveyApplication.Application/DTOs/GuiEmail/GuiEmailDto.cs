@@ -15,6 +15,7 @@ public class GuiEmailDto : BaseDto
     public int IdDonVi { get; set; }
     public string TenDonVi { get; set; }
     public string NguoiThucHien { get; set; }
+    public string LinkKhaoSat { get; set; }
 }
 
 public class GuiEmailBksDto

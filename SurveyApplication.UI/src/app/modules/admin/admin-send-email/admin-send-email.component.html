@@ -1,11 +1,11 @@
 <p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast>
 <div>
   <h5>Danh sách gửi email</h5>
-  <form class="form-inline mt-4">
+  <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
     <div class="form-group mb-2">
-      <label for="inputPassword2" class="sr-only">Search</label>
-      <input type="text" class="form-control" id="inputPassword2" placeholder="Nhập từ khoá" [(ngModel)]="keyword"
-        name="keyword">
+      <label for="keyWord" class="sr-only">Search</label>
+      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+        [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
       <i class="pi pi-search"></i>
@@ -17,55 +17,56 @@
     scrollHeight="calc(100vh - 396px)" [(selection)]="selectedSendEmail" dataKey="id"
     styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
-    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+    [resizableColumns]="true">
     <ng-template pTemplate="header">
       <tr>
-        <th style="min-width: 0rem">
+        <th pResizableColumn>
           STT
         </th>
-        <th style="min-width: 8rem">
+        <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Mã bảng ks
             <div type="text" display="menu" class="ml-auto"></div>
           </div>
         </th>
-        <th style="min-width: 14rem">
+        <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Tên bảng khảo sát
             <div type="text" display="menu" class="ml-auto"></div>
           </div>
         </th>
-        <th style="min-width: 8rem">
+        <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Email đã gửi
             <div type="text" display="menu" class="ml-auto"></div>
           </div>
         </th>
-        <th style="min-width: 8rem">
+        <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thành Công
             <div type="text" display="menu" class="ml-auto"></div>
           </div>
         </th>
-        <th style="min-width: 8rem">
+        <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Gửi lỗi
             <div type="text" display="menu" class="ml-auto"></div>
           </div>
         </th>
-        <th style="min-width: 8rem">
+        <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thu hồi
             <div type="text" display="menu" class="ml-auto"></div>
           </div>
         </th>
-        <th style="min-width: 8rem">
+        <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thời gian
             <div type="text" display="menu" class="ml-auto"></div>
           </div>
         </th>
-        <th style="min-width: 6rem">
+        <th pResizableColumn>
           <div>
             Chức năng
           </div>
@@ -76,7 +77,7 @@
 
     <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
       <tr class="p-selectable-row">
-        <td>
+        <td class="vertical-align-middle text-center">
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>
@@ -151,7 +152,7 @@
         <div class="col-form-label text-end">Danh sách email gửi:</div>
       </div>
       <div class="col-10">
-        <p-tabView [(activeIndex)]="activeIndex">
+        <p-tabView [(activeIndex)]="activeIndex" class="custom">
           <p-tabPanel>
             <ng-template pTemplate="header">
               <p-button (click)="activeTabIndex(0)" styleClass="p-button-text" label="Tất cả"></p-button>
@@ -212,7 +213,7 @@
               <td>
                 <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
               </td>
-              <td>
+              <td class="vertical-align-middle text-center">
                 {{ rowIndex + 1}}
               </td>
               <td>
@@ -227,15 +228,17 @@
               <td>
                 <span class="vertical-align-middle">{{ rowData.nguoiThucHien }}</span>
               </td>
-              <td class="text-end">
-                <span class="vertical-align-middle" [appHighlightGuiEmail]="rowData.trangThai">
-                  <ng [ngSwitch]="rowData.trangThai">
-                    <ng-container *ngSwitchCase="0">Thành công</ng-container>
-                    <ng-container *ngSwitchCase="1">Gửi lỗi</ng-container>
-                    <ng-container *ngSwitchCase="2">Thu hồi</ng-container>
-                    <ng-container *ngSwitchDefault>Đang gửi</ng-container>
-                  </ng>
-                </span>
+              <td class="text-center">
+                <ng [ngSwitch]="rowData.trangThai">
+                  <ng-container *ngSwitchCase="0"><span style="font-weight: 600;color: rgba(36, 119, 69, 1);">Thành
+                      công</span></ng-container>
+                  <ng-container *ngSwitchCase="1"><span style="font-weight: 600;color: rgba(229, 13, 13, 1);">Gửi
+                      lỗi</span></ng-container>
+                  <ng-container *ngSwitchCase="2"><span style="font-weight: 600; color: rgba(65, 76, 82, 1);">Thu
+                      hồi</span></ng-container>
+                  <ng-container *ngSwitchDefault><span style="font-weight: 600; color: rgba(65, 76, 82, 1);">Đang
+                      gửi</span></ng-container>
+                </ng>
               </td>
             </tr>
           </ng-template>
@@ -250,11 +253,106 @@
     </div>
   </ng-template>
   <ng-template pTemplate="footer">
-    <button type="button" pButton class="custom-button" label="Gửi Email" icon="pi pi-envelope"
-      style="background-color: #eec24a;"></button>
-    <button type="button" pButton class="custom-button" label="Thu hồi" icon="pi pi-envelope"
-      style="background-color: rgba(65, 76, 82, 1);"></button>
-      <button type="button" pButton class="custom-button" label="Đóng" (click)="visible = false"
+    <button type="button" *ngIf="checkTrangThai(1) || checkTrangThai(2)" (click)="openGuiEmail()" pButton
+      class="custom-button" label="Gửi Email" icon="pi pi-envelope" style="background-color: #eec24a;"></button>
+    <button *ngIf="checkTrangThai(0)" (click)="openThuHoiEmail()" type="button" pButton class="custom-button"
+      label="Thu hồi" icon="pi pi-envelope" style="background-color: rgba(65, 76, 82, 1);"></button>
+    <button type="button" pButton class="custom-button" label="Đóng" (click)="visible = false"
       style="background-color: rgba(0, 0, 0, 0);color: rgba(0, 0, 0, 1);border: 1px solid rgba(65, 76, 82, 1);"></button>
   </ng-template>
 </p-dialog>
+
+<form *ngIf="frmGuiEmail" [formGroup]="frmGuiEmail" (ngSubmit)="onSubmitGuiEmail()">
+  <p-dialog [(visible)]="visibleGuiEmail" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
+    [resizable]="true" [maximizable]="true">
+    <ng-template pTemplate="header">
+      <h5 class="modal-title">
+        Gửi bảng khảo sát
+      </h5>
+    </ng-template>
+
+    <ng-template pTemplate="body">
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="lstIdDonVi" class="col-form-label">Đơn vị <span style="color: red;">*</span></label>
+          <p-multiSelect [options]="lstDonVi" [(ngModel)]="selectedDonVi" defaultLabel="-- Chọn đơn vị --"
+            optionLabel="tenDonVi" optionValue="id" display="chip" id="lstIdDonVi" emptyMessage="Không có kết quả nào"
+            emptyFilterMessage="Không tìm thấy kết quả" [ngModelOptions]="{standalone: true}"
+            class="form-select-custom"></p-multiSelect>
+          <small class="invalid-feedback" *ngIf="lstIdDonViError">
+            Vui lòng nhập đơn vị
+          </small>
+        </div>
+        <div class="form-group col-md-12">
+          <label for="tieuDe" class="col-form-label">Nhập tiêu đề <span style="color: red;">*</span></label>
+          <input formControlName="tieuDe" type="text" pInputText class="form-control" id="tieuDe">
+          <small class="invalid-feedback"
+            *ngIf="!frmGuiEmail.controls['tieuDe'].valid && frmGuiEmail.controls['tieuDe'].dirty">
+            Vui lòng nhập tiêu đề
+          </small>
+        </div>
+        <div class="form-group col-md-12">
+          <label for="noidung" class="col-form-label">Nhập nội dung <span style="color: red;">*</span></label>
+          <ckeditor formControlName="noidung" [editor]="Editor" id="noidung">
+          </ckeditor>
+          <small *ngIf="!frmGuiEmail.controls['noidung'].valid && frmGuiEmail.controls['noidung'].dirty"
+            class="invalid-feedback">
+            Vui lòng nhập tiêu đề
+          </small>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <button type="button" class="btn btn-secondary" (click)="visibleGuiEmail = false">Hủy</button>
+      <button type="submit" class="btn btn-primary">Gửi</button>
+    </ng-template>
+  </p-dialog>
+</form>
+
+<form *ngIf="frmThuHoiEmail" [formGroup]="frmThuHoiEmail" (ngSubmit)="onSubmitThuHoiEmail()">
+  <p-dialog [(visible)]="visibleThuHoiEmail" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
+    [resizable]="true" [maximizable]="true">
+    <ng-template pTemplate="header">
+      <h5 class="modal-title">
+        Thu hồi bảng khảo sát
+      </h5>
+    </ng-template>
+
+    <ng-template pTemplate="body">
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="diaChiNhan" class="col-form-label">Địa chỉ nhận <span style="color: red;">*</span></label>
+          <textarea pInputTextarea formControlName="diaChiNhan" class="form-control" id="diaChiNhan"
+            placeholder="Email cách nhau bằng dấu ;" rows="3"></textarea>
+          <small class="invalid-feedback"
+            *ngIf="!frmThuHoiEmail.controls['diaChiNhan'].valid && frmThuHoiEmail.controls['diaChiNhan'].dirty">
+            Vui lòng nhập địa chỉ nhận
+          </small>
+        </div>
+        <div class="form-group col-md-12">
+          <label for="tieuDe" class="col-form-label">Nhập tiêu đề <span style="color: red;">*</span></label>
+          <input formControlName="tieuDe" type="text" pInputText class="form-control" id="tieuDe">
+          <small class="invalid-feedback"
+            *ngIf="!frmThuHoiEmail.controls['tieuDe'].valid && frmThuHoiEmail.controls['tieuDe'].dirty">
+            Vui lòng nhập tiêu đề
+          </small>
+        </div>
+        <div class="form-group col-md-12">
+          <label for="noidung" class="col-form-label">Nhập nội dung <span style="color: red;">*</span></label>
+          <ckeditor formControlName="noidung" [editor]="Editor" id="noidung">
+          </ckeditor>
+          <small *ngIf="!frmThuHoiEmail.controls['noidung'].valid && frmThuHoiEmail.controls['noidung'].dirty"
+            class="invalid-feedback">
+            Vui lòng nhập tiêu đề
+          </small>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <button type="button" class="btn btn-secondary" (click)="visibleThuHoiEmail = false">Hủy</button>
+      <button type="submit" class="btn btn-primary">Gửi</button>
+    </ng-template>
+  </p-dialog>
+</form>

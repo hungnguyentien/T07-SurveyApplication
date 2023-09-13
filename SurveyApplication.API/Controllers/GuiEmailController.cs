@@ -90,5 +90,20 @@ namespace SurveyApplication.API.Controllers
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
+        [HttpPost("GuiLaiEmail")]
+        public async Task<ActionResult<BaseCommandResponse>> GuiLaiEmail([FromBody] GuiLaiGuiEmailCommand obj)
+        {
+            var command = new GuiLaiGuiEmailCommand { GuiEmailDto = obj.GuiEmailDto, LstIdGuiMail = obj.LstIdGuiMail };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("ThuHoiEmail")]
+        public async Task<ActionResult<BaseCommandResponse>> ThuHoiEmail([FromBody] ThuHoiGuiEmailCommand obj)
+        {
+            var response = await _mediator.Send(obj);
+            return Ok(response);
+        }
     }
 }

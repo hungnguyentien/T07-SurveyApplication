@@ -1,14 +1,22 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
+import Utils from '@app/helpers/utils';
 import {
-  FormControl,
-  FormGroup,
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
-import { GuiEmail, GuiEmailBks, Paging, PagingGuiEmailBks } from '@app/models';
-import { GuiEmailService } from '@app/services';
-import { ConfirmationService, MessageService } from 'primeng/api';
+  CreateGuiEmail,
+  DonVi,
+  GuiEmail,
+  GuiEmailBks,
+  GuiLaiGuiEmail,
+  Paging,
+  PagingGuiEmailBks,
+  ThuHoiGuiEmail,
+} from '@app/models';
+import { GuiEmailService, ObjectSurveyService } from '@app/services';
+import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { GuiEmailTrangThai } from '@app/enums';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-admin-send-email',
@@ -16,13 +24,14 @@ import { Table } from 'primeng/table';
   styleUrls: ['./admin-send-email.component.css'],
 })
 export class AdminSendEmailComponent {
+  public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
   @ViewChild('dt') table!: Table;
   loading: boolean = true;
   datas!: GuiEmailBks[];
   selectedSendEmail!: GuiEmailBks[];
   paging!: Paging;
   dataTotalRecords!: number;
-  keyword!: string;
+  keyWord!: string;
 
   visible: boolean = false;
   maBangKhaoSat: string = '';
@@ -39,11 +48,23 @@ export class AdminSendEmailComponent {
 
   activeIndex: number = 0;
 
+  frmGuiEmail!: FormGroup;
+  visibleGuiEmail: boolean = false;
+  lstDonVi!: DonVi[];
+  selectedDonVi!: number[];
+  lstIdDonViError: boolean = false;
+
+  frmThuHoiEmail!: FormGroup;
+  visibleThuHoiEmail: boolean = false;
+
+  trangThai: number = 0;
+
   constructor(
-    private FormBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private guiEmailService: GuiEmailService
+    private objectSurveyService: ObjectSurveyService,
+    private guiEmailService: GuiEmailService,
+    private datePipe: DatePipe
   ) {}
   ngOnInit() {}
 
@@ -76,6 +97,13 @@ export class AdminSendEmailComponent {
   };
 
   detailDialog = (rowData: GuiEmailBks) => {
+    //TODO reset popup
+    this.maBangKhaoSat = '';
+    this.tenBangKhaoSat = '';
+    this.idBangKhaoSat = 0;
+    this.activeIndex = 0;
+    this.selectedGe = [];
+
     this.visible = true;
     this.maBangKhaoSat = rowData.maBangKhaoSat;
     this.tenBangKhaoSat = rowData.tenBangKhaoSat;
@@ -114,5 +142,144 @@ export class AdminSendEmailComponent {
     this.activeIndex = index;
     this.trangThaiGuiEmail = index != 0 ? index - 1 : null;
     this.tableGe.reset();
+  };
+
+  checkTrangThai(trangThai: number) {
+    return this.selectedGe?.find((x) => x.trangThai === trangThai);
+  }
+
+  onSubmitSearch = () => {
+    this.paging.keyword = this.keyWord;
+    this.guiEmailService
+      .getByConditionTepm<GuiEmailBks>(this.paging)
+      .subscribe({
+        next: (res) => {
+          this.datas = res.data;
+          this.dataTotalRecords = res.totalFilter;
+        },
+        error: (e) => {
+          this.loading = false;
+        },
+        complete: () => {
+          this.loading = false;
+        },
+      });
+  };
+
+  openGuiEmail = () => {
+    this.visibleGuiEmail = true;
+    this.selectedDonVi = [];
+    if (this.frmGuiEmail) {
+      this.frmGuiEmail.reset();
+      this.frmGuiEmail.get('lstIdDonVi')?.reset();
+      this.frmGuiEmail.get('lstBangKhaoSat')?.reset();
+    }
+
+    let noidung = 'Ấn vào đường dẫn bên dưới để thức hiện khảo sát';
+    let tieuDe = `${this.tenBangKhaoSat} mã khảo sát ${
+      this.maBangKhaoSat
+    } gửi lại (${this.datePipe.transform(new Date(), 'dd/MM/yyyy hh:mm')})`;
+    this.frmGuiEmail = this.formBuilder.group({
+      noidung: [noidung, Validators.required],
+      tieuDe: [tieuDe, Validators.required],
+      lstIdDonVi: this.formBuilder.array([] as number[], Validators.required),
+      lstBangKhaoSat: this.formBuilder.array(
+        [this.idBangKhaoSat] as number[],
+        Validators.required
+      ),
+    });
+
+    this.objectSurveyService.getAllByObj<DonVi>().subscribe((res) => {
+      this.lstDonVi = res;
+      this.selectedDonVi = this.selectedGe
+        .filter((x) => x.trangThai !== GuiEmailTrangThai.ThanhCong)
+        .map((x) => x.idDonVi)
+        .filter(Utils.onlyUnique);
+    });
+  };
+
+  onSubmitGuiEmail = () => {
+    this.selectedDonVi.forEach((el) =>
+      (this.frmGuiEmail.get('lstIdDonVi') as FormArray).push(
+        this.formBuilder.control(el)
+      )
+    );
+
+    if (this.frmGuiEmail.invalid) return;
+    let dataGuiEmail = this.frmGuiEmail.value as CreateGuiEmail;
+    this.lstIdDonViError = dataGuiEmail.lstIdDonVi.length === 0;
+    if (this.lstIdDonViError) return;
+    let data: GuiLaiGuiEmail = {
+      guiEmailDto: dataGuiEmail,
+      lstIdGuiMail: this.selectedGe
+        .filter((x) => x.trangThai !== GuiEmailTrangThai.ThanhCong)
+        .map((x) => x.id),
+    };
+    this.guiEmailService.guiLaiEmail(data).subscribe({
+      next: (res) => {
+        if (res.success) {
+          Utils.messageSuccess(this.messageService, res.message);
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
+      },
+      error: () => {
+        this.visibleThuHoiEmail = false;
+      },
+      complete: () => {
+        this.table.reset();
+        this.tableGe.reset();
+        this.visibleGuiEmail = false;
+      },
+    });
+  };
+
+  openThuHoiEmail = () => {
+    this.visibleThuHoiEmail = true;
+    if (this.frmThuHoiEmail) {
+      this.frmThuHoiEmail.reset();
+      this.frmThuHoiEmail.get('lstIdGuiMail')?.reset();
+    }
+
+    let lstThuHoi = this.selectedGe.filter(
+      (x) => x.trangThai === GuiEmailTrangThai.ThanhCong
+    );
+    let noidung = `<p>Link bị thu hồi:</p><ol>`;
+    lstThuHoi.forEach((el) => {
+      noidung += ` <li><i><a href="${el.linkKhaoSat}">${el.linkKhaoSat}</a></i></li>`;
+    });
+    noidung += `</ol>`;
+    let tieuDe = `Thu hồi ${this.tenBangKhaoSat} mã khảo sát ${this.maBangKhaoSat}`;
+    this.frmThuHoiEmail = this.formBuilder.group({
+      diaChiNhan: ['', Validators.required],
+      noidung: [noidung, Validators.required],
+      tieuDe: [tieuDe, Validators.required],
+      lstIdGuiMail: this.formBuilder.array(
+        lstThuHoi.map((x) => x.id),
+        Validators.required
+      ),
+    });
+  };
+
+  onSubmitThuHoiEmail = () => {
+    if (this.frmThuHoiEmail.invalid) return;
+    let data = this.frmThuHoiEmail.value as ThuHoiGuiEmail;
+    this.guiEmailService.thuHoiEmail(data).subscribe({
+      next: (res) => {
+        if (res.success) {
+          Utils.messageSuccess(this.messageService, res.message);
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
+      },
+      error: () => {
+        this.visibleThuHoiEmail = false;
+      },
+      complete: () => {
+        this.table.reset();
+        this.tableGe.reset();
+        this.visibleThuHoiEmail = false;
+      },
+    });
   };
 }
