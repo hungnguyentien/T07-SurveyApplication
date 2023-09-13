@@ -35,6 +35,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         } else if (err.status === 0) {
           message = 'Sever không hoạt động';
           environment.production && this.loginService.logout();
+        } else if (
+          err.status === 403 &&
+          this.router.url.indexOf('/admin') >= 0
+        ) {
+          this.router.navigate(['/admin/error-403']);
         } else {
           if (err.errors)
             Utils.messageError(this.messageService, err.errors.at(0) ?? '');
