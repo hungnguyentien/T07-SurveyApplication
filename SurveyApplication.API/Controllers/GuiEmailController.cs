@@ -26,14 +26,14 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<List<GuiEmailDto>>> GetGuiEmailByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<List<GuiEmailDto>>> GetByConditionGuiEmail([FromQuery] Paging paging)
         {
             var lstGuiMail = await _mediator.Send(new GetGuiEmailConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return Ok(lstGuiMail);
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<List<GuiEmailDto>>> GetByGuiEmail(int id)
+        public async Task<ActionResult<List<GuiEmailDto>>> GetByIdGuiEmail(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetGuiEmailDetailRequest { Id = id });
             return Ok(leaveAllocations);

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SurveyApplication.Persistence.Migrations
 {
-    public partial class Initial : Migration
+    public partial class AddDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,8 +28,8 @@ namespace SurveyApplication.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -184,7 +184,7 @@ namespace SurveyApplication.Persistence.Migrations
                     IdLoaiHinh = table.Column<int>(type: "int", nullable: false),
                     TenDotKhaoSat = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NgayBatDau = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NgayKetThuuc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NgayKetThuc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: true),
                     ActiveFlag = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
@@ -332,6 +332,71 @@ namespace SurveyApplication.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NguoiDaiDien", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuanHuyen",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    ParentCode = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    ActiveFlag = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuanHuyen", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TinhTp",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    ActiveFlag = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TinhTp", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "XaPhuong",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    ParentCode = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    ActiveFlag = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_XaPhuong", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -532,6 +597,15 @@ namespace SurveyApplication.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "NguoiDaiDien");
+
+            migrationBuilder.DropTable(
+                name: "QuanHuyen");
+
+            migrationBuilder.DropTable(
+                name: "TinhTp");
+
+            migrationBuilder.DropTable(
+                name: "XaPhuong");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

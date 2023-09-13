@@ -27,14 +27,14 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<BaseQuerieResponse<BangKhaoSatDto>>> GetBangKhaoSatByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<BangKhaoSatDto>>> GetByConditionBangKhaoSat([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<BangKhaoSatDto>> GetByBangKhaoSat(int id)
+        public async Task<ActionResult<BangKhaoSatDto>> GetByIdBangKhaoSat(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatDetailRequest { Id = id });
             return Ok(leaveAllocations);

@@ -30,14 +30,14 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<BaseQuerieResponse<QuanHuyenDto>>> GetQuanHuyenByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<QuanHuyenDto>>> GetByConditionQuanHuyen([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetQuanHuyenConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<List<QuanHuyenDto>>> GetByQuanHuyen(int id)
+        public async Task<ActionResult<List<QuanHuyenDto>>> GetByIdQuanHuyen(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetQuanHuyenDetailRequest { Id = id });
             return Ok(leaveAllocations);
@@ -73,15 +73,15 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        //[HttpPost("Import")]
-        //public async Task<IActionResult> ImportJsonFile([FromBody] IFormFile file)
-        //{
-        //    var command = new DeleteQuanHuyenCommand { Id = id };
-        //    await _mediator.Send(command);
-        //    return Ok(new
-        //    {
-        //        Success = true,
-        //    });
-        //}
+        [HttpPost("Import")]
+        public async Task<IActionResult> ImportQuanHuyen([FromForm] ImportQuanHuyenDto obj)
+        {
+            var command = new ImportQuanHuyenCommand { File = obj.File };
+            await _mediator.Send(command);
+            return Ok(new
+            {
+                Success = true,
+            });
+        }
     }
 }

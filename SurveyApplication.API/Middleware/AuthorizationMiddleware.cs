@@ -17,7 +17,7 @@ namespace SurveyApplication.API.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            if (httpContext.Request.Path.Equals("/api/Account/login", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/swagger/index.html", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/swagger/v1/swagger.json", StringComparison.OrdinalIgnoreCase))
+            if (httpContext.Request.Path.Equals("/api/Account/Login", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/swagger/index.html", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/swagger/v1/swagger.json", StringComparison.OrdinalIgnoreCase))
             {
                 await _next.Invoke(httpContext);
                 return;
@@ -25,8 +25,6 @@ namespace SurveyApplication.API.Middleware
 
             // Lấy token từ headers
             string token = httpContext.Request.Headers["Authorization"];
-
-            //string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJoYUBnbWFpbC5jb20iLCJqdGkiOiI3MDc1MmZhMi1iOGM4LTQzNTUtOTFmOC1lYzY2M2I4NmQ1MzkiLCJlbWFpbCI6ImhhQGdtYWlsLmNvbSIsInVpZCI6IjhlNDQ1ODY1LWEyNGQtNDU0My1hNmM2LTk0NDNkMDQ4Y2RiOSIsIkFkbWluIjpbIkdldEFsbERvblZpIiwiR2V0QnlDb25kaXRpb25Eb25WaSIsIkdldEJ5RG9uVmkiLCJDcmVhdGVEb25WaSIsIlVwZGF0ZURvblZpIiwiRGVsZXRlRG9uVmkiLCJHZXRCeUNvbmRpdGlvbkxvYWlIaW5oRG9uVmkiLCJHZXRBbGxMaW5oVnVjSG9hdERvbmciLCJHZW5lcmF0ZU1hTG9haUhpbmhEb25WaSJdLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTY5NDMxODUyNCwiaXNzIjoiU3VydmV5TWFuYWdlbWVudCIsImF1ZCI6IlN1cnZleU1hbmFnZW1lbnRVc2VyIn0.Z2TbW5rrfKLQi13h4J7IPmHSIWH6uzTTKdef0jkxHS0";
 
             // Trích xuất phần token từ chuỗi "Bearer token"
             if (token?.StartsWith("Bearer ") == true)

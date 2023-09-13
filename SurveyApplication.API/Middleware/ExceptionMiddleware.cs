@@ -29,7 +29,7 @@ namespace SurveyApplication.API.Middleware
             string result = JsonConvert.SerializeObject(new ErrorDeatils 
                 { 
                     ErrorMessage = exception.Message, 
-                    ErrorType = "Failure" 
+                    ErrorType = "Failure"
                 });
 
             switch (exception)
