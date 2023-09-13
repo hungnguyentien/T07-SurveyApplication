@@ -62,11 +62,10 @@ export class LoginService {
         catchError((error) => {
           // Xử lý lỗi từ server
           if (error.status === 500) {
-            this.messageService.add({
-              severity: 'error',
-              detail:
-                'Đăng nhập không thành công, mật khẩu hoặc tài khoản không chính xác !',
-            });
+            console.log(
+              'Đăng nhập không thành công, mật khẩu hoặc tài khoản không chính xác !' +
+                error.error
+            );
           } else if (error.status === 400) {
             console.log('Lỗi đăng nhập: ' + error.error);
           }
