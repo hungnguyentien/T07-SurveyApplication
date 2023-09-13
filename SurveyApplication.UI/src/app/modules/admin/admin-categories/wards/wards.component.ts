@@ -29,6 +29,7 @@ export class WardsComponent {
   visible: boolean = false;
 
   listDataHuyen : any = [];
+  IdXaPhuong: any;
 
   constructor(
     private FormBuilder : FormBuilder,
@@ -71,7 +72,6 @@ export class WardsComponent {
         : '',
     };
     this.XaPhuongService.getByCondition(this.paging).subscribe({
-      
       next: (res) => {
         debugger
         this.datas = res.data;
@@ -125,9 +125,11 @@ export class WardsComponent {
   }
 
   Edit(data: any) {
+    debugger
     this.visible = !this.visible;
     this.showadd = false;
-    this.FormXaPhuong.controls['parentCode'].setValue(data.parentCode);
+    this.IdXaPhuong = data.id;
+    this.FormXaPhuong.controls['parentCode'].setValue(data.codeQuanHuyen);
     this.FormXaPhuong.controls['name'].setValue(data.name);
     this.FormXaPhuong.controls['type'].setValue(data.type);
     this.FormXaPhuong.controls['code'].setValue(data.code);
@@ -159,7 +161,7 @@ export class WardsComponent {
 
   SaveEdit() {
     const ObjXaPhuong = this.FormXaPhuong.value;
-  
+    ObjXaPhuong['id'] = this.IdXaPhuong;
     this.XaPhuongService.update(ObjXaPhuong).subscribe({
       next: (res: any) => {
         if (res.success == true) {
