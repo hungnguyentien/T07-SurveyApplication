@@ -33,12 +33,13 @@ namespace SurveyApplication.Application.Features.XaPhuongs.Handlers.Queries
                             Id = d.Id,
                             Code = d.Code,
                             Name = d.Name,
+                            Type = d.Type,
 
                             parent_code = d.ParentCode,
-                            NameTinhTp = b.Name,
+                            NameTinhTp = o.Name,
 
-                            CodeQuanHuyen = o.Code,
-                            NameQuanHuyen = o.Name,
+                            CodeQuanHuyen = b.Code,
+                            NameQuanHuyen = b.Name,
                         };
             var totalCount = await query.LongCountAsync();
             var pageCount = (int)Math.Ceiling(totalCount / (double)request.PageSize);

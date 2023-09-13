@@ -30,6 +30,7 @@ namespace SurveyApplication.Application.Features.QuanHuyens.Handlers.Queries
                             Id = d.Id,
                             Code = d.Code,
                             Name = d.Name,
+                            Type = d.Type,
 
                             parent_code = d.ParentCode,
                             NameTinhTp = b.Name,
