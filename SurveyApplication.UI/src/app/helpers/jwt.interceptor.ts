@@ -19,7 +19,7 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    debugger
+
     // add authorization header with jwt token if available
     const currentUser = this.currentUserValue();
     if (currentUser) {
