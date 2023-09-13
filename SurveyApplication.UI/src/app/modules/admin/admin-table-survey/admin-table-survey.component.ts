@@ -5,7 +5,7 @@ import {
   Paging,
   TableSurvey,
 } from '@app/models';
-import { Validators, FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import {
@@ -17,6 +17,7 @@ import {
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -25,6 +26,7 @@ import { FormControl } from '@angular/forms';
 })
 export class AdminTableSurveyComponent {
   @ViewChild('dt') table!: Table;
+  @ViewChild('viewtable') viewtable!: Table;
   loading: boolean = true;
   selectedTableSurvey!: TableSurvey[];
   datas: TableSurvey[] = [];
@@ -32,7 +34,7 @@ export class AdminTableSurveyComponent {
   dataTotalRecords!: number;
   keyWord!: string;
 
-  
+
   // first: number = 0;
   // TotalCount: number = 0;
   // pageIndex: number = 1;
@@ -49,10 +51,12 @@ export class AdminTableSurveyComponent {
   DSDotKhaoSat: any[] = [];
   showHeader: boolean = true;
   visibleGuiEmail: boolean = false;
-  Gettrangthai!:number;
- form: FormGroup = new FormGroup({});
+  Gettrangthai!: number;
+  form: FormGroup = new FormGroup({});
 
   searchText = new FormControl('');
+  serverError: string = '';
+  
 
 
   visible: boolean = false;
@@ -75,11 +79,12 @@ export class AdminTableSurveyComponent {
     private unitTypeService: UnitTypeService,
     private cauHoiService: CauHoiService,
     private datePipe: DatePipe,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient
 
-    
 
-   
+
+
   ) { }
   ngOnInit() {
     this.form = this.fb.group({
@@ -87,7 +92,7 @@ export class AdminTableSurveyComponent {
       idDotKhaoSat: [''], // Khởi tạo FormControl idDotKhaoSat
     });
 
-  
+
     this.LoadUnitType();
     this.LoadPeriodSurvey();
     this.formTableSurvey = this.FormBuilder.group({
@@ -100,12 +105,26 @@ export class AdminTableSurveyComponent {
       ngayBatDau: ['', Validators.required],
       ngayKetThuc: ['', Validators.required],
       bangKhaoSatCauHoi: this.FormBuilder.array([]),
-    });
+    }, { validator: this.dateRangeValidator });
 
-    
+
   }
 
-   
+  
+    
+  dateRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
+
+    const startDate = control.get('ngayBatDau')?.value;
+    const endDate = control.get('ngayKetThuc')?.value;
+
+    if (startDate && endDate && startDate > endDate) {
+      return { 'dateRangeError': true };
+    }
+
+    return null;
+  }
+
+
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -219,8 +238,18 @@ export class AdminTableSurveyComponent {
   }
 
   Add() {
+    this.formTableSurvey.reset();
     this.showadd = true;
     this.visible = !this.visible;
+    for (let i = this.lstBangKhaoSatCauHoi.length - 1; i >= 0; i--) {
+      const control = this.lstBangKhaoSatCauHoi.at(i).get('idCauHoi');
+      if (control !== null) {
+        const idCauHoi = control.value;
+        if (idCauHoi === null) {
+          this.lstBangKhaoSatCauHoi.removeAt(i);
+        }
+      }
+    }
   }
 
   Edit(data: any) {
@@ -228,13 +257,12 @@ export class AdminTableSurveyComponent {
     this.showadd = false;
     this.visible = !this.visible;
     this.Gettrangthai = data.trangThai
-    
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
       {
-        
+
         next: (res) => {
           debugger
-          
+
           let k = Object.keys(res);
           let v = Object.values(res);
           Utils.setValueForm(this.formTableSurvey, k, v);
@@ -252,19 +280,39 @@ export class AdminTableSurveyComponent {
           this.formTableSurvey.controls['ngayKetThuc'].setValue(
             ngayKetThuFormatted
           );
-          
           res.bangKhaoSatCauHoi?.forEach((el, i) => {
-            const newItem = this.FormBuilder.group({
-              id: 0,
-              idCauHoi: el.id,
-              priority: i,
-              isRequired: false,
-              maCauHoi: el.maCauHoi,
-              tieuDe: el.tieuDe,
+            const idCauHoi = el.idCauHoi;
+            // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
+            const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some((control) => {
+            const idCauHoiControl = control.get('idCauHoi');
+            return idCauHoiControl ? idCauHoiControl.value === idCauHoi : false;
             });
-            
-            this.lstBangKhaoSatCauHoi.push(newItem);
+            if (!idCauHoiExists) { // Nếu idCauHoi chưa tồn tại, thêm mới
+              const newItem = this.FormBuilder.group({
+                id: 0,
+                idCauHoi: idCauHoi,
+                priority: i,
+                isRequired: false,
+                maCauHoi: el.maCauHoi,
+                tieuDe: el.tieuDe,
+              });
+              this.lstBangKhaoSatCauHoi.push(newItem);
+            }
           });
+          // Lọc bỏ các giá trị null sau khi thêm mới
+          for (let i = this.lstBangKhaoSatCauHoi.length - 1; i >= 0; i--) {
+            const control = this.lstBangKhaoSatCauHoi.at(i).get('idCauHoi');
+            if (control !== null) {
+              const idCauHoi = control.value;
+              if (idCauHoi === null) {
+                this.lstBangKhaoSatCauHoi.removeAt(i);
+              }
+            }
+          }
+
+
+          console.log("Danh sách sau khi xử lý:", this.lstBangKhaoSatCauHoi);
+
         },
         error: (e) => Utils.messageError(this.messageService, e.message),
       }
@@ -279,11 +327,39 @@ export class AdminTableSurveyComponent {
     }
   }
 
+  // SaveAdd() {
+    
+  //   if (this.formTableSurvey.valid) {
+  //     const ObjTableSurvey = this.formTableSurvey.value;
+  //     this.TableSurveyService.create(ObjTableSurvey).subscribe({
+  //       next: (res) => {
+  //         debugger
+  //         if (res != null) {
+  //           this.messageService.add({
+  //             severity: 'success',
+  //             summary: 'Thành Công',
+  //             detail: 'Thêm thành Công !',
+  //           });
+  //           this.table.reset();
+  //           this.formTableSurvey.reset();
+  //           this.visible = false;
+  //         } else {
+  //           this.messageService.add({
+  //             severity: 'error',
+  //             summary: 'Lỗi',
+  //             detail: 'Lỗi vui Lòng kiểm tra lại !',
+  //           });
+  //         }
+  //       },
+  //     });
+  //   }
+  // }
   SaveAdd() {
     if (this.formTableSurvey.valid) {
       const ObjTableSurvey = this.formTableSurvey.value;
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
+          debugger
           if (res != null) {
             this.messageService.add({
               severity: 'success',
@@ -293,18 +369,31 @@ export class AdminTableSurveyComponent {
             this.table.reset();
             this.formTableSurvey.reset();
             this.visible = false;
+          }
+        },
+        error: (error) => {
+          // Xử lý lỗi từ máy chủ ở đây      
+          if (error instanceof HttpErrorResponse) {
+            const httpError: HttpErrorResponse = error;
+            if (httpError.error) {
+              // Đây là nơi bạn có thể truy cập thông báo lỗi từ máy chủ
+              const serverErrorMessage = httpError.error;
+              console.error("Lỗi từ máy chủ:", serverErrorMessage);
+              this.serverError = serverErrorMessage;
+              // Hiển thị thông báo lỗi cho người dùng hoặc thực hiện các hành động xử lý lỗi
+              setTimeout(() => {
+                this.serverError = ""; // Xóa thông báo lỗi sau 3 giây
+              }, 3000); 
+            }
           } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Lỗi',
-              detail: 'Lỗi vui Lòng kiểm tra lại !',
-            });
+            console.error("Lỗi không xác định:", error);
+            // Xử lý lỗi không xác định (không phải lỗi từ máy chủ)
           }
         },
       });
     }
   }
-
+  
   SaveEdit() {
     this.visible = !this.visible;
     const objTableSurvey = this.formTableSurvey.value;
@@ -320,7 +409,7 @@ export class AdminTableSurveyComponent {
           this.table.reset();
           this.formTableSurvey.reset();
           this.visible = false;
-         
+
         }
       },
     });
@@ -335,7 +424,7 @@ export class AdminTableSurveyComponent {
       accept: () => {
         debugger;
         this.TableSurveyService.delete(data.id).subscribe((res: any) => {
-          
+
           if (res.success == true)
             this.messageService.add({
               severity: 'success',
@@ -348,62 +437,7 @@ export class AdminTableSurveyComponent {
       },
     });
   }
-  // ToggleStatus(rowData: any) {
-  //   this.confirmationHeader = 'Xác nhận thực hiện thay đổi trạng thái không';
-  //   this.confirmationService.confirm({
-  //     message: 'Bạn có chắc chắn muốn thực hiện không ?',
-  //     header: 'trangthai',
-  //     icon: 'pi pi-exclamation-triangle',
-  //     accept: () => {
-  //       if (rowData.trangThai === 2) {
 
-  //         rowData.trangThai = 3;
-
-  //       } else if (rowData.trangThai === 3) {
-
-  //         rowData.trangThai = 2;
-  //       }
-  //       this.messageService.add({
-  //         severity: 'success',
-  //         summary: 'Thành Công',
-  //         detail: 'Thực Hiện Thành Công !',
-  //       });
-  //     },
-  //     reject: () => {
-  //       // Logic được thực thi khi người dùng từ chối
-  //       console.log('Đã từ chối');
-  //     }
-  //   });}
-
-
-  // ToggleStatus(rowData: any) {
-  //   this.confirmationHeader = 'Xác nhận thực hiện thay đổi trạng thái không';
-  //   this.confirmationService.confirm({
-  //     message: 'Bạn có chắc chắn muốn thực hiện không ?',
-  //     header: 'trangthai',
-  //     icon: 'pi pi-exclamation-triangle',
-  //     accept: () => {
-  //       if (rowData.trangThai === 2) {
-  //         // Gọi phương thức từ dịch vụ để cập nhật trạng thái
-  //         this.TableSurveyService.update(rowData.id, 3).subscribe(() => {
-  //           // Xử lý thành công
-  //           rowData.trangThai = 3;
-  //           this.messageService.add({
-  //             severity: 'success',
-  //             summary: 'Thành Công',
-  //             detail: 'Thực Hiện Thành Công !',
-  //           });
-  //         });
-  //       } else if (rowData.trangThai === 3) {
-  //         // Tương tự như trên, nhưng với trạng thái khác
-  //       }
-  //     },
-  //     reject: () => {
-  //       // Logic được thực thi khi người dùng từ chối
-  //       console.log('Đã từ chối');
-  //     }
-  //   });
-  // }
   ToggleStatus(rowData: TableSurvey) {
     debugger
     this.confirmationHeader = 'Xác nhận thực hiện thay đổi trạng thái không';
@@ -413,7 +447,7 @@ export class AdminTableSurveyComponent {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         if (rowData.trangThai === 2) {
-          // Gọi phương thức từ dịch vụ để cập nhật trạng thái
+
           this.TableSurveyService.update({
             id: rowData.id, maBangKhaoSat: rowData.maBangKhaoSat, idDotKhaoSat: rowData.idDotKhaoSat,
             idLoaiHinh: rowData.idLoaiHinh,
@@ -428,12 +462,12 @@ export class AdminTableSurveyComponent {
                 detail: 'Thực Hiện Thành Công !',
               });
             } else {
-              // Xử lý trường hợp cập nhật không thành công
+
               console.log('Cập nhật không thành công', res.message);
             }
           });
         } else if (rowData.trangThai === 3) {
-          // Gọi phương thức từ dịch vụ để cập nhật trạng thái
+
           this.TableSurveyService.update({
             id: rowData.id, maBangKhaoSat: rowData.maBangKhaoSat, idDotKhaoSat: rowData.idDotKhaoSat,
             idLoaiHinh: rowData.idLoaiHinh,
@@ -448,14 +482,14 @@ export class AdminTableSurveyComponent {
                 detail: 'Thực Hiện Thành Công !',
               });
             } else {
-              // Xử lý trường hợp cập nhật không thành công
+
               console.log('Cập nhật không thành công', res.message);
             }
           });
         }
       },
       reject: () => {
-        // Logic được thực thi khi người dùng từ chối
+
         console.log('Đã từ chối');
       },
     });
@@ -472,6 +506,7 @@ export class AdminTableSurveyComponent {
   };
 
   addItem() {
+
     this.selectedCauHoi.forEach((el, i) => {
       const newItem = this.FormBuilder.group({
         id: 0,

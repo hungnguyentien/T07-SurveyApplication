@@ -52,7 +52,7 @@ namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries
                 LstCauHoi = lstCauHoi
             };
             if (request.IdDonVi > 0 && request.IdNguoiDaiDien > 0)
-                result.KqSurvey = (await _surveyRepo.KetQua.FirstOrDefaultAsync(x => x.IdBangKhaoSat == request.IdBangKhaoSat && x.IdDonVi == request.IdDonVi && x.IdBangKhaoSat == request.IdNguoiDaiDien && !x.Deleted))?.Data ?? "";
+                result.KqSurvey = (await _surveyRepo.KetQua.FirstOrDefaultAsync(x => x.IdBangKhaoSat == request.IdBangKhaoSat && x.IdDonVi == request.IdDonVi && x.IdNguoiDaiDien == request.IdNguoiDaiDien && !x.Deleted))?.Data ?? "";
 
             return result;
         }

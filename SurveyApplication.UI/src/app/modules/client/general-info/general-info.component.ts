@@ -10,12 +10,11 @@ import { MessageService } from 'primeng/api';
 
 import {
   GeneralInfo,
+  HanhChinhVn,
   LinhVucHoatDong,
-  TinhQuanHuyen,
   UnitType,
 } from '@app/models';
 import { LinhVucHoatDongService, PhieuKhaoSatService } from '@app/services';
-import { jsonDataFake } from './json';
 import Utils from '@app/helpers/utils';
 import { UnitTypeService } from '@app/services/unit-type.service';
 
@@ -31,13 +30,13 @@ export class GeneralInfoComponent {
   submitted!: boolean;
   loading!: boolean;
 
-  tinh: any[] | undefined;
+  tinh: HanhChinhVn[] | undefined;
   selectedTinh: string | undefined;
 
-  quanHuyen: any[] | undefined;
+  quanHuyen: HanhChinhVn[] | undefined;
   selectedQuanHuyen: string | undefined;
 
-  phuongXa: any[] | undefined;
+  phuongXa: HanhChinhVn[] | undefined;
   selectedPhuongXa: string | undefined;
 
   dataArr: any[] | undefined;
@@ -65,15 +64,21 @@ export class GeneralInfoComponent {
     this.submitCount = 0;
     this.submitted = false;
     this.loading = false;
-    this.tinh = [];
     this.quanHuyen = [];
     this.phuongXa = [];
-    this.dataArr = Object.entries(jsonDataFake);
-    this.dataArr.forEach((el, i) => {
-      let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
-      this.tinh?.push({ name: tinhQuanHuyen.name, code: tinhQuanHuyen.code });
+    this.phieuKhaoSatService.getTinh().subscribe({
+      next: (res) => {
+        this.tinh = res;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
     });
-    // this.selectedTinh = '10';
+
     this.frmGeneralInfo = this.formBuilder.group({
       DonVi: this.formBuilder.group({
         TenDonVi: ['', Validators.required],
@@ -214,16 +219,28 @@ export class GeneralInfoComponent {
     if (e) {
       if (e.value) {
         this.setDiaChi();
-        let arr = Object.entries(
-          this.dataArr?.find((x) => x.at(0) == e.value).at(1)['quan-huyen']
-        );
-        arr.forEach((el, i) => {
-          let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
-          this.quanHuyen?.push({
-            name: tinhQuanHuyen.name,
-            code: tinhQuanHuyen.code,
-          });
+        this.phieuKhaoSatService.getQuanHuyen(e.value).subscribe({
+          next: (res) => {
+            this.quanHuyen = res;
+          },
+          error: (e) => {
+            Utils.messageError(this.messageService, e.message);
+            this.loading = false;
+          },
+          complete: () => {
+            this.loading = false;
+          },
         });
+        // let arr = Object.entries(
+        //   this.dataArr?.find((x) => x.at(0) == e.value).at(1)['quan-huyen']
+        // );
+        // arr.forEach((el, i) => {
+        //   let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
+        //   this.quanHuyen?.push({
+        //     name: tinhQuanHuyen.name,
+        //     code: tinhQuanHuyen.code,
+        //   });
+        // });
       }
     }
   };
@@ -233,18 +250,30 @@ export class GeneralInfoComponent {
     if (e) {
       if (e.value) {
         this.setDiaChi();
-        let arr = Object.entries(
-          this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)[
-            'quan-huyen'
-          ][this.selectedQuanHuyen ?? '']['xa-phuong']
-        );
-        arr.forEach((el, i) => {
-          let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
-          this.phuongXa?.push({
-            name: tinhQuanHuyen.name,
-            code: tinhQuanHuyen.code,
-          });
+        this.phieuKhaoSatService.getPhuongXa(e.value).subscribe({
+          next: (res) => {
+            this.phuongXa = res;
+          },
+          error: (e) => {
+            Utils.messageError(this.messageService, e.message);
+            this.loading = false;
+          },
+          complete: () => {
+            this.loading = false;
+          },
         });
+        // let arr = Object.entries(
+        //   this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)[
+        //     'quan-huyen'
+        //   ][this.selectedQuanHuyen ?? '']['xa-phuong']
+        // );
+        // arr.forEach((el, i) => {
+        //   let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
+        //   this.phuongXa?.push({
+        //     name: tinhQuanHuyen.name,
+        //     code: tinhQuanHuyen.code,
+        //   });
+        // });
       }
     }
   };
@@ -255,18 +284,15 @@ export class GeneralInfoComponent {
 
   setDiaChi = () => {
     let arr = [
-      this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.[
+      this.tinh?.find((x) => x.code == this.selectedTinh)?.['name_with_type'],
+      this.quanHuyen?.find((x) => x.code == this.selectedQuanHuyen)?.[
         'name_with_type'
       ],
-      this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.[
-        'quan-huyen'
-      ]?.[this.selectedQuanHuyen ?? '']?.['name_with_type'],
-      this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)?.[
-        'quan-huyen'
-      ]?.[this.selectedQuanHuyen ?? '']?.['xa-phuong']?.[
-        this.selectedPhuongXa ?? ''
-      ]?.['name_with_type'],
+      this.phuongXa?.find((x) => x.code == this.selectedPhuongXa)?.[
+        'name_with_type'
+      ],
     ];
+
     this.frmGeneralInfo
       ?.get('DonVi')
       ?.get('DiaChi')

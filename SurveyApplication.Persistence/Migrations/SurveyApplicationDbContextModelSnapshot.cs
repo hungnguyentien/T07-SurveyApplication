@@ -340,13 +340,6 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<int>("IdCauHoi")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsOther")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LabelCauTraLoi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MaCot")
                         .IsRequired()
                         .HasMaxLength(250)
