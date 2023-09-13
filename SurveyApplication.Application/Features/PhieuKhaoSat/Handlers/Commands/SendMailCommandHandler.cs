@@ -15,17 +15,21 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands;
 public class SendMailCommandHandler : BaseMasterFeatures, IRequestHandler<SendMailCommand, BaseCommandResponse>
 {
     private readonly IEmailSender _emailSender;
-    private EmailSettings EmailSettings { get; }
-    public SendMailCommandHandler(ISurveyRepositoryWrapper surveyRepository, IEmailSender emailSender, IOptions<EmailSettings> emailSettings) : base(surveyRepository)
+
+    public SendMailCommandHandler(ISurveyRepositoryWrapper surveyRepository, IEmailSender emailSender,
+        IOptions<EmailSettings> emailSettings) : base(surveyRepository)
     {
         _emailSender = emailSender;
         EmailSettings = emailSettings.Value;
     }
 
+    private EmailSettings EmailSettings { get; }
+
 
     public async Task<BaseCommandResponse> Handle(SendMailCommand request, CancellationToken cancellationToken)
     {
-        var lstGuiEmail = await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && request.LstIdGuiMail.Contains(x.Id));
+        var lstGuiEmail =
+            await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && request.LstIdGuiMail.Contains(x.Id));
         if (!lstGuiEmail.Any())
             return new BaseCommandResponse
             {
@@ -56,11 +60,13 @@ public class SendMailCommandHandler : BaseMasterFeatures, IRequestHandler<SendMa
         {
             IdGuiEmail = guiEmail.Id
         };
-        var linkKhaoSat = isThuHoi ? "" : $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
+        var linkKhaoSat = isThuHoi
+            ? ""
+            : $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
         var bodyEmail = $"{guiEmail.NoiDung} {linkKhaoSat}";
         var resultSend = await _emailSender.SendEmail(bodyEmail, guiEmail.TieuDe, guiEmail.DiaChiNhan);
         guiEmail.TrangThai = resultSend.IsSuccess
-            ? (int)EnumGuiEmail.TrangThai.ThanhCong
+            ? isThuHoi ? (int)EnumGuiEmail.TrangThai.ThuHoi : (int)EnumGuiEmail.TrangThai.ThanhCong
             : (int)EnumGuiEmail.TrangThai.GuiLoi;
         guiEmail.ThoiGian = DateTime.Now;
         await _surveyRepo.GuiEmail.UpdateAsync(guiEmail);
