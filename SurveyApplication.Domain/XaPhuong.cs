@@ -10,7 +10,7 @@ namespace SurveyApplication.Domain
 {
     public class XaPhuong : BaseDomainEntity
     {
-        [MaxLength(250)]
+        [MaxLength(250)]    
         public string Code { get; set; }
         [MaxLength(250)]
         public string ParentCode { get; set; }

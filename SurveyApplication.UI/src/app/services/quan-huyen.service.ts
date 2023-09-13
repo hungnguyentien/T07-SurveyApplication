@@ -9,6 +9,6 @@ import { QuanHuyen } from '@app/models';
 })
 export class QuanHuyenService extends BaseService<QuanHuyen> {
   constructor(private http: HttpClient) {
-    super(http, `${environment.apiUrl}/TinhTp`);
+    super(http, `${environment.apiUrl}/QuanHuyen`);
   }
 }
