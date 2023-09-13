@@ -15,21 +15,19 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
     public class ScheduleSendMailCommandHandler : BaseMasterFeatures, IRequestHandler<ScheduleSendMailCommand, BaseCommandResponse>
     {
         private readonly IEmailSender _emailSender;
-        private readonly IGuiEmailRepository _guiEmailRepository;
         private EmailSettings EmailSettings { get; }
 
 
-        public ScheduleSendMailCommandHandler(ISurveyRepositoryWrapper surveyRepository, IGuiEmailRepository guiEmailRepository,
+        public ScheduleSendMailCommandHandler(ISurveyRepositoryWrapper surveyRepository,
             IEmailSender emailSender, IOptions<EmailSettings> emailSettings) : base(surveyRepository)
         {
-            _guiEmailRepository = guiEmailRepository;
             _emailSender = emailSender;
             EmailSettings = emailSettings.Value;
         }
 
         public async Task<BaseCommandResponse> Handle(ScheduleSendMailCommand request, CancellationToken cancellationToken)
         {
-            var lstGuiEmail = await _guiEmailRepository.GetAllListAsync(x => !x.Deleted && (x.TrangThai == (int)EnumGuiEmail.TrangThai.DangGui || x.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi));
+            var lstGuiEmail = await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && (x.TrangThai == (int)EnumGuiEmail.TrangThai.DangGui || x.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi));
             if (!lstGuiEmail.Any())
                 return new BaseCommandResponse
                 {
@@ -66,6 +64,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             guiEmail.TrangThai = resultSend.IsSuccess
                 ? (int)EnumGuiEmail.TrangThai.ThanhCong
                 : (int)EnumGuiEmail.TrangThai.GuiLoi;
+            guiEmail.ThoiGian = DateTime.Now;
             await _surveyRepo.GuiEmail.UpdateAsync(guiEmail);
             await _surveyRepo.SaveAync();
         }

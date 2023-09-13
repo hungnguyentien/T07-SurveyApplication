@@ -48,11 +48,11 @@ public class Startup
 
         app.UseAuthorization();
 
-            app.UseCors("CorsPolicy");
-            app.UseMiddleware<AuthorizationMiddleware>();
+        app.UseCors("CorsPolicy");
+        app.UseMiddleware<AuthorizationMiddleware>();
 
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        
+
     }
 
     private static void AddSwaggerDoc(IServiceCollection services)

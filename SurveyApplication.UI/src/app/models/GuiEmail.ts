@@ -1,4 +1,5 @@
 import { Base } from "./Common/Base";
+import { Paging } from "./Paging";
 
 export interface CreateGuiEmail {
     lstBangKhaoSat: number[];
@@ -13,10 +14,12 @@ export interface GuiEmail extends Base {
     tieuDe: string;
     noiDung: string;
     trangThai: number;
-    thoiGian: string;
+    thoiGian: Date;
     idBangKhaoSat: number;
     tenBangKhaoSat: string;
     idDonVi: number;
+    tenDonVi: string;
+    nguoiThucHien: string;
 }
 
 export interface GuiEmailBks {
@@ -29,4 +32,9 @@ export interface GuiEmailBks {
     countSendThuHoi: number;
     ngayBatDau: Date | null;
     ngayKetThuc: Date | null;
+}
+
+export interface PagingGuiEmailBks extends Paging {
+    idBanhgKhaoSat: number;
+    trangThaiGuiEmail: number | null;
 }

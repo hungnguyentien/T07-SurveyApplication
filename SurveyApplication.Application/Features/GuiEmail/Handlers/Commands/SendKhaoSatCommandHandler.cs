@@ -69,6 +69,7 @@ public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<Sen
                 guiEmail.MaGuiEmail = Guid.NewGuid().ToString();
                 guiEmail.DiaChiNhan = donVi.Email;
                 guiEmail.TrangThai = (int)EnumGuiEmail.TrangThai.DangGui;
+                guiEmail.ThoiGian = DateTime.Now;
                 lstGuiEmail.Add(guiEmail);
             }
 

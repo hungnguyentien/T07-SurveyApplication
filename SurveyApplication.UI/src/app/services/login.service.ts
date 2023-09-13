@@ -47,13 +47,14 @@ export class LoginService {
             localStorage.setItem('isRememberMe', model.isRememberMe.toString());
             // lưu token vào Cookie
             if (model.isRememberMe) {
-              this.cookieService.set('currentUser', JSON.stringify(req.token));
+              this.cookieService.set('currentUser', req.token);
               sessionStorage.removeItem('currentUser');
             } else {
-              sessionStorage.setItem('currentUser', JSON.stringify(req.token));
+              sessionStorage.setItem('currentUser', req.token);
               this.cookieService.delete('currentUser', '/');
             }
-            this.currentUserSubject.next(JSON.stringify(req.token));
+
+            this.currentUserSubject.next(req.token);
           }
 
           return req;

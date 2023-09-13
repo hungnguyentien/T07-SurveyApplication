@@ -109,6 +109,7 @@ import { WardsComponent } from './admin-categories/wards/wards.component';
 import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ShareModule } from '@app/layout/share/share.module';
 // import { JwtInterceptor } from '@app/helpers';
 
 
@@ -222,7 +223,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     TreeTableModule,
     AnimateModule,
     CardModule,
-    HttpClientModule
+    HttpClientModule,
+    ShareModule
   ],
  
   providers: [DatePipe],

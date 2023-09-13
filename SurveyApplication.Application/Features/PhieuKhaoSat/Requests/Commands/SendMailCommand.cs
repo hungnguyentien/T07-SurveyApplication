@@ -3,7 +3,7 @@ using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 
-public class SendMailCommand : IRequest<EmailRespose>
+public class SendMailCommand : IRequest<BaseCommandResponse>
 {
-    public int Id { get; set; }
+    public List<int> Id { get; set; }
 }

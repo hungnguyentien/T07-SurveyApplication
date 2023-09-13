@@ -10,11 +10,11 @@ public class GuiEmailDto : BaseDto
     public string NoiDung { get; set; }
     public int TrangThai { get; set; }
     public DateTime ThoiGian { get; set; }
-
-
     public int IdBangKhaoSat { get; set; }
     public string TenBangKhaoSat { get; set; }
     public int IdDonVi { get; set; }
+    public string TenDonVi { get; set; }
+    public string NguoiThucHien { get; set; }
 }
 
 public class GuiEmailBksDto
@@ -28,5 +28,13 @@ public class GuiEmailBksDto
     public int CountSendThuHoi { get; set; }
     public DateTime NgayBatDau { get; set; }
     public DateTime NgayKetThuc { get; set; }
+
+}
+
+public class GuiEmailBksDetailDto
+{
+    public string MaBangKhaoSat { get; set; }
+    public string TenBangKhaoSat { get; set; }
+    public List<GuiEmailDto> LstGuiEmail { get; set; }
 
 }

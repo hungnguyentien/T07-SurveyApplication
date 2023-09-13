@@ -33,6 +33,19 @@ namespace SurveyApplication.API.Controllers
             return Ok(lstGuiMail);
         }
 
+        [HttpGet("GetByIdBangKhaoSat")]
+        public async Task<ActionResult<List<GuiEmailDto>>> GetByIdBangKhaoSat([FromQuery] PagingGuiEmailBks paging)
+        {
+            var leaveAllocations = await _mediator.Send(new GetGuiEmailBksDetailRequest
+            {
+                PageIndex = paging.PageIndex,
+                PageSize = paging.PageSize,
+                IdBanhgKhaoSat = paging.IdBanhgKhaoSat,
+                TrangThaiGuiEmail = paging.TrangThaiGuiEmail,
+            });
+            return Ok(leaveAllocations);
+        }
+
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<List<GuiEmailDto>>> GetByGuiEmail(int id)
         {

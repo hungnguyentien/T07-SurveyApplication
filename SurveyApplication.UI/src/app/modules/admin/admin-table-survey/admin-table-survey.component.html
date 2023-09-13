@@ -346,7 +346,6 @@
     </p-dialog>
 </form>
 
-
 <p-dialog [(visible)]="visibleCauHoi" [modal]="true" [style]="{ width: '55vw' }" [draggable]="false" [resizable]="true"
     [maximizable]="true">
     <ng-template pTemplate="header">
@@ -437,7 +436,6 @@
             class="custom-button"></button>
     </ng-template>
 </p-dialog>
-
 
 <form *ngIf="frmGuiEmail" [formGroup]="frmGuiEmail" (ngSubmit)="onSubmitGuiEmail()">
     <p-dialog [(visible)]="visibleGuiEmail" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"

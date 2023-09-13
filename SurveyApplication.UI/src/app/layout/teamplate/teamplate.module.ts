@@ -10,10 +10,7 @@ import { PartialsModule } from '../partials/partials.module';
 import { ShareModule } from '../share/share.module';
 import { AdminTempleteComponent } from './admin-templete/admin-templete.component';
 @NgModule({
-  declarations: [
-    TemplatePublicComponent,
-    AdminTempleteComponent
-  ],
+  declarations: [TemplatePublicComponent, AdminTempleteComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,7 +18,7 @@ import { AdminTempleteComponent } from './admin-templete/admin-templete.componen
     TeamplateRoutingModule,
     PartialsModule,
     ShareModule,
-    ToastModule
+    ToastModule,
   ],
 })
 export class TeamplateModule {}

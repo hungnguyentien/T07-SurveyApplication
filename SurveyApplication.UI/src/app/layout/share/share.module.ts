@@ -7,8 +7,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { HighlightDirective } from './highlight.directive';
+import { HighlightGuiEmailDirective } from './highlight-gui-email.directive';
 @NgModule({
-  declarations: [LoginComponent, HighlightDirective],
+  declarations: [LoginComponent, HighlightDirective, HighlightGuiEmailDirective],
   imports: [
     CommonModule,
     FormsModule,
@@ -16,6 +17,6 @@ import { HighlightDirective } from './highlight.directive';
     ReactiveFormsModule,
     ToastModule,
   ],
-  exports: [HighlightDirective],
+  exports: [HighlightDirective, HighlightGuiEmailDirective],
 })
 export class ShareModule {}

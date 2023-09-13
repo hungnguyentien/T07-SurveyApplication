@@ -66,7 +66,7 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     [HttpPost("SendEmail")]
-    public async Task<ActionResult> SendEmail(int idGuiMail)
+    public async Task<ActionResult> SendEmail(List<int> idGuiMail)
     {
         var command = new SendMailCommand { Id = idGuiMail };
         var response = await _mediator.Send(command);

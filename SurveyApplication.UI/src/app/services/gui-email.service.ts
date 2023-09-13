@@ -2,9 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { BaseCommandResponse, CreateGuiEmail, GuiEmail } from '@app/models';
+import {
+  BaseCommandResponse,
+  BaseQuerieResponse,
+  CreateGuiEmail,
+  GuiEmail,
+  PagingGuiEmailBks,
+} from '@app/models';
 import { Observable, first } from 'rxjs';
 import { BaseService } from './base.service';
+import Utils from '@app/helpers/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +27,16 @@ export class GuiEmailService extends BaseService<GuiEmail> {
         `${environment.apiUrl}/GuiEmail/CreateByDonVi`,
         data
       )
+      .pipe(first());
+  }
+
+  getByIdBangKhaoSat(paging: PagingGuiEmailBks) {
+    let query = Utils.getParamsQuery(
+      Object.keys(paging),
+      Object.values(paging)
+    );
+    return this._http
+      .get(`${this.actionUrl}/GetByIdBangKhaoSat${query}`)
       .pipe(first());
   }
 }

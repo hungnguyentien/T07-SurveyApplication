@@ -17,7 +17,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login([FromForm] LoginRequest request)
+        public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
         {
             return Ok(await _mediator.Send(request));
         }
