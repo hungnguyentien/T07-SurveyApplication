@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators ,FormBuilder} from '@angular/forms';
 import { Paging } from '@app/models';
 import { TinhThanh } from '@app/models/TinhThanh';
-import { TinhQuanHuyenService } from '@app/services/tinh-quan-huyen.service';
+import { TinhThanhService } from '@app/services/tinh-thanh.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -28,14 +28,13 @@ export class ProvinceComponent {
   visible: boolean = false;
   constructor(
     private FormBuilder : FormBuilder,
-    private TinhThanhService: TinhQuanHuyenService,
+    private TinhThanhService: TinhThanhService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
   ngOnInit() {
     this.loading = true;
     this.createForm();
-    this.getAll();
   }
 
   createForm = () => {
@@ -97,14 +96,6 @@ export class ProvinceComponent {
         : this.FormTinhThanh?.get(name)
     ) as FormControl;
   };
-
-
-  getAll(){
-    this.TinhThanhService.GetAllTinh().subscribe((res:any)=>{
-      this.listFormTinhThanh = res
-    })
-  }
-
 
   onSubmit = () => {
     if (this.FormTinhThanh.invalid) return;

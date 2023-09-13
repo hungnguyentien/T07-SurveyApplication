@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators ,FormBuilder} from '@angular/forms';
 import { Paging, QuanHuyen } from '@app/models';
-import { TinhQuanHuyenService } from '@app/services/tinh-quan-huyen.service';
+import { QuanHuyenService } from '@app/services/quan-huyen.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -27,14 +27,13 @@ export class DistrictComponent {
   visible: boolean = false;
   constructor(
     private FormBuilder : FormBuilder,
-    private QuanHuyenService: TinhQuanHuyenService,
+    private QuanHuyenService: QuanHuyenService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
   ngOnInit() {
     this.loading = true;
     this.createForm();
-    this.getAll();
   }
 
   createForm = () => {
@@ -96,13 +95,6 @@ export class DistrictComponent {
         : this.FormQuanHuyen?.get(name)
     ) as FormControl;
   };
-
-
-  getAll(){
-    this.QuanHuyenService.GetAllHuyen().subscribe((res:any)=>{
-      this.listFormQuanHuyen = res
-    })
-  }
 
   
   onSubmit = () => {

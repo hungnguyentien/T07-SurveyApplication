@@ -36,7 +36,7 @@ export class LoginserviceService {
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     };
-    return this.http.post(`${environment.apiUrl}`+ '/Account/login', body.toString(), options)
+    return this.http.post(`${environment.apiUrl}`+ '/Account/Login', body.toString(), options)
       .pipe(map((req:any) => {
         // đăng nhập thành công lưu lại token
         if (req) {
