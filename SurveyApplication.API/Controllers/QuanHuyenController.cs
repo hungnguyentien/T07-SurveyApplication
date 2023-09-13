@@ -73,15 +73,15 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
-        //[HttpPost("Import")]
-        //public async Task<IActionResult> ImportJsonFile([FromBody] IFormFile file)
-        //{
-        //    var command = new DeleteQuanHuyenCommand { Id = id };
-        //    await _mediator.Send(command);
-        //    return Ok(new
-        //    {
-        //        Success = true,
-        //    });
-        //}
+        [HttpPost("Import")]
+        public async Task<IActionResult> ImportJsonFile([FromForm] ImportQuanHuyenDto obj)
+        {
+            var command = new ImportQuanHuyenCommand { File = obj.File };
+            await _mediator.Send(command);
+            return Ok(new
+            {
+                Success = true,
+            });
+        }
     }
 }

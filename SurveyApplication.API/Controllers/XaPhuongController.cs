@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.DTOs.XaPhuong;
+using SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Commands;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -64,6 +66,17 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<List<XaPhuongDto>>> DeleteXaPhuong(int id)
         {
             var command = new DeleteXaPhuongCommand { Id = id };
+            await _mediator.Send(command);
+            return Ok(new
+            {
+                Success = true,
+            });
+        }
+
+        [HttpPost("Import")]
+        public async Task<IActionResult> ImportJsonFile([FromForm] ImportXaPhuongDto obj)
+        {
+            var command = new ImportXaPhuongCommand { File = obj.File };
             await _mediator.Send(command);
             return Ok(new
             {
