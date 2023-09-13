@@ -16,7 +16,7 @@ export class CauHoiService extends BaseService<CauHoi> {
 
   getLoaiCauHoi() {
     return this.http.get<Select[]>(
-      `${environment.apiUrl}/CauHoi/GetLoaiCauHoi`
+      `${environment.apiUrl}/CauHoi/GetAllLoaiCauHoi`
     );
   }
 }

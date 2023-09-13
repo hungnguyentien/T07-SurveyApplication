@@ -74,7 +74,7 @@ namespace SurveyApplication.Persistence
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IXaPhuongRepository, XaPhuongRepository>();
             services.AddScoped<IQuanHuyenRepository, QuanHuyenRepository>();
-            services.AddScoped<ITinhTpRepository, TinhTpRepository>();
+            services.AddScoped<ITinhTpRepository, TinhTpRepository>();  
             services.AddScoped<ILinhVucHoatDongRepository, LinhVucHoatDongRepository>();
 
             return services;
