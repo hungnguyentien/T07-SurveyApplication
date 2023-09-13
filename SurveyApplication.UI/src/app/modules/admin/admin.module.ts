@@ -107,7 +107,8 @@ import { ProvinceComponent } from './admin-categories/province/province.componen
 import { DistrictComponent } from './admin-categories/district/district.component';
 import { WardsComponent } from './admin-categories/wards/wards.component';
 
-
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { JwtInterceptor } from '@app/helpers';
 
 
 @NgModule({
@@ -219,10 +220,7 @@ import { WardsComponent } from './admin-categories/wards/wards.component';
     TreeTableModule,
     AnimateModule,
     CardModule,
-
-    
-
-  
+    HttpClientModule
   ],
  
   providers: [DatePipe],

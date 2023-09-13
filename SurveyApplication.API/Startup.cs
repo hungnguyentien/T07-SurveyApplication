@@ -45,8 +45,6 @@ namespace SurveyApplication.API
 
             app.UseMiddleware<ExceptionMiddleware>();
 
-            //app.UseMiddleware<AuthorizationMiddleware>();
-
             app.UseAuthentication();
 
             app.UseSwagger();
@@ -58,6 +56,8 @@ namespace SurveyApplication.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<AuthorizationMiddleware>();
 
             app.UseCors("CorsPolicy");
 

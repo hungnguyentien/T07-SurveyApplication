@@ -99,7 +99,6 @@
 
         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
             <tr class="p-selectable-row">
-
                 <td>
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
@@ -107,7 +106,6 @@
                     <span class="p-column-title">STT</span>
                     {{ rowIndex + 1}}
                 </td>
-
                 <td>
                     <span class="ml-1 vertical-align-middle">{{ rowData.maBangKhaoSat }}</span>
                 </td>
@@ -129,23 +127,18 @@
                 </td>
                 <td>
                     <ng-container *ngIf="rowData.trangThai === 4">
-                        <a style="color: #27d559;text-decoration: none">Hoàn Thành</a>
+                        <a style="color: green;;text-decoration: none">Hoàn Thành</a>
                     </ng-container>
                     <ng-container *ngIf="rowData.trangThai === 3 ">
-                        <a style="color: #e2924c;text-decoration: none">Đang Khảo Sát</a>
+                        <a style="color: rgb(218, 159, 82);text-decoration: none">Đang Khảo Sát</a>
                     </ng-container>
                     <ng-container *ngIf="rowData.trangThai === 2 ">
                         <a style="color: #e24c4c;text-decoration: none">Tạm Dừng</a>
                     </ng-container>
                     <ng-container *ngIf="rowData.trangThai === 1 ">
-                        <a style="color: #75c4ef;text-decoration: none">Chờ Khảo Sát</a>
+                        <a style="color: rgb(84, 84, 226);text-decoration: none">Chờ Khảo Sát</a>
                     </ng-container>
-
-
                 </td>
-
-
-
                 <td>
                     <a class="m-3">
                         <ng-container *ngIf="rowData.trangThai == 1">
@@ -174,9 +167,6 @@
                         </ng-container>
                     </a>
                 </td>
-
-
-
             </tr>
         </ng-template>
 
@@ -189,7 +179,7 @@
 </div>
 
 <form method="POST" [formGroup]="formTableSurvey" (ngSubmit)="Save()">
-    <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="true"
+    <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '65vw' }" [draggable]="false" [resizable]="true"
         [maximizable]="true">
         <ng-template pTemplate="header">
             <h5 class="modal-title">
@@ -202,7 +192,7 @@
                 <div class="form-group col-md-6">
                     <label for="maBangKhaoSat" class="col-form-label">Mã bảng: <span
                             style="color: red;">*</span></label>
-                    <input formControlName="maBangKhaoSat" type="text" pInputText class="form-control"
+                    <input formControlName="maBangKhaoSat" type="text" pInputText class="form-control" placeholder="Nhập mã bảng"
                         id="maBangKhaoSat" required>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['maBangKhaoSat'].valid && 
@@ -231,7 +221,7 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="tenBangKhaoSat" class="col-form-label">Tên bảng: </label>
-                    <input formControlName="tenBangKhaoSat" type="text" pInputText class="form-control"
+                    <input formControlName="tenBangKhaoSat" type="text" pInputText class="form-control"placeholder="Nhập tên bảng"
                         id="tenBangKhaoSat">
 
 
@@ -260,7 +250,7 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="moTa" class="col-form-label">Mô tả: <span style="color: red;">*</span></label>
-                    <textarea name="" pInputTextarea formControlName="moTa" id="moTa" class="w-100" rows="3"></textarea>
+                    <textarea name="" pInputTextarea formControlName="moTa" id="moTa" class="w-100" rows="3" placeholder="Nhập mô tả"></textarea>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['moTa'].valid && 
                     formTableSurvey.controls['moTa'].dirty">
@@ -305,11 +295,11 @@
                     <table #viewtable class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>STT</th>
-                                <th style="width: 7rem">Mã câu hỏi</th>
+                                <th style="width: 5rem">STT</th>
+                                <th style="width: 8rem">Mã câu hỏi</th>
                                 <th>Tiêu đề</th>
-                                <th>Bắt buộc</th>
-                                <th>Chức năng</th>
+                                <th style="width: 7rem">Bắt buộc</th>
+                                <th style="width: 7rem">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody formArrayName="bangKhaoSatCauHoi">
@@ -331,10 +321,9 @@
                                         inputId="isRequired"></p-checkbox>
                                 </td>
                                 <td>
-                                    <div>
-                                        <button class="ml-3 btn_delete" type="button" (click)="deleteItem(i)">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
+                                    <div class="ml-5">
+                                        <span class="pi pi-trash " title="Xoá" (click)="deleteItem(i)"
+                                        style="color: red; cursor: pointer;" aria-hidden="true"></span>
                                     </div>
                                 </td>
                             </tr>
@@ -355,7 +344,7 @@
 </form>
 
 
-<p-dialog [(visible)]="visibleCauHoi" [modal]="true" [style]="{ width: '40vw' }" [draggable]="false" [resizable]="true"
+<p-dialog [(visible)]="visibleCauHoi" [modal]="true" [style]="{ width: '55vw' }" [draggable]="false" [resizable]="true"
     [maximizable]="true">
     <ng-template pTemplate="header">
         <h5 class="modal-title">
@@ -388,7 +377,7 @@
                     <th style="min-width: 0rem">
                         STT
                     </th>
-                    <th style="min-width: 14rem">
+                    <th style="min-width: 8rem">
                         <div class="flex justify-content-between align-items-center">
                             Mã
                         </div>
@@ -439,8 +428,10 @@
 
     <ng-template pTemplate="footer">
         <input type="hidden" formControlName="id">
-        <button type="button" class="btn btn-secondary" (click)="visibleCauHoi = false">Hủy</button>
-        <button type="button" class="btn btn-primary" (click)="addItem()">Xác nhận</button>
+        <button pButton (click)="visibleCauHoi = false" type="button" label="Đóng"
+            class="custom-button surface-600"></button>
+        <button pButton (click)="addItem()" type="submit" icon="pi pi-save" label="Xác nhận"
+            class="custom-button"></button>
     </ng-template>
 </p-dialog>
 
