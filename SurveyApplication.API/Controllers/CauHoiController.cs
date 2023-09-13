@@ -24,21 +24,21 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<BaseQuerieResponse<CauHoiDto>>> GetCauHoiByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<CauHoiDto>>> GetByConditionCauHoi([FromQuery] Paging paging)
         {
             var result = await _mediator.Send(new GetCauHoiConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword, OrderBy = paging.OrderBy });
             return Ok(result);
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<CauHoiDto>> GetCauHoiById(int id)
+        public async Task<ActionResult<CauHoiDto>> GetByIdCauHoi(int id)
         {
             var result = await _mediator.Send(new GetCauHoiDetailRequest { Id = id });
             return Ok(result);
         }
 
-        [HttpGet("GetLoaiCauHoi")]
-        public ActionResult GetLoaiCauHoi()
+        [HttpGet("GetAllLoaiCauHoi")]
+        public ActionResult GetAllLoaiCauHoi()
         {
             var result = EnumUltils.GetDescription<EnumCauHoi.Type>().Select(x => new { text = x.Value, value = ((int)x.Key).ToString() });
             return Ok(result);

@@ -18,14 +18,14 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login([FromForm] LoginRequest request)
+        [HttpPost("Login")]
+        public async Task<ActionResult<AuthResponse>> AccountLogin([FromForm] LoginRequest request)
         {
             return Ok(await _mediator.Send(request));
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationCommand request)
+        [HttpPost("AccountRegister")]
+        public async Task<ActionResult<RegistrationResponse>> AccountRegister(RegistrationCommand request)
         {
             return Ok(await _mediator.Send(request));
         }

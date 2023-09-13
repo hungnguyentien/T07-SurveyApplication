@@ -44,7 +44,7 @@ const routes: Routes = [
         ],
       },
       {
-        path: 'login',
+        path: 'Login',
         component: LoginComponent,
         data: {
           title: 'Đăng nhập',
