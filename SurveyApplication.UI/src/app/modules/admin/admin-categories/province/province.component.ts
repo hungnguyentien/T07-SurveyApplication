@@ -21,7 +21,7 @@ export class ProvinceComponent {
   dataTotalRecords!: number;
   keyWord!: string;
 
-
+  getId!:number;
   
   submitted: boolean = false;
   first = 0;
@@ -114,26 +114,25 @@ export class ProvinceComponent {
   Edit(data: any) {
     this.visible = !this.visible;
     this.showadd = false;
-   
+    this.getId = data.id
     this.FormTinhThanh.controls['code'].setValue(data.code);
     this.FormTinhThanh.controls['name'].setValue(data.name);
     this.FormTinhThanh.controls['type'].setValue(data.type);
   }
 
   SaveAdd() {
-    debugger
+   
     const ObjTinhThanh = this.FormTinhThanh.value;
-    ObjTinhThanh['parentCode']="asd";
     this.TinhThanhService.create(ObjTinhThanh).subscribe({
       next: (res) => {
-        debugger
+      
         if (res != null) {
           this.messageService.add({
             severity: 'success',
             summary: 'Thành Công',
             detail: 'Thêm thành Công !',
           });
-          console.log("res",res)
+          
           this.table.reset();
           this.FormTinhThanh.reset();
           this.visible = false;
@@ -151,17 +150,19 @@ export class ProvinceComponent {
   SaveEdit() {
     debugger
     const ObjTinhThanh = this.FormTinhThanh.value;
-    ObjTinhThanh['parentCode']="asd";
+    ObjTinhThanh['id']=this.getId;
     this.TinhThanhService.update(ObjTinhThanh).subscribe({
       
       next: (res: any) => {
         debugger
         if (res.success == true) {
+          debugger
           this.messageService.add({
             severity: 'success',
             summary: 'Thành Công',
             detail: 'Cập nhật Thành Công !',
           });
+          console.log("ress",res)
           this.table.reset();
           this.FormTinhThanh.reset();
           this.visible = false;
@@ -192,13 +193,13 @@ export class ProvinceComponent {
   // confirmDeleteMultiple() {
   //   let ids: number[] = [];
   //   this.selectedTinhThanh.forEach((el) => {
-  //     ids.push(el.Id);
+  //     ids.push(el.id);
   //   });
   //   this.confirmationService.confirm({
   //     message: `Bạn có chắc chắn muốn xoá ${ids.length} loại đơn vị này?`,
   //     icon: 'pi pi-exclamation-triangle',
   //     accept: () => {
-  //       this.cauHoiService.deleteMultiple(ids).subscribe({
+  //       this.TinhThanhService.deleteMultiple(ids).subscribe({
   //         next: (res) => {
   //           Utils.messageSuccess(
   //             this.messageService,

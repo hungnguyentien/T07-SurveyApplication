@@ -59,7 +59,7 @@ namespace SurveyApplication.API
 
             app.UseCors("CorsPolicy");
 
-            //app.UseMiddleware<AuthorizationMiddleware>();
+            app.UseMiddleware<AuthorizationMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,4 +1,4 @@
-<!-- <p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast> -->
+<p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast>
 <p-confirmDialog #cd [style]="{width: '30vw'}">
     <ng-template pTemplate="header">
       <h5>Xác nhận xoá loại hình đơn vị</h5>
@@ -23,7 +23,7 @@
           style="background-color: #ea5c5c;"></button>
       </div>
     </div>
-    <form  class="form-inline mt-4">
+    <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
       <div class="form-group mb-2">
         <label for="keyWord" class="sr-only">Search</label>
         <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
@@ -35,11 +35,12 @@
     </form>
   </div>
   <div class="card mt-3">
-    <p-table #dt [value]="datas" [scrollable]="true"
-      scrollHeight="calc(100vh - 396px)"  dataKey="id"[lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
-      styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-      [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [totalRecords]="dataTotalRecords"
-      currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+      <p-table #dt [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
+        scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTinhThanh" dataKey="id"
+        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+        [totalRecords]="dataTotalRecords"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 4rem">
