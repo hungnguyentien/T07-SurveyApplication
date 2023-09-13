@@ -30,14 +30,14 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<BaseQuerieResponse<XaPhuongDto>>> GetXaPhuongByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<XaPhuongDto>>> GetByConditionXaPhuong([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetXaPhuongConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<List<XaPhuongDto>>> GetByXaPhuong(int id)
+        public async Task<ActionResult<List<XaPhuongDto>>> GetByIdXaPhuong(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetXaPhuongDetailRequest { Id = id });
             return Ok(leaveAllocations);
@@ -74,7 +74,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Import")]
-        public async Task<IActionResult> ImportJsonFile([FromForm] ImportXaPhuongDto obj)
+        public async Task<IActionResult> ImportXaPhuong([FromForm] ImportXaPhuongDto obj)
         {
             var command = new ImportXaPhuongCommand { File = obj.File };
             await _mediator.Send(command);

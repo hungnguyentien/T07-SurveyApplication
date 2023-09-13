@@ -27,14 +27,14 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<BaseQuerieResponse<LinhVucHoatDongDto>>> GetLinhVucHoatDongByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<LinhVucHoatDongDto>>> GetByConditionLinhVucHoatDong([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetLinhVucHoatDongConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<List<LinhVucHoatDongDto>>> GetByLinhVucHoatDong(int id)
+        public async Task<ActionResult<List<LinhVucHoatDongDto>>> GetByIdLinhVucHoatDong(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetLinhVucHoatDongDetailRequest { Id = id });
             return Ok(leaveAllocations);
