@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Domain;
+using SurveyApplication.Domain.Interfaces.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Persistence.Repositories
 {
-    public class TinhTpRepository : GenericRepository<TinhTp>, ITinhTpRepository
+    public class TinhTpRepository : GenericRepository<TinhTp>,ITinhTpRepository
     {
         private readonly SurveyApplicationDbContext _dbContext;
 
