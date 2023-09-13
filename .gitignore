@@ -34,3 +34,7 @@
 /SurveyHangfire.Infrastructure/obj
 /SurveyHangfire/logs
 /SurveyApplication.UI/package-lock.json
+/SurveyHangfire/.config
+/SurveyHangfire/Properties/PublishProfiles
+*.user
+/SurveyApplication.UI/dist
