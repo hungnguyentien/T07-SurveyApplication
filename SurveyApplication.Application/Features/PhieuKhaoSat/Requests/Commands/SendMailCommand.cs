@@ -5,5 +5,6 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 
 public class SendMailCommand : IRequest<BaseCommandResponse>
 {
-    public List<int> Id { get; set; }
+    public List<int> LstIdGuiMail { get; set; }
+    public bool IsThuHoi { get; set; } = false;
 }

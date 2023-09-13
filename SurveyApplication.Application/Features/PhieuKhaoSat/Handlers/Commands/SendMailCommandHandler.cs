@@ -25,7 +25,7 @@ public class SendMailCommandHandler : BaseMasterFeatures, IRequestHandler<SendMa
 
     public async Task<BaseCommandResponse> Handle(SendMailCommand request, CancellationToken cancellationToken)
     {
-        var lstGuiEmail = await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && request.Id.Contains(x.Id));
+        var lstGuiEmail = await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && request.LstIdGuiMail.Contains(x.Id));
         if (!lstGuiEmail.Any())
             return new BaseCommandResponse
             {
@@ -36,7 +36,7 @@ public class SendMailCommandHandler : BaseMasterFeatures, IRequestHandler<SendMa
         var subscriberCount = lstGuiEmail.Count();
         var amountOfPages = (int)Math.Ceiling((double)subscriberCount / pageSize);
         for (var pageIndex = 0; pageIndex < amountOfPages; pageIndex++)
-            await RunTasks(lstGuiEmail.Skip(pageIndex * pageSize).Take(pageSize).ToList());
+            await RunTasks(lstGuiEmail.Skip(pageIndex * pageSize).Take(pageSize).ToList(), request.IsThuHoi);
 
         return new BaseCommandResponse
         {
@@ -44,20 +44,20 @@ public class SendMailCommandHandler : BaseMasterFeatures, IRequestHandler<SendMa
         };
     }
 
-    private async Task RunTasks(IEnumerable<Domain.GuiEmail> lstGuiEmail)
+    private async Task RunTasks(IEnumerable<Domain.GuiEmail> lstGuiEmail, bool isThuHoi)
     {
-        var tasks = lstGuiEmail.Select(guiEmail => Task.Run(() => DoWork(guiEmail))).ToList();
+        var tasks = lstGuiEmail.Select(guiEmail => Task.Run(() => DoWork(guiEmail, isThuHoi))).ToList();
         await Task.WhenAll(tasks);
     }
 
-    private async Task DoWork(Domain.GuiEmail guiEmail)
+    private async Task DoWork(Domain.GuiEmail guiEmail, bool isThuHoi)
     {
         var thongTinChung = new EmailThongTinChungDto
         {
             IdGuiEmail = guiEmail.Id
         };
-        var bodyEmail =
-            $"{guiEmail.NoiDung} \n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
+        var linkKhaoSat = isThuHoi ? "" : $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
+        var bodyEmail = $"{guiEmail.NoiDung} {linkKhaoSat}";
         var resultSend = await _emailSender.SendEmail(bodyEmail, guiEmail.TieuDe, guiEmail.DiaChiNhan);
         guiEmail.TrangThai = resultSend.IsSuccess
             ? (int)EnumGuiEmail.TrangThai.ThanhCong
