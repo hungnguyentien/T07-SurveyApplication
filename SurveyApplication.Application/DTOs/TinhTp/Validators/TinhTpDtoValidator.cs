@@ -28,10 +28,6 @@ namespace SurveyApplication.Application.DTOs.TinhTp.Validators
             RuleFor(p => p.Type)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
-
-            RuleFor(p => p.ParentCode)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
         }
     }
 }

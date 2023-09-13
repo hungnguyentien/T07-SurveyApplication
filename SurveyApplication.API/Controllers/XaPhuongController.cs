@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.DTOs.XaPhuong;
+using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Commands;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
@@ -30,14 +32,14 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<BaseQuerieResponse<XaPhuongDto>>> GetXaPhuongByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<XaPhuongDto>>> GetByConditionXaPhuong([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetXaPhuongConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<List<XaPhuongDto>>> GetByXaPhuong(int id)
+        public async Task<ActionResult<List<XaPhuongDto>>> GetByIdXaPhuong(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetXaPhuongDetailRequest { Id = id });
             return Ok(leaveAllocations);
@@ -65,7 +67,7 @@ namespace SurveyApplication.API.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<XaPhuongDto>>> DeleteXaPhuong(int id)
         {
-            var command = new DeleteXaPhuongCommand { Id = id };
+            var command = new DeleteXaPhuongCommand { Ids = new List<int> { id } };
             await _mediator.Send(command);
             return Ok(new
             {
@@ -73,8 +75,16 @@ namespace SurveyApplication.API.Controllers
             });
         }
 
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        {
+            var command = new DeleteXaPhuongCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
         [HttpPost("Import")]
-        public async Task<IActionResult> ImportJsonFile([FromForm] ImportXaPhuongDto obj)
+        public async Task<IActionResult> ImportXaPhuong([FromForm] ImportXaPhuongDto obj)
         {
             var command = new ImportXaPhuongCommand { File = obj.File };
             await _mediator.Send(command);

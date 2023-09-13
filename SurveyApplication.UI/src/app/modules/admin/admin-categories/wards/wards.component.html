@@ -1,1 +1,182 @@
-<p>wards works!</p>
+<p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast>
+<p-confirmDialog #cd [style]="{width: '30vw'}">
+    <ng-template pTemplate="header">
+      <h5>Xác nhận xoá Xã/Phường</h5>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
+        (click)="cd.reject()"></button>
+      <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
+        label="Xóa" (click)="cd.accept()"></button>
+    </ng-template>
+  </p-confirmDialog>
+  
+  <div>
+    <h5>Quản lý Xã/Phường</h5>
+    <div class="d-flex mt-3">
+      <div>
+        <button (click)=" Add()" data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus"
+          label="Thêm mới" class="custom-button"></button>
+        </div>
+      <div class="ml-3">
+        <button pButton type="button"  icon="pi pi-trash" label="Xoá" class="custom-button"
+          style="background-color: #ea5c5c;"></button>
+      </div>
+    </div>
+    <form  (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
+      <div class="form-group mb-2">
+        <label for="keyWord" class="sr-only">Search</label>
+        <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+          [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+      </div>
+      <button type="submit" class="btn btn-primary ml-2 mb-2">
+        <i class="pi pi-search"></i>
+      </button>
+    </form>
+  </div>
+  <div class="card mt-3">
+    <p-table #dt [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
+    scrollHeight="calc(100vh - 396px)" [(selection)]="selectedXaPhuong" dataKey="id"
+    styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th style="min-width: 0rem">
+            STT
+          </th>
+          
+          <th style="min-width: 14rem">
+            <div class="flex justify-content-between align-items-center">
+              Tỉnh<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+            </div>
+          </th>
+          <th style="min-width: 14rem">
+            <div class="flex justify-content-between align-items-center">
+              Quận/Huyện<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+            </div>
+          </th>
+          <th style="min-width: 16rem">
+            <div class="flex justify-content-between align-items-center">
+              Tên Xã/Phường<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+            </div>
+          </th>
+          <th style="min-width: 10rem">
+            <div class="flex justify-content-between align-items-center">
+              Loại<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+            </div>
+          </th>
+  
+          <th style="min-width: 10rem">
+            <div>
+              Chức năng
+            </div>
+          </th>
+  
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+        <tr class="p-selectable-row">
+          <td>
+            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+          </td>
+          <td>
+            <span class="p-column-title">STT</span>
+            {{ rowIndex + 1}}
+          </td>
+          
+          <td>
+            <span class="ml-1 vertical-align-middle">{{ rowData.nameTinhTp }}</span>
+          </td>
+          <td>
+            <span class="ml-1 vertical-align-middle">{{ rowData.nameQuanHuyen }}</span>
+          </td>
+          <td>
+            <span class="ml-1 vertical-align-middle">{{ rowData.name }}</span>
+          </td>
+  
+          <td>
+            <span class="ml-1 vertical-align-middle">{{ rowData.type }}</span>
+          </td>
+          <td>
+            <a class="m-3"><span data-toggle="modal" data-target="#createForm" (click)="Edit(rowData)"
+                class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
+            <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;"
+                aria-hidden="true"></span></a>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center">Không có bản ghi nào</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  
+  <!-- modal -->
+  <form #form="ngForm" [formGroup]="FormXaPhuong" (ngSubmit)="onSubmit()">
+    <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '40vw'}" [draggable]="false" [resizable]="true"
+      [maximizable]="true">
+      <ng-template pTemplate="header">
+        <h5 class="modal-title">
+          {{ showadd === true ? "Thêm mới Xã/Phường" : "Cập nhật loại Xã/Phường" }}
+        </h5>
+      </ng-template>
+      <ng-template pTemplate="body">
+        <div class="form-group">
+          <label for="code" class="col-form-label">Mã Xã/Phường: <span style="color: red;">*</span></label>
+          <input type="text" formControlName="code" class="form-control" id="code" placeholder="Nhập mã Xã/Phường">
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['code'].valid && 
+            FormXaPhuong.controls['code'].dirty" >
+                  Vui lòng nhập Mã Xã/Phường
+          </small>
+        </div>
+        <div class="form-group">
+            <label for="loaihinhdonvi" class="col-form-label">Quận/Huyện: <span
+                    style="color: red;">*</span> </label>
+            <p-dropdown id="loaicauhoi" [options]="listDataHuyen" optionLabel="name"optionValue="code"
+                [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
+                emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                placeholder="-- Chọn Quận/Huyện --"formControlName="parentCode">
+            </p-dropdown>
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['parentCode'].valid && 
+            FormXaPhuong.controls['parentCode'].dirty" >
+                    Vui lòng chọn Quận/Huyện
+            </small>
+
+        </div>
+        <div class="form-group">
+          <label for="name" class="col-form-label">Tên Xã/Phường: <span style="color: red;">*</span></label>
+          <input type="text" formControlName="name" class="form-control" id="name" pInputText
+            placeholder="Nhập tên Xã/Phường" [ngClass]="{
+              'is-invalid': submitted && f('name').errors
+            }">
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['name'].valid && 
+            FormXaPhuong.controls['name'].dirty" >
+                  Vui lòng nhập tên Xã/Phường
+          </small>
+        </div>
+  
+        <div class="form-group">
+            <label for="type" class="col-form-label">Loại Xã/Phường: <span style="color: red;">*</span></label>
+            <input type="text" formControlName="type" class="form-control" id="type" pInputText
+              placeholder="Nhập Loại Xã/Phường" [ngClass]="{
+                'is-invalid': submitted && f('type').errors
+              }">
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['type'].valid && 
+              FormXaPhuong.controls['type'].dirty" >
+                    Vui lòng nhập Loại Xã/Phường
+            </small>
+          </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
+        <button pButton [disabled]="!FormXaPhuong.valid" type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
+      </ng-template>
+    </p-dialog>
+  </form>
+

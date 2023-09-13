@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators ,FormBuilder} from '@angular/forms';
+import Utils from '@app/helpers/utils';
 import { Paging, QuanHuyen } from '@app/models';
-import { TinhQuanHuyenService } from '@app/services/tinh-quan-huyen.service';
+import { QuanHuyenService } from '@app/services/quan-huyen.service';
+import { TinhThanhService } from '@app/services/tinh-thanh.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -23,71 +25,82 @@ export class DistrictComponent {
   first = 0;
   showadd!: boolean;
   FormQuanHuyen!: FormGroup;
-  listFormQuanHuyen!: [];
+  listDataTinh :any =  [];
+
   visible: boolean = false;
+  IdQuanHuyen: any;
   constructor(
     private FormBuilder : FormBuilder,
-    private QuanHuyenService: TinhQuanHuyenService,
+    private QuanHuyenService: QuanHuyenService,
+    private Tinhservice: TinhThanhService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
   ngOnInit() {
     this.loading = true;
     this.createForm();
-    this.getAll();
+    this.GetAllTinh();
   }
 
   createForm = () => {
     this.FormQuanHuyen = this.FormBuilder.group({
-      MaLinhVuc: ['', Validators.required],
-      TenLinhVuc: ['', Validators.required],
-      MoTa: ['', Validators.required],
+      parentCode: ['', Validators.required],
+      name: ['', Validators.required],
+      type: ['', Validators.required],
+      code: ['', Validators.required],
     });
   };
 
-  // loadListLazy = (event: any) => {
-  //   this.loading = true;
-  //   let pageSize = event.rows;
-  //   let pageIndex = event.first / pageSize + 1;
-  //   this.paging = {
-  //     pageIndex: pageIndex,
-  //     pageSize: pageSize,
-  //     keyword: '',
-  //     orderBy: event.sortField
-  //       ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
-  //       : '',
-  //   };
-  //   this.QuanHuyenService.getByCondition(this.paging).subscribe({
-  //     next: (res) => {
-  //       this.datas = res.data;
-  //       this.dataTotalRecords = res.totalFilter;
-  //     },
-  //     error: (e) => {
-  //       Utils.messageError(this.messageService, e.message);
-  //       this.loading = false;
-  //     },
-  //     complete: () => {
-  //       this.loading = false;
-  //     },
-  //   });
-  // };
 
-  // onSubmitSearch = () => {
-  //   this.paging.keyword = this.keyWord;
-  //   this.QuanHuyenService.getByCondition(this.paging).subscribe({
-  //     next: (res) => {
-  //       this.datas = res.data;
-  //       this.dataTotalRecords = res.totalFilter;
-  //     },
-  //     error: (e) => {
-  //       Utils.messageError(this.messageService, e.message);
-  //       this.loading = false;
-  //     },
-  //     complete: () => {
-  //       this.loading = false;
-  //     },
-  //   });
-  // };
+  GetAllTinh(){
+    this.Tinhservice.getAll().subscribe(res=>{
+      this.listDataTinh = res
+    })
+  }
+
+  loadListLazy = (event: any) => {
+    this.loading = true;
+    let pageSize = event.rows;
+    let pageIndex = event.first / pageSize + 1;
+    this.paging = {
+      pageIndex: pageIndex,
+      pageSize: pageSize,
+      keyword: '',
+      orderBy: event.sortField
+        ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
+        : '',
+    };
+    this.QuanHuyenService.getByCondition(this.paging).subscribe({
+      next: (res) => {
+        this.datas = res.data;
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  };
+
+  onSubmitSearch = () => {
+    this.paging.keyword = this.keyWord;
+    this.QuanHuyenService.getByCondition(this.paging).subscribe({
+      next: (res) => {
+        this.datas = res.data;
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  };
 
   f = (name: string, subName: string = ''): FormControl => {
     return (
@@ -96,13 +109,6 @@ export class DistrictComponent {
         : this.FormQuanHuyen?.get(name)
     ) as FormControl;
   };
-
-
-  getAll(){
-    this.QuanHuyenService.GetAllHuyen().subscribe((res:any)=>{
-      this.listFormQuanHuyen = res
-    })
-  }
 
   
   onSubmit = () => {
@@ -118,75 +124,77 @@ export class DistrictComponent {
   }
 
   Edit(data: any) {
+    debugger
     this.visible = !this.visible;
     this.showadd = false;
-   
-    this.FormQuanHuyen.controls['MaLoaiHinh'].setValue(data.maLoaiHinh);
-    this.FormQuanHuyen.controls['TenLoaiHinh'].setValue(data.tenLoaiHinh);
-    this.FormQuanHuyen.controls['MoTa'].setValue(data.moTa);
+    this.IdQuanHuyen = data.id;
+    this.FormQuanHuyen.controls['parentCode'].setValue(data.parent_code);
+    this.FormQuanHuyen.controls['name'].setValue(data.name);
+    this.FormQuanHuyen.controls['type'].setValue(data.type);
+    this.FormQuanHuyen.controls['code'].setValue(data.code);
   }
 
   SaveAdd() {
     const ObjQuanHuyen = this.FormQuanHuyen.value;
-    // this.QuanHuyenService.create(ObjQuanHuyen).subscribe({
-    //   next: (res) => {
-    //     if (res != null) {
-    //       this.messageService.add({
-    //         severity: 'success',
-    //         summary: 'Thành Công',
-    //         detail: 'Thêm thành Công !',
-    //       });
-    //       this.table.reset();
-    //       this.FormQuanHuyen.reset();
-    //       this.visible = false;
-    //     } else {
-    //       this.messageService.add({
-    //         severity: 'error',
-    //         summary: 'Lỗi',
-    //         detail: 'Lỗi vui Lòng kiểm tra lại !',
-    //       });
-    //     }
-    //   },
-    // });
+    this.QuanHuyenService.create(ObjQuanHuyen).subscribe({
+      next: (res) => {
+        if (res != null) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành Công',
+            detail: 'Thêm thành Công !',
+          });
+          this.table.reset();
+          this.FormQuanHuyen.reset();
+          this.visible = false;
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: 'Lỗi vui Lòng kiểm tra lại !',
+          });
+        }
+      },
+    });
   }
 
   SaveEdit() {
     const ObjQuanHuyen = this.FormQuanHuyen.value;
-  
-    // this.QuanHuyenService.update(ObjQuanHuyen).subscribe({
-    //   next: (res: any) => {
-    //     if (res.success == true) {
-    //       this.messageService.add({
-    //         severity: 'success',
-    //         summary: 'Thành Công',
-    //         detail: 'Cập nhật Thành Công !',
-    //       });
-    //       this.table.reset();
-    //       this.FormQuanHuyen.reset();
-    //       this.visible = false;
-    //     }
-    //   },
-    // });
+    ObjQuanHuyen['id'] = this.IdQuanHuyen;
+    this.QuanHuyenService.update(ObjQuanHuyen).subscribe({
+      next: (res: any) => {
+        if (res.success == true) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành Công',
+            detail: 'Cập nhật Thành Công !',
+          });
+          this.table.reset();
+          this.FormQuanHuyen.reset();
+          this.visible = false;
+        }
+      },
+    });
   }
 
   Delete(data: any) {
-    // this.confirmationService.confirm({
-    //   message: `Bạn có chắc chắn muốn xoá không?`,
-    //   header: 'delete',
-    //   icon: 'pi pi-exclamation-triangle',
-    //   accept: () => {
-    //     this.QuanHuyenService.delete(data.id).subscribe((res: any) => {
-    //       if (res.success == true)
-    //         this.messageService.add({
-    //           severity: 'success',
-    //           summary: 'Thành Công',
-    //           detail: 'Xoá Thành Công !',
-    //         });
-    //       this.table.reset();
-    //       this.FormQuanHuyen.reset();
-    //     });
-    //   },
-    // });
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá không?`,
+      header: 'delete',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.QuanHuyenService.delete(data.id).subscribe((res: any) => {
+          if (res.success == true)
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Thành Công',
+              detail: 'Xoá Thành Công !',
+            });
+          this.table.reset();
+          this.FormQuanHuyen.reset();
+        });
+      },
+    });
   }
 //   confirmDeleteMultiple() {
 //     let ids: number[] = [];

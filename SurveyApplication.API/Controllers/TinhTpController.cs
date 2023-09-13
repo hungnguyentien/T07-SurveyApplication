@@ -30,14 +30,14 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<BaseQuerieResponse<TinhTpDto>>> GetTinhTpByCondition([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<TinhTpDto>>> GetByConditionTinhTp([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetTinhTpConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<List<TinhTpDto>>> GetByTinhTp(int id)
+        public async Task<ActionResult<List<TinhTpDto>>> GetByIdTinhTp(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetTinhTpDetailRequest { Id = id });
             return Ok(leaveAllocations);
@@ -74,7 +74,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Import")]
-        public async Task<IActionResult> ImportJsonFile([FromForm] ImportTinhTpDto obj)
+        public async Task<IActionResult> ImportTinhTp([FromForm] ImportTinhTpDto obj)
         {
             var command = new ImportTinhTpCommand { File = obj.File };
             await _mediator.Send(command);
