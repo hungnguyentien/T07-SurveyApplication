@@ -92,15 +92,15 @@ public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<Sen
 
         #endregion
 
-        #region Gửi email
+        //#region Gửi email
 
-        const int pageSize = 10;
-        var subscriberCount = lstGuiEmail.Count();
-        var amountOfPages = (int)Math.Ceiling((double)subscriberCount / pageSize);
-        for (var pageIndex = 0; pageIndex < amountOfPages; pageIndex++)
-            await RunTasks(lstGuiEmail.Skip(pageIndex * pageSize).Take(pageSize).ToList());
+        //const int pageSize = 10;
+        //var subscriberCount = lstGuiEmail.Count();
+        //var amountOfPages = (int)Math.Ceiling((double)subscriberCount / pageSize);
+        //for (var pageIndex = 0; pageIndex < amountOfPages; pageIndex++)
+        //    await RunTasks(lstGuiEmail.Skip(pageIndex * pageSize).Take(pageSize).ToList());
 
-        #endregion
+        //#endregion
 
         response.Success = true;
         response.Message = "Gửi email thành công";

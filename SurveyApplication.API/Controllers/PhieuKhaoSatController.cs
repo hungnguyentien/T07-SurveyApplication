@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
-using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Commands;
