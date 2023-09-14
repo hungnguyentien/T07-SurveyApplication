@@ -22,7 +22,7 @@ public class UpdateCauHoiCommandHandler : BaseMasterFeatures, IRequestHandler<Up
     public async Task<BaseCommandResponse> Handle(UpdateCauHoiCommand request, CancellationToken cancellationToken)
     {
         if (await _surveyRepo.BangKhaoSatCauHoi.Exists(x => !x.Deleted && request.CauHoiDto.Id == x.IdCauHoi))
-            throw new ValidationException("Câu hỏi đã được sử dụng không được sửa");
+            throw new ValidationException("Câu hỏi đã được sử dụng");
 
         var response = new BaseCommandResponse();
         var validator = new UpdateCauHoiDtoValidator(_surveyRepo, request.CauHoiDto.Id);

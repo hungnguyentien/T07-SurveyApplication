@@ -14,8 +14,9 @@ public class DeleteBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
 
     public async Task<Unit> Handle(DeleteBangKhaoSatCommand request, CancellationToken cancellationToken)
     {
-        var bangKhaoSat = await _surveyRepo.BangKhaoSat.GetById(request.Id) ??
-                          throw new NotFoundException(nameof(BangKhaoSat), request.Id);
+        if (await _surveyRepo.GuiEmail.Exists(x => x.IdBangKhaoSat == request.Id)) throw new FluentValidation.ValidationException("Bảng khảo sát đã được gửi mail");
+
+        var bangKhaoSat = await _surveyRepo.BangKhaoSat.GetById(request.Id) ?? throw new NotFoundException(nameof(BangKhaoSat), request.Id);
         var lstRemove = await _surveyRepo.BangKhaoSatCauHoi.GetAllListAsync(x => x.IdBangKhaoSat == bangKhaoSat.Id);
         await _surveyRepo.BangKhaoSatCauHoi.DeleteAsync(lstRemove);
         await _surveyRepo.BangKhaoSat.DeleteAsync(bangKhaoSat);

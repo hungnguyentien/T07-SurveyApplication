@@ -2,6 +2,7 @@
 using MediatR;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
+using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Domain;
@@ -21,6 +22,9 @@ public class UpdateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
 
     public async Task<Unit> Handle(UpdateBangKhaoSatCommand request, CancellationToken cancellationToken)
     {
+        if (await _surveyRepo.GuiEmail.Exists(x => request.BangKhaoSatDto != null && request.BangKhaoSatDto.TrangThai == (int)EnumBangKhaoSat.TrangThai.HoanThanh && x.IdBangKhaoSat == request.BangKhaoSatDto.Id))
+            throw new FluentValidation.ValidationException("Bảng khảo sát đã được gửi mail");
+
         var validator = new UpdateBangKhaoSatDtoValidator(_surveyRepo.BangKhaoSat);
         var validatorResult =
             await validator.ValidateAsync(request.BangKhaoSatDto ?? new UpdateBangKhaoSatDto(), cancellationToken);

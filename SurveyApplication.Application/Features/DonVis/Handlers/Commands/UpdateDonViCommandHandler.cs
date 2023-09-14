@@ -18,13 +18,15 @@ public class UpdateDonViCommandHandler : BaseMasterFeatures, IRequestHandler<Upd
 
     public async Task<Unit> Handle(UpdateDonViCommand request, CancellationToken cancellationToken)
     {
+        if (await _surveyRepo.GuiEmail.Exists(x => request.DonViDto != null && !x.Deleted && x.IdDonVi == request.DonViDto.Id))
+            throw new FluentValidation.ValidationException("Đơn vị đã được sử dụng");
+
         var validator = new UpdateDonViDtoValidator(_surveyRepo.DonVi);
         var validatorResult = await validator.ValidateAsync(request.DonViDto);
         if (validatorResult.IsValid == false) throw new ValidationException(validatorResult);
-
-        var DonVi = await _surveyRepo.DonVi.GetById(request.DonViDto?.Id ?? 0);
-        _mapper.Map(request.DonViDto, DonVi);
-        await _surveyRepo.DonVi.Update(DonVi);
+        var donVi = await _surveyRepo.DonVi.GetById(request.DonViDto?.Id ?? 0);
+        _mapper.Map(request.DonViDto, donVi);
+        await _surveyRepo.DonVi.Update(donVi);
         await _surveyRepo.SaveAync();
         return Unit.Value;
     }

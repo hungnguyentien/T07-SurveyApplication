@@ -32,10 +32,17 @@ public class GetThongTinChungRequestHandler : BaseMasterFeatures,
             throw new ValidationException("Email này đã bị thu hồi");
 
         var bangKs = await _surveyRepo.BangKhaoSat.GetById(guiEmail.IdBangKhaoSat);
-        if (bangKs.TrangThai == (int)EnumBangKhaoSat.TrangThai.HoanThanh)
-            throw new ValidationException("Bảng khảo sát này đã hoàn thành");
-        if (bangKs.TrangThai == (int)EnumBangKhaoSat.TrangThai.TamDung)
-            throw new ValidationException("Bảng khảo sát này đang tạm dừng");
+        switch (bangKs.TrangThai)
+        {
+            case (int)EnumBangKhaoSat.TrangThai.HoanThanh:
+                throw new ValidationException("Bảng khảo sát này đã hoàn thành");
+            case (int)EnumBangKhaoSat.TrangThai.TamDung:
+                throw new ValidationException("Bảng khảo sát này đang tạm dừng");
+        }
+
+        var dotKs = await _surveyRepo.DotKhaoSat.GetById(bangKs.IdDotKhaoSat);
+        if(dotKs.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
+            throw new ValidationException("Đợt khảo sát này đã hoàn thành");
 
         var donVi = await _surveyRepo.DonVi.GetById(guiEmail.IdDonVi);
         var nguoiDaiDien =

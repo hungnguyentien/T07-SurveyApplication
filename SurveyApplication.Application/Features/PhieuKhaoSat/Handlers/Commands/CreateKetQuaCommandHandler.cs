@@ -54,6 +54,12 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
             JsonConvert.DeserializeObject<EmailThongTinChungDto>(
                 StringUltils.DecryptWithKey(request.CreateKetQuaDto?.GuiEmail, EmailSettings.SecretKey));
         var guiEmail = await _surveyRepo.GuiEmail.GetById(thongTinChung?.IdGuiEmail ?? 0);
+        if (guiEmail.Deleted)
+            throw new ValidationException("Email này không còn tồn tại");
+
+        if (guiEmail.TrangThai == (int)EnumGuiEmail.TrangThai.ThuHoi)
+            throw new ValidationException("Email khảo sát này bị thu hồi");
+
         var bks = await _surveyRepo.BangKhaoSat.GetById(guiEmail.IdBangKhaoSat);
         switch (bks.TrangThai)
         {
@@ -63,15 +69,19 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
                 throw new ValidationException("Bảng khảo sát đã tạm dừng");
         }
 
-        var countBks =
-            await _surveyRepo.GuiEmail.CountAsync(x => x.IdBangKhaoSat == guiEmail.IdBangKhaoSat && !x.Deleted);
-        var countKq = await _surveyRepo.KetQua.CountAsync(x =>
-            x.IdGuiEmail == guiEmail.Id && !x.Deleted && x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh);
-        if (countBks == countKq)
-        {
-            bks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
-            await _surveyRepo.BangKhaoSat.UpdateAsync(bks);
-        }
+        var dotKs = await _surveyRepo.DotKhaoSat.GetById(bks.IdDotKhaoSat);
+        if (dotKs.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
+            throw new ValidationException("Đợt khảo sát này đã hoàn thành");
+
+        //var countBks =
+        //    await _surveyRepo.GuiEmail.CountAsync(x => x.IdBangKhaoSat == guiEmail.IdBangKhaoSat && !x.Deleted);
+        //var countKq = await _surveyRepo.KetQua.CountAsync(x =>
+        //    x.IdGuiEmail == guiEmail.Id && !x.Deleted && x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh);
+        //if (countBks == countKq)
+        //{
+        //    bks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
+        //    await _surveyRepo.BangKhaoSat.UpdateAsync(bks);
+        //}
 
         var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
         ketQua.IdGuiEmail = guiEmail.Id;

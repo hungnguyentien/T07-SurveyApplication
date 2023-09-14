@@ -9,13 +9,10 @@
   <ItemGroup>
     <Compile Remove="Features\Accounts\Handlers\Commands\**" />
     <Compile Remove="Features\Accounts\Requests\Commands\**" />
-    <Compile Remove="Features\BaoCaoCauHoi\Handlers\Queries\**" />
     <EmbeddedResource Remove="Features\Accounts\Handlers\Commands\**" />
     <EmbeddedResource Remove="Features\Accounts\Requests\Commands\**" />
-    <EmbeddedResource Remove="Features\BaoCaoCauHoi\Handlers\Queries\**" />
     <None Remove="Features\Accounts\Handlers\Commands\**" />
     <None Remove="Features\Accounts\Requests\Commands\**" />
-    <None Remove="Features\BaoCaoCauHoi\Handlers\Queries\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -19,9 +19,12 @@ public class DeleteLoaiHinhDonViCommandHandler : BaseMasterFeatures, IRequestHan
 
     public async Task<Unit> Handle(DeleteLoaiHinhDonViCommand request, CancellationToken cancellationToken)
     {
-        var LoaiHinhDonViRepository = await _surveyRepo.LoaiHinhDonVi.GetById(request.Id);
-        if (LoaiHinhDonViRepository == null) throw new NotFoundException(nameof(LoaiHinhDonVi), request.Id);
-        await _surveyRepo.LoaiHinhDonVi.Delete(LoaiHinhDonViRepository);
+        if (await _surveyRepo.DonVi.Exists(x => !x.Deleted && x.IdLoaiHinh == request.Id))
+            throw new FluentValidation.ValidationException("Loại hình đơn vị đã được sử dụng");
+
+        var loaiHinhDonViRepository = await _surveyRepo.LoaiHinhDonVi.GetById(request.Id);
+        if (loaiHinhDonViRepository == null) throw new NotFoundException(nameof(LoaiHinhDonVi), request.Id);
+        await _surveyRepo.LoaiHinhDonVi.Delete(loaiHinhDonViRepository);
         await _surveyRepo.SaveAync();
         return Unit.Value;
     }

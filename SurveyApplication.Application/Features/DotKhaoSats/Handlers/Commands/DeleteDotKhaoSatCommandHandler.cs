@@ -19,6 +19,8 @@ public class DeleteDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandle
 
     public async Task<Unit> Handle(DeleteDotKhaoSatCommand request, CancellationToken cancellationToken)
     {
+        if (await _surveyRepo.BangKhaoSat.Exists(x => x.IdDotKhaoSat == request.Id)) 
+            throw new FluentValidation.ValidationException("Đợt khảo sát đã được sử dụng");
         var dotKhaoSatRepository = await _surveyRepo.DotKhaoSat.GetById(request.Id);
         if (dotKhaoSatRepository == null) throw new NotFoundException(nameof(DotKhaoSat), request.Id);
         await _surveyRepo.DotKhaoSat.Delete(dotKhaoSatRepository);

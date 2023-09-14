@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
+using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Domain;
@@ -36,8 +37,27 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures,
             }
         }
 
+        var dotKhaoSat = await _surveyRepo.DotKhaoSat.GetById(request.BangKhaoSatDto.IdDotKhaoSat ?? 0);
+        if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
+            throw new FluentValidation.ValidationException("Đợt khảo sát đã kết thúc");
+
+        if (dotKhaoSat.NgayBatDau.Date <
+            request.BangKhaoSatDto.NgayBatDau.GetValueOrDefault(DateTime.MinValue).Date)
+            throw new FluentValidation.ValidationException("Ngày bắt đầu không được nhỏ hơn ngày bắt đầu đợt khảo sát");
+
+        if (dotKhaoSat.NgayKetThuc.Date <
+            request.BangKhaoSatDto.NgayKetThuc.GetValueOrDefault(DateTime.MinValue).Date)
+            throw new FluentValidation.ValidationException("Ngày kết thúc không được lớn hơn ngày kết thúc đợt khảo sát");
+
+        if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat)
+        {
+            dotKhaoSat.TrangThai = (int)EnumDotKhaoSat.TrangThai.DangKhaoSat;
+            await _surveyRepo.DotKhaoSat.UpdateAsync(dotKhaoSat);
+        }
+
         var bangKhaoSat = _mapper.Map<BangKhaoSat>(request.BangKhaoSatDto);
-        bangKhaoSat = await _surveyRepo.BangKhaoSat.Create(bangKhaoSat);
+        bangKhaoSat.TrangThai = (int)EnumBangKhaoSat.TrangThai.ChoKhaoSat;
+        await _surveyRepo.BangKhaoSat.Create(bangKhaoSat);
         await _surveyRepo.SaveAync();
         if (request.BangKhaoSatDto?.BangKhaoSatCauHoi != null)
         {

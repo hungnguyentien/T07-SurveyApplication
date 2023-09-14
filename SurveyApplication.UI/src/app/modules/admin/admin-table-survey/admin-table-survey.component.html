@@ -44,54 +44,49 @@
         scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTableSurvey" dataKey="id"
         styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
-        [totalRecords]="dataTotalRecords"
+        [totalRecords]="dataTotalRecords" [resizableColumns]="true"
         currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 4rem">
+                <th style="width: 40px;">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th style="min-width: 0rem">
+                <th style="width: 60px;">
                     STT
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Mã bảng khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Tên bảng khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Đợt khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Loại hình đơn vị khảo sát<div type="text" field="country.name" display="menu" class="ml-auto">
                         </div>
                     </div>
                 </th>
 
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Thời gian<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
-                    <div class="flex justify-content-between align-items-center">
-                        Trạng thái gửi email<div type="text" field="country.name" display="menu" class="ml-auto"></div>
-                    </div>
-                </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Trạng thái khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
                     </div>
                 </th>
-                <th style="min-width: 10rem">
+                <th pResizableColumn>
                     <div>
                         Chức năng
                     </div>
@@ -121,51 +116,48 @@
                     <span class="ml-1 vertical-align-middle">{{ rowData.tenLoaiHinh }}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy' }}-{{
+                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy' }} - {{
                         rowData.ngayKetThuc| date:'dd/MM/yyyy' }}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle"></span>
-                </td>
-                <td>
-                    <ng-container *ngIf="rowData.trangThai === 4">
+                    <ng-container *ngIf="rowData.trangThai === 2">
                         <a style="color: green;;text-decoration: none">Hoàn Thành</a>
                     </ng-container>
-                    <ng-container *ngIf="rowData.trangThai === 3 ">
+                    <ng-container *ngIf="rowData.trangThai === 1 ">
                         <a style="color: rgb(218, 159, 82);text-decoration: none">Đang Khảo Sát</a>
                     </ng-container>
-                    <ng-container *ngIf="rowData.trangThai === 2 ">
+                    <ng-container *ngIf="rowData.trangThai === 3 ">
                         <a style="color: #e24c4c;text-decoration: none">Tạm Dừng</a>
                     </ng-container>
-                    <ng-container *ngIf="rowData.trangThai === 1 ">
+                    <ng-container *ngIf="rowData.trangThai === 0 ">
                         <a style="color: rgb(84, 84, 226);text-decoration: none">Chờ Khảo Sát</a>
                     </ng-container>
                 </td>
                 <td>
                     <a class="m-3">
-                        <ng-container *ngIf="rowData.trangThai == 1">
+                        <ng-container *ngIf="rowData.trangThai == 0">
                             <span (click)="Edit(rowData)" class="pi pi-pencil " title="Cập nhật" aria-hidden="true"
                                 style="margin-right: 30px;"></span>
                         </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2">
+                        <ng-container *ngIf="rowData.trangThai == 0">
                             <span class="pi pi-trash " title="Xoá" (click)="Delete(rowData)"
                                 style="color: red;margin-right: 15px;" aria-hidden="true"></span>
                         </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 2">
+                        <ng-container *ngIf="rowData.trangThai == 3">
                             <span (click)="ToggleStatus(rowData)" class="pi pi-caret-right " title="Tiếp tục"
                                 style="color: rgb(32, 154, 60);margin-right: 15px;" aria-hidden="true"></span>
                         </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 3">
+                        <ng-container *ngIf="rowData.trangThai == 1">
                             <span (click)="ToggleStatus(rowData)" class="pi pi-pause " title="Dừng"
                                 style="color: rgb(212, 22, 22);margin-right: 30px;" aria-hidden="true"></span>
                         </ng-container>
 
                         <ng-container
-                            *ngIf="rowData.trangThai == 2 || rowData.trangThai == 3 || rowData.trangThai == 4">
-                            <span class="pi pi-eye " title="Xem" aria-hidden="true" style="margin-right: 5px;"></span>
+                            *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
+                            <span routerLink="admin/thong-ke-khao-sat" class="pi pi-eye " title="Xem" aria-hidden="true" style="margin-right: 5px;"></span>
                         </ng-container>
                     </a>
                 </td>
@@ -174,13 +166,13 @@
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="11" class="text-center">Không có bản ghi nào</td>
+                <td colspan="10" class="text-center">Không có bản ghi nào</td>
             </tr>
         </ng-template>
     </p-table>
 </div>
 
-<form method="POST" [formGroup]="formTableSurvey" (ngSubmit)="Save()">
+<form *ngIf="formTableSurvey" [formGroup]="formTableSurvey" (ngSubmit)="Save()">
     <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '65vw' }" [draggable]="false" [resizable]="true"
         [maximizable]="true">
         <ng-template pTemplate="header">
@@ -204,12 +196,9 @@
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="serverError">
                         {{ serverError }}
                     </small>
-
-
                 </div>
                 <div class="form-group col-md-6">
                     <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát </label>
-
                     <p-dropdown id="idLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -234,10 +223,6 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát:</label>
-                    <!-- <select formControlName="idDotKhaoSat" class="custom-select" id="idDotKhaoSat">
-                        <option value="">Chọn đợt khảo sát</option>
-                        <option *ngFor="let Lh of DSDotKhaoSat" [value]="Lh.id">{{Lh.tenDotKhaoSat}}</option>
-                    </select> -->
                     <p-dropdown id="idDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -272,8 +257,9 @@
                         formTableSurvey.controls['ngayBatDau'].dirty">
                         Vui lòng nhập ngày bắt đầu
                     </small>
-
-
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="formTableSurvey.hasError('dateRangeError')">
+                        Ngày bắt đầu phải nhỏ hơn ngày kết thúc
+                    </small>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="ngayKetThuc" class="col-form-label">Ngày kết thúc: <span
@@ -283,9 +269,6 @@
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayKetThuc'].valid && 
                         formTableSurvey.controls['ngayKetThuc'].dirty">
                         Vui lòng nhập ngày kết thúc
-                    </small>
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="formTableSurvey.hasError('dateRangeError')">
-                        Ngày bắt đầu phải nhỏ hơn ngày kết thúc
                     </small>
                 </div>
                 <div class="form-group">

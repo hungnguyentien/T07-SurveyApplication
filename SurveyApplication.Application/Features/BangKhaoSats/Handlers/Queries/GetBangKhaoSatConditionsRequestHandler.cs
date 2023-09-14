@@ -47,12 +47,8 @@ public class GetBangKhaoSatConditionsRequestHandler : BaseMasterFeatures,
 
                 IdLoaiHinh = o.Id,
                 TenLoaiHinh = o.TenLoaiHinh
-
-                //TrangThaiEmail = s.TrangThai,
             };
         var totalCount = await query.LongCountAsync();
-        var pageCount = (int)Math.Ceiling(totalCount / (double)request.PageSize);
-
         var pageResults = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
             .ToListAsync();
 

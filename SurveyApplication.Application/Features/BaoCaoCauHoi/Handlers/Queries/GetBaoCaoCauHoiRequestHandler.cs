@@ -4,7 +4,7 @@ using AutoMapper;
 using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Queries
+namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 {
     public class GetBaoCaoCauHoiRequestHandler : BaseMasterFeatures, IRequestHandler<GetBaoCaoCauHoiRequest, BaoCaoCauHoiDto>
     {

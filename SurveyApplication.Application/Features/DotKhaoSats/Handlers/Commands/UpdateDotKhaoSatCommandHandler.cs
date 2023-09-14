@@ -20,10 +20,9 @@ public class UpdateDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandle
     public async Task<Unit> Handle(UpdateDotKhaoSatCommand request, CancellationToken cancellationToken)
     {
         var validator = new UpdateDotKhaoSatDtoValidator(_surveyRepo.DotKhaoSat);
-        var validatorResult = await validator.ValidateAsync(request.DotKhaoSatDto);
-
+        var validatorResult = await validator.ValidateAsync(request.DotKhaoSatDto, cancellationToken);
         if (validatorResult.IsValid == false) throw new ValidationException(validatorResult);
-
+        if(await _surveyRepo.BangKhaoSat.Exists(x => x.IdDotKhaoSat == request.DotKhaoSatDto.Id)) throw new FluentValidation.ValidationException("Đợt khảo sát đã được sử dụng");
         var dotKhaoSat = await _surveyRepo.DotKhaoSat.GetById(request.DotKhaoSatDto?.Id ?? 0);
         _mapper.Map(request.DotKhaoSatDto, dotKhaoSat);
         await _surveyRepo.DotKhaoSat.Update(dotKhaoSat);

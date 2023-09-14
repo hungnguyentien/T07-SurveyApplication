@@ -31,68 +31,70 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 
         public async Task<BaseCommandResponse> Handle(GuiLaiGuiEmailCommand request, CancellationToken cancellationToken)
         {
-            var lstGuiEmailOld =
-                (await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && request.LstIdGuiMail.Contains(x.Id) && x.TrangThai != (int)EnumGuiEmail.TrangThai.ThanhCong && x.TrangThai != (int)EnumGuiEmail.TrangThai.DangGui)).ToList();
-            if (!lstGuiEmailOld.Any())
-                return new BaseCommandResponse
-                {
-                    Success = false,
-                    Message = "Không tìm thấy email gửi"
-                };
+            var lstGuiEmail =
+                (await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && request.LstIdGuiMail.Contains(x.Id) && x.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi)).ToList();
 
-            #region Kiểm tra và thêm email gửi lại
+            var lstGuiEmailThuHoiOld =
+                (await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && request.LstIdGuiMail.Contains(x.Id) && x.TrangThai == (int)EnumGuiEmail.TrangThai.ThuHoi)).ToList();
 
-            var dateNow = DateTime.Now.Date;
-            var response = new BaseCommandResponse();
-            if (request.GuiEmailDto == null)
-                throw new ValidationException("Gửi email không được để trống");
+            #region Kiểm tra và thêm email thu hồi
 
-            var validator = new CreateGuiEmailDtoValidator(_surveyRepo.GuiEmail);
-            var validatorResult = await validator.ValidateAsync(request.GuiEmailDto, cancellationToken);
-            if (validatorResult.IsValid == false)
+            if (lstGuiEmailThuHoiOld.Any())
             {
-                response.Success = false;
-                response.Message = "Tạo mới thất bại";
-                response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
-                return response;
-            }
+                var dateNow = DateTime.Now.Date;
+                var response = new BaseCommandResponse();
+                if (request.GuiEmailDto == null)
+                    throw new ValidationException("Gửi email không được để trống");
 
-            if (await _surveyRepo.BangKhaoSat.AnyAsync(x =>
-                    !x.Deleted && request.GuiEmailDto.LstBangKhaoSat.Contains(x.Id) &&
-                    (x.NgayBatDau.Date > dateNow || x.NgayKetThuc.Date < dateNow)))
-                throw new ValidationException("Bảng khảo sát chưa đến hạn hoặc đã hết hạn");
-
-            var lstBangKhaoSat = (await _surveyRepo.BangKhaoSat.GetAllListAsync(x =>
-                !x.Deleted && x.NgayBatDau.Date <= dateNow && x.NgayKetThuc.Date >= dateNow &&
-                request.GuiEmailDto.LstBangKhaoSat.Contains(x.Id))).ToList();
-            if (!lstBangKhaoSat.Any())
-                throw new ValidationException("Không tìm thấy bảng khảo sát");
-
-            if (await _surveyRepo.DotKhaoSat.AnyAsync(x =>
-                    !x.Deleted && lstBangKhaoSat.Select(b => b.IdDotKhaoSat).Contains(x.Id) &&
-                    (x.NgayBatDau.Date > dateNow || x.NgayKetThuc.Date < dateNow)))
-                throw new ValidationException("Đợt khảo sát chưa đến hạn hoặc đã hết hạn");
-
-            var lstDonVi = (await _surveyRepo.DonVi.GetAllListAsync(x => request.GuiEmailDto.LstIdDonVi.Contains(x.Id) && !x.Deleted)).ToList();
-            if (!lstDonVi.Any())
-                throw new ValidationException("Không tìm thấy đơn vị");
-            var lstGuiEmail = new List<Domain.GuiEmail>();
-            foreach (var bangKhaoSat in lstBangKhaoSat)
-                foreach (var donVi in lstDonVi)
+                var validator = new CreateGuiEmailDtoValidator(_surveyRepo.GuiEmail);
+                var validatorResult = await validator.ValidateAsync(request.GuiEmailDto, cancellationToken);
+                if (validatorResult.IsValid == false)
                 {
-                    var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto) ??
-                                   throw new ValidationException("Gửi email không mapping được");
-                    guiEmail.IdBangKhaoSat = bangKhaoSat.Id;
-                    guiEmail.IdDonVi = donVi.Id;
-                    guiEmail.MaGuiEmail = Guid.NewGuid().ToString();
-                    guiEmail.DiaChiNhan = donVi.Email;
-                    guiEmail.TrangThai = (int)EnumGuiEmail.TrangThai.DangGui;
-                    guiEmail.ThoiGian = DateTime.Now;
-                    lstGuiEmail.Add(guiEmail);
+                    response.Success = false;
+                    response.Message = "Tạo mới thất bại";
+                    response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
+                    return response;
                 }
 
-            await _surveyRepo.GuiEmail.InsertAsync(lstGuiEmail);
-            await _surveyRepo.SaveAync();
+                if (await _surveyRepo.BangKhaoSat.AnyAsync(x =>
+                        !x.Deleted && request.GuiEmailDto.LstBangKhaoSat.Contains(x.Id) &&
+                        (x.NgayBatDau.Date > dateNow || x.NgayKetThuc.Date < dateNow)))
+                    throw new ValidationException("Bảng khảo sát chưa đến hạn hoặc đã hết hạn");
+
+                var lstBangKhaoSat = (await _surveyRepo.BangKhaoSat.GetAllListAsync(x =>
+                    !x.Deleted && x.NgayBatDau.Date <= dateNow && x.NgayKetThuc.Date >= dateNow &&
+                    request.GuiEmailDto.LstBangKhaoSat.Contains(x.Id))).ToList();
+                if (!lstBangKhaoSat.Any())
+                    throw new ValidationException("Không tìm thấy bảng khảo sát");
+
+                if (await _surveyRepo.DotKhaoSat.AnyAsync(x =>
+                        !x.Deleted && lstBangKhaoSat.Select(b => b.IdDotKhaoSat).Contains(x.Id) &&
+                        (x.NgayBatDau.Date > dateNow || x.NgayKetThuc.Date < dateNow)))
+                    throw new ValidationException("Đợt khảo sát chưa đến hạn hoặc đã hết hạn");
+
+                var lstDonVi = (await _surveyRepo.DonVi.GetAllListAsync(x => request.GuiEmailDto.LstIdDonVi.Contains(x.Id) && !x.Deleted)).ToList();
+                if (!lstDonVi.Any())
+                    throw new ValidationException("Không tìm thấy đơn vị");
+                var lstGuiEmailThuHoi = new List<Domain.GuiEmail>();
+                foreach (var bangKhaoSat in lstBangKhaoSat)
+                    foreach (var donVi in lstDonVi)
+                    {
+                        var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto) ??
+                                       throw new ValidationException("Gửi email không mapping được");
+                        guiEmail.IdBangKhaoSat = bangKhaoSat.Id;
+                        guiEmail.IdDonVi = donVi.Id;
+                        guiEmail.MaGuiEmail = Guid.NewGuid().ToString();
+                        guiEmail.DiaChiNhan = donVi.Email;
+                        guiEmail.TrangThai = (int)EnumGuiEmail.TrangThai.DangGui;
+                        guiEmail.ThoiGian = DateTime.Now;
+                        lstGuiEmailThuHoi.Add(guiEmail);
+                    }
+
+                await _surveyRepo.GuiEmail.InsertAsync(lstGuiEmailThuHoi);
+                await _surveyRepo.SaveAync();
+                if (lstGuiEmailThuHoi.Any())
+                    lstGuiEmail.AddRange(lstGuiEmailThuHoi);
+            }
 
             #endregion
 
@@ -106,13 +108,20 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 
             #endregion
 
-            //TODO xóa email cũ
-            lstGuiEmailOld.ForEach(guiEmail =>
+            //TODO xóa email thu hồi cũ
+            if (!lstGuiEmailThuHoiOld.Any())
+                return new BaseCommandResponse
+                {
+                    Message = "Gửi mail thu hồi thành công"
+                };
             {
-                guiEmail.Deleted = true;
-            });
-            await _surveyRepo.GuiEmail.UpdateAsync(lstGuiEmailOld);
-            await _surveyRepo.SaveAync();
+                lstGuiEmailThuHoiOld.ForEach(guiEmail =>
+                {
+                    guiEmail.Deleted = true;
+                });
+                await _surveyRepo.GuiEmail.UpdateAsync(lstGuiEmailThuHoiOld);
+                await _surveyRepo.SaveAync();
+            }
 
             return new BaseCommandResponse
             {

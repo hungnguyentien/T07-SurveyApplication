@@ -25,7 +25,7 @@ public class DeleteCauHoiCommandHandler : BaseMasterFeatures, IRequestHandler<De
             throw new NotFoundException(nameof(CauHoi), request.Ids);
 
         if(await _surveyRepo.BangKhaoSatCauHoi.Exists(x => !x.Deleted && request.Ids.Contains(x.IdCauHoi)))
-            throw new ValidationException("Câu hỏi đã được sử dụng không thể xóa");
+            throw new ValidationException("Câu hỏi đã được sử dụng");
 
         await _surveyRepo.CauHoi.DeleteAsync(lstCauHoi);
         await _surveyRepo.SaveAync();

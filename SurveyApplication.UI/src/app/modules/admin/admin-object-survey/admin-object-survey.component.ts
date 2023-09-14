@@ -40,7 +40,7 @@ export class AdminObjectSurveyComponent {
   MaNguoiDaiDien!: string;
   IdLoaiHinh!: string;
   listloaihinhdonvi: any[] = [];
-  listlinhvuchoatdong: any[]= [];
+  listlinhvuchoatdong: any[] = [];
   ContainerAdd: any[] = [];
 
   combinedArray: any[] = [];
@@ -141,15 +141,15 @@ export class AdminObjectSurveyComponent {
       this.listloaihinhdonvi = response;
     });
   }
-  GetAllFieldOfActivity(){
-    
-    this.objectSurveyService.GetAllFieldOfActivity().subscribe((response:any)=>{
-      this.listlinhvuchoatdong = response;
-    })
+  GetAllFieldOfActivity() {
+    this.objectSurveyService
+      .GetAllFieldOfActivity()
+      .subscribe((response: any) => {
+        this.listlinhvuchoatdong = response;
+      });
   }
 
   loadListLazy = (event: any) => {
-    
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
@@ -202,7 +202,6 @@ export class AdminObjectSurveyComponent {
   }
 
   Edit(data: any) {
-    
     this.showadd = false;
     this.visible = !this.visible;
     this.objectSurveyService.getById<CreateUnitAndRep>(data.idDonVi).subscribe({
@@ -215,7 +214,7 @@ export class AdminObjectSurveyComponent {
         );
         Utils.setValueForm(
           this.FormRepresentative,
-          Object.keys(res.nguoiDaiDienDto), 
+          Object.keys(res.nguoiDaiDienDto),
           Object.values(res.nguoiDaiDienDto),
           true
         );

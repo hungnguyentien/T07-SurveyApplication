@@ -63,17 +63,8 @@ public class PhieuKhaoSatController : ControllerBase
         var response = await _mediator.Send(command);
         return Ok(response);
     }
-    
-    [AllowAnonymous]
-    [ValidSecretKey]
-    [HttpPost("ScheduleSendEmail")]
-    //[ApiExplorerSettings(IgnoreApi = true)]
-    public async Task<ActionResult> ScheduleSendEmail()
-    {
-        var command = new ScheduleSendMailCommand();
-        var response = await _mediator.Send(command);
-        return Ok(response);
-    }
+
+    #region Tỉnh thành quận huyện
 
     [HttpGet("GetTinh")]
     public ActionResult GetTinh()
@@ -101,11 +92,33 @@ public class PhieuKhaoSatController : ControllerBase
         return Ok(phuongXa);
     }
 
+    #endregion
+
     [HttpPost("DongBoBaoCaoCauHoi")]
     public async Task<ActionResult> DongBoBaoCaoCauHoi(CreateBaoCaoCauHoiCommand data)
     {
         var command = new CreateBaoCaoCauHoiCommand { LstBaoCaoCauHoi = data.LstBaoCaoCauHoi, IdGuiEmail = data.IdGuiEmail };
         var response = await _mediator.Send(command);
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [ValidSecretKey]
+    [HttpPost("ScheduleSendEmail")]
+    //[ApiExplorerSettings(IgnoreApi = true)]
+    public async Task<ActionResult> ScheduleSendEmail()
+    {
+        var response = await _mediator.Send(new ScheduleSendMailCommand());
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [ValidSecretKey]
+    [HttpPost("ScheduleUpdateStatus")]
+    //[ApiExplorerSettings(IgnoreApi = true)]
+    public async Task<ActionResult> ScheduleUpdateStatus()
+    {
+        var response = await _mediator.Send(new ScheduleUpdateStatusCommand());
         return Ok(response);
     }
 }

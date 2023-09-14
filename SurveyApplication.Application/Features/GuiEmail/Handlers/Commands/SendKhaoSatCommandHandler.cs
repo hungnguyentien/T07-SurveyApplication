@@ -74,6 +74,7 @@ public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<Sen
             throw new ValidationException("Không tìm thấy đơn vị");
         var lstGuiEmail = new List<Domain.GuiEmail>();
         foreach (var bangKhaoSat in lstBangKhaoSat)
+        {
             foreach (var donVi in lstDonVi)
             {
                 var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto) ??
@@ -87,12 +88,17 @@ public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<Sen
                 lstGuiEmail.Add(guiEmail);
             }
 
+            bangKhaoSat.TrangThai = (int)EnumBangKhaoSat.TrangThai.DangKhaoSat;
+        }
+
+
         await _surveyRepo.GuiEmail.InsertAsync(lstGuiEmail);
+        await _surveyRepo.BangKhaoSat.UpdateAsync(lstBangKhaoSat);
         await _surveyRepo.SaveAync();
 
         #endregion
 
-        //#region Gửi email
+        #region Gửi email (dùng schedule gửi)
 
         //const int pageSize = 10;
         //var subscriberCount = lstGuiEmail.Count();
@@ -100,7 +106,7 @@ public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<Sen
         //for (var pageIndex = 0; pageIndex < amountOfPages; pageIndex++)
         //    await RunTasks(lstGuiEmail.Skip(pageIndex * pageSize).Take(pageSize).ToList());
 
-        //#endregion
+        #endregion
 
         response.Success = true;
         response.Message = "Gửi email thành công";

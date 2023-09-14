@@ -29,6 +29,7 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { BksTrangThai } from '@app/enums';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -416,7 +417,7 @@ export class AdminTableSurveyComponent {
       header: 'trangthai',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        if (rowData.trangThai === 2) {
+        if (rowData.trangThai === BksTrangThai.DangKhaoSat) {
           this.TableSurveyService.update({
             id: rowData.id,
             maBangKhaoSat: rowData.maBangKhaoSat,
@@ -426,10 +427,10 @@ export class AdminTableSurveyComponent {
             moTa: rowData.moTa,
             ngayBatDau: rowData.ngayBatDau,
             ngayKetThuc: rowData.ngayKetThuc,
-            trangThai: 3,
+            trangThai: BksTrangThai.TamDung,
           }).subscribe((res) => {
             if (res.success === true) {
-              rowData.trangThai = 3;
+              this.table.reset();
               this.messageService.add({
                 severity: 'success',
                 summary: 'Thành Công',
@@ -439,7 +440,7 @@ export class AdminTableSurveyComponent {
               console.log('Cập nhật không thành công', res.message);
             }
           });
-        } else if (rowData.trangThai === 3) {
+        } else if (rowData.trangThai === BksTrangThai.TamDung) {
           this.TableSurveyService.update({
             id: rowData.id,
             maBangKhaoSat: rowData.maBangKhaoSat,
@@ -449,10 +450,10 @@ export class AdminTableSurveyComponent {
             moTa: rowData.moTa,
             ngayBatDau: rowData.ngayBatDau,
             ngayKetThuc: rowData.ngayKetThuc,
-            trangThai: 2,
+            trangThai: BksTrangThai.DangKhaoSat,
           }).subscribe((res) => {
             if (res.success === true) {
-              rowData.trangThai = 2;
+              this.table.reset();
               this.messageService.add({
                 severity: 'success',
                 summary: 'Thành Công',
@@ -541,6 +542,7 @@ export class AdminTableSurveyComponent {
       next: (res) => {
         if (res.success) {
           Utils.messageSuccess(this.messageService, res.message);
+          this.table.reset();
         } else {
           Utils.messageError(this.messageService, res.errors.at(0) ?? '');
         }

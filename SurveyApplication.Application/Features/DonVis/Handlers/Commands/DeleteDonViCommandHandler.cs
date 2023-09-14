@@ -14,6 +14,9 @@ public class DeleteDonViCommandHandler : BaseMasterFeatures, IRequestHandler<Del
 
     public async Task<Unit> Handle(DeleteDonViCommand request, CancellationToken cancellationToken)
     {
+        if (await _surveyRepo.GuiEmail.Exists(x => !x.Deleted && x.IdDonVi == request.Id))
+            throw new FluentValidation.ValidationException("Đơn vị đã được sử dụng");
+
         var donVi = await _surveyRepo.DonVi.GetById(request.Id) ??
                     throw new NotFoundException(nameof(DonVi), request.Id);
         var lstNguoiDaiDien = await _surveyRepo.NguoiDaiDien.GetAllListAsync(x => x.IdDonVi == donVi.Id);

@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <!-- 404 Error Text -->
             <div class="text-center">
-                <div class="error mx-auto">500</div>
+                <div class="error mx-auto" [ngClass]="{'error-client': message}">{{message ? message : "500"}}</div>
             </div>
         </div>
         <!-- /.container-fluid -->

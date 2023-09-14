@@ -17,7 +17,11 @@ namespace SurveyApplication.API.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            if (httpContext.Request.Path.Equals("/api/Account/login", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/swagger/index.html", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/swagger/v1/swagger.json", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/api/PhieuKhaoSat/ScheduleSendEmail", StringComparison.OrdinalIgnoreCase))
+            if (httpContext.Request.Path.Equals("/api/Account/login", StringComparison.OrdinalIgnoreCase) 
+                || httpContext.Request.Path.Equals("/swagger/index.html", StringComparison.OrdinalIgnoreCase) 
+                || httpContext.Request.Path.Equals("/swagger/v1/swagger.json", StringComparison.OrdinalIgnoreCase) 
+                || httpContext.Request.Path.Equals("/api/PhieuKhaoSat/ScheduleUpdateStatus", StringComparison.OrdinalIgnoreCase)
+                || httpContext.Request.Path.Equals("/api/PhieuKhaoSat/ScheduleSendEmail", StringComparison.OrdinalIgnoreCase))
             {
                 await _next.Invoke(httpContext);
                 return;
