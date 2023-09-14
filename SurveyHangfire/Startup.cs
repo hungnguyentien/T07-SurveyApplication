@@ -10,7 +10,7 @@ using Hangfire.Application.Interfaces;
 using Hangfire.Application.Services;
 using Hangfire.Domain.Interfaces.Hangfire;
 using Hangfire.Domain.Models;
-using Hangfire.Domain.Models.DASHangfire;
+using Hangfire.Domain.Models.Hangfire;
 using Hangfire.Infrastructure.Contexts;
 using Hangfire.Infrastructure.HttpClientAccessors.Implementations;
 using Hangfire.Infrastructure.HttpClientAccessors.Interfaces;

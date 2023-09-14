@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hangfire.Domain.Models.DASHangfire
+namespace Hangfire.Domain.Models.Hangfire
 {
     [Description("Bảng cài đặt job")]
     public class JobSchedule

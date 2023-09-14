@@ -1,4 +1,4 @@
-﻿using Hangfire.Domain.Models.DASHangfire;
+﻿using Hangfire.Domain.Models.Hangfire;
 
 
 namespace Hangfire.Domain.Interfaces.Hangfire

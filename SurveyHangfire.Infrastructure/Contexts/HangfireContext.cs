@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Hangfire.Domain.Models.Abstractions;
-using Hangfire.Domain.Models.DASHangfire;
+using Hangfire.Domain.Models.Hangfire;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hangfire.Infrastructure.Contexts

@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 using Hangfire.Application.Enums;
 using Hangfire.Application.Interfaces;
 using Hangfire.Domain.Interfaces.Hangfire;
-using Hangfire.Domain.Models.DASHangfire;
 using Hangfire.Application.Models;
+using Hangfire.Domain.Models.Hangfire;
 
 namespace Hangfire.Application.Services
 {
