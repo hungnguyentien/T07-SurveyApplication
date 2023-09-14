@@ -7,6 +7,7 @@ namespace SurveyApplication.Domain
         public int IdCauHoi { get; set; }
         public int IdDotKhaoSat { get; set; }
         public int IdBangKhaoSat { get; set; }
+        public int IdDonVi { get; set; }
         public int IdLoaiHinhDonVi { get; set; }
         public string MaCauHoi { get; set; } = string.Empty;
         public string CauHoi { get; set; } = string.Empty;

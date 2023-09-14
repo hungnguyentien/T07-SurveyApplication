@@ -18,7 +18,7 @@
                 class="custom-button"></button>
         </div>
         <div class="ml-3">
-            <button pButton type="button"   icon="pi pi-trash" label="Xoá" class="custom-button"
+            <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"
                 style="background-color: #ea5c5c;"></button>
         </div>
         <div class="ml-3">
@@ -317,11 +317,10 @@
                                     {{item.get('maCauHoi')?.value}}
                                 </td>
                                 <td>
-                                    {{item.get('tieuDeCauHoi')?.value}}
+                                    {{item.get('tieuDe')?.value}}
                                 </td>
-                                <td>
-                                    <p-checkbox formControlName="isRequired" [binary]="true"
-                                        inputId="isRequired"></p-checkbox>
+                                <td class="text-center">
+                                    <p-inputSwitch formControlName="isRequired"></p-inputSwitch>
                                 </td>
                                 <td>
                                     <div class="ml-5">

@@ -7,6 +7,6 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Commands
     public class CreateBaoCaoCauHoiCommand: IRequest<BaseCommandResponse>
     {
         public List<CreateBaoCaoCauHoiDto>? LstBaoCaoCauHoi { get; set; }
-        public int IdGuiEmail { get; set; }
+        public string IdGuiEmail { get; set; }
     }
 }

@@ -14,6 +14,5 @@
         public string? CauTraLoi { get; set; }
         public short LoaiCauHoi { get; set; }
         public string? TenDaiDienCq { get; set; }
-        public DateTime? DauThoiGian { get; set; }
     }
 }

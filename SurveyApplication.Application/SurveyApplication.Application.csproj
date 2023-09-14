@@ -9,10 +9,16 @@
   <ItemGroup>
     <Compile Remove="Features\Accounts\Handlers\Commands\**" />
     <Compile Remove="Features\Accounts\Requests\Commands\**" />
+    <Compile Remove="Features\BaoCaoCauHoi\Handlers\Queries\**" />
+    <Compile Remove="Features\BaoCaoCauHoi\Requests\Queries\**" />
     <EmbeddedResource Remove="Features\Accounts\Handlers\Commands\**" />
     <EmbeddedResource Remove="Features\Accounts\Requests\Commands\**" />
+    <EmbeddedResource Remove="Features\BaoCaoCauHoi\Handlers\Queries\**" />
+    <EmbeddedResource Remove="Features\BaoCaoCauHoi\Requests\Queries\**" />
     <None Remove="Features\Accounts\Handlers\Commands\**" />
     <None Remove="Features\Accounts\Requests\Commands\**" />
+    <None Remove="Features\BaoCaoCauHoi\Handlers\Queries\**" />
+    <None Remove="Features\BaoCaoCauHoi\Requests\Queries\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,8 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\BaoCaoCauHoi\Handlers\Queries\" />
-    <Folder Include="Features\BaoCaoCauHoi\Requests\Queries\" />
     <Folder Include="Features\LinhVucHoatDong\Handlers\Commands\" />
     <Folder Include="Features\LinhVucHoatDong\Requests\Commands\" />
   </ItemGroup>

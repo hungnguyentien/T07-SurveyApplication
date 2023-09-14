@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import Utils from '@app/helpers/utils';
 import {
   PeriodSurveyService,
   TableSurveyService,
   UnitTypeService,
 } from '@app/services';
+import { TranslateService } from '@ngx-translate/core';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-statistical',
@@ -27,7 +30,9 @@ export class AdminStatisticalComponent {
     private formBuilder: FormBuilder,
     private periodSurveyService: PeriodSurveyService,
     private tableSurveyService: TableSurveyService,
-    private unitTypeService: UnitTypeService
+    private unitTypeService: UnitTypeService,
+    private config: PrimeNGConfig,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -42,6 +47,7 @@ export class AdminStatisticalComponent {
     this.loadPeriodSurvey();
     this.loadTableSurvey();
     this.loadUnitType();
+    Utils.translate('vi', this.translateService, this.config);
 
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');

@@ -8,6 +8,7 @@ import {
   SaveSurvey,
   BaseCommandResponse,
   HanhChinhVn,
+  CreateBaoCaoCauHoiCommand,
 } from '@app/models';
 import { environment } from '@environments/environment';
 import Utils from '@app/helpers/utils';
@@ -61,6 +62,13 @@ export class PhieuKhaoSatService {
     return this.http.post<BaseCommandResponse>(
       `${environment.apiUrl}/PhieuKhaoSat/SavePhieuKhaoSat`,
       result
+    );
+  }
+
+  dongBoBaoCaoCauHoi(data: CreateBaoCaoCauHoiCommand) {
+    return this.http.post<BaseCommandResponse>(
+      `${environment.apiUrl}/PhieuKhaoSat/DongBoBaoCaoCauHoi`,
+      data
     );
   }
 }

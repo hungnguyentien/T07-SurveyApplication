@@ -5,7 +5,12 @@ import { Router } from '@angular/router';
 
 import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
-import { CreateBaoCaoCauHoi, GeneralInfo, SaveSurvey } from '@app/models';
+import {
+  CreateBaoCaoCauHoi,
+  CreateBaoCaoCauHoiCommand,
+  GeneralInfo,
+  SaveSurvey,
+} from '@app/models';
 import 'survey-core/survey.i18n';
 import { KqTrangThai, TypeCauHoi } from '@app/enums';
 
@@ -50,8 +55,7 @@ export class SurveyInfoComponent {
 
   addDataBaoCao = (...args: any[]) => {
     const [configCauHoi, dataKq, status] = args;
-    // if (configCauHoi && dataKq && status == KqTrangThai.HoanThanh) {
-    if (configCauHoi) {
+    if (configCauHoi && dataKq && status == KqTrangThai.HoanThanh) {
       (configCauHoi as any[]).forEach((el) => {
         if (el.type === 'radiogroup' || el.type === 'checkbox') {
           (el.choices as any[]).forEach((choice) => {
@@ -191,6 +195,21 @@ export class SurveyInfoComponent {
                     this.messageService,
                     res.errors?.at(0) ?? ''
                   );
+              //TODO đồng bộ kết quả sau khi lưu khảo sát
+              if (res.success && status === KqTrangThai.HoanThanh) {
+                let data = {
+                  lstBaoCaoCauHoi: this.lstBaoCaoCauHoi,
+                  idGuiEmail: '0dAdviHHkd5T2Odc-MCP2gCHq__WZ6EH',
+                } as CreateBaoCaoCauHoiCommand;
+                this.phieuKhaoSatService.dongBoBaoCaoCauHoi(data).subscribe({
+                  next: (res) => {
+                    console.log(res);
+                  },
+                  error: (e) => {
+                    console.error(e);
+                  },
+                });
+              }
             },
             error: (e) => {
               this.loading = false;

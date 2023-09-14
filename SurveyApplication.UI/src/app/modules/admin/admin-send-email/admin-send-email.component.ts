@@ -230,6 +230,7 @@ export class AdminSendEmailComponent {
         this.table.reset();
         this.tableGe.reset();
         this.visibleGuiEmail = false;
+        this.selectedGe = [];
       },
     });
   };
@@ -279,6 +280,7 @@ export class AdminSendEmailComponent {
         this.table.reset();
         this.tableGe.reset();
         this.visibleThuHoiEmail = false;
+        this.selectedGe = [];
       },
     });
   };

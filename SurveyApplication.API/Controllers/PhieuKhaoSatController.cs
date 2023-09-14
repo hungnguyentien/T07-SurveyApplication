@@ -68,7 +68,7 @@ public class PhieuKhaoSatController : ControllerBase
     [AllowAnonymous]
     [ValidSecretKey]
     [HttpPost("ScheduleSendEmail")]
-    [ApiExplorerSettings(IgnoreApi = true)]
+    //[ApiExplorerSettings(IgnoreApi = true)]
     public async Task<ActionResult> ScheduleSendEmail()
     {
         var command = new ScheduleSendMailCommand();
@@ -103,12 +103,9 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     [HttpPost("DongBoBaoCaoCauHoi")]
-    public async Task<ActionResult> DongBoBaoCaoCauHoi(List<CreateBaoCaoCauHoiDto> lstBaoCaoCauHoi, string data)
+    public async Task<ActionResult> DongBoBaoCaoCauHoi(CreateBaoCaoCauHoiCommand data)
     {
-        var thongTinChung =
-            JsonConvert.DeserializeObject<EmailThongTinChungDto>(
-                StringUltils.DecryptWithKey(data, EmailSettings.SecretKey));
-        var command = new CreateBaoCaoCauHoiCommand { LstBaoCaoCauHoi = lstBaoCaoCauHoi, IdGuiEmail = thongTinChung?.IdGuiEmail ?? 0 };
+        var command = new CreateBaoCaoCauHoiCommand { LstBaoCaoCauHoi = data.LstBaoCaoCauHoi, IdGuiEmail = data.IdGuiEmail };
         var response = await _mediator.Send(command);
         return Ok(response);
     }

@@ -334,7 +334,6 @@ export class AdminTableSurveyComponent {
       const ObjTableSurvey = this.formTableSurvey.value;
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
-          debugger;
           if (res != null) {
             this.messageService.add({
               severity: 'success',
@@ -490,7 +489,12 @@ export class AdminTableSurveyComponent {
         maCauHoi: el.maCauHoi,
         tieuDe: el.tieuDe,
       });
-      this.lstBangKhaoSatCauHoi.push(newItem);
+      if (
+        !this.lstBangKhaoSatCauHoi.value.find(
+          (x: { maCauHoi: string }) => x.maCauHoi === el.maCauHoi
+        )
+      )
+        this.lstBangKhaoSatCauHoi.push(newItem);
     });
     this.visibleCauHoi = false;
   }
