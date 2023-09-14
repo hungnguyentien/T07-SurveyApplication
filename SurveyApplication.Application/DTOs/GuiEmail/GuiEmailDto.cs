@@ -16,6 +16,8 @@ public class GuiEmailDto : BaseDto
     public string TenDonVi { get; set; }
     public string NguoiThucHien { get; set; }
     public string LinkKhaoSat { get; set; }
+    // đã thực hiện khảo sát
+    public bool IsKhaoSat { get; set; }
 }
 
 public class GuiEmailBksDto
@@ -29,7 +31,6 @@ public class GuiEmailBksDto
     public int CountSendThuHoi { get; set; }
     public DateTime NgayBatDau { get; set; }
     public DateTime NgayKetThuc { get; set; }
-
 }
 
 public class GuiEmailBksDetailDto

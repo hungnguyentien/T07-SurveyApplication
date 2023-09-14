@@ -145,7 +145,9 @@ export class AdminSendEmailComponent {
   };
 
   checkTrangThai(trangThai: number) {
-    return this.selectedGe?.find((x) => x.trangThai === trangThai);
+    return this.selectedGe?.find(
+      (x) => x.trangThai === trangThai && !x.isKhaoSat
+    );
   }
 
   onSubmitSearch = () => {

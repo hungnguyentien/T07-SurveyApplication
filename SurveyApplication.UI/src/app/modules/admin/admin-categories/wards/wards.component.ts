@@ -73,7 +73,6 @@ export class WardsComponent {
     };
     this.XaPhuongService.getByCondition(this.paging).subscribe({
       next: (res) => {
-        debugger
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
       },
@@ -125,7 +124,6 @@ export class WardsComponent {
   }
 
   Edit(data: any) {
-    debugger
     this.visible = !this.visible;
     this.showadd = false;
     this.IdXaPhuong = data.id;

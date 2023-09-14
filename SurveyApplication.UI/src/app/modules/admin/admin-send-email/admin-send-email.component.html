@@ -205,13 +205,18 @@
               <th pResizableColumn>
                 Trạng thái
               </th>
+              <th pResizableColumn>
+                Trạng thái khảo sát
+              </th>
             </tr>
           </ng-template>
 
           <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
             <tr class="p-selectable-row">
               <td>
-                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                <div *ngIf="!rowData.isKhaoSat">
+                  <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </div>
               </td>
               <td class="vertical-align-middle text-center">
                 {{ rowIndex + 1}}
@@ -239,6 +244,9 @@
                   <ng-container *ngSwitchDefault><span style="font-weight: 600; color: rgba(65, 76, 82, 1);">Đang
                       gửi</span></ng-container>
                 </ng>
+              </td>
+              <td class="text-center">
+                {{rowData.isKhaoSat ? 'Đã khảo sát': 'Chưa khảo sát'}}
               </td>
             </tr>
           </ng-template>

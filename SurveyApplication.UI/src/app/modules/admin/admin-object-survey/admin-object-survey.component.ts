@@ -235,7 +235,6 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveAdd() {
-    debugger
     if (this.FormObjectSurvey.valid && this.FormRepresentative.valid) {
       const obj: CreateUnitAndRep = {
         donViDto: this.FormObjectSurvey.value,
@@ -299,7 +298,6 @@ export class AdminObjectSurveyComponent {
   }
 
   Delete(DonVi: any) {
-    debugger;
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn xoá không ' + '?',
       header: 'delete',

@@ -19,8 +19,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
             CancellationToken cancellationToken)
         {
             var query = from a in _surveyRepo.BangKhaoSat.GetAllQueryable().AsNoTracking()
-                        join b in _surveyRepo.GuiEmail.GetAllQueryable().AsNoTracking()
-                            on a.Id equals b.IdBangKhaoSat
+                        join b in _surveyRepo.GuiEmail.GetAllQueryable().AsNoTracking() on a.Id equals b.IdBangKhaoSat
                         where !a.Deleted && !b.Deleted
                         select new
                         {
@@ -44,7 +43,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
                            CountSendLoi = query.Count(x => x.IdBangKhaoSat == gbks.Key.IdBangKhaoSat && x.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi),
                            CountSendThuHoi = query.Count(x => x.IdBangKhaoSat == gbks.Key.IdBangKhaoSat && x.TrangThai == (int)EnumGuiEmail.TrangThai.ThuHoi),
                            NgayBatDau = gbks.Key.NgayBatDau,
-                           NgayKetThuc = gbks.Key.NgayKetThuc
+                           NgayKetThuc = gbks.Key.NgayKetThuc,
                        };
             var totalCount = await data.LongCountAsync(cancellationToken: cancellationToken);
             var pageResults = await data.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)

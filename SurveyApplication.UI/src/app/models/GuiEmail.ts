@@ -21,6 +21,7 @@ export interface GuiEmail extends Base {
   tenDonVi: string;
   nguoiThucHien: string;
   linkKhaoSat: string;
+  isKhaoSat: boolean;
 }
 
 export interface GuiEmailBks {

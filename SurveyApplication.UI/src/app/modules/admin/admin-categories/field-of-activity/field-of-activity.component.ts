@@ -146,7 +146,6 @@ export class FieldOfActivityComponent {
   }
 
   SaveEdit() {
-    debugger
     const ObjFieldOfActivity = this.FormFieldOfActivity.value;
     ObjFieldOfActivity['id'] = this.IdLinhVuc;
     this.FieldOfActivityService.update(ObjFieldOfActivity).subscribe({

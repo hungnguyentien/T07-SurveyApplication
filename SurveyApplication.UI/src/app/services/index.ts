@@ -9,3 +9,4 @@ export * from './unit-type.service';
 export * from './period-survey.service';
 export * from './table-survey.service';
 export * from './gui-email.service';
+export * from './bao-cao-cau-hoi.service';

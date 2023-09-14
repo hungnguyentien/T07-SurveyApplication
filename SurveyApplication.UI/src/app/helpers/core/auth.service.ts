@@ -40,7 +40,6 @@ export class AuthService {
   }
 
   login(loginData: any): Observable<any> {
-    debugger
     this.tokenService.removeToken();
     this.tokenService.removeRefreshToken();
     const body = new HttpParams()

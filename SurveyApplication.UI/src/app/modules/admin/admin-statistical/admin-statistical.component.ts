@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import Utils from '@app/helpers/utils';
 import {
+  BaoCaoCauHoiService,
   PeriodSurveyService,
   TableSurveyService,
   UnitTypeService,
 } from '@app/services';
 import { TranslateService } from '@ngx-translate/core';
-import { PrimeNGConfig } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-statistical',
@@ -26,19 +27,25 @@ export class AdminStatisticalComponent {
   barData: any;
   barOptions: any;
 
+  selectedDotKhaoSat: number = 1;
+  selectedBangKhaoSat: number = 1;
+
   constructor(
     private formBuilder: FormBuilder,
     private periodSurveyService: PeriodSurveyService,
     private tableSurveyService: TableSurveyService,
     private unitTypeService: UnitTypeService,
     private config: PrimeNGConfig,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private messageService: MessageService,
+    private baoCaoCauHoiService: BaoCaoCauHoiService
   ) {}
 
   ngOnInit() {
+    Utils.translate('vi', this.translateService, this.config);
     this.frmStatiscal = this.formBuilder.group({
-      idDotKhaoSat: [],
-      idBangKhaoSat: [],
+      idDotKhaoSat: [this.selectedDotKhaoSat],
+      idBangKhaoSat: [this.selectedBangKhaoSat],
       idLoaiHinh: [],
       ngayBatDau: [],
       ngayKetThuc: [],
@@ -47,16 +54,28 @@ export class AdminStatisticalComponent {
     this.loadPeriodSurvey();
     this.loadTableSurvey();
     this.loadUnitType();
-    Utils.translate('vi', this.translateService, this.config);
+    this.getVauleChar(this.frmStatiscal.value);
+  }
 
+  getVauleChar = (params: any) => {
+    this.baoCaoCauHoiService.getBaoCaoCauHoi(params).subscribe({
+      next: (res) => {
+        this.setChar(
+          [res.countDonViMoi, res.countDonViTraLoi],
+          [res.countDonViSo, res.countDonViBo, res.countDonViNganh]
+        );
+      },
+    });
+  };
+
+  setChar = (doughnutData: number[], barData: number[]) => {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-
     this.doughnutData = {
       labels: ['Đơn vị được mời', 'Đơn vị tham gia khảo sát'],
       datasets: [
         {
-          data: [200, 130],
+          data: doughnutData,
           backgroundColor: [
             documentStyle.getPropertyValue('--blue-500'),
             documentStyle.getPropertyValue('--yellow-500'),
@@ -91,7 +110,7 @@ export class AdminStatisticalComponent {
           label: 'Đối tượng',
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           borderColor: documentStyle.getPropertyValue('--blue-500'),
-          data: [65, 100, 50],
+          data: barData,
           borderWidth: 1,
         },
       ],
@@ -130,9 +149,18 @@ export class AdminStatisticalComponent {
         },
       },
     };
-  }
+  };
 
-  search = () => {};
+  search = () => {
+    let params = this.frmStatiscal.value;
+    if (!params.idDotKhaoSat)
+      Utils.messageError(this.messageService, `Vui lòng chọn đợt khảo sát!`);
+    else if (!params.idBangKhaoSat)
+      Utils.messageError(this.messageService, `Vui lòng chọn bảng khảo sát!`);
+    else this.getVauleChar(params);
+  };
+
+  reset = () => {this.frmStatiscal.reset()}
 
   loadPeriodSurvey() {
     this.periodSurveyService.getAll().subscribe((data) => {
