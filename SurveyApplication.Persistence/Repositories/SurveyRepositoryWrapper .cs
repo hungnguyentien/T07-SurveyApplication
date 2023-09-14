@@ -74,6 +74,9 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IBaoCaoCauHoiRepository _baoCaoCauHoiRepository;
     public IBaoCaoCauHoiRepository BaoCaoCauHoi => _baoCaoCauHoiRepository ??= new BaoCaoCauHoiRepository(_repoContext);
 
+    public IJobScheduleRepository _jobScheduleRepository;
+    public IJobScheduleRepository JobSchedule => _jobScheduleRepository ??= new JobScheduleRepository(_repoContext);
+
     #endregion
 
     //RenderHere

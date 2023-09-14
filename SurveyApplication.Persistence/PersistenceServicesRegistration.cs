@@ -79,6 +79,7 @@ public static class PersistenceServicesRegistration
         services.AddScoped<ITinhTpRepository, TinhTpRepository>();
         services.AddScoped<ILinhVucHoatDongRepository, LinhVucHoatDongRepository>();
         services.AddScoped<IBaoCaoCauHoiRepository, BaoCaoCauHoiRepository>();
+        services.AddScoped<IJobScheduleRepository, JobScheduleRepository>();
 
         return services;
     }
