@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '@app/services/auth.service';
+import { LoginService } from '@app/services';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuardService {
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private loginService: LoginService, private router: Router) {}
 
   canActivate(): boolean {
-    if (this.authService.isLoggedIn()) {
+    if (this.loginService.currentUserValue()) {
       return true;
     } else {
       // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập

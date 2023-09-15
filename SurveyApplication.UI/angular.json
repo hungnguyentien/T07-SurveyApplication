@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/survey-app-fe",
+            "outputPath": "D:/Publish/SurveyWeb",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -32,14 +32,15 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/survey-core/defaultV2.min.css",
               "node_modules/survey-creator-core/survey-creator-core.min.css",
-              "node_modules/survey-analytics/survey.analytics.min.css",
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/chart.js/dist/chart.js"
             ],
             "allowedCommonJsDependencies": [
               "Utils",
+              "crypto-js",
               "survey-core",
               "survey-creator-core",
               "survey-core/survey.i18n",
@@ -52,7 +53,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

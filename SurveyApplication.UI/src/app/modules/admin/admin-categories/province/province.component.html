@@ -1,4 +1,4 @@
-<!-- <p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast> -->
+<p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast>
 <p-confirmDialog #cd [style]="{width: '30vw'}">
     <ng-template pTemplate="header">
       <h5>Xác nhận xoá loại hình đơn vị</h5>
@@ -23,7 +23,7 @@
           style="background-color: #ea5c5c;"></button>
       </div>
     </div>
-    <form  class="form-inline mt-4">
+    <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
       <div class="form-group mb-2">
         <label for="keyWord" class="sr-only">Search</label>
         <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
@@ -35,11 +35,12 @@
     </form>
   </div>
   <div class="card mt-3">
-    <p-table #dt [value]="listFormTinhThanh" [scrollable]="true"
-      scrollHeight="calc(100vh - 396px)"  dataKey="id"
-      styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-      [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [totalRecords]="dataTotalRecords"
-      currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+      <p-table #dt [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
+        scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTinhThanh" dataKey="id"
+        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+        [totalRecords]="dataTotalRecords"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 4rem">
@@ -53,14 +54,15 @@
               Mã<div type="text" field="country.name" display="menu" class="ml-auto"></div>
             </div>
           </th>
-          <th style="min-width: 16rem">
+         
+          <th style="min-width: 10rem">
             <div class="flex justify-content-between align-items-center">
               Tên<div type="text" field="country.name" display="menu" class="ml-auto"></div>
             </div>
           </th>
           <th style="min-width: 10rem">
             <div class="flex justify-content-between align-items-center">
-              Loại<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+              Kiểu<div type="text" field="country.name" display="menu" class="ml-auto"></div>
             </div>
           </th>
   
@@ -83,7 +85,7 @@
           </td>
           <td>
             <span class="ml-1 vertical-align-middle">{{ rowData.code }}</span>
-          </td>
+          </td>      
           <td>
             <span class="ml-1 vertical-align-middle">{{ rowData.name }}</span>
           </td>
@@ -113,40 +115,40 @@
       [maximizable]="true">
       <ng-template pTemplate="header">
         <h5 class="modal-title">
-          {{ showadd === true ? "Thêm mới loại hình đơn vị" : "Cập nhật loại hình đơn vị" }}
+          {{ showadd === true ? "Thêm mới tỉnh thành phố " : "Cập nhật tỉnh thành phố " }}
         </h5>
       </ng-template>
       <ng-template pTemplate="body">
         <div class="form-group">
-          <label for="MaLinhVuc" class="col-form-label">Mã lĩnh vực: <span style="color: red;">*</span></label>
-          <input type="text" formControlName="MaLinhVuc" class="form-control" id="MaLinhVuc" placeholder="Nhập mã lĩnh vực">
-          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['MaLinhVuc'].valid && 
-            FormTinhThanh.controls['MaLinhVuc'].dirty" >
-                  Vui lòng nhập mã lĩnh vực
+          <label for="code" class="col-form-label">Mã : <span style="color: red;">*</span></label>
+          <input type="text" formControlName="code" class="form-control" id="code" placeholder="Nhập mã " required="">
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['code'].valid && 
+            FormTinhThanh.controls['code'].dirty" >
+                  Vui lòng nhập mã 
           </small>
         </div>
+
   
         <div class="form-group">
-          <label for="TenLinhVuc" class="col-form-label">Tên lĩnh vực: <span style="color: red;">*</span></label>
-          <input type="text" formControlName="TenLinhVuc" class="form-control" id="TenLinhVuc" pInputText
-            placeholder="Nhập tên lĩnh vực" [ngClass]="{
-              'is-invalid': submitted && f('TenLinhVuc').errors
-            }">
-          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['TenLinhVuc'].valid && 
-            FormTinhThanh.controls['TenLinhVuc'].dirty" >
-                  Vui lòng nhập tên lĩnh vực
-          </small>
-        </div>
-  
-        <div class="form-group">
-          <label for="MoTa" class="col-form-label">Mô tả: <span style="color: red;">*</span></label>
-          <textarea class="form-control" formControlName="MoTa" id="MoTa" pInputText placeholder="Nhập mô tả" [ngClass]="{
-            'is-invalid': submitted && f('MoTa').errors
+          <label for="name" class="col-form-label">Tên: <span style="color: red;">*</span></label>
+          <textarea class="form-control" formControlName="name" id="name" pInputText placeholder="Nhập tên" [ngClass]="{
+            'is-invalid': submitted && f('name').errors
           }"></textarea>
-          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['MoTa'].valid && 
-            FormTinhThanh.controls['MoTa'].dirty" >
-                  Vui lòng nhập Mô tả
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['name'].valid && 
+            FormTinhThanh.controls['name'].dirty" >
+                  Vui lòng nhập Tên
           </small>
+          <div class="form-group">
+            <label for="type" class="col-form-label">Kiểu: <span style="color: red;">*</span></label>
+            <input type="text" formControlName="type" class="form-control" id="type" pInputText
+              placeholder="Nhập kiểu" [ngClass]="{
+                'is-invalid': submitted && f('type').errors
+              }">
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['type'].valid && 
+              FormTinhThanh.controls['type'].dirty" >
+                    Vui lòng nhập kiểu
+            </small>
+          </div>
         </div>
       </ng-template>
       <ng-template pTemplate="footer">

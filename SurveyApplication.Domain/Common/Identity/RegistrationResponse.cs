@@ -1,7 +1,6 @@
-﻿namespace SurveyApplication.Domain.Common.Identity
+﻿namespace SurveyApplication.Domain.Common.Identity;
+
+public class RegistrationResponse
 {
-    public class RegistrationResponse
-    {
-        public string UserId { get; set; }
-    }
+    public string UserId { get; set; }
 }

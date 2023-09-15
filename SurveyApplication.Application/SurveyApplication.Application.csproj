@@ -7,12 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Accounts\Handlers\Commands\**" />
+    <Compile Remove="Features\Accounts\Requests\Commands\**" />
+    <EmbeddedResource Remove="Features\Accounts\Handlers\Commands\**" />
+    <EmbeddedResource Remove="Features\Accounts\Requests\Commands\**" />
+    <None Remove="Features\Accounts\Handlers\Commands\**" />
+    <None Remove="Features\Accounts\Requests\Commands\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Features\CauHoi\Handlers\Queries\GetCauHoiConditionsRequestHandler.cs~RF3b9665.TMP" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
@@ -25,7 +34,11 @@
     <ProjectReference Include="..\Infrastructure\SurveyApplication.Infrastructure.csproj" />
     <ProjectReference Include="..\SurveyApplication.Domain\SurveyApplication.Domain.csproj" />
     <ProjectReference Include="..\SurveyApplication.Persistence\SurveyApplication.Persistence.csproj" />
-    <ProjectReference Include="..\SurveyApplication.Utility\SurveyApplication.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\LinhVucHoatDong\Handlers\Commands\" />
+    <Folder Include="Features\LinhVucHoatDong\Requests\Commands\" />
   </ItemGroup>
 
 </Project>

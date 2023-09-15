@@ -106,8 +106,10 @@ import { FieldOfActivityComponent } from './admin-categories/field-of-activity/f
 import { ProvinceComponent } from './admin-categories/province/province.component';
 import { DistrictComponent } from './admin-categories/district/district.component';
 import { WardsComponent } from './admin-categories/wards/wards.component';
+import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ShareModule } from '@app/layout/share/share.module';
 // import { JwtInterceptor } from '@app/helpers';
 
 
@@ -124,6 +126,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     ProvinceComponent,
     DistrictComponent,
     WardsComponent,
+    AdminStatisticalComponent,
   ],
   imports: [
     CommonModule,
@@ -144,7 +147,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     CalendarModule,
     CarouselModule,
     CascadeSelectModule,
-    // ChartModule,
+    ChartModule,
     CheckboxModule,
     ChipsModule,
     ChipModule,
@@ -220,7 +223,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     TreeTableModule,
     AnimateModule,
     CardModule,
-    HttpClientModule
+    HttpClientModule,
+    ShareModule
   ],
  
   providers: [DatePipe],

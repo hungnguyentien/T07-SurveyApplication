@@ -1,12 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
-using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.DTOs.XaPhuong;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
-using SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Commands;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;

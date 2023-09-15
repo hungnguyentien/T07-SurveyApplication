@@ -3,14 +3,18 @@ import { Model } from 'survey-core';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 
-import { themeJson } from './theme';
-import { jsonDataFake } from './json';
 import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
-import { GeneralInfo, SaveSurvey } from '@app/models';
+import {
+  CreateBaoCaoCauHoi,
+  CreateBaoCaoCauHoiCommand,
+  GeneralInfo,
+  SaveSurvey,
+} from '@app/models';
 import 'survey-core/survey.i18n';
-
-const defaultJson = jsonDataFake.config;
+import { KqTrangThai } from '@app/enums';
+import { environment } from '@environments/environment';
+import * as crypto from 'crypto-js';
 
 @Component({
   selector: 'app-survey-info',
@@ -22,6 +26,7 @@ export class SurveyInfoComponent {
   loading!: boolean;
   generalInfo!: GeneralInfo;
   saveSurvey!: SaveSurvey;
+  lstBaoCaoCauHoi: CreateBaoCaoCauHoi[] = [];
 
   constructor(
     private phieuKhaoSatService: PhieuKhaoSatService,
@@ -29,8 +34,21 @@ export class SurveyInfoComponent {
     private messageService: MessageService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.generalInfo = history.state;
+    let ipClient = localStorage.getItem('grand_client');
+    if (!ipClient) {
+      try {
+        ipClient = JSON.stringify(
+          await (await fetch(environment.apiIp)).json()
+        );
+        localStorage.setItem('grand_client', Utils.encrypt(ipClient));
+      } catch (e) {
+        ipClient = '';
+        console.log(e);
+      }
+    }
+
     const configSurvey = (
       configJson: any,
       surveyData: string,
@@ -38,15 +56,22 @@ export class SurveyInfoComponent {
     ) => {
       this.model = Utils.configSurvey(
         configJson,
-        themeJson,
         this.router,
         (sender: Model, status: number) => {
+          let dataKq = sender.data;
+          let configCauHoi: any[] = (sender as any).jsonObj?.pages[0]?.elements;
+          this.lstBaoCaoCauHoi = Utils.addDataBaoCao(
+            configCauHoi,
+            dataKq,
+            status,
+            [],
+            this.generalInfo
+          );
           this.saveSurvey = {
-            data: JSON.stringify(sender.data),
-            idBangKhaoSat: this.generalInfo.bangKhaoSat,
-            idDonVi: this.generalInfo.donVi.id,
-            idNguoiDaiDien: this.generalInfo.nguoiDaiDien.id,
+            data: JSON.stringify(dataKq),
+            guiEmail: this.generalInfo.data ?? '',
             trangThai: status,
+            ipAddressClient: ipClient ? Utils.decrypt(ipClient) : '',
           };
           this.loading = true;
           this.phieuKhaoSatService.saveSurvey(this.saveSurvey).subscribe({
@@ -57,9 +82,23 @@ export class SurveyInfoComponent {
                     this.messageService,
                     res.errors?.at(0) ?? ''
                   );
+              //TODO đồng bộ kết quả sau khi lưu khảo sát
+              if (res.success && status === KqTrangThai.HoanThanh) {
+                let data = {
+                  lstBaoCaoCauHoi: this.lstBaoCaoCauHoi,
+                  idGuiEmail: this.generalInfo.data,
+                } as CreateBaoCaoCauHoiCommand;
+                this.phieuKhaoSatService.dongBoBaoCaoCauHoi(data).subscribe({
+                  next: (res) => {
+                    console.log(res);
+                  },
+                  error: (e) => {
+                    console.error(e);
+                  },
+                });
+              }
             },
             error: (e) => {
-              Utils.messageError(this.messageService, e.message);
               this.loading = false;
             },
             complete: () => {
@@ -75,192 +114,9 @@ export class SurveyInfoComponent {
 
     this.loading = true;
     this.phieuKhaoSatService
-      .getSurveyConfig(
-        this.generalInfo.bangKhaoSat,
-        this.generalInfo.donVi.id,
-        this.generalInfo.nguoiDaiDien.id
-      )
+      .getSurveyConfig(this.generalInfo.data)
       .subscribe((res) => {
-        let els = new Array();
-        let pages = defaultJson.pages[0];
-        let readOnly = res.trangThai === 2;
-        res.lstCauHoi.forEach((el, i) => {
-          let loaiCauHoi = el.loaiCauHoi;
-          let name = el.maCauHoi;
-          let title = `${el.tieuDe}`;
-          let isRequired = el.batBuoc ?? false;
-          let requiredErrorText = isRequired
-            ? 'Vui lòng nhập câu trả lời của bạn!'
-            : '';
-          let description = el.noidung;
-          let choicesRadio = new Array();
-          el.lstCot.forEach((el, i) => {
-            choicesRadio.push({
-              value: el.noidung,
-              text: `${el.noidung}`,
-            });
-          });
-          let choices = new Array();
-          el.lstCot.forEach((el, i) => {
-            choices.push({
-              value: el.noidung,
-              text: `${el.noidung}`,
-            });
-          });
-          let showOtherItem = el.isOther ?? false;
-          let otherPlaceholder = showOtherItem ? 'Câu trả lời của bạn' : '';
-          let otherText = showOtherItem ? el.labelCauTraLoi : '';
-
-          let columns = new Array();
-          let isMatrixdropdown = loaiCauHoi == 4;
-          el.lstCot.forEach((el, i) => {
-            columns.push(
-              isMatrixdropdown
-                ? {
-                    value: el.maCot,
-                    text: el.noidung,
-                  }
-                : {
-                    name: el.maCot,
-                    title: el.noidung,
-                  }
-            );
-          });
-          let rows = new Array();
-          el.lstHang.forEach((el, i) => {
-            rows.push({
-              value: el.maHang,
-              text: el.noidung,
-            });
-          });
-
-          let maxSize = el.kichThuocFile;
-          if (loaiCauHoi === 0) {
-            els.push({
-              type: 'radiogroup',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              requiredErrorText: requiredErrorText,
-              description: description,
-              choices: choicesRadio,
-              showOtherItem: showOtherItem,
-              otherPlaceholder: otherPlaceholder,
-              otherText: otherText,
-              readOnly: readOnly,
-            });
-          } else if (loaiCauHoi === 1) {
-            els.push({
-              type: 'checkbox',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              requiredErrorText: requiredErrorText,
-              description: description,
-              choices: choices,
-              showOtherItem: showOtherItem,
-              otherPlaceholder: otherPlaceholder,
-              otherText: otherText,
-              readOnly: readOnly,
-            });
-          } else if (loaiCauHoi == 2) {
-            els.push({
-              type: 'text',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              requiredErrorText: requiredErrorText,
-              description: description,
-              readOnly: readOnly,
-            });
-          } else if (loaiCauHoi == 3) {
-            els.push({
-              type: 'comment',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              requiredErrorText: requiredErrorText,
-              description: description,
-              readOnly: readOnly,
-            });
-          } else if (loaiCauHoi == 4) {
-            els.push({
-              type: 'matrix',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              requiredErrorText: requiredErrorText,
-              description: description,
-              alternateRows: true,
-              columns: columns,
-              rows: rows,
-              readOnly: readOnly,
-            });
-          } else if (loaiCauHoi == 5) {
-            els.push({
-              type: 'matrixdropdown',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              requiredErrorText: requiredErrorText,
-              description: description,
-              alternateRows: true,
-              columns: columns,
-              rows: rows,
-              choices: [
-                {
-                  value: '1',
-                  text: 'Có',
-                },
-              ],
-              cellType: 'checkbox',
-              columnColCount: 1,
-              readOnly: readOnly,
-            });
-          } else if (loaiCauHoi == 6) {
-            els.push({
-              type: 'matrixdropdown',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              requiredErrorText: requiredErrorText,
-              description: description,
-              alternateRows: true,
-              columns: columns,
-              rows: rows,
-              choices: [
-                {
-                  value: '1',
-                  text: 'Có',
-                },
-              ],
-              cellType: 'text',
-              columnColCount: 1,
-              readOnly: readOnly,
-            });
-          } else if (loaiCauHoi == 7) {
-            els.push({
-              type: 'file',
-              name: name,
-              title: title,
-              isRequired: isRequired,
-              requiredErrorText: requiredErrorText,
-              description: description,
-              storeDataAsText: false,
-              allowMultiple: true,
-              maxSize: maxSize,
-              showCommentArea: true,
-              commentText: 'Ghi chú',
-              readOnly: readOnly,
-            });
-          }
-        });
-
-        pages.elements = [];
-        els.map((el) => {
-          (pages.elements as any[]).push(el);
-        });
-        configSurvey(defaultJson, res.kqSurvey, res.trangThai);
+        configSurvey(Utils.getJsonSurvey(res), res.kqSurvey, res.trangThaiKq);
         this.loading = false;
       });
   }

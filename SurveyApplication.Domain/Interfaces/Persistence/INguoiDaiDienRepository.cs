@@ -1,7 +1,6 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface INguoiDaiDienRepository : IGenericRepository<NguoiDaiDien>
 {
-    public interface INguoiDaiDienRepository : IGenericRepository<NguoiDaiDien>
-    {
-        Task<bool> ExistsByMaNguoiDaiDien(string maNguoiDaiDien);
-    }
+    Task<bool> ExistsByMaNguoiDaiDien(string maNguoiDaiDien);
 }

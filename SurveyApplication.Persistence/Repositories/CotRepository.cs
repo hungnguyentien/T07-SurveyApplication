@@ -1,13 +1,12 @@
 ﻿using SurveyApplication.Domain;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Persistence.Repositories
+namespace SurveyApplication.Persistence.Repositories;
+
+public class CotRepository : GenericRepository<Cot>, ICotRepository
 {
-    public class CotRepository: GenericRepository<Cot>, ICotRepository
+    public CotRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
     {
-        public CotRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
-        {
-            DbContext = dbContext;
-        }
+        DbContext = dbContext;
     }
 }

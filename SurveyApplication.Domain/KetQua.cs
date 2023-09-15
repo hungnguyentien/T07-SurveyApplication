@@ -1,18 +1,20 @@
 ﻿using SurveyApplication.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SurveyApplication.Domain
+namespace SurveyApplication.Domain;
+
+public class KetQua : BaseDomainEntity
 {
-    public class KetQua: BaseDomainEntity
-    {
+    public string Data { get; set; }
 
-        public string Data { get; set; }
-        public int IdDonVi { get; set; }
-        public int IdNguoiDaiDien { get; set; }
-        public int IdBangKhaoSat { get; set; }
-    }
+    public int IdGuiEmail { get; set; }
+
+    /// <summary>
+    ///     0 vừa gửi mail, 1 lưu nháp, 2 hoàn thành
+    /// </summary>
+    public int TrangThai { get; set; }
+    /// <summary>
+    /// Thời gian hoàn thành
+    /// </summary>
+    public DateTime? DauThoiGian { get; set; }
+    public string IpAddressClient { get; set; }
 }

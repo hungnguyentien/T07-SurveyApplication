@@ -1,9 +1,6 @@
-﻿using SurveyApplication.Domain.Common.Responses;
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Domain.Interfaces.Persistence
+public interface IGuiEmailRepository : IGenericRepository<GuiEmail>
 {
-    public interface IGuiEmailRepository : IGenericRepository<GuiEmail>
-    {
-        Task<bool> ExistsByMaGuiEmail(string maGuiEmail);
-    }
+    Task<bool> ExistsByMaGuiEmail(string maGuiEmail);
 }

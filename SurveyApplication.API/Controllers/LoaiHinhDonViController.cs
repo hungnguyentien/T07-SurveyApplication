@@ -4,8 +4,8 @@ using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Commands;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers

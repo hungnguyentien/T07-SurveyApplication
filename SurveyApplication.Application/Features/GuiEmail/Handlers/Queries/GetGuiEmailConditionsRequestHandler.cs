@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SurveyApplication.Application.DTOs.DotKhaoSat;
 using SurveyApplication.Application.DTOs.GuiEmail;
-using SurveyApplication.Application.Features.GuiEmails.Requests.Queries;
+using SurveyApplication.Application.Features.GuiEmail.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;

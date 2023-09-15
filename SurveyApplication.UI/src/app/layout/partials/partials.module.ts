@@ -5,7 +5,10 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterClientComponent } from './footer-client/footer-client.component';
 import { HeaderClientComponent } from './header-client/header-client.component';
+import { RouterModule } from '@angular/router';
+import { ShareModule } from '../share/share.module';
 import { Error403Component } from './error403/error403.component';
+import { Error500Component } from './error500/error500.component';
 
 @NgModule({
   declarations: [
@@ -15,8 +18,9 @@ import { Error403Component } from './error403/error403.component';
     FooterClientComponent,
     HeaderClientComponent,
     Error403Component,
+    Error500Component,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, ShareModule],
   exports: [
     HeaderComponent,
     FooterComponent,

@@ -17,7 +17,10 @@ namespace SurveyApplication.API.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            if (httpContext.Request.Path.Equals("/api/Account/Login", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/swagger/index.html", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.Equals("/swagger/v1/swagger.json", StringComparison.OrdinalIgnoreCase))
+            if (httpContext.Request.Path.Equals("/api/Account/login", StringComparison.OrdinalIgnoreCase) 
+                || httpContext.Request.Path.Equals("/swagger/index.html", StringComparison.OrdinalIgnoreCase) 
+                || httpContext.Request.Path.Equals("/swagger/v1/swagger.json", StringComparison.OrdinalIgnoreCase) 
+                || httpContext.Request.Path.StartsWithSegments("/api/PhieuKhaoSat", StringComparison.OrdinalIgnoreCase))
             {
                 await _next.Invoke(httpContext);
                 return;
@@ -38,49 +41,33 @@ namespace SurveyApplication.API.Middleware
                 var handler = new JwtSecurityTokenHandler();
                 var decodedToken = handler.ReadJwtToken(token);
                 var roles = decodedToken.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-
-                List<string> permissions = null;
-
-                foreach (var role in roles)
+                //TODO khác Administrator mới check quyền
+                if (!roles.Exists(x => x == "Administrator"))
                 {
-                    permissions = decodedToken.Claims.Where(c => c.Type == role).Select(c => c.Value).ToList();
-                }
-
-                if (permissions.Count == 0)
-                {
-                    httpContext.Response.StatusCode = 401; // Unauthorized
-                    return;
-                }
-
-                List<string> path = httpContext.Request.Path.ToString().Trim('/').Split('/').ToList();
-
-                bool hasRequiredRole = false;
-                foreach (var permission in permissions)
-                {
-                    if (permission.Contains(path[1]) && permission.Contains(path[2]))
+                    var permissions = decodedToken.Claims.Where(c => roles.Contains(c.Type)).Select(c => c.Value).ToList();
+                    if (permissions.Count == 0)
                     {
-                        hasRequiredRole = true;
-                        break;
+                        httpContext.Response.StatusCode = 401; // Unauthorized
+                        return;
                     }
-                }
 
-                if (!hasRequiredRole)
-                {
-                    httpContext.Response.StatusCode = 403; // Forbidden
-                    return;
-                }
+                    var path = httpContext.Request.Path.ToString().Trim('/').Split('/').ToList();
+                    var hasRequiredRole = permissions.Any(permission => permission.Contains(path[1]) && permission.Contains(path[2]));
+                    if (!hasRequiredRole)
+                    {
+                        httpContext.Response.StatusCode = 403; // Forbidden
+                        return;
+                    }
 
-                // Lưu quyền vào context để sử dụng trong các middleware khác
-                httpContext.Items["permissions"] = permissions;
+                    // Lưu quyền vào context để sử dụng trong các middleware khác
+                    httpContext.Items["permissions"] = permissions;
+                }
 
                 await _next.Invoke(httpContext);
-                return;
-
             }
             catch (SecurityTokenException)
             {
                 httpContext.Response.StatusCode = 401; // Unauthorized
-                return;
             }
         }
     }

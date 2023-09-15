@@ -22,9 +22,9 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
             {
                 var donVi = await _surveyRepo.DonVi.SingleOrDefaultAsync(x => x.Id == item);
 
-                var ketQua = await _surveyRepo.KetQua.GetAllListAsync(x => x.IdDonVi == donVi.Id);
+                var nguoiDaiDien = await _surveyRepo.NguoiDaiDien.GetAllListAsync(x => x.IdDonVi == donVi.Id);
 
-                if (ketQua.Count() != 0)
+                if (nguoiDaiDien.Count() != 0)
                 {
                     response.Success = false;
                     response.Message = "Đang có bản ghi liên quan, không thể xóa được!";

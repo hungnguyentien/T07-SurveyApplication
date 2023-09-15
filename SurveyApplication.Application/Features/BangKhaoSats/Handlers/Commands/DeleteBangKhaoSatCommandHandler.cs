@@ -17,20 +17,6 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
         {
             var response = new BaseCommandResponse();
 
-            foreach (var item in request.Ids)
-            {
-                var bangKhaoSat = await _surveyRepo.BangKhaoSat.SingleOrDefaultAsync(x => x.Id == item);
-
-                var ketQua = await _surveyRepo.KetQua.GetAllListAsync(x => x.IdDonVi == bangKhaoSat.Id);
-
-                if (ketQua.Count() != 0)
-                {
-                    response.Success = false;
-                    response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
-                    return response;
-                }
-            }
-
             var lstBangKhaoSat = await _surveyRepo.BangKhaoSat.GetByIds(x => request.Ids.Contains(x.Id));
 
             if (lstBangKhaoSat == null || lstBangKhaoSat.Count == 0)

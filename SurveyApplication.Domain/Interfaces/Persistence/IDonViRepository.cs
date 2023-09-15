@@ -1,7 +1,6 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface IDonViRepository : IGenericRepository<DonVi>
 {
-    public interface IDonViRepository : IGenericRepository<DonVi>
-    {
-        Task<bool> ExistsByMaDonVi(string maDonVi);
-    }
+    Task<bool> ExistsByMaDonVi(string maDonVi);
 }

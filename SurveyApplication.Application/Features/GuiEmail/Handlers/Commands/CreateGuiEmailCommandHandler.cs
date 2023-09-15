@@ -6,23 +6,26 @@ using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
+namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands;
+
+public class CreateGuiEmailCommandHandler : BaseMasterFeatures,
+    IRequestHandler<CreateGuiEmailCommand, BaseCommandResponse>
 {
-    
-    public class CreateGuiEmailCommandHandler : BaseMasterFeatures, IRequestHandler<CreateGuiEmailCommand, BaseCommandResponse>
+    private readonly IMapper _mapper;
+
+    public CreateGuiEmailCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
     {
-        private readonly IMapper _mapper;
+        _mapper = mapper;
+    }
 
-        public CreateGuiEmailCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+    public async Task<BaseCommandResponse> Handle(CreateGuiEmailCommand request, CancellationToken cancellationToken)
+    {
+        var response = new BaseCommandResponse();
+        var validator = new CreateGuiEmailDtoValidator(_surveyRepo.GuiEmail);
+        if (request.GuiEmailDto != null)
         {
-            _mapper = mapper;
-        }
-
-        public async Task<BaseCommandResponse> Handle(CreateGuiEmailCommand request, CancellationToken cancellationToken)
-        {
-            var response = new BaseCommandResponse();
-            var validator = new CreateGuiEmailDtoValidator(_surveyRepo.GuiEmail);
-            var validatorResult = await validator.ValidateAsync(request.GuiEmailDto);
+            var validatorResult = await validator.ValidateAsync(request.GuiEmailDto, cancellationToken);
 
             if (validatorResult.IsValid == false)
             {
@@ -31,15 +34,14 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
                 response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
                 throw new ValidationException(validatorResult);
             }
-
-            var GuiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto);
-            GuiEmail = await _surveyRepo.GuiEmail.Create(GuiEmail);
-            await _surveyRepo.SaveAync();
-            response.Success = true;
-            response.Message = "Tạo mới thành công";
-            response.Id = GuiEmail.Id;
-            return response;
         }
-    }
 
+        var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto);
+        guiEmail = await _surveyRepo.GuiEmail.Create(guiEmail);
+        await _surveyRepo.SaveAync();
+        response.Success = true;
+        response.Message = "Tạo mới thành công";
+        response.Id = guiEmail.Id;
+        return response;
+    }
 }

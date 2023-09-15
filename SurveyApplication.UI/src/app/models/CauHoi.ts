@@ -18,8 +18,8 @@ export interface CreateUpdateCauHoi {
   batBuoc: boolean | null;
   tieuDe: string;
   noidung: string;
-  soLuongFileToiDa: number;
-  kichThuocFile: number;
+  soLuongFileToiDa: number | null;
+  kichThuocFile: number | null;
   isOther: boolean | null;
   labelCauTraLoi: string;
   priority: number;
