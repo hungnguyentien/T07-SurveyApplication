@@ -84,7 +84,6 @@ export class SurveyInfoComponent {
                   );
               //TODO đồng bộ kết quả sau khi lưu khảo sát
               if (res.success && status === KqTrangThai.HoanThanh) {
-                debugger;
                 let data = {
                   lstBaoCaoCauHoi: this.lstBaoCaoCauHoi,
                   idGuiEmail: this.generalInfo.data,
