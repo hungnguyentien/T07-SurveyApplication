@@ -20,16 +20,17 @@ public class GetGuiEmailConditionsRequestHandler : BaseMasterFeatures, IRequestH
         var query = from d in _surveyRepo.GuiEmail.GetAllQueryable()
                     join b in _surveyRepo.BangKhaoSat.GetAllQueryable()
                         on d.IdBangKhaoSat equals b.Id
-                    where d.MaGuiEmail.Contains(request.Keyword) || b.TenBangKhaoSat.Contains(request.Keyword)
-                    select new GuiEmailDto
-                    {
-                        Id = d.Id,
-                        MaGuiEmail = d.MaGuiEmail,
-                        IdBangKhaoSat = b.Id,
-                        TenBangKhaoSat = b.TenBangKhaoSat,
-                        DiaChiNhan = d.DiaChiNhan,
-                        TieuDe = d.TieuDe,
-                        NoiDung = d.NoiDung,
+                        where (d.MaGuiEmail.Contains(request.Keyword) || b.TenBangKhaoSat.Contains(request.Keyword)) &&
+                            d.Deleted == false
+                        select new GuiEmailDto
+                        {
+                            Id = d.Id,
+                            MaGuiEmail = d.MaGuiEmail,
+                            IdBangKhaoSat = b.Id,
+                            TenBangKhaoSat = b.TenBangKhaoSat,
+                            DiaChiNhan = d.DiaChiNhan,
+                            TieuDe = d.TieuDe,
+                            NoiDung = d.NoiDung,
 
                         TrangThai = d.TrangThai,
                         ThoiGian = d.ThoiGian

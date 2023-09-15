@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
-using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
-using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
+using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Commands;
+using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
+using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers;
@@ -71,14 +73,20 @@ public class LoaiHinhDonViController : ControllerBase
         });
     }
 
-    [HttpDelete("Delete/{id}")]
-    public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(int id)
-    {
-        var command = new DeleteLoaiHinhDonViCommand { Id = id };
-        await _mediator.Send(command);
-        return Ok(new
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(int id)
         {
-            Success = true
-        });
+            var command = new DeleteLoaiHinhDonViCommand { Ids = new List<int> { id } };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        {
+            var command = new DeleteLoaiHinhDonViCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
     }
 }

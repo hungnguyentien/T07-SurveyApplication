@@ -19,22 +19,22 @@ public class GetDotKhaoSatConditionsRequestHandler : BaseMasterFeatures,
         _mapper = mapper;
     }
 
-    public async Task<BaseQuerieResponse<DotKhaoSatDto>> Handle(GetDotKhaoSatConditionsRequest request,
-        CancellationToken cancellationToken)
-    {
-        var query = from d in _surveyRepo.DotKhaoSat.GetAllQueryable()
-            join b in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
-                on d.IdLoaiHinh equals b.Id
-            where d.MaDotKhaoSat.Contains(request.Keyword) || d.TenDotKhaoSat.Contains(request.Keyword) ||
-                  b.TenLoaiHinh.Contains(request.Keyword)
-            select new DotKhaoSatDto
-            {
-                Id = d.Id,
-                MaDotKhaoSat = d.MaDotKhaoSat,
-                TenDotKhaoSat = d.TenDotKhaoSat,
-                NgayBatDau = d.NgayBatDau,
-                NgayKetThuc = d.NgayKetThuc,
-                TrangThai = d.TrangThai,
+        public async Task<BaseQuerieResponse<DotKhaoSatDto>> Handle(GetDotKhaoSatConditionsRequest request, CancellationToken cancellationToken)
+        {
+            var query = from d in _surveyRepo.DotKhaoSat.GetAllQueryable()
+                        join b in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
+                        on d.IdLoaiHinh equals b.Id
+
+                        where (d.MaDotKhaoSat.Contains(request.Keyword) || d.TenDotKhaoSat.Contains(request.Keyword) ||
+                            b.TenLoaiHinh.Contains(request.Keyword)) && d.Deleted == false
+                        select new DotKhaoSatDto
+                        {
+                            Id = d.Id,
+                            MaDotKhaoSat = d.MaDotKhaoSat,
+                            TenDotKhaoSat = d.TenDotKhaoSat,
+                            NgayBatDau = d.NgayBatDau,
+                            NgayKetThuc = d.NgayKetThuc,
+                            TrangThai = d.TrangThai,
 
                 IdLoaiHinh = b.Id,
                 TenLoaiHinh = b.TenLoaiHinh,

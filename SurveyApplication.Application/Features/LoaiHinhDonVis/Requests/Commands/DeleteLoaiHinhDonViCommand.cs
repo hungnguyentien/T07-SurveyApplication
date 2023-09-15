@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SurveyApplication.Application.Features.QuanHuyens.Requests.Commands
+namespace SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands
 {
-    public class DeleteQuanHuyenCommand : IRequest<BaseCommandResponse>
+    public class DeleteLoaiHinhDonViCommand : IRequest<BaseCommandResponse>
     {
         public List<int> Ids { get; set; }
     }

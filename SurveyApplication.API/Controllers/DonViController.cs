@@ -1,85 +1,94 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DonViAndNguoiDaiDien;
+using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class DonViController : ControllerBase
+namespace SurveyApplication.API.Controllers
 {
-    private readonly IMediator _mediator;
-
-    public DonViController(IMediator mediator)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DonViController : ControllerBase
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
 
-    [HttpGet("GetAll")]
-    public async Task<ActionResult<List<DonViDto>>> GetAllDonVi()
-    {
-        var lstDv = await _mediator.Send(new GetDonViListRequest());
-        return Ok(lstDv);
-    }
-
-    [HttpGet("GetByCondition")]
-    public async Task<ActionResult<BaseQuerieResponse<DonViDto>>> GetDonViByCondition([FromQuery] Paging paging)
-    {
-        var leaveAllocations = await _mediator.Send(new GetDonViConditionsRequest
-            { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
-        return leaveAllocations;
-    }
-
-    [HttpGet("GetById/{id}")]
-    public async Task<ActionResult<List<DonViDto>>> GetByDonVi(int id)
-    {
-        var leaveAllocations = await _mediator.Send(new GetDonViDetailRequest { Id = id });
-        return Ok(leaveAllocations);
-    }
-
-    [HttpPost("Create")]
-    public async Task<ActionResult<DonViDto>> CreateDonVi([FromBody] CreateDonViAndNguoiDaiDienDto obj)
-    {
-        var command_1 = new CreateDonViCommand { DonViDto = obj.DonViDto };
-        var response_1 = await _mediator.Send(command_1);
-        obj.NguoiDaiDienDto.IdDonVi = response_1.Id;
-        var command_2 = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
-        var response_2 = await _mediator.Send(command_2);
-        return Ok(new
+        public DonViController(IMediator mediator)
         {
-            response_1, response_2
-        });
-    }
+            _mediator = mediator;
+        }
 
-    [HttpPost("Update")]
-    public async Task<ActionResult<DonViDto>> UpdateDonVi([FromBody] UpdateDonViAndNguoiDaiDienDto obj)
-    {
-        var command_1 = new UpdateDonViCommand { DonViDto = obj.DonViDto };
-        var response_1 = await _mediator.Send(command_1);
-
-        var command_2 = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
-        var response_2 = await _mediator.Send(command_2);
-
-        return Ok(new
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<DonViDto>>> GetAllDonVi()
         {
-            response_1, response_2
-        });
-    }
+            var lstDv = await _mediator.Send(new GetDonViListRequest());
+            return Ok(lstDv);
+        }
 
-    [HttpDelete("Delete/{id}")]
-    public async Task<ActionResult<List<DonViDto>>> DeleteDonVi(int id)
-    {
-        var command = new DeleteDonViCommand { Id = id };
-        await _mediator.Send(command);
-        return Ok(new
+        [HttpGet("GetByCondition")]
+        public async Task<ActionResult<BaseQuerieResponse<DonViDto>>> GetByConditionDonVi([FromQuery] Paging paging)
         {
-            Success = true
-        });
+            var leaveAllocations = await _mediator.Send(new GetDonViConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+            return leaveAllocations;
+        }
+
+        [HttpGet("GetById/{id}")]
+        public async Task<ActionResult<List<DonViDto>>> GetByIdDonVi(int id)
+        {
+            var leaveAllocations = await _mediator.Send(new GetDonViDetailRequest { Id = id });
+            return Ok(leaveAllocations);
+        }
+
+        [HttpPost("Create")]
+        public async Task<ActionResult<DonViDto>> CreateDonVi([FromBody] CreateDonViAndNguoiDaiDienDto obj)
+        {
+            var command_1 = new CreateDonViCommand { DonViDto = obj.DonViDto };
+            var response_1 = await _mediator.Send(command_1);
+            obj.NguoiDaiDienDto.IdDonVi = response_1.Id;
+            var command_2 = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
+            var response_2 = await _mediator.Send(command_2);
+            return Ok(new
+            {
+                response_1 = response_1,
+                response_2 = response_2,
+            });
+        }
+
+        [HttpPost("Update")]
+        public async Task<ActionResult<DonViDto>> UpdateDonVi([FromBody] UpdateDonViAndNguoiDaiDienDto obj)
+            {
+            var command_1 = new UpdateDonViCommand { DonViDto = obj.DonViDto };
+            var response_1 = await _mediator.Send(command_1);
+
+            var command_2 = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
+            var response_2 = await _mediator.Send(command_2);
+
+            return Ok(new
+            {
+                response_1 = response_1,
+                response_2 = response_2,
+            });
+        }
+
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult<List<DonViDto>>> DeleteDonVi(int id)
+        {
+            var command = new DeleteDonViCommand { Ids = new List<int> { id } };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        {
+            var command = new DeleteDonViCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
     }
 }

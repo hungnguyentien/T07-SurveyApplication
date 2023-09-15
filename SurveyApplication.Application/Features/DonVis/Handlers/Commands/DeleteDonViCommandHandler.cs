@@ -2,27 +2,46 @@
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Domain;
+using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands;
-
-public class DeleteDonViCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteDonViCommand>
+namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
 {
-    public DeleteDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository) : base(surveyRepository)
+    public class DeleteDonViCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteDonViCommand, BaseCommandResponse>
     {
-    }
+        public DeleteDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository) : base(surveyRepository)
+        {
+        }
 
-    public async Task<Unit> Handle(DeleteDonViCommand request, CancellationToken cancellationToken)
-    {
-        if (await _surveyRepo.GuiEmail.Exists(x => !x.Deleted && x.IdDonVi == request.Id))
-            throw new FluentValidation.ValidationException("Đơn vị đã được sử dụng");
+        public async Task<BaseCommandResponse> Handle(DeleteDonViCommand request, CancellationToken cancellationToken)
+        {
+            var response = new BaseCommandResponse();
 
-        var donVi = await _surveyRepo.DonVi.GetById(request.Id) ??
-                    throw new NotFoundException(nameof(DonVi), request.Id);
-        var lstNguoiDaiDien = await _surveyRepo.NguoiDaiDien.GetAllListAsync(x => x.IdDonVi == donVi.Id);
-        await _surveyRepo.DonVi.DeleteAsync(donVi);
-        await _surveyRepo.NguoiDaiDien.DeleteAsync(lstNguoiDaiDien);
-        await _surveyRepo.SaveAync();
-        return Unit.Value;
+            foreach (var item in request.Ids)
+            {
+                var donVi = await _surveyRepo.DonVi.SingleOrDefaultAsync(x => x.Id == item);
+
+                var ketQua = await _surveyRepo.KetQua.GetAllListAsync(x => x.IdDonVi == donVi.Id);
+
+                if (ketQua.Count() != 0)
+                {
+                    response.Success = false;
+                    response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
+                    return response;
+                }
+            }
+
+            var lstDonVi = await _surveyRepo.DonVi.GetByIds(x => request.Ids.Contains(x.Id));
+
+            if (lstDonVi == null || lstDonVi.Count == 0)
+                throw new NotFoundException(nameof(DonVi), request.Ids);
+
+            foreach (var item in lstDonVi)
+                item.Deleted = true;
+
+            await _surveyRepo.DonVi.UpdateAsync(lstDonVi);
+            await _surveyRepo.SaveAync();
+            return new BaseCommandResponse("Xóa thành công!");
+        }
     }
 }

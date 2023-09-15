@@ -25,9 +25,10 @@ namespace SurveyApplication.Application.Features.XaPhuongs.Handlers.Queries
                         on d.ParentCode equals b.Code
                         join o in _surveyRepo.TinhTp.GetAllQueryable()
                         on b.ParentCode equals o.Code
-                        where d.Code.Contains(request.Keyword) || d.Name.Contains(request.Keyword) ||
+                        where (d.Code.Contains(request.Keyword) || d.Name.Contains(request.Keyword) ||
                              b.Code.Contains(request.Keyword) || b.Name.Contains(request.Keyword) ||
-                             o.Code.Contains(request.Keyword) || o.Name.Contains(request.Keyword)
+                             o.Code.Contains(request.Keyword) || o.Name.Contains(request.Keyword)) &&
+                             d.Deleted == false
                         select new XaPhuongDto
                         {
                             Id = d.Id,

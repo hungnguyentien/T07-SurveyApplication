@@ -28,19 +28,20 @@ public class GetBangKhaoSatConditionsRequestHandler : BaseMasterFeatures,
             join o in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
                 on d.IdLoaiHinh equals o.Id
 
-            //join s in _surveyRepo.GuiEmail.GetAllQueryable()
-            //on d.Id equals s.IdBangKhaoSat
-            where d.MaBangKhaoSat.Contains(request.Keyword) || d.TenBangKhaoSat.Contains(request.Keyword) ||
-                  b.TenDotKhaoSat.Contains(request.Keyword) || o.TenLoaiHinh.Contains(request.Keyword)
-            select new BangKhaoSatDto
-            {
-                Id = d.Id,
-                MaBangKhaoSat = d.MaBangKhaoSat,
-                TenBangKhaoSat = d.TenBangKhaoSat,
-                MoTa = d.MoTa,
-                NgayBatDau = d.NgayBatDau,
-                NgayKetThuc = d.NgayKetThuc,
-                TrangThai = d.TrangThai,
+                        //join s in _surveyRepo.GuiEmail.GetAllQueryable()
+                        //on d.Id equals s.IdBangKhaoSat
+                        where (d.MaBangKhaoSat.Contains(request.Keyword) || d.TenBangKhaoSat.Contains(request.Keyword) ||
+                            b.TenDotKhaoSat.Contains(request.Keyword) || o.TenLoaiHinh.Contains(request.Keyword)) &&
+                            d.Deleted == false
+                        select new BangKhaoSatDto
+                        {
+                            Id = d.Id,
+                            MaBangKhaoSat = d.MaBangKhaoSat,
+                            TenBangKhaoSat = d.TenBangKhaoSat,
+                            MoTa = d.MoTa,
+                            NgayBatDau = d.NgayBatDau,
+                            NgayKetThuc = d.NgayKetThuc,
+                            TrangThai = d.TrangThai,
 
                 IdDotKhaoSat = b.Id,
                 TenDotKhaoSat = b.TenDotKhaoSat,
