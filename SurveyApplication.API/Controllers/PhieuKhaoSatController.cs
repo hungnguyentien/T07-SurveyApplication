@@ -123,7 +123,7 @@ public class PhieuKhaoSatController : ControllerBase
     [AllowAnonymous]
     [ValidSecretKey]
     [HttpPost("ScheduleSendEmail")]
-    //[ApiExplorerSettings(IgnoreApi = true)]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public async Task<ActionResult> ScheduleSendEmail()
     {
         var response = await _mediator.Send(new ScheduleSendMailCommand());
@@ -133,7 +133,7 @@ public class PhieuKhaoSatController : ControllerBase
     [AllowAnonymous]
     [ValidSecretKey]
     [HttpPost("ScheduleUpdateStatus")]
-    //[ApiExplorerSettings(IgnoreApi = true)]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public async Task<ActionResult> ScheduleUpdateStatus()
     {
         var response = await _mediator.Send(new ScheduleUpdateStatusCommand());
