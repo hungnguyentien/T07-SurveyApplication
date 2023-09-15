@@ -1,16 +1,18 @@
 <div>
-  <h4 class="m-4">Dashboard</h4>  
+  <h5 class="m-4">Dashboard</h5>  
   <!-- <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" [editable]="true" optionLabel="name"></p-dropdown> -->
     <div class="row">
         <div class="form-group ml-3 col-md-2">
-            <label for="exampleFormControlSelect1">Loại thời gian</label>
-            <select class="form-control" id="exampleFormControlSelect1">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
+          <label for="exampleFormControlSelect1">Loại thời gian</label>
+          <p-dropdown id="loaicauhoi" [options]="" optionLabel="tenLoaiHinh" optionValue="id"
+              [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
+              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+              placeholder="-- Chọn loại thời gian --" formControlName="IdLoaiHinh">
+          </p-dropdown>
+          <!-- <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['IdLoaiHinh'].valid && 
+              FormPeriodSurvey.controls['IdLoaiHinh'].dirty">
+              Vui lòng chọn Loại hình đơn vị
+          </small> -->
           </div>
           <div class="form-group ml-3 col-md-2">
             <label for="exampleFormControlSelect1">Từ ngày</label>
@@ -50,5 +52,64 @@
 
 <div>
   <hr>
-  <h4>Thống kê</h4>
+  <h5 class="m-4">Thống kê</h5>  
+  <!--  -->
+  <div class="card">
+    <div class="row">
+      <div class="col-md-4 style_sum">
+        <div class="row" [ngStyle]="{backgroundColor:'var(--green-600)'}">
+          <h5 class="col-md-8">Tổng số đợt khảo sát</h5>
+          <p class="col-md-4">10</p>
+        </div>
+      </div>
+      <div class="col-md-4 style_sum">
+        <div class="row"[ngStyle]="{backgroundColor:'var(--orange-400)'}">
+          <h5 class="col-md-8">Tổng số bảng khảo sát</h5>
+          <p class="col-md-4">10</p>
+        </div>
+      </div>
+      <div class="col-md-4 style_sum">
+        <div class="row"[ngStyle]="{backgroundColor:'var(--indigo-500)'}">
+          <h5 class="col-md-8">Tổng số lượt tham gia khảo sát</h5>
+          <p class="col-md-4">1500</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--  -->
+  <div class="card ">
+    <div class="row">
+      <div class="col-md-6">
+        <h6 class="flex justify-content-center mt-4 mb-4">Số lượt tham gia khảo sát theo nhóm đối tượng</h6>
+        <div class="flex justify-content-center">
+          <p-chart type="doughnut" [data]="dataNhomDoiTuong" [options]="optionNhomDoiTuong"></p-chart>
+          <div>
+            <a href=""><i class="pi pi-eye"></i>Xem thêm</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h6 class="flex justify-content-center mt-4 mb-4">Số lượt tham gia khảo sát theo đợt</h6>
+        <div class="flex justify-content-center">
+          <p-chart type="doughnut" [data]="dataDotKhaosat" [options]="optionDotKhaosat"></p-chart>
+          <div>
+            <a href=""><i class="pi pi-eye"></i>Xem thêm</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  -->
+  <div class="card">
+    <div class="row">
+
+      <div class="col-md-12">
+        <h6 class="flex mt-4 mb-4 ml-4">Số đơn vị tham gia khảo sát theo Tỉnh/Thành phố  <span class="ml-4"> <a href=""><i class="pi pi-eye"></i>Xem thêm</a></span></h6> 
+        <div class="card">
+          <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </div>
