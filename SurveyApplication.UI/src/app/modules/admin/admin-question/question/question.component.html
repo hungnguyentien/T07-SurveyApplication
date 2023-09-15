@@ -134,13 +134,17 @@
           <label for="maCauHoi" class="col-form-label">Mã: <span style="color: red">*</span></label>
           <input type="text" pInputText class="form-control" id="maCauHoi" formControlName="maCauHoi" [ngClass]="{
             'is-invalid': submitted && f('maCauHoi').errors
-          }" placeholder="VB01"  />
-
+          }" placeholder="VB01" />
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmCauHoi.controls['maCauHoi'].valid && 
+          frmCauHoi.controls['maCauHoi'].dirty">
+            Vui lòng nhập mã
+          </small>
+          <!-- 
           <div *ngIf="submitted && f('maCauHoi').errors" class="invalid-feedback">
             <small *ngIf="f('maCauHoi').errors?.['required']">
               Vui lòng nhập mã câu hỏi
             </small>
-          </div>
+          </div> -->
         </div>
         <div class="form-group col-md-6">
           <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red">*</span></label>
@@ -160,12 +164,14 @@
 
       <div class="form-group">
         <label for="tieuDe" class="col-form-label">Tiêu đề:</label>
+
         <input type="text" pInputText class="form-control" id="tieuDe" formControlName="tieuDe"
-          placeholder="Nhập tiêu đề câu hỏi" />
-          <small *ngIf="!frmCauHoi.controls['tieuDe'].valid && frmCauHoi.controls['noidung'].dirty"
+          placeholder="Nhập tiêu đề câu hỏi" required />
+
+        <small *ngIf="!frmCauHoi.controls['tieuDe'].valid && frmCauHoi.controls['tieuDe'].dirty"
           class="invalid-feedback">
           Vui lòng nhập tiêu đề
-      </small>
+        </small>
       </div>
 
       <ng-container *ngIf="selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1'">
@@ -182,7 +188,9 @@
             <div class="form-group" *ngIf="isOther">
               <label for="labelCauTraLoi" class="col-form-label">Lable câu trả lời khác:</label>
               <input type="text" pInputText class="form-control" formControlName="labelCauTraLoi" id="labelCauTraLoi"
-                placeholder="Nhập tiêu đề câu hỏi" />
+                placeholder="Nhập tiêu đề câu hỏi"  />
+
+              
             </div>
           </div>
         </div>
@@ -231,7 +239,12 @@
 
       <div class="form-group">
         <label for="noidung" class="col-form-label">Nội dung:</label>
-        <ckeditor formControlName="noidung" [editor]="Editor"></ckeditor>
+        <ckeditor formControlName="noidung" [editor]="Editor" required></ckeditor>
+        <small *ngIf="!frmCauHoi.controls['noidung'].valid && frmCauHoi.controls['noidung'].dirty"
+          class="invalid-feedback">
+          Vui lòng nhập nội dung
+        </small>
+
       </div>
 
       <div class="form-group" *ngIf="
@@ -326,16 +339,11 @@
         </table>
       </div>
     </ng-template>
-    <!-- <ng-template pTemplate="footer">
-      <button type="button" class="btn btn-secondary" (click)="visible = false">Đóng</button>
-      <button type="submit" class="btn btn-primary">Lưu</button>
-    </ng-template> -->
     <ng-template pTemplate="footer">
       <input type="hidden" formControlName="id">
-      <button pButton (click)="visible = false" type="button" label="Đóng"
-          class="custom-button surface-600"></button>
+      <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
       <button pButton [disabled]="!frmCauHoi.valid" type="submit" icon="pi pi-save" label="Lưu"
-          class="custom-button"></button>
-  </ng-template>
+        class="custom-button"></button>
+    </ng-template>
   </p-dialog>
 </form>
