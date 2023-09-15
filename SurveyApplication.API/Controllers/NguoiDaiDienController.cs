@@ -1,9 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
-using SurveyApplication.Application.Features.LoaiHinhDonVis.Requests.Commands;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -33,7 +31,7 @@ public class NguoiDaiDienController : ControllerBase
         [FromQuery] Paging paging)
     {
         var leaveAllocations = await _mediator.Send(new GetNguoiDaiDienConditionsRequest
-            { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+        { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
         return Ok(leaveAllocations);
     }
 
@@ -63,20 +61,19 @@ public class NguoiDaiDienController : ControllerBase
         });
     }
 
-        [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult<List<NguoiDaiDienDto>>> DeleteNguoiDaiDien(int id)
-        {
-            var command = new DeleteNguoiDaiDienCommand { Ids = new List<int> { id } };
-            var response = await _mediator.Send(command);
-            return Ok(response);
-        }
+    [HttpDelete("Delete/{id}")]
+    public async Task<ActionResult<List<NguoiDaiDienDto>>> DeleteNguoiDaiDien(int id)
+    {
+        var command = new DeleteNguoiDaiDienCommand { Ids = new List<int> { id } };
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
 
-        [HttpDelete("DeleteMultiple")]
-        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
-        {
-            var command = new DeleteNguoiDaiDienCommand { Ids = ids };
-            var response = await _mediator.Send(command);
-            return Ok(response);
-        }
+    [HttpDelete("DeleteMultiple")]
+    public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+    {
+        var command = new DeleteNguoiDaiDienCommand { Ids = ids };
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
 }

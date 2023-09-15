@@ -59,28 +59,7 @@ public static class PersistenceServicesRegistration
             });
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
         services.AddScoped<ISurveyRepositoryWrapper, SurveyRepositoryWrapper>();
-
-        //services.AddScoped<ILoaiHinhDonViRepository, LoaiHinhDonViRepository>();
-        //services.AddScoped<IBangKhaoSatRepository, BangKhaoSatRepository>();
-        //services.AddScoped<IDotKhaoSatRepository, DotKhaoSatRepository>();
-        //services.AddScoped<IDonViRepository, DonViRepository>();
-        //services.AddScoped<INguoiDaiDienRepository, NguoiDaiDienRepository>();
-        //services.AddScoped<IGuiEmailRepository, GuiEmailRepository>();
-        //services.AddScoped<ICauHoiRepository, CauHoiRepository>();
-        //services.AddScoped<IKetQuaRepository, KetQuaRepository>();
-        //services.AddScoped<ICotRepository, CotRepository>();
-        //services.AddScoped<IHangRepository, HangRepository>();
-        //services.AddScoped<IBangKhaoSatCauHoiRepository, BangKhaoSatCauHoiRepository>();
-        //services.AddScoped<IAccountRepository, AccountRepository>();
-        //services.AddScoped<IXaPhuongRepository, XaPhuongRepository>();
-        //services.AddScoped<IQuanHuyenRepository, QuanHuyenRepository>();
-        //services.AddScoped<ITinhTpRepository, TinhTpRepository>();
-        //services.AddScoped<ILinhVucHoatDongRepository, LinhVucHoatDongRepository>();
-        //services.AddScoped<IBaoCaoCauHoiRepository, BaoCaoCauHoiRepository>();
-        //services.AddScoped<IJobScheduleRepository, JobScheduleRepository>();
-
         return services;
     }
 }

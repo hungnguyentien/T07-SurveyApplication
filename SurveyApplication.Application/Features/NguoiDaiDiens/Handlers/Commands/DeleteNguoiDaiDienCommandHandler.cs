@@ -19,24 +19,22 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands
 
         public async Task<BaseCommandResponse> Handle(DeleteNguoiDaiDienCommand request, CancellationToken cancellationToken)
         {
-            var response = new BaseCommandResponse();
+            //var response = new BaseCommandResponse();
+            //foreach (var item in request.Ids)
+            //{
+            //    var nguoiDaiDien = await _surveyRepo.NguoiDaiDien.SingleOrDefaultAsync(x => x.Id == item);
 
-            foreach (var item in request.Ids)
-            {
-                var nguoiDaiDien = await _surveyRepo.NguoiDaiDien.SingleOrDefaultAsync(x => x.Id == item);
+            //    var ketQua = await _surveyRepo.KetQua.GetAllListAsync(x => x.IdNguoiDaiDien == nguoiDaiDien.Id);
 
-                var ketQua = await _surveyRepo.KetQua.GetAllListAsync(x => x.IdNguoiDaiDien == nguoiDaiDien.Id);
-
-                if (ketQua.Count() != 0)
-                {
-                    response.Success = false;
-                    response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
-                    return response;
-                }
-            }
+            //    if (ketQua.Count() != 0)
+            //    {
+            //        response.Success = false;
+            //        response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
+            //        return response;
+            //    }
+            //}
 
             var lstNguoiDaiDien = await _surveyRepo.NguoiDaiDien.GetByIds(x => request.Ids.Contains(x.Id));
-
             if (lstNguoiDaiDien == null || lstNguoiDaiDien.Count == 0)
                 throw new NotFoundException(nameof(NguoiDaiDien), request.Ids);
 

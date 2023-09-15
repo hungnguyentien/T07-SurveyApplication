@@ -10,8 +10,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
 {
     public class GetGuiEmailBksConditionsRequestHandler : BaseMasterFeatures, IRequestHandler<GetGuiEmailBksConditionsRequest, BaseQuerieResponse<GuiEmailBksDto>>
     {
-        public GetGuiEmailBksConditionsRequestHandler(ISurveyRepositoryWrapper surveyRepository) : base(
-            surveyRepository)
+        public GetGuiEmailBksConditionsRequestHandler(ISurveyRepositoryWrapper surveyRepository) : base(surveyRepository)
         {
         }
 

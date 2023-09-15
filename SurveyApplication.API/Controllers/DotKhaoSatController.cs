@@ -1,9 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
-using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
-using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -33,7 +31,7 @@ public class DotKhaoSatController : ControllerBase
         [FromQuery] Paging paging)
     {
         var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest
-            { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+        { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
         return leaveAllocations;
     }
 
@@ -64,20 +62,19 @@ public class DotKhaoSatController : ControllerBase
         });
     }
 
-        [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult<List<DotKhaoSatDto>>> DeleteDotKhaoSat(int id)
-        {
-            var command = new DeleteDotKhaoSatCommand { Ids = new List<int> { id } };
-            var response = await _mediator.Send(command);
-            return Ok(response);
-        }
+    [HttpDelete("Delete/{id}")]
+    public async Task<ActionResult<List<DotKhaoSatDto>>> DeleteDotKhaoSat(int id)
+    {
+        var command = new DeleteDotKhaoSatCommand { Ids = new List<int> { id } };
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
 
-        [HttpDelete("DeleteMultiple")]
-        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
-        {
-            var command = new DeleteDotKhaoSatCommand { Ids = ids };
-            var response = await _mediator.Send(command);
-            return Ok(response);
-        }
+    [HttpDelete("DeleteMultiple")]
+    public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+    {
+        var command = new DeleteDotKhaoSatCommand { Ids = ids };
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
 }

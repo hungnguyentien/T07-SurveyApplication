@@ -1,6 +1,4 @@
-﻿namespace SurveyApplication.Application.DTOs.Common;
-
-namespace SurveyApplication.Application.DTOs.Common
+﻿namespace SurveyApplication.Application.DTOs.Common
 {
     public abstract class BaseDto
     {

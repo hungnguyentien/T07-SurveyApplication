@@ -16,23 +16,14 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
         public async Task<BaseCommandResponse> Handle(DeleteDonViCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-
-            foreach (var item in request.Ids)
+            if (await _surveyRepo.GuiEmail.Exists(x => !x.Deleted && request.Ids.Contains(x.IdDonVi)))
             {
-                var donVi = await _surveyRepo.DonVi.SingleOrDefaultAsync(x => x.Id == item);
-
-                var ketQua = await _surveyRepo.KetQua.GetAllListAsync(x => x.IdDonVi == donVi.Id);
-
-                if (ketQua.Count() != 0)
-                {
-                    response.Success = false;
-                    response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
-                    return response;
-                }
+                response.Success = false;
+                response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
+                return response;
             }
 
             var lstDonVi = await _surveyRepo.DonVi.GetByIds(x => request.Ids.Contains(x.Id));
-
             if (lstDonVi == null || lstDonVi.Count == 0)
                 throw new NotFoundException(nameof(DonVi), request.Ids);
 

@@ -8,37 +8,27 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 {
-   
+
     public class DeleteDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteDotKhaoSatCommand, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
-
-    public DeleteDotKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
-        surveyRepository)
-    {
-        _mapper = mapper;
-    }
+        public DeleteDotKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+            surveyRepository)
+        {
+            _mapper = mapper;
+        }
 
         public async Task<BaseCommandResponse> Handle(DeleteDotKhaoSatCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-
-            foreach (var item in request.Ids)
+            if (await _surveyRepo.BangKhaoSat.Exists(x => request.Ids.Contains(x.IdDotKhaoSat)))
             {
-                var dotKhaoSat = await _surveyRepo.DotKhaoSat.SingleOrDefaultAsync(x => x.Id == item);
-
-                var bangKhaoSat = await _surveyRepo.BangKhaoSat.GetAllListAsync(x => x.IdDotKhaoSat == dotKhaoSat.Id);
-
-                if (bangKhaoSat.Count() != 0)
-                {
-                    response.Success = false;
-                    response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
-                    return response;
-                }
+                response.Success = false;
+                response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
+                return response;
             }
 
             var lstDotKhaoSat = await _surveyRepo.DotKhaoSat.GetByIds(x => request.Ids.Contains(x.Id));
-
             if (lstDotKhaoSat == null || lstDotKhaoSat.Count == 0)
                 throw new NotFoundException(nameof(DotKhaoSat), request.Ids);
 
