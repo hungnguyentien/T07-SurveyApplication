@@ -9,6 +9,7 @@ import { CreateBaoCaoCauHoi, SurveyConfig } from '@app/models';
 import { jsonDataFake } from './json';
 import { themeJson } from './theme';
 import { environment } from '@environments/environment';
+import * as crypto from 'crypto-js';
 
 export default class Utils {
   static translate = (
@@ -601,5 +602,15 @@ export default class Utils {
     }
 
     return lstBaoCaoCauHoi;
+  };
+
+  static encrypt = (dataEncrypt: string): string => {
+    return crypto.AES.encrypt(dataEncrypt, environment.secretKey).toString();
+  };
+
+  static decrypt = (dataDecrypt: string): string => {
+    return crypto.AES.decrypt(dataDecrypt, environment.secretKey).toString(
+      crypto.enc.Utf8
+    );
   };
 }

@@ -14,6 +14,7 @@ import {
 import 'survey-core/survey.i18n';
 import { KqTrangThai } from '@app/enums';
 import { environment } from '@environments/environment';
+import * as crypto from 'crypto-js';
 
 @Component({
   selector: 'app-survey-info',
@@ -41,7 +42,7 @@ export class SurveyInfoComponent {
         ipClient = JSON.stringify(
           await (await fetch(environment.apiIp)).json()
         );
-        localStorage.setItem('grand_client', btoa(ipClient));
+        localStorage.setItem('grand_client', Utils.encrypt(ipClient));
       } catch (e) {
         ipClient = '';
         console.log(e);
@@ -70,7 +71,7 @@ export class SurveyInfoComponent {
             data: JSON.stringify(dataKq),
             guiEmail: this.generalInfo.data ?? '',
             trangThai: status,
-            ipAddressClient: atob(ipClient ?? ''),
+            ipAddressClient: ipClient ? Utils.decrypt(ipClient) : '',
           };
           this.loading = true;
           this.phieuKhaoSatService.saveSurvey(this.saveSurvey).subscribe({

@@ -13,9 +13,8 @@ import {
   LinhVucHoatDong,
   UnitType,
 } from '@app/models';
-import { LinhVucHoatDongService, PhieuKhaoSatService } from '@app/services';
+import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
-import { UnitTypeService } from '@app/services/unit-type.service';
 import { lstRegExp } from '@app/helpers';
 
 @Component({
@@ -57,7 +56,10 @@ export class GeneralInfoComponent {
 
   ngOnInit() {
     let data = this.activatedRoute.snapshot.queryParamMap.get('data') ?? '';
-    !data && this.router.navigate(['/login']);
+    !data &&
+      this.router.navigate(['/error-500'], {
+        queryParams: { message: 'Không tìm thấy dữ liệu' },
+      });
     this.submitCount = 0;
     this.submitted = false;
     this.loading = false;
