@@ -6,13 +6,13 @@ using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class LoaiHinhDonViController : ControllerBase
+namespace SurveyApplication.API.Controllers
 {
-    private readonly IMediator _mediator;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoaiHinhDonViController : ControllerBase
+    {
+        private readonly IMediator _mediator;
 
     public LoaiHinhDonViController(IMediator mediator)
     {
@@ -72,7 +72,7 @@ public class LoaiHinhDonViController : ControllerBase
     }
 
     [HttpDelete("Delete/{id}")]
-    public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(int id)
+    public async Task<ActionResult> DeleteLoaiHinhDonVi(int id)
     {
         var command = new DeleteLoaiHinhDonViCommand { Ids = new List<int> { id } };
         var response = await _mediator.Send(command);

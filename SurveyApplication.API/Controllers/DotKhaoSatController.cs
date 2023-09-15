@@ -6,13 +6,13 @@ using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class DotKhaoSatController : ControllerBase
+namespace SurveyApplication.API.Controllers
 {
-    private readonly IMediator _mediator;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DotKhaoSatController : ControllerBase
+    {
+        private readonly IMediator _mediator;
 
     public DotKhaoSatController(IMediator mediator)
     {
@@ -63,7 +63,7 @@ public class DotKhaoSatController : ControllerBase
     }
 
     [HttpDelete("Delete/{id}")]
-    public async Task<ActionResult<List<DotKhaoSatDto>>> DeleteDotKhaoSat(int id)
+    public async Task<ActionResult> DeleteDotKhaoSat(int id)
     {
         var command = new DeleteDotKhaoSatCommand { Ids = new List<int> { id } };
         var response = await _mediator.Send(command);
