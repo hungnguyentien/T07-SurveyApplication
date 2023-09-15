@@ -144,8 +144,7 @@
         <div class="form-group col-md-6">
           <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red">*</span></label>
           <p-dropdown id="loaicauhoi" [options]="lstLoaiCauHoi" [(ngModel)]="selectedLoaiCauHoi" optionLabel="text"
-            optionValue="value" [filter]="true" filterBy="text" emptyMessage="Không có kết quả nào"
-            emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom" [ngClass]="{
+            optionValue="value"  emptyMessage="Không có kết quả nào" class="form-select-custom" [ngClass]="{
             'is-invalid': submitted && f('loaiCauHoi').errors
           }" formControlName="loaiCauHoi" (onChange)="handlerChangeLCh($event)">
           </p-dropdown>
@@ -238,7 +237,7 @@
           {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'Đáp án' : 'Cột' }}:
         </label>
         <button type="button" class="btn btn-add float-end" (click)="addItem()">
-          Thêm cột
+          Thêm {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'đáp án' : 'cột' }}
         </button>
         <table class="table table-bordered">
           <thead>

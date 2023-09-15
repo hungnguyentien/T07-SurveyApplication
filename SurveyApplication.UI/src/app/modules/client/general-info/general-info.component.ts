@@ -55,7 +55,7 @@ export class GeneralInfoComponent {
   ) {}
 
   ngOnInit() {
-    let data = this.activatedRoute.snapshot.queryParamMap.get('data') ?? '';
+    let data = this.activatedRoute.snapshot.paramMap.get('data') ?? '';
     !data &&
       this.router.navigate(['/error-500'], {
         queryParams: { message: 'Không tìm thấy dữ liệu' },
