@@ -10,5 +10,5 @@ public class GetDotKhaoSatConditionsRequest : IRequest<BaseQuerieResponse<DotKha
     public int PageCount { get; set; }
     public int PageIndex { get; set; } = 1;
     public int PageSize { get; set; } = 5;
-    public string Keyword { get; set; }
+    public string? Keyword { get; set; }
 }
