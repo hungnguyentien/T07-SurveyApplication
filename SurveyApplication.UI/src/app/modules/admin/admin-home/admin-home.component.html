@@ -1,53 +1,31 @@
 <div>
   <h5 class="m-4">Dashboard</h5>  
   <!-- <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" [editable]="true" optionLabel="name"></p-dropdown> -->
-    <div class="row">
-        <div class="form-group ml-3 col-md-2">
-          <label for="exampleFormControlSelect1">Loại thời gian</label>
-          <p-dropdown id="loaicauhoi" [options]="" optionLabel="tenLoaiHinh" optionValue="id"
-              [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
-              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Chọn loại thời gian --" formControlName="IdLoaiHinh">
-          </p-dropdown>
-          <!-- <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['IdLoaiHinh'].valid && 
-              FormPeriodSurvey.controls['IdLoaiHinh'].dirty">
-              Vui lòng chọn Loại hình đơn vị
-          </small> -->
+  <div class="row">
+      <div class="form-group form-inline col-4">
+          <div class="col-4">
+              <label for="ngayBatDau">Ngày bắt đầu</label>
           </div>
-          <div class="form-group ml-3 col-md-2">
-            <label for="exampleFormControlSelect1">Từ ngày</label>
-            <input type="date" class="form-control" id="exampleFormControlInput1" >
+          <div class="col-8">
+              <p-calendar formControlName="ngayBatDau" id="ngayBatDau" class="input-date-custom"
+                  dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
           </div>
-          <div class="form-group ml-3 col-md-2">
-            <label for="exampleFormControlSelect1">Đến ngày </label>
-            <input type="date" class="form-control" id="exampleFormControlInput1" >
+      </div>
+      <div class="form-group form-inline col-4">
+          <div class="col-4">
+            <label for="ngayKetThuc">Ngày kết thúc</label>
           </div>
-          <div class="form-group ml-3 col-md-2">
-            <label for="exampleFormControlSelect1">Loại thời gian</label>
-            <select class="form-control" id="exampleFormControlSelect1">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
+          <div class="col-8">
+              <p-calendar formControlName="ngayKetThuc" id="ngayKetThuc" class="input-date-custom"
+                  dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
           </div>
-          <div class="form-group ml-3 col-md-2">
-            <label for="exampleFormControlSelect1">Loại thời gian</label>
-            <select class="form-control" id="exampleFormControlSelect1">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
-          </div>
-          <div class="form-group ml-3 col-md-1" style="margin-top: 30px;">
-            
-            <button pButton type="button" icon="pi pi-refresh"
-                label="Reset" class="custom-button"></button>
-          </div>
-    </div>
+      </div>
+      <div class="form-group form-inline col-4">
+          <button pButton type="button" icon="pi pi-refresh" label="Reset" (click)="reset()"
+              class="btn btn-primary custom-button" style="padding: 9.25px 20px;">
+          </button>
+      </div>
+  </div>
 </div>
 
 <div>
