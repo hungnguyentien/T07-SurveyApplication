@@ -48,7 +48,8 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
                     UserName = "admin",
                     NormalizedUserName = "ADMIN",
                     PasswordHash = hasher.HashPassword(null!, "123qwe"),
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    Address = "Hà Nội, Việt Nam"
                 };
                 await _userManager.CreateAsync(userAdmin);
                 await _roleManager.CreateAsync(new IdentityRole
