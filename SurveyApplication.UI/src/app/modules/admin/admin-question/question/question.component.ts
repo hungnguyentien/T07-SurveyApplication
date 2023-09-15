@@ -56,10 +56,13 @@ export class QuestionComponent {
   ) {}
 
   ngOnInit() {
+
     this.loading = true;
     this.cauHoiService.getLoaiCauHoi().subscribe({
       next: (res) => {
+
         this.lstLoaiCauHoi = res;
+        console.log("res",res)
       },
       error: (e) => {
         this.loading = false;
@@ -67,6 +70,7 @@ export class QuestionComponent {
       complete: () => {
         this.loading = false;
       },
+      
     });
     this.createForm();
     Utils.translate('vi', this.translateService, this.config);

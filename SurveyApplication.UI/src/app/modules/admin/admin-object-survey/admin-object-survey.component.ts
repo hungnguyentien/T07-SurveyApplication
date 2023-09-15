@@ -242,6 +242,7 @@ export class AdminObjectSurveyComponent {
             this.FormObjectSurvey.reset();
             this.FormRepresentative.reset();
             this.visible = false;
+            
           } else {
             this.messageService.add({
               severity: 'error',
