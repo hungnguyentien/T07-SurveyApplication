@@ -202,22 +202,13 @@ export class AdminObjectSurveyComponent {
   }
 
   Edit(data: any) {
+    debugger
     this.showadd = false;
     this.visible = !this.visible;
     this.objectSurveyService.getById<CreateUnitAndRep>(data.idDonVi).subscribe({
       next: (res) => {
-        Utils.setValueForm(
-          this.FormObjectSurvey,
-          Object.keys(res.donViDto),
-          Object.values(res.donViDto),
-          true
-        );
-        Utils.setValueForm(
-          this.FormRepresentative,
-          Object.keys(res.nguoiDaiDienDto),
-          Object.values(res.nguoiDaiDienDto),
-          true
-        );
+        Utils.setValueForm(this.FormObjectSurvey,Object.keys(res.donViDto),Object.values(res.donViDto),true);
+        Utils.setValueForm(this.FormRepresentative,Object.keys(res.nguoiDaiDienDto),Object.values(res.nguoiDaiDienDto),true);
         this.IdDonVi = res.donViDto.id.toString();
         this.IdNguoiDaiDien = res.nguoiDaiDienDto.id.toString();
       },
@@ -265,6 +256,7 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveEdit() {
+    debugger
     const updatedFormObjectSurveyValue = { ...this.FormObjectSurvey.value };
     updatedFormObjectSurveyValue['Id'] = this.IdDonVi;
     const updatedFormRepresentativeValue = { ...this.FormRepresentative.value };

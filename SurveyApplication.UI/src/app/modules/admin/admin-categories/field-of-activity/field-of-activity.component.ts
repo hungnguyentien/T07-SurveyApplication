@@ -24,7 +24,6 @@ export class FieldOfActivityComponent {
   first = 0;
   showadd!: boolean;
   FormFieldOfActivity!: FormGroup;
-  listFormFieldOfActivity!: [];
   visible: boolean = false;
   IdLinhVuc: any;
   constructor(
@@ -47,6 +46,7 @@ export class FieldOfActivityComponent {
   };
 
   loadListLazy = (event: any) => {
+    debugger
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
@@ -60,6 +60,7 @@ export class FieldOfActivityComponent {
     };
     this.FieldOfActivityService.getByCondition(this.paging).subscribe({
       next: (res) => {
+        debugger
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
       },
@@ -74,6 +75,7 @@ export class FieldOfActivityComponent {
   };    
 
   onSubmitSearch = () => {
+    debugger
     this.paging.keyword = this.keyWord;
     this.FieldOfActivityService.getByCondition(this.paging).subscribe({
       next: (res) => {
@@ -105,9 +107,9 @@ export class FieldOfActivityComponent {
   };
 
   Add() {
+    debugger
     this.visible = !this.visible;
     this.showadd = true;
-    this.table.reset();
     this.FormFieldOfActivity.reset();
   }
 
