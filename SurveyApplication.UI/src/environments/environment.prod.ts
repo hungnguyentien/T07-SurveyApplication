@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://192.168.3.20:86/api'
+  apiUrl: 'http://10.0.70.17:86/api',
+  apiIp: 'https://ipinfo.io/json?token=a4f2fcddf28a9a'
 };
