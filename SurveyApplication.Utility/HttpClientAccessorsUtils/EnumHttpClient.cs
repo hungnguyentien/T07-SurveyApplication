@@ -1,4 +1,4 @@
-﻿namespace Hangfire.Infrastructure.HttpClientAccessors
+﻿namespace SurveyApplication.Utility.HttpClientAccessorsUtils
 {
     public enum HttpClientMethod
     {

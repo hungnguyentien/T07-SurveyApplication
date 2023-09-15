@@ -12,7 +12,8 @@ import {
   SaveSurvey,
 } from '@app/models';
 import 'survey-core/survey.i18n';
-import { KqTrangThai, TypeCauHoi } from '@app/enums';
+import { KqTrangThai } from '@app/enums';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-survey-info',
@@ -32,143 +33,21 @@ export class SurveyInfoComponent {
     private messageService: MessageService
   ) {}
 
-  addOtherItem = (...args: any[]) => {
-    const [el, dataKq] = args;
-    if (el && el.showOtherItem && dataKq) {
-      this.lstBaoCaoCauHoi.push({
-        idBangKhaoSat: 0,
-        idCauHoi: 0,
-        idDotKhaoSat: 0,
-        idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-        tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-        maCauHoi: el.name,
-        cauHoi: el.title,
-        cauHoiPhu: '',
-        maCauHoiPhu: '',
-        loaiCauHoi: TypeCauHoi.Radio,
-        maCauTraLoi: `${el.name}-Comment`,
-        cauTraLoi: dataKq[`${el.name}-Comment`],
-      } as CreateBaoCaoCauHoi);
-    }
-  };
-
-  addDataBaoCao = (...args: any[]) => {
-    const [configCauHoi, dataKq, status] = args;
-    if (configCauHoi && dataKq && status == KqTrangThai.HoanThanh) {
-      (configCauHoi as any[]).forEach((el) => {
-        if (el.type === 'radiogroup' || el.type === 'checkbox') {
-          (el.choices as any[]).forEach((choice) => {
-            this.lstBaoCaoCauHoi.push({
-              idBangKhaoSat: 0,
-              idCauHoi: 0,
-              idDotKhaoSat: 0,
-              idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-              tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-              maCauHoi: el.name,
-              cauHoi: el.title,
-              cauHoiPhu: '',
-              maCauHoiPhu: '',
-              loaiCauHoi:
-                el.type === 'radiogroup'
-                  ? TypeCauHoi.Radio
-                  : TypeCauHoi.CheckBox,
-              maCauTraLoi: choice.text,
-              cauTraLoi:
-                dataKq[el.name] === choice.value ? dataKq[el.name] : '',
-            } as CreateBaoCaoCauHoi);
-          });
-          this.addOtherItem(el, dataKq);
-        } else if (el.type === 'comment' || el.type === 'text') {
-          this.lstBaoCaoCauHoi.push({
-            idBangKhaoSat: 0,
-            idCauHoi: 0,
-            idDotKhaoSat: 0,
-            idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-            tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-            maCauHoi: el.name,
-            cauHoi: el.title,
-            cauHoiPhu: '',
-            maCauHoiPhu: '',
-            loaiCauHoi:
-              el.type === 'comment' ? TypeCauHoi.LongText : TypeCauHoi.Text,
-            maCauTraLoi: '',
-            cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
-          } as CreateBaoCaoCauHoi);
-        } else if (el.type === 'matrixdropdown') {
-          (el.rows as any[]).forEach((rEl) => {
-            (el.columns as any[]).forEach((cEl) => {
-              this.lstBaoCaoCauHoi.push({
-                idBangKhaoSat: 0,
-                idCauHoi: 0,
-                idDotKhaoSat: 0,
-                idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-                tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-                maCauHoi: el.name,
-                cauHoi: el.title,
-                cauHoiPhu: rEl.text,
-                maCauHoiPhu: rEl.value,
-                loaiCauHoi:
-                  el.cellType === 'checkbox'
-                    ? TypeCauHoi.MultiSelectMatrix
-                    : TypeCauHoi.MultiTextMatrix,
-                maCauTraLoi: cEl.name,
-                cauTraLoi: dataKq[el.name][rEl.value][cEl.value]
-                  ? JSON.stringify(dataKq[el.name][rEl.value][cEl.value])
-                  : '',
-              } as CreateBaoCaoCauHoi);
-            });
-          });
-        } else if (el.type === 'matrix') {
-          (el.rows as any[]).forEach((rEl) => {
-            (el.columns as any[]).forEach((cEl) => {
-              this.lstBaoCaoCauHoi.push({
-                idBangKhaoSat: 0,
-                idCauHoi: 0,
-                idDotKhaoSat: 0,
-                idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-                tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-                maCauHoi: el.name,
-                cauHoi: el.title,
-                cauHoiPhu: rEl.title,
-                maCauHoiPhu: rEl.name,
-                loaiCauHoi: TypeCauHoi.SingleSelectMatrix,
-                maCauTraLoi: cEl.name,
-                cauTraLoi: dataKq[el.name][rEl.name]
-                  ? cEl.value == dataKq[el.name][rEl.name]
-                    ? cEl.text
-                    : ''
-                  : '',
-              } as CreateBaoCaoCauHoi);
-            });
-          });
-        } else if (el.type === 'file') {
-          this.lstBaoCaoCauHoi.push({
-            idBangKhaoSat: 0,
-            idCauHoi: 0,
-            idDotKhaoSat: 0,
-            idLoaiHinhDonVi: this.generalInfo.donVi.idLoaiHinh,
-            tenDaiDienCq: this.generalInfo.nguoiDaiDien.hoTen,
-
-            maCauHoi: el.name,
-            cauHoi: el.title,
-            cauHoiPhu: '',
-            maCauHoiPhu: '',
-            loaiCauHoi: TypeCauHoi.UploadFile,
-            maCauTraLoi: '',
-            cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
-          } as CreateBaoCaoCauHoi);
-        }
-      });
-    }
-  };
-
-  ngOnInit() {
+  async ngOnInit() {
     this.generalInfo = history.state;
+    let ipClient = localStorage.getItem('grand_client');
+    if (!ipClient) {
+      try {
+        ipClient = JSON.stringify(
+          await (await fetch(environment.apiIp)).json()
+        );
+        localStorage.setItem('grand_client', btoa(ipClient));
+      } catch (e) {
+        ipClient = '';
+        console.log(e);
+      }
+    }
+
     const configSurvey = (
       configJson: any,
       surveyData: string,
@@ -180,11 +59,18 @@ export class SurveyInfoComponent {
         (sender: Model, status: number) => {
           let dataKq = sender.data;
           let configCauHoi: any[] = (sender as any).jsonObj?.pages[0]?.elements;
-          this.addDataBaoCao(configCauHoi, dataKq, status);
+          this.lstBaoCaoCauHoi = Utils.addDataBaoCao(
+            configCauHoi,
+            dataKq,
+            status,
+            [],
+            this.generalInfo
+          );
           this.saveSurvey = {
             data: JSON.stringify(dataKq),
             guiEmail: this.generalInfo.data ?? '',
             trangThai: status,
+            ipAddressClient: atob(ipClient ?? ''),
           };
           this.loading = true;
           this.phieuKhaoSatService.saveSurvey(this.saveSurvey).subscribe({
@@ -197,9 +83,10 @@ export class SurveyInfoComponent {
                   );
               //TODO đồng bộ kết quả sau khi lưu khảo sát
               if (res.success && status === KqTrangThai.HoanThanh) {
+                debugger;
                 let data = {
                   lstBaoCaoCauHoi: this.lstBaoCaoCauHoi,
-                  idGuiEmail: '0dAdviHHkd5T2Odc-MCP2gCHq__WZ6EH',
+                  idGuiEmail: this.generalInfo.data,
                 } as CreateBaoCaoCauHoiCommand;
                 this.phieuKhaoSatService.dongBoBaoCaoCauHoi(data).subscribe({
                   next: (res) => {

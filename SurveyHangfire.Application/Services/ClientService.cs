@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Hangfire.Application.Interfaces;
-using Hangfire.Infrastructure.HttpClientAccessors.Interfaces;
+using SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces;
 using SurveyApplication.Utility.LogUtils;
 
 

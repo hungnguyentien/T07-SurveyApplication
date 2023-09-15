@@ -1,16 +1,14 @@
-﻿using Hangfire.Domain.Interfaces.Hangfire;
-
+﻿using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace Hangfire.Application.Services
 {
     public class BaseMasterService
     {
-        protected IHangfireRepositoryWrapper _dasHangfireRepo;
+        protected ISurveyRepositoryWrapper _surveyRepo;
 
-
-        public BaseMasterService(IHangfireRepositoryWrapper dasRepository)
+        protected BaseMasterService(ISurveyRepositoryWrapper surveyRepository)
         {
-            _dasHangfireRepo = dasRepository;
+            _surveyRepo = surveyRepository;
         }    
     }
 }

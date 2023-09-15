@@ -4,28 +4,23 @@ using System.Linq;
 using HangfireBasicAuthenticationFilter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Text;
 using Hangfire.Application.Enums;
 using Hangfire.Application.Interfaces;
 using Hangfire.Application.Services;
-using Hangfire.Domain.Interfaces.Hangfire;
-using Hangfire.Domain.Models;
-using Hangfire.Domain.Models.Hangfire;
-using Hangfire.Infrastructure.Contexts;
-using Hangfire.Infrastructure.HttpClientAccessors.Implementations;
-using Hangfire.Infrastructure.HttpClientAccessors.Interfaces;
-using Hangfire.Infrastructure.Repositories.Hangfire;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using System.IO;
 using System.Reflection;
+using Hangfire.Application;
+using SurveyApplication.Domain;
 using SurveyApplication.Utility.LogUtils;
+using SurveyApplication.Persistence;
+using SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations;
+using SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces;
 
 namespace Hangfire
 {
@@ -45,24 +40,6 @@ namespace Hangfire
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Base HttpClient 
-            services.AddHttpClient<IBaseHttpClient, BaseHttpClient>();   //Transient, don't Inject to Scope or Singleton
-            services.AddSingleton<IBaseHttpClientFactory, BaseHttpClientFactory>();
-
-            //Inject repos
-            services.AddScoped<IHangfireRepositoryWrapper, HangfireRepositoryWrapper>();
-
-            // Config HttpContextAccessor
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IClientServices, ClientService>();
-
-            #region Services Injection
-
-            //Inject logic services
-            services.DependencyInjectionService();
-
-            #endregion
-
             services.AddControllers();
             services.AddCors(o =>
             {
@@ -75,35 +52,19 @@ namespace Hangfire
 
             #region Configure Hangfire
 
-            services.AddHangfire(c => c.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnectionString")));
-            GlobalConfiguration.Configuration.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnectionString")).WithJobExpirationTimeout(TimeSpan.FromDays(7));
-
+            services.AddHangfire(c => c.UseSqlServerStorage(Configuration.GetConnectionString("SurveyManagerConnectionString")));
+            GlobalConfiguration.Configuration.UseSqlServerStorage(Configuration.GetConnectionString("SurveyManagerConnectionString")).WithJobExpirationTimeout(TimeSpan.FromDays(7));
 
             #endregion
 
-            services.AddDbContext<HangfireContext>(o => o.UseSqlServer(Configuration.GetConnectionString("HangfireConnectionString")));
+            #region Services Injection
+
+            //Inject logic services
+            services.DependencyInjectionService(Configuration);
+
+            #endregion
+
             services.AddSingleton<ILoggerManager, LoggerManager>();
-            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(o =>
-                {
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero,
-                        ValidIssuer = Configuration["JwtSettings:Issuer"],
-                        ValidAudience = Configuration["JwtSettings:Audience"],
-                        IssuerSigningKey =
-                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSettings:Key"]))
-                    };
-                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -152,28 +113,20 @@ namespace Hangfire
             #region Job Scheduling Tasks
 
             using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-            var hangfireService = serviceScope.ServiceProvider.GetRequiredService<IClientServices>();
+            var hangFireService = serviceScope.ServiceProvider.GetRequiredService<IClientServices>();
             var lstJob = GetListJobSetup(app);
             foreach (var item in lstJob)
             {
                 switch (item.JobTypeId)
                 {
                     case (int)EnumJobType.Type.Recurring:
-                        RecurringJob.AddOrUpdate(item.JobName, () => hangfireService.RecurringJobAsync(item.Service, item.ApiUrl), item.CronString);
+                        RecurringJob.AddOrUpdate(item.JobName, () => hangFireService.RecurringJobAsync(item.Service, item.ApiUrl), item.CronString);
                         break;
                 }
             }
 
             #endregion
 
-        }
-
-        private List<JobSchedule> GetListJobSetup(IApplicationBuilder app)
-        {
-            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<HangfireContext>();
-            var lstSetup = context.JobSchedule.AsNoTracking().Where(x => x.Status != (int)EnumCommon.Status.InActive).ToList();
-            return lstSetup;
         }
 
         private static void AddSwaggerDoc(IServiceCollection services)
@@ -224,6 +177,14 @@ namespace Hangfire
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
+        }
+
+        private static List<JobSchedule> GetListJobSetup(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+            var context = serviceScope.ServiceProvider.GetRequiredService<SurveyApplicationDbContext>();
+            var lstSetup = context.JobSchedule.AsNoTracking().Where(x => x.Status != (int)EnumCommon.Status.InActive).ToList();
+            return lstSetup;
         }
     }
 }

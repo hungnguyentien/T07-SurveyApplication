@@ -1,5 +1,5 @@
 ﻿
-namespace Hangfire.Infrastructure.HttpClientAccessors.Interfaces
+namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces
 {
     public interface IBaseHttpClientFactory
     {

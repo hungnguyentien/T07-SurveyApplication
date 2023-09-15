@@ -52,8 +52,6 @@ export class GeneralInfoComponent {
     private router: Router,
     private formBuilder: FormBuilder,
     private phieuKhaoSatService: PhieuKhaoSatService,
-    private loaiHinhDonViService: UnitTypeService,
-    private linhVucHoatDongService: LinhVucHoatDongService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -108,7 +106,7 @@ export class GeneralInfoComponent {
       }),
     });
 
-    this.loaiHinhDonViService.getAll().subscribe({
+    this.phieuKhaoSatService.getAllLoaiHinhDonVi().subscribe({
       next: (res) => {
         this.loading = true;
         this.lstLoaiHinhDonVi = res;
@@ -121,7 +119,7 @@ export class GeneralInfoComponent {
       },
     });
 
-    this.linhVucHoatDongService.getAll().subscribe({
+    this.phieuKhaoSatService.getAllLinhVucHoatDong().subscribe({
       next: (res) => {
         this.loading = true;
         this.lstLinhVuc = res;

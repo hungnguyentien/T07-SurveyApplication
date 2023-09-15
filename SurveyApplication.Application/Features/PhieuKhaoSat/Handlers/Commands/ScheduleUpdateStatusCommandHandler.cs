@@ -16,7 +16,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 
         public async Task<BaseCommandResponse> Handle(ScheduleUpdateStatusCommand request, CancellationToken cancellationToken)
         {
-            var hoanThanhDks = await _surveyRepo.DotKhaoSat.GetAllListAsync(x => !x.Deleted && x.NgayKetThuc.Date.AddDays(1) == DateTime.Now.Date);
+            var hoanThanhDks = await _surveyRepo.DotKhaoSat.GetAllListAsync(x => !x.Deleted && x.NgayKetThuc.Date.AddDays(1) <= DateTime.Now.Date && x.TrangThai != (int)EnumDotKhaoSat.TrangThai.HoanThanh);
             if (hoanThanhDks.Any())
             {
                 hoanThanhDks.ForAll(x => x.TrangThai = (int)EnumDotKhaoSat.TrangThai.HoanThanh);
@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 await _surveyRepo.SaveAync();
             }
 
-            var hoanThanhBks = await _surveyRepo.BangKhaoSat.GetAllListAsync(x => !x.Deleted && x.NgayKetThuc.Date.AddDays(1) == DateTime.Now.Date);
+            var hoanThanhBks = await _surveyRepo.BangKhaoSat.GetAllListAsync(x => !x.Deleted && x.NgayKetThuc.Date.AddDays(1) <= DateTime.Now.Date && x.TrangThai != (int)EnumBangKhaoSat.TrangThai.HoanThanh);
             if (hoanThanhBks.Any())
             {
                 hoanThanhBks.ForAll(x => x.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh);

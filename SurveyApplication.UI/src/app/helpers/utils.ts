@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { KqTrangThai, TypeCauHoi } from '@app/enums';
-import { SurveyConfig } from '@app/models';
+import { CreateBaoCaoCauHoi, SurveyConfig } from '@app/models';
 import { jsonDataFake } from './json';
 import { themeJson } from './theme';
 import { environment } from '@environments/environment';
@@ -285,8 +285,8 @@ export default class Utils {
     return survey;
   };
 
-  static configCauHoi = (res: SurveyConfig) => {
-    let els = new Array();
+  static configCauHoi = (res: SurveyConfig): any[] => {
+    let els: any[] = [];
     let readOnly = res.trangThaiKq === KqTrangThai.HoanThanh;
     res.lstCauHoi.forEach((el, i) => {
       let loaiCauHoi = el.loaiCauHoi;
@@ -487,5 +487,119 @@ export default class Utils {
 
   static onlyUnique = (value: any, index: number, array: any[]) => {
     return array.indexOf(value) === index;
+  };
+
+  static addOtherItem = (...args: any[]) => {
+    const [el, dataKq, lstBaoCaoCauHoi, dataDefault] = args;
+    if (el && el.showOtherItem && dataKq) {
+      lstBaoCaoCauHoi.push({
+        ...dataDefault,
+        maCauHoi: el.name,
+        cauHoi: el.title,
+        cauHoiPhu: '',
+        maCauHoiPhu: '',
+        loaiCauHoi: TypeCauHoi.Radio,
+        maCauTraLoi: `${el.name}-Comment`,
+        cauTraLoi: dataKq[`${el.name}-Comment`],
+      } as CreateBaoCaoCauHoi);
+    }
+  };
+
+  static addDataBaoCao = (...args: any[]): CreateBaoCaoCauHoi[] => {
+    const [configCauHoi, dataKq, status, lstBaoCaoCauHoi, generalInfo] = args;
+    if (configCauHoi && dataKq && status == KqTrangThai.HoanThanh) {
+      let dataDefault = {
+        idBangKhaoSat: 0,
+        idCauHoi: 0,
+        idDotKhaoSat: 0,
+        idLoaiHinhDonVi: generalInfo.donVi.idLoaiHinh,
+        tenDaiDienCq: generalInfo.nguoiDaiDien.hoTen,
+      };
+      (configCauHoi as any[]).forEach((el) => {
+        if (el.type === 'radiogroup' || el.type === 'checkbox') {
+          (el.choices as any[]).forEach((choice) => {
+            lstBaoCaoCauHoi.push({
+              ...dataDefault,
+              maCauHoi: el.name,
+              cauHoi: el.title,
+              cauHoiPhu: '',
+              maCauHoiPhu: '',
+              loaiCauHoi:
+                el.type === 'radiogroup'
+                  ? TypeCauHoi.Radio
+                  : TypeCauHoi.CheckBox,
+              maCauTraLoi: choice.text,
+              cauTraLoi:
+                dataKq[el.name] === choice.value ? dataKq[el.name] : '',
+            } as CreateBaoCaoCauHoi);
+          });
+          this.addOtherItem(el, dataKq, lstBaoCaoCauHoi, dataDefault);
+        } else if (el.type === 'comment' || el.type === 'text') {
+          lstBaoCaoCauHoi.push({
+            ...dataDefault,
+            maCauHoi: el.name,
+            cauHoi: el.title,
+            cauHoiPhu: '',
+            maCauHoiPhu: '',
+            loaiCauHoi:
+              el.type === 'comment' ? TypeCauHoi.LongText : TypeCauHoi.Text,
+            maCauTraLoi: '',
+            cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
+          } as CreateBaoCaoCauHoi);
+        } else if (el.type === 'matrixdropdown') {
+          (el.rows as any[]).forEach((rEl) => {
+            (el.columns as any[]).forEach((cEl) => {
+              lstBaoCaoCauHoi.push({
+                ...dataDefault,
+                maCauHoi: el.name,
+                cauHoi: el.title,
+                cauHoiPhu: rEl.text,
+                maCauHoiPhu: rEl.value,
+                loaiCauHoi:
+                  el.cellType === 'checkbox'
+                    ? TypeCauHoi.MultiSelectMatrix
+                    : TypeCauHoi.MultiTextMatrix,
+                maCauTraLoi: cEl.name,
+                cauTraLoi: dataKq[el.name]?.[rEl.value]?.[cEl.value]
+                  ? JSON.stringify(dataKq[el.name][rEl.value][cEl.value])
+                  : '',
+              } as CreateBaoCaoCauHoi);
+            });
+          });
+        } else if (el.type === 'matrix') {
+          (el.rows as any[]).forEach((rEl) => {
+            (el.columns as any[]).forEach((cEl) => {
+              lstBaoCaoCauHoi.push({
+                ...dataDefault,
+                maCauHoi: el.name,
+                cauHoi: el.title,
+                cauHoiPhu: rEl.title,
+                maCauHoiPhu: rEl.name,
+                loaiCauHoi: TypeCauHoi.SingleSelectMatrix,
+                maCauTraLoi: cEl.name,
+                cauTraLoi: dataKq[el.name]?.[rEl.name]
+                  ? cEl.value == dataKq[el.name][rEl.name]
+                    ? cEl.text
+                    : ''
+                  : '',
+              } as CreateBaoCaoCauHoi);
+            });
+          });
+        } else if (el.type === 'file') {
+          lstBaoCaoCauHoi.push({
+            ...dataDefault,
+            maCauHoi: el.name,
+            cauHoi: el.title,
+            cauHoiPhu: '',
+            maCauHoiPhu: '',
+            loaiCauHoi: TypeCauHoi.UploadFile,
+            maCauTraLoi: '',
+            cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
+          } as CreateBaoCaoCauHoi);
+        }
+      });
+    }
+
+    return lstBaoCaoCauHoi;
   };
 }

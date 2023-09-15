@@ -1,12 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { VisualizationPanel } from 'survey-analytics';
-import Utils from '@app/helpers/utils';
-import { PhieuKhaoSatService } from '@app/services';
-
-const surveyResults: any[] = [];
-const vizPanelOptions = {
-  allowHideQuestions: false,
-};
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-admin-home',

@@ -16,4 +16,5 @@ public class KetQua : BaseDomainEntity
     /// Thời gian hoàn thành
     /// </summary>
     public DateTime? DauThoiGian { get; set; }
+    public string IpAddressClient { get; set; }
 }

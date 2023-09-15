@@ -1,8 +1,8 @@
 ﻿namespace Hangfire.Application.Constants
 {
-    public class CommonConst
+    public abstract class CommonConst
     {
-        public static readonly string Success = "Success";
-        public static readonly string Error = "Error";
+        public const string Success = "Success";
+        public const string Error = "Error";
     }
 }

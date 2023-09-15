@@ -34,7 +34,6 @@
     <ProjectReference Include="..\Infrastructure\SurveyApplication.Infrastructure.csproj" />
     <ProjectReference Include="..\SurveyApplication.Domain\SurveyApplication.Domain.csproj" />
     <ProjectReference Include="..\SurveyApplication.Persistence\SurveyApplication.Persistence.csproj" />
-    <ProjectReference Include="..\SurveyApplication.Utility\SurveyApplication.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

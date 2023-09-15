@@ -6,9 +6,13 @@ using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.CauHoi;
+using SurveyApplication.Application.DTOs.LinhVucHoatDong;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Commands;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
+using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Queries;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Queries;
 using SurveyApplication.Domain.Common;
@@ -93,6 +97,20 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     #endregion
+
+    [HttpGet("GetAllLoaiHinhDonVi")]
+    public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetAllLoaiHinhDonVi()
+    {
+        var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViListRequest());
+        return Ok(leaveAllocations);
+    }
+    
+    [HttpGet("GetAllLinhVucHoatDong")]
+    public async Task<ActionResult<List<LinhVucHoatDongDto>>> GetAllLinhVucHoatDong()
+    {
+        var rs = await _mediator.Send(new GetLinhVucHoatDongListRequest());
+        return Ok(rs);
+    }
 
     [HttpPost("DongBoBaoCaoCauHoi")]
     public async Task<ActionResult> DongBoBaoCaoCauHoi(CreateBaoCaoCauHoiCommand data)

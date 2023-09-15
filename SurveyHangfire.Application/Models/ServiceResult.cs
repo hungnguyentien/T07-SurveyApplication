@@ -44,6 +44,7 @@ namespace Hangfire.Application.Models
             Code = CommonConst.Error;
             Message = msg;
         }
+
         /// <summary>
         /// Show error inline
         /// </summary>

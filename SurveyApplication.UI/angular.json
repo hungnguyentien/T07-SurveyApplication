@@ -32,7 +32,6 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/survey-core/defaultV2.min.css",
               "node_modules/survey-creator-core/survey-creator-core.min.css",
-              "node_modules/survey-analytics/survey.analytics.min.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -42,7 +41,6 @@
             "allowedCommonJsDependencies": [
               "Utils",
               "survey-core",
-              "survey-analytics",
               "survey-creator-core",
               "survey-core/survey.i18n",
               "@ckeditor/ckeditor5-build-classic"

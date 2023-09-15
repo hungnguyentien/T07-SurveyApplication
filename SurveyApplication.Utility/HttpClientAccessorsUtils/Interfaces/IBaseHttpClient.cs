@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hangfire.Infrastructure.HttpClientAccessors.Interfaces
+namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces
 {
     public interface IBaseHttpClient
     {

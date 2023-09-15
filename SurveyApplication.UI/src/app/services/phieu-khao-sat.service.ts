@@ -9,6 +9,8 @@ import {
   BaseCommandResponse,
   HanhChinhVn,
   CreateBaoCaoCauHoiCommand,
+  LinhVucHoatDong,
+  UnitType,
 } from '@app/models';
 import { environment } from '@environments/environment';
 import Utils from '@app/helpers/utils';
@@ -70,5 +72,19 @@ export class PhieuKhaoSatService {
       `${environment.apiUrl}/PhieuKhaoSat/DongBoBaoCaoCauHoi`,
       data
     );
+  }
+
+  getAllLoaiHinhDonVi() {
+    return this.http
+      .get<UnitType[]>(`${environment.apiUrl}/PhieuKhaoSat/GetAllLoaiHinhDonVi`)
+      .pipe(first());
+  }
+
+  getAllLinhVucHoatDong() {
+    return this.http
+      .get<LinhVucHoatDong[]>(
+        `${environment.apiUrl}/PhieuKhaoSat/GetAllLinhVucHoatDong`
+      )
+      .pipe(first());
   }
 }

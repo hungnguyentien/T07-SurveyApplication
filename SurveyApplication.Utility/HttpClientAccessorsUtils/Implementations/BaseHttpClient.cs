@@ -5,9 +5,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Hangfire.Infrastructure.HttpClientAccessors.Interfaces;
+using SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces;
 
-namespace Hangfire.Infrastructure.HttpClientAccessors.Implementations
+namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
 {
     public class BaseHttpClient : IBaseHttpClient
 

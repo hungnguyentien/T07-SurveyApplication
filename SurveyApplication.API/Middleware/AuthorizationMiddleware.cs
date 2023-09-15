@@ -20,8 +20,7 @@ namespace SurveyApplication.API.Middleware
             if (httpContext.Request.Path.Equals("/api/Account/login", StringComparison.OrdinalIgnoreCase) 
                 || httpContext.Request.Path.Equals("/swagger/index.html", StringComparison.OrdinalIgnoreCase) 
                 || httpContext.Request.Path.Equals("/swagger/v1/swagger.json", StringComparison.OrdinalIgnoreCase) 
-                || httpContext.Request.Path.Equals("/api/PhieuKhaoSat/ScheduleUpdateStatus", StringComparison.OrdinalIgnoreCase)
-                || httpContext.Request.Path.Equals("/api/PhieuKhaoSat/ScheduleSendEmail", StringComparison.OrdinalIgnoreCase))
+                || httpContext.Request.Path.StartsWithSegments("/api/PhieuKhaoSat", StringComparison.OrdinalIgnoreCase))
             {
                 await _next.Invoke(httpContext);
                 return;

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using Hangfire.Infrastructure.HttpClientAccessors.Interfaces;
+using SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces;
 
-namespace Hangfire.Infrastructure.HttpClientAccessors.Implementations
+namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
 {
     public class BaseHttpClientFactory : IBaseHttpClientFactory
     {
