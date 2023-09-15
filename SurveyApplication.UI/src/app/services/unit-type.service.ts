@@ -12,7 +12,7 @@ export class UnitTypeService extends BaseService<UnitType> {
   }
 
   generateMaLoaiHinh() {
-    const url = `${environment.apiUrl}/LoaiHinhDonVi/GenerateMaLoaiHinhDonVi`;
+    const url = `${environment.apiUrl}/LoaiHinhDonVi/GenerateMaLoaiHinh`;
     return this.http.get(url);
   }
 }

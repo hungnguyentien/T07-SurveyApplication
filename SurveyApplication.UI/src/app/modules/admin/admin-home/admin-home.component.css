@@ -32,3 +32,19 @@
   .custom-button:hover {
     background-color: #4e73df;
   }
+
+  .style_sum{
+    box-sizing: border-box;
+    height: 25vh;
+    line-height: 15vh;
+    color: #FFFFFF;
+  }
+  .style_sum>div>h5{
+    margin-top: 40px;
+  }
+  .style_sum>div>p{
+    font-size: 22px;
+  }
+  .style_sum>div{
+    margin: 20px;
+  }
