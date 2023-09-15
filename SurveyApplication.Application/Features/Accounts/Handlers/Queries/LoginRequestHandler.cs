@@ -32,11 +32,11 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
 
     public async Task<AuthResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        var user = await _userManager.FindByNameAsync(request.Email);
 
         if (user == null)
         {
-            if (request.Email == "admin@gmail.com")
+            if (request.Email == "admin")
             {
                 var hasher = new PasswordHasher<ApplicationUser>();
                 var userAdmin = new ApplicationUser
