@@ -1,8 +1,7 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface ILoaiHinhDonViRepository : IGenericRepository<LoaiHinhDonVi>
 {
-    public interface ILoaiHinhDonViRepository : IGenericRepository<LoaiHinhDonVi>
-    {
-        Task<bool> ExistsByMaLoaiHinh(string maloaihinh);
-        Task<string> GetLastRecordByMaLoaiHinh();
-    }
+    Task<bool> ExistsByMaLoaiHinh(string maloaihinh);
+    Task<string> GetLastRecordByMaLoaiHinh();
 }

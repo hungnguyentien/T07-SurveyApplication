@@ -1,16 +1,15 @@
-﻿namespace SurveyApplication.Application.DTOs.CauHoi
-{
-    public class PhieuKhaoSatDto
-    {
-        public int IdBangKhaoSat { get; set; }
-        public int TrangThai { get; set; }
-        public List<CauHoiDto> LstCauHoi { get; set; }
-        public string KqSurvey { get; set; }
-    }
+﻿namespace SurveyApplication.Application.DTOs.CauHoi;
 
-    public class EmailThongTinChungDto
-    {
-        public int? IdBangKhaoSat { get; set; }
-        public int? IdDonVi { get; set; }
-    }
+public class PhieuKhaoSatDto
+{
+    public int IdBangKhaoSat { get; set; }
+    public List<CauHoiDto> LstCauHoi { get; set; }
+    public string KqSurvey { get; set; }
+    public int TrangThaiKhaoSat { get; set; }
+    public int TrangThaiKq { get; set; }
+}
+
+public class EmailThongTinChungDto
+{
+    public int? IdGuiEmail { get; set; }
 }

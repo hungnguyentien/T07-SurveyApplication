@@ -6,10 +6,14 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ObjectSurveyService, UnitTypeService } from '@app/services';
+import {
+  LinhVucHoatDongService,
+  ObjectSurveyService,
+  UnitTypeService,
+} from '@app/services';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { Table } from 'primeng/table';
-import { Paging } from '@app/models';
+import { LinhVucHoatDong, Paging } from '@app/models';
 import Utils from '@app/helpers/utils';
 
 @Component({
@@ -36,7 +40,7 @@ export class AdminObjectSurveyComponent {
   MaNguoiDaiDien!: string;
   IdLoaiHinh!: string;
   listloaihinhdonvi: any[] = [];
-  listlinhvuchoatdong: any[]= [];
+  listlinhvuchoatdong: any[] = [];
   ContainerAdd: any[] = [];
 
   combinedArray: any[] = [];
@@ -44,13 +48,14 @@ export class AdminObjectSurveyComponent {
   districts: any[] = [];
   wards: any[] = [];
   visible: boolean = false;
+  lstLinhVuc: LinhVucHoatDong[] | undefined;
 
-  selectedCountry: string | undefined;
   constructor(
     private objectSurveyService: ObjectSurveyService,
     private unitTypeService: UnitTypeService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private linhVucHoatDongService: LinhVucHoatDongService
   ) {}
   ngOnInit() {
     // this.GetObjectSurvey();
@@ -81,6 +86,20 @@ export class AdminObjectSurveyComponent {
     });
     this.objectSurveyService.getCities().subscribe((data: any) => {
       this.cities = data;
+    });
+
+    this.linhVucHoatDongService.getAll().subscribe({
+      next: (res) => {
+        this.loading = true;
+        this.lstLinhVuc = res;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 
@@ -122,15 +141,15 @@ export class AdminObjectSurveyComponent {
       this.listloaihinhdonvi = response;
     });
   }
-  GetAllFieldOfActivity(){
-    
-    this.objectSurveyService.GetAllFieldOfActivity().subscribe((response:any)=>{
-      this.listlinhvuchoatdong = response;
-    })
+  GetAllFieldOfActivity() {
+    this.objectSurveyService
+      .GetAllFieldOfActivity()
+      .subscribe((response: any) => {
+        this.listlinhvuchoatdong = response;
+      });
   }
 
   loadListLazy = (event: any) => {
-    
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
@@ -146,7 +165,7 @@ export class AdminObjectSurveyComponent {
       next: (res) => {
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
-        console.log("res1",res)
+        console.log('res1', res);
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);
@@ -183,7 +202,6 @@ export class AdminObjectSurveyComponent {
   }
 
   Edit(data: any) {
-    
     this.showadd = false;
     this.visible = !this.visible;
     this.objectSurveyService.getById<CreateUnitAndRep>(data.idDonVi).subscribe({
@@ -196,7 +214,7 @@ export class AdminObjectSurveyComponent {
         );
         Utils.setValueForm(
           this.FormRepresentative,
-          Object.keys(res.nguoiDaiDienDto), 
+          Object.keys(res.nguoiDaiDienDto),
           Object.values(res.nguoiDaiDienDto),
           true
         );
@@ -216,7 +234,6 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveAdd() {
-    debugger
     if (this.FormObjectSurvey.valid && this.FormRepresentative.valid) {
       const obj: CreateUnitAndRep = {
         donViDto: this.FormObjectSurvey.value,
@@ -234,6 +251,7 @@ export class AdminObjectSurveyComponent {
             this.FormObjectSurvey.reset();
             this.FormRepresentative.reset();
             this.visible = false;
+            
           } else {
             this.messageService.add({
               severity: 'error',
@@ -280,7 +298,6 @@ export class AdminObjectSurveyComponent {
   }
 
   Delete(DonVi: any) {
-    debugger;
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn xoá không ' + '?',
       header: 'delete',

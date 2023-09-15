@@ -18,12 +18,14 @@
                 class="custom-button"></button>
         </div>
         <div class="ml-3">
-            <button pButton type="button"   icon="pi pi-trash" label="Xoá" class="custom-button"
+            <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"
                 style="background-color: #ea5c5c;"></button>
         </div>
         <div class="ml-3">
-            <button pButton type="button" icon="pi pi-envelope" label="Gửi Email" class="custom-button"
-                style="background-color: #eec24a;" (click)="showDialog()"></button>
+            <button *ngIf="selectedTableSurvey && selectedTableSurvey.length > 0" pButton type="button"
+                icon="pi pi-envelope" label="Gửi Email" class="custom-button" style="background-color: #eec24a;"
+                (click)="openGuiEmail()">
+            </button>
         </div>
     </div>
     <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
@@ -42,54 +44,61 @@
         scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTableSurvey" dataKey="id"
         styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
-        [totalRecords]="dataTotalRecords"
+        [totalRecords]="dataTotalRecords" [resizableColumns]="true"
         currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 4rem">
+                <th style="width: 40px;">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th style="min-width: 0rem">
+                <th style="width: 60px;">
                     STT
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Mã bảng khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+                        Mã bảng khảo sát<div type="text"  display="menu" class="ml-auto"></div>
+                        <p-sortIcon field="maBangKhaoSat"></p-sortIcon>
+                        <p-columnFilter type="text" field="maBangKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Tên bảng khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+                        Tên bảng khảo sát
+                        <p-sortIcon field="tenBangKhaoSat"></p-sortIcon>
+                        <p-columnFilter type="text" field="tenBangKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Đợt khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+                        Đợt khảo sát<div type="text"  display="menu" class="ml-auto"></div>
+                        <p-sortIcon field="dotKhaoSat"></p-sortIcon>
+                        <p-columnFilter type="text" field="dotKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Loại hình đơn vị khảo sát<div type="text" field="country.name" display="menu" class="ml-auto">
+                        Loại hình đơn vị khảo sát<div type="text" display="menu" class="ml-auto">
+                            <p-sortIcon field="loaiHinhDonVi"></p-sortIcon>
+                        <p-columnFilter type="text" field="loaiHinhDonVi" display="menu" class="ml-auto"></p-columnFilter>
                         </div>
                     </div>
                 </th>
 
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Thời gian<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+                        Thời gian
+                        <p-sortIcon field="thoiGian"></p-sortIcon>
+                        <p-columnFilter type="text" field="thoiGian" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
+                <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Trạng thái gửi email<div type="text" field="country.name" display="menu" class="ml-auto"></div>
+                        Trạng thái khảo sát
+                        <p-sortIcon field="trangThai"></p-sortIcon>
+                        <p-columnFilter type="text" field="data.trangThai" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 8rem">
-                    <div class="flex justify-content-between align-items-center">
-                        Trạng thái khảo sát<div type="text" field="country.name" display="menu" class="ml-auto"></div>
-                    </div>
-                </th>
-                <th style="min-width: 10rem">
+                <th pResizableColumn>
                     <div>
                         Chức năng
                     </div>
@@ -119,51 +128,49 @@
                     <span class="ml-1 vertical-align-middle">{{ rowData.tenLoaiHinh }}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy' }}-{{
+                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau| date:'dd/MM/yyyy' }} - {{
                         rowData.ngayKetThuc| date:'dd/MM/yyyy' }}</span>
                 </td>
                 <td>
-                    <span class="ml-1 vertical-align-middle"></span>
-                </td>
-                <td>
-                    <ng-container *ngIf="rowData.trangThai === 4">
+                    <ng-container *ngIf="rowData.trangThai === 2">
                         <a style="color: green;;text-decoration: none">Hoàn Thành</a>
                     </ng-container>
-                    <ng-container *ngIf="rowData.trangThai === 3 ">
+                    <ng-container *ngIf="rowData.trangThai === 1 ">
                         <a style="color: rgb(218, 159, 82);text-decoration: none">Đang Khảo Sát</a>
                     </ng-container>
-                    <ng-container *ngIf="rowData.trangThai === 2 ">
+                    <ng-container *ngIf="rowData.trangThai === 3 ">
                         <a style="color: #e24c4c;text-decoration: none">Tạm Dừng</a>
                     </ng-container>
-                    <ng-container *ngIf="rowData.trangThai === 1 ">
+                    <ng-container *ngIf="rowData.trangThai === 0 ">
                         <a style="color: rgb(84, 84, 226);text-decoration: none">Chờ Khảo Sát</a>
                     </ng-container>
                 </td>
                 <td>
                     <a class="m-3">
-                        <ng-container *ngIf="rowData.trangThai == 1">
+                        <ng-container *ngIf="rowData.trangThai == 0">
                             <span (click)="Edit(rowData)" class="pi pi-pencil " title="Cập nhật" aria-hidden="true"
                                 style="margin-right: 30px;"></span>
                         </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2">
+                        <ng-container *ngIf="rowData.trangThai == 0">
                             <span class="pi pi-trash " title="Xoá" (click)="Delete(rowData)"
                                 style="color: red;margin-right: 15px;" aria-hidden="true"></span>
                         </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 2">
+                        <ng-container *ngIf="rowData.trangThai == 3">
                             <span (click)="ToggleStatus(rowData)" class="pi pi-caret-right " title="Tiếp tục"
                                 style="color: rgb(32, 154, 60);margin-right: 15px;" aria-hidden="true"></span>
                         </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 3">
+                        <ng-container *ngIf="rowData.trangThai == 1">
                             <span (click)="ToggleStatus(rowData)" class="pi pi-pause " title="Dừng"
                                 style="color: rgb(212, 22, 22);margin-right: 30px;" aria-hidden="true"></span>
                         </ng-container>
 
                         <ng-container
-                            *ngIf="rowData.trangThai == 2 || rowData.trangThai == 3 || rowData.trangThai == 4">
-                            <span class="pi pi-eye " title="Xem" aria-hidden="true" style="margin-right: 5px;"></span>
+                            *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
+                            <span routerLink="admin/thong-ke-khao-sat" class="pi pi-eye " title="Xem" aria-hidden="true"
+                                style="margin-right: 5px;"></span>
                         </ng-container>
                     </a>
                 </td>
@@ -172,13 +179,13 @@
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="11" class="text-center">Không có bản ghi nào</td>
+                <td colspan="10" class="text-center">Không có bản ghi nào</td>
             </tr>
         </ng-template>
     </p-table>
 </div>
 
-<form method="POST" [formGroup]="formTableSurvey" (ngSubmit)="Save()">
+<form *ngIf="formTableSurvey" [formGroup]="formTableSurvey" (ngSubmit)="Save()">
     <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '65vw' }" [draggable]="false" [resizable]="true"
         [maximizable]="true">
         <ng-template pTemplate="header">
@@ -192,22 +199,19 @@
                 <div class="form-group col-md-6">
                     <label for="maBangKhaoSat" class="col-form-label">Mã bảng: <span
                             style="color: red;">*</span></label>
-                    <input formControlName="maBangKhaoSat" type="text" pInputText class="form-control" placeholder="Nhập mã bảng"
-                        id="maBangKhaoSat" required>
+                    <input formControlName="maBangKhaoSat" type="text" pInputText class="form-control"
+                        placeholder="Nhập mã bảng" id="maBangKhaoSat" required>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['maBangKhaoSat'].valid && 
                         formTableSurvey.controls['maBangKhaoSat'].dirty">
-                        Vui lòng nhập mã bảng  
+                        Vui lòng nhập mã bảng
                     </small>
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="serverError">
                         {{ serverError }}
                     </small>
-
-                    
                 </div>
                 <div class="form-group col-md-6">
                     <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát </label>
-
                     <p-dropdown id="idLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -221,8 +225,8 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="tenBangKhaoSat" class="col-form-label">Tên bảng: </label>
-                    <input formControlName="tenBangKhaoSat" type="text" pInputText class="form-control"placeholder="Nhập tên bảng"
-                        id="tenBangKhaoSat">
+                    <input formControlName="tenBangKhaoSat" type="text" pInputText class="form-control"
+                        placeholder="Nhập tên bảng" id="tenBangKhaoSat">
 
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['tenBangKhaoSat'].valid && 
@@ -232,10 +236,6 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát:</label>
-                    <!-- <select formControlName="idDotKhaoSat" class="custom-select" id="idDotKhaoSat">
-                        <option value="">Chọn đợt khảo sát</option>
-                        <option *ngFor="let Lh of DSDotKhaoSat" [value]="Lh.id">{{Lh.tenDotKhaoSat}}</option>
-                    </select> -->
                     <p-dropdown id="idDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -250,7 +250,8 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="moTa" class="col-form-label">Mô tả: <span style="color: red;">*</span></label>
-                    <textarea name="" pInputTextarea formControlName="moTa" id="moTa" class="w-100" rows="3" placeholder="Nhập mô tả"></textarea>
+                    <textarea name="" pInputTextarea formControlName="moTa" id="moTa" class="w-100" rows="3"
+                        placeholder="Nhập mô tả"></textarea>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['moTa'].valid && 
                     formTableSurvey.controls['moTa'].dirty">
@@ -269,8 +270,9 @@
                         formTableSurvey.controls['ngayBatDau'].dirty">
                         Vui lòng nhập ngày bắt đầu
                     </small>
-
-
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="formTableSurvey.hasError('dateRangeError')">
+                        Ngày bắt đầu phải nhỏ hơn ngày kết thúc
+                    </small>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="ngayKetThuc" class="col-form-label">Ngày kết thúc: <span
@@ -280,9 +282,6 @@
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayKetThuc'].valid && 
                         formTableSurvey.controls['ngayKetThuc'].dirty">
                         Vui lòng nhập ngày kết thúc
-                    </small>
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="formTableSurvey.hasError('dateRangeError')">
-                        Ngày bắt đầu phải nhỏ hơn ngày kết thúc
                     </small>
                 </div>
                 <div class="form-group">
@@ -314,16 +313,15 @@
                                     {{item.get('maCauHoi')?.value}}
                                 </td>
                                 <td>
-                                    {{item.get('tieuDeCauHoi')?.value}}
+                                    {{item.get('tieuDe')?.value}}
                                 </td>
-                                <td>
-                                    <p-checkbox formControlName="isRequired" [binary]="true"
-                                        inputId="isRequired"></p-checkbox>
+                                <td class="text-center">
+                                    <p-inputSwitch formControlName="isRequired"></p-inputSwitch>
                                 </td>
                                 <td>
                                     <div class="ml-5">
                                         <span class="pi pi-trash " title="Xoá" (click)="deleteItem(i)"
-                                        style="color: red; cursor: pointer;" aria-hidden="true"></span>
+                                            style="color: red; cursor: pointer;" aria-hidden="true"></span>
                                     </div>
                                 </td>
                             </tr>
@@ -342,7 +340,6 @@
         </ng-template>
     </p-dialog>
 </form>
-
 
 <p-dialog [(visible)]="visibleCauHoi" [modal]="true" [style]="{ width: '55vw' }" [draggable]="false" [resizable]="true"
     [maximizable]="true">
@@ -435,24 +432,50 @@
     </ng-template>
 </p-dialog>
 
+<form *ngIf="frmGuiEmail" [formGroup]="frmGuiEmail" (ngSubmit)="onSubmitGuiEmail()">
+    <p-dialog [(visible)]="visibleGuiEmail" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
+        [resizable]="true" [maximizable]="true">
+        <ng-template pTemplate="header">
+            <h5 class="modal-title">
+                Gửi bảng khảo sát
+            </h5>
+        </ng-template>
 
-<p-dialog header="Gửi Bảng Khảo Sát" [(visible)]="visibleGuiEmail" [style]="{ width: '50vw', height: '500px' }"
-    [draggable]="false" [resizable]="false" [maximizable]="true">
-    <div class="form-group col-md-12">
-        <label for="tenBangKhaoSat" class="col-form-label">Địa Chỉ Nhận: </label>
-        <input type="text" pInputText class="form-control">
-    </div>
-    <div class="form-group col-md-12">
-        <label for="tenBangKhaoSat" class="col-form-label">Nhập Tiêu Đề: </label>
-        <input type="text" pInputText class="form-control">
-    </div>
-    <div class="form-group col-md-12">
-        <label for="tenBangKhaoSat" class="col-form-label">Nhập Nội Dung: </label>
-        <textarea type="text" pInputText class="form-control" rows="3"></textarea>
-    </div>
-    <ng-template pTemplate="footer">
-        <input type="hidden" formControlName="id">
-        <button pButton (click)="visibleGuiEmail = false" type="button" label="Hủy" class="custom-button surface-600"></button>
-        <button pButton type="submit" icon="pi pi-telegram" label="Gửi" class="custom-button"></button>
-    </ng-template>
-</p-dialog>
+        <ng-template pTemplate="body">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="lstIdDonVi" class="col-form-label">Đơn vị <span style="color: red;">*</span></label>
+                    <p-multiSelect [options]="lstDonVi" [(ngModel)]="selectedDonVi" defaultLabel="-- Chọn đơn vị --"
+                        optionLabel="tenDonVi" optionValue="id" display="chip" id="lstIdDonVi"
+                        emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
+                        [ngModelOptions]="{standalone: true}" class="form-select-custom"></p-multiSelect>
+                    <small class="invalid-feedback" *ngIf="lstIdDonViError">
+                        Vui lòng nhập tiêu đề
+                    </small>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="tieuDe" class="col-form-label">Nhập tiêu đề <span style="color: red;">*</span></label>
+                    <input formControlName="tieuDe" type="text" pInputText class="form-control" id="tieuDe">
+                    <small class="invalid-feedback"
+                        *ngIf="!frmGuiEmail.controls['tieuDe'].valid && frmGuiEmail.controls['tieuDe'].dirty">
+                        Vui lòng nhập tiêu đề
+                    </small>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="noidung" class="col-form-label">Nhập nội dung <span style="color: red;">*</span></label>
+                    <ckeditor formControlName="noidung" [editor]="Editor" id="noidung">
+                    </ckeditor>
+                    <small *ngIf="!frmGuiEmail.controls['noidung'].valid && frmGuiEmail.controls['noidung'].dirty"
+                        class="invalid-feedback">
+                        Vui lòng nhập tiêu đề
+                    </small>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button type="button" class="btn btn-secondary" (click)="visibleGuiEmail = false">Hủy</button>
+            <button type="submit" class="btn btn-primary">Gửi</button>
+        </ng-template>
+    </p-dialog>
+</form>

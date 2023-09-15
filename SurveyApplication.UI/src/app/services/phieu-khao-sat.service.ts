@@ -8,6 +8,9 @@ import {
   SaveSurvey,
   BaseCommandResponse,
   HanhChinhVn,
+  CreateBaoCaoCauHoiCommand,
+  LinhVucHoatDong,
+  UnitType,
 } from '@app/models';
 import { environment } from '@environments/environment';
 import Utils from '@app/helpers/utils';
@@ -18,15 +21,8 @@ import Utils from '@app/helpers/utils';
 export class PhieuKhaoSatService {
   constructor(private http: HttpClient) {}
 
-  getSurveyConfig(
-    idBangKhaoSat: number,
-    idDonVi: number,
-    idNguoiKhaoSat: number
-  ) {
-    let query = Utils.getParamsQuery(
-      ['idBangKhaoSat', 'idDonVi', 'idNguoiKhaoSat'],
-      [idBangKhaoSat.toString(), idDonVi.toString(), idNguoiKhaoSat.toString()]
-    );
+  getSurveyConfig(data: string | undefined) {
+    let query = Utils.getParamsQuery(['data'], [data ?? '']);
     return this.http
       .get<SurveyConfig>(
         `${environment.apiUrl}/PhieuKhaoSat/GetConfigPhieuKhaoSat${query}`
@@ -44,9 +40,7 @@ export class PhieuKhaoSatService {
 
   getTinh() {
     return this.http
-      .get<HanhChinhVn[]>(
-        `${environment.apiUrl}/PhieuKhaoSat/GetTinh`
-      )
+      .get<HanhChinhVn[]>(`${environment.apiUrl}/PhieuKhaoSat/GetTinh`)
       .pipe(first());
   }
 
@@ -71,5 +65,26 @@ export class PhieuKhaoSatService {
       `${environment.apiUrl}/PhieuKhaoSat/SavePhieuKhaoSat`,
       result
     );
+  }
+
+  dongBoBaoCaoCauHoi(data: CreateBaoCaoCauHoiCommand) {
+    return this.http.post<BaseCommandResponse>(
+      `${environment.apiUrl}/PhieuKhaoSat/DongBoBaoCaoCauHoi`,
+      data
+    );
+  }
+
+  getAllLoaiHinhDonVi() {
+    return this.http
+      .get<UnitType[]>(`${environment.apiUrl}/PhieuKhaoSat/GetAllLoaiHinhDonVi`)
+      .pipe(first());
+  }
+
+  getAllLinhVucHoatDong() {
+    return this.http
+      .get<LinhVucHoatDong[]>(
+        `${environment.apiUrl}/PhieuKhaoSat/GetAllLinhVucHoatDong`
+      )
+      .pipe(first());
   }
 }

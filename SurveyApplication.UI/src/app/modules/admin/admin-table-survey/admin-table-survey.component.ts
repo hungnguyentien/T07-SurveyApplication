@@ -1,11 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
 import {
   CauHoi,
+  CreateGuiEmail,
   CreateUpdateBangKhaoSat,
+  DonVi,
   Paging,
   TableSurvey,
 } from '@app/models';
-import { Validators, FormGroup, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
+import {
+  Validators,
+  FormGroup,
+  FormBuilder,
+  FormArray,
+  AbstractControl,
+} from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import {
@@ -13,11 +21,15 @@ import {
   TableSurveyService,
   PeriodSurveyService,
   CauHoiService,
+  ObjectSurveyService,
+  GuiEmailService,
 } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { BksTrangThai } from '@app/enums';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -34,12 +46,6 @@ export class AdminTableSurveyComponent {
   dataTotalRecords!: number;
   keyWord!: string;
 
-
-  // first: number = 0;
-  // TotalCount: number = 0;
-  // pageIndex: number = 1;
-  // pageSize: number = 5;
-  // keyword: string = '';
   confirmationHeader: string = '';
 
   showadd: boolean = false;
@@ -50,14 +56,11 @@ export class AdminTableSurveyComponent {
   DSLoaiHinh: any[] = [];
   DSDotKhaoSat: any[] = [];
   showHeader: boolean = true;
-  visibleGuiEmail: boolean = false;
   Gettrangthai!: number;
   form: FormGroup = new FormGroup({});
 
   searchText = new FormControl('');
   serverError: string = '';
-  
-
 
   visible: boolean = false;
 
@@ -70,6 +73,13 @@ export class AdminTableSurveyComponent {
   keyWordCauHoi!: string;
   visibleCauHoi: boolean = false;
 
+  frmGuiEmail!: FormGroup;
+  visibleGuiEmail: boolean = false;
+  lstDonVi!: DonVi[];
+  selectedDonVi!: number[];
+  lstIdDonViError: boolean = false;
+  public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
+
   constructor(
     private FormBuilder: FormBuilder,
     private TableSurveyService: TableSurveyService,
@@ -80,51 +90,47 @@ export class AdminTableSurveyComponent {
     private cauHoiService: CauHoiService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
+    private objectSurveyService: ObjectSurveyService,
+    private guiEmailService: GuiEmailService,
     private http: HttpClient
+  ) {}
 
-
-
-
-  ) { }
   ngOnInit() {
     this.form = this.fb.group({
       searchText: [''], // Khởi tạo FormControl searchText
       idDotKhaoSat: [''], // Khởi tạo FormControl idDotKhaoSat
     });
 
-
     this.LoadUnitType();
     this.LoadPeriodSurvey();
-    this.formTableSurvey = this.FormBuilder.group({
-      id: [''],
-      maBangKhaoSat: [''],
-      idLoaiHinh: ['', Validators.required],
-      idDotKhaoSat: ['', Validators.required],
-      tenBangKhaoSat: ['', Validators.required],
-      moTa: ['', Validators.required],
-      ngayBatDau: ['', Validators.required],
-      ngayKetThuc: ['', Validators.required],
-      bangKhaoSatCauHoi: this.FormBuilder.array([]),
-    }, { validator: this.dateRangeValidator });
-
-
+    this.formTableSurvey = this.FormBuilder.group(
+      {
+        id: [''],
+        maBangKhaoSat: [''],
+        idLoaiHinh: ['', Validators.required],
+        idDotKhaoSat: ['', Validators.required],
+        tenBangKhaoSat: ['', Validators.required],
+        moTa: ['', Validators.required],
+        ngayBatDau: ['', Validators.required],
+        ngayKetThuc: ['', Validators.required],
+        bangKhaoSatCauHoi: this.FormBuilder.array([]),
+      },
+      { validator: this.dateRangeValidator }
+    );
   }
 
-  
-    
-  dateRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
-
+  dateRangeValidator(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
     const startDate = control.get('ngayBatDau')?.value;
     const endDate = control.get('ngayKetThuc')?.value;
 
     if (startDate && endDate && startDate > endDate) {
-      return { 'dateRangeError': true };
+      return { dateRangeError: true };
     }
 
     return null;
   }
-
-
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -223,10 +229,7 @@ export class AdminTableSurveyComponent {
       this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
     });
   }
-  showDialog() {
-    this.visibleGuiEmail = true;
 
-  }
   LoadPeriodSurvey() {
     this.periodSurveyService.getAll().subscribe((data) => {
       this.DSDotKhaoSat = data; // Lưu dữ liệu vào danh sách
@@ -253,16 +256,13 @@ export class AdminTableSurveyComponent {
   }
 
   Edit(data: any) {
-    debugger
     this.showadd = false;
     this.visible = !this.visible;
-    this.Gettrangthai = data.trangThai
+    this.Gettrangthai = data.trangThai;
+
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
       {
-
         next: (res) => {
-          debugger
-
           let k = Object.keys(res);
           let v = Object.values(res);
           Utils.setValueForm(this.formTableSurvey, k, v);
@@ -283,16 +283,21 @@ export class AdminTableSurveyComponent {
           res.bangKhaoSatCauHoi?.forEach((el, i) => {
             const idCauHoi = el.idCauHoi;
             // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
-            const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some((control) => {
-            const idCauHoiControl = control.get('idCauHoi');
-            return idCauHoiControl ? idCauHoiControl.value === idCauHoi : false;
-            });
-            if (!idCauHoiExists) { // Nếu idCauHoi chưa tồn tại, thêm mới
+            const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some(
+              (control) => {
+                const idCauHoiControl = control.get('idCauHoi');
+                return idCauHoiControl
+                  ? idCauHoiControl.value === idCauHoi
+                  : false;
+              }
+            );
+            if (!idCauHoiExists) {
+              // Nếu idCauHoi chưa tồn tại, thêm mới
               const newItem = this.FormBuilder.group({
                 id: 0,
                 idCauHoi: idCauHoi,
                 priority: i,
-                isRequired: false,
+                isRequired: el.isRequired,
                 maCauHoi: el.maCauHoi,
                 tieuDe: el.tieuDe,
               });
@@ -310,9 +315,7 @@ export class AdminTableSurveyComponent {
             }
           }
 
-
-          console.log("Danh sách sau khi xử lý:", this.lstBangKhaoSatCauHoi);
-
+          console.log('Danh sách sau khi xử lý:', this.lstBangKhaoSatCauHoi);
         },
         error: (e) => Utils.messageError(this.messageService, e.message),
       }
@@ -327,39 +330,11 @@ export class AdminTableSurveyComponent {
     }
   }
 
-  // SaveAdd() {
-    
-  //   if (this.formTableSurvey.valid) {
-  //     const ObjTableSurvey = this.formTableSurvey.value;
-  //     this.TableSurveyService.create(ObjTableSurvey).subscribe({
-  //       next: (res) => {
-  //         debugger
-  //         if (res != null) {
-  //           this.messageService.add({
-  //             severity: 'success',
-  //             summary: 'Thành Công',
-  //             detail: 'Thêm thành Công !',
-  //           });
-  //           this.table.reset();
-  //           this.formTableSurvey.reset();
-  //           this.visible = false;
-  //         } else {
-  //           this.messageService.add({
-  //             severity: 'error',
-  //             summary: 'Lỗi',
-  //             detail: 'Lỗi vui Lòng kiểm tra lại !',
-  //           });
-  //         }
-  //       },
-  //     });
-  //   }
-  // }
   SaveAdd() {
     if (this.formTableSurvey.valid) {
       const ObjTableSurvey = this.formTableSurvey.value;
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
-          debugger
           if (res != null) {
             this.messageService.add({
               severity: 'success',
@@ -372,28 +347,28 @@ export class AdminTableSurveyComponent {
           }
         },
         error: (error) => {
-          // Xử lý lỗi từ máy chủ ở đây      
+          // Xử lý lỗi từ máy chủ ở đây
           if (error instanceof HttpErrorResponse) {
             const httpError: HttpErrorResponse = error;
             if (httpError.error) {
               // Đây là nơi bạn có thể truy cập thông báo lỗi từ máy chủ
               const serverErrorMessage = httpError.error;
-              console.error("Lỗi từ máy chủ:", serverErrorMessage);
+              console.error('Lỗi từ máy chủ:', serverErrorMessage);
               this.serverError = serverErrorMessage;
               // Hiển thị thông báo lỗi cho người dùng hoặc thực hiện các hành động xử lý lỗi
               setTimeout(() => {
-                this.serverError = ""; // Xóa thông báo lỗi sau 3 giây
-              }, 3000); 
+                this.serverError = ''; // Xóa thông báo lỗi sau 3 giây
+              }, 3000);
             }
           } else {
-            console.error("Lỗi không xác định:", error);
+            console.error('Lỗi không xác định:', error);
             // Xử lý lỗi không xác định (không phải lỗi từ máy chủ)
           }
         },
       });
     }
   }
-  
+
   SaveEdit() {
     this.visible = !this.visible;
     const objTableSurvey = this.formTableSurvey.value;
@@ -409,7 +384,6 @@ export class AdminTableSurveyComponent {
           this.table.reset();
           this.formTableSurvey.reset();
           this.visible = false;
-
         }
       },
     });
@@ -422,9 +396,7 @@ export class AdminTableSurveyComponent {
       header: 'delete',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        debugger;
         this.TableSurveyService.delete(data.id).subscribe((res: any) => {
-
           if (res.success == true)
             this.messageService.add({
               severity: 'success',
@@ -439,62 +411,65 @@ export class AdminTableSurveyComponent {
   }
 
   ToggleStatus(rowData: TableSurvey) {
-    debugger
     this.confirmationHeader = 'Xác nhận thực hiện thay đổi trạng thái không';
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn thực hiện không ?',
       header: 'trangthai',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        if (rowData.trangThai === 2) {
-
+        if (rowData.trangThai === BksTrangThai.DangKhaoSat) {
           this.TableSurveyService.update({
-            id: rowData.id, maBangKhaoSat: rowData.maBangKhaoSat, idDotKhaoSat: rowData.idDotKhaoSat,
+            id: rowData.id,
+            maBangKhaoSat: rowData.maBangKhaoSat,
+            idDotKhaoSat: rowData.idDotKhaoSat,
             idLoaiHinh: rowData.idLoaiHinh,
-            tenBangKhaoSat: rowData.tenBangKhaoSat, moTa: rowData.moTa, ngayBatDau: rowData.ngayBatDau,
-            ngayKetThuc: rowData.ngayKetThuc, trangThai: 3
+            tenBangKhaoSat: rowData.tenBangKhaoSat,
+            moTa: rowData.moTa,
+            ngayBatDau: rowData.ngayBatDau,
+            ngayKetThuc: rowData.ngayKetThuc,
+            trangThai: BksTrangThai.TamDung,
           }).subscribe((res) => {
             if (res.success === true) {
-              rowData.trangThai = 3;
+              this.table.reset();
               this.messageService.add({
                 severity: 'success',
                 summary: 'Thành Công',
                 detail: 'Thực Hiện Thành Công !',
               });
             } else {
-
               console.log('Cập nhật không thành công', res.message);
             }
           });
-        } else if (rowData.trangThai === 3) {
-
+        } else if (rowData.trangThai === BksTrangThai.TamDung) {
           this.TableSurveyService.update({
-            id: rowData.id, maBangKhaoSat: rowData.maBangKhaoSat, idDotKhaoSat: rowData.idDotKhaoSat,
+            id: rowData.id,
+            maBangKhaoSat: rowData.maBangKhaoSat,
+            idDotKhaoSat: rowData.idDotKhaoSat,
             idLoaiHinh: rowData.idLoaiHinh,
-            tenBangKhaoSat: rowData.tenBangKhaoSat, moTa: rowData.moTa, ngayBatDau: rowData.ngayBatDau,
-            ngayKetThuc: rowData.ngayKetThuc, trangThai: 2
+            tenBangKhaoSat: rowData.tenBangKhaoSat,
+            moTa: rowData.moTa,
+            ngayBatDau: rowData.ngayBatDau,
+            ngayKetThuc: rowData.ngayKetThuc,
+            trangThai: BksTrangThai.DangKhaoSat,
           }).subscribe((res) => {
             if (res.success === true) {
-              rowData.trangThai = 2;
+              this.table.reset();
               this.messageService.add({
                 severity: 'success',
                 summary: 'Thành Công',
                 detail: 'Thực Hiện Thành Công !',
               });
             } else {
-
               console.log('Cập nhật không thành công', res.message);
             }
           });
         }
       },
       reject: () => {
-
         console.log('Đã từ chối');
       },
     });
   }
-
 
   get lstBangKhaoSatCauHoi(): FormArray {
     return this.formTableSurvey.get('bangKhaoSatCauHoi') as FormArray;
@@ -506,7 +481,6 @@ export class AdminTableSurveyComponent {
   };
 
   addItem() {
-
     this.selectedCauHoi.forEach((el, i) => {
       const newItem = this.FormBuilder.group({
         id: 0,
@@ -516,7 +490,12 @@ export class AdminTableSurveyComponent {
         maCauHoi: el.maCauHoi,
         tieuDe: el.tieuDe,
       });
-      this.lstBangKhaoSatCauHoi.push(newItem);
+      if (
+        !this.lstBangKhaoSatCauHoi.value.find(
+          (x: { maCauHoi: string }) => x.maCauHoi === el.maCauHoi
+        )
+      )
+        this.lstBangKhaoSatCauHoi.push(newItem);
     });
     this.visibleCauHoi = false;
   }
@@ -525,5 +504,59 @@ export class AdminTableSurveyComponent {
     this.lstBangKhaoSatCauHoi.removeAt(index);
   }
 
+  openGuiEmail = () => {
+    this.visibleGuiEmail = true;
+    this.selectedDonVi = [];
+    if (this.frmGuiEmail) {
+      this.frmGuiEmail.reset();
+      this.frmGuiEmail.get('lstIdDonVi')?.reset();
+      this.frmGuiEmail.get('lstBangKhaoSat')?.reset();
+    }
 
+    this.frmGuiEmail = this.FormBuilder.group({
+      noidung: ['', Validators.required],
+      tieuDe: ['', Validators.required],
+      lstIdDonVi: this.FormBuilder.array([] as number[], Validators.required),
+      lstBangKhaoSat: this.FormBuilder.array(
+        this.selectedTableSurvey?.map((x) => x.id) ?? ([] as number[]),
+        Validators.required
+      ),
+    });
+
+    this.objectSurveyService.getAllByObj<DonVi>().subscribe((res) => {
+      this.lstDonVi = res;
+    });
+  };
+
+  onSubmitGuiEmail = () => {
+    this.selectedDonVi.forEach((el) =>
+      (this.frmGuiEmail.get('lstIdDonVi') as FormArray).push(
+        this.FormBuilder.control(el)
+      )
+    );
+
+    if (this.frmGuiEmail.invalid) return;
+    let data = this.frmGuiEmail.value as CreateGuiEmail;
+    this.lstIdDonViError = data.lstIdDonVi.length === 0;
+    this.guiEmailService.createByDonVi(data).subscribe({
+      next: (res) => {
+        if (res.success) {
+          Utils.messageSuccess(this.messageService, res.message);
+          this.table.reset();
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
+      },
+      error: (e) => {
+        if (e.error && e.error.ErrorMessage) {
+          Utils.messageError(this.messageService, e.error.ErrorMessage);
+        } else {
+          Utils.messageError(this.messageService, e.message);
+        }
+      },
+      complete: () => {
+        this.visibleGuiEmail = false;
+      },
+    });
+  };
 }

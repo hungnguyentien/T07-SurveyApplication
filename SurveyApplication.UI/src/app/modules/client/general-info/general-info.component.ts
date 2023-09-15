@@ -6,7 +6,6 @@ import {
   Validators,
   FormControl,
 } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 
 import {
   GeneralInfo,
@@ -17,6 +16,7 @@ import {
 import { LinhVucHoatDongService, PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { UnitTypeService } from '@app/services/unit-type.service';
+import { lstRegExp } from '@app/helpers';
 
 @Component({
   selector: 'app-general-info',
@@ -51,10 +51,7 @@ export class GeneralInfoComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private messageService: MessageService,
     private phieuKhaoSatService: PhieuKhaoSatService,
-    private loaiHinhDonViService: UnitTypeService,
-    private linhVucHoatDongService: LinhVucHoatDongService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -71,7 +68,6 @@ export class GeneralInfoComponent {
         this.tinh = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -91,22 +87,12 @@ export class GeneralInfoComponent {
         MaSoThue: [''],
         WebSite: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
-            ),
-          ],
+          [Validators.required, Validators.pattern(lstRegExp.webSite)],
         ],
         Email: ['', [Validators.required, Validators.email]],
         SoDienThoai: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
-            ),
-          ],
+          [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
         ],
       }),
       NguoiDaiDien: this.formBuilder.group({
@@ -115,23 +101,17 @@ export class GeneralInfoComponent {
         Email: ['', [Validators.required, Validators.email]],
         SoDienThoai: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
-            ),
-          ],
+          [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
         ],
       }),
     });
 
-    this.loaiHinhDonViService.getAll().subscribe({
+    this.phieuKhaoSatService.getAllLoaiHinhDonVi().subscribe({
       next: (res) => {
         this.loading = true;
         this.lstLoaiHinhDonVi = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -139,13 +119,12 @@ export class GeneralInfoComponent {
       },
     });
 
-    this.linhVucHoatDongService.getAll().subscribe({
+    this.phieuKhaoSatService.getAllLinhVucHoatDong().subscribe({
       next: (res) => {
         this.loading = true;
         this.lstLinhVuc = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -172,11 +151,10 @@ export class GeneralInfoComponent {
         );
         this.selectedLoaiHinhDonVi = res.donVi.idLoaiHinh;
         this.selectedLinhVuc = res.donVi.idLinhVuc;
-        this.generalInfo.trangThai === 2 && this.frmGeneralInfo.disable();
-        this.showBtnReset = this.generalInfo.trangThai !== 2;
+        this.generalInfo.trangThaiKq === 2 && this.frmGeneralInfo.disable();
+        this.showBtnReset = this.generalInfo.trangThaiKq !== 2;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -196,19 +174,12 @@ export class GeneralInfoComponent {
   onSubmit = () => {
     this.submitted = true;
     this.submitCount++;
-    if (this.frmGeneralInfo.invalid) {
-      return;
-    }
-
-    Utils.messageSuccess(
-      this.messageService,
-      'Nhập thông tin chung thành công!'
-    );
+    if (this.frmGeneralInfo.invalid) return;
     setTimeout(() => {
       this.router.navigateByUrl('/phieu/thong-tin-khao-sat', {
         state: this.generalInfo,
       });
-    }, 1000);
+    }, 500);
   };
 
   resetForm = () => Utils.resetForm(this.frmGeneralInfo);
@@ -224,23 +195,12 @@ export class GeneralInfoComponent {
             this.quanHuyen = res;
           },
           error: (e) => {
-            Utils.messageError(this.messageService, e.message);
             this.loading = false;
           },
           complete: () => {
             this.loading = false;
           },
         });
-        // let arr = Object.entries(
-        //   this.dataArr?.find((x) => x.at(0) == e.value).at(1)['quan-huyen']
-        // );
-        // arr.forEach((el, i) => {
-        //   let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
-        //   this.quanHuyen?.push({
-        //     name: tinhQuanHuyen.name,
-        //     code: tinhQuanHuyen.code,
-        //   });
-        // });
       }
     }
   };
@@ -255,25 +215,12 @@ export class GeneralInfoComponent {
             this.phuongXa = res;
           },
           error: (e) => {
-            Utils.messageError(this.messageService, e.message);
             this.loading = false;
           },
           complete: () => {
             this.loading = false;
           },
         });
-        // let arr = Object.entries(
-        //   this.dataArr?.find((x) => x.at(0) == this.selectedTinh).at(1)[
-        //     'quan-huyen'
-        //   ][this.selectedQuanHuyen ?? '']['xa-phuong']
-        // );
-        // arr.forEach((el, i) => {
-        //   let tinhQuanHuyen = el.at(1) as TinhQuanHuyen;
-        //   this.phuongXa?.push({
-        //     name: tinhQuanHuyen.name,
-        //     code: tinhQuanHuyen.code,
-        //   });
-        // });
       }
     }
   };

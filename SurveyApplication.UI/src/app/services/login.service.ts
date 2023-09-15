@@ -5,89 +5,91 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { Login } from '../models';
 import { CookieService } from 'ngx-cookie-service';
-import { AuthService } from '@app/services/auth.service';
 import { MessageService } from 'primeng/api';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
-export class LoginserviceService {
+export class LoginService {
   private currentUserSubject: BehaviorSubject<string>;
   public currentUser: Observable<string>;
 
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
-    private authService: AuthService,
     private messageService: MessageService
   ) {
-    this.currentUserSubject = new BehaviorSubject<string>(this.cookieService.get('currentUser'));
+    this.currentUserSubject = new BehaviorSubject<string>(
+      localStorage.getItem('isRememberMe') === 'true'
+        ? this.cookieService.get('currentUser')
+        : sessionStorage.getItem('currentUser') ?? ''
+    );
     this.currentUser = this.currentUserSubject.asObservable();
   }
-  
+
   login(model: Login) {
-    model.grant_type = 'Password';
-    let body = new URLSearchParams();
-    body.set('Email', model.UserName);
-    body.set('Password', model.Password);
-    body.set('grant_type', model.grant_type);
-   
-    let options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+    const loginData = {
+      Email: model.UserName,
+      Password: model.Password,
+      grant_type: 'Password',
     };
-    return this.http.post(`${environment.apiUrl}`+ '/Account/Login', body.toString(), options)
-      .pipe(map((req:any) => {
-        // đăng nhập thành công lưu lại token
-        if (req) {
-          // Xóa hết cookie
-          this.cookieService.delete('currentUser');
-          // lưu token vào Cookie
-          this.cookieService.set('currentUser', req.token);
-          this.currentUserSubject.next(req.token);
-          this.authService.login();
-        }
-        return req;
-      }),
-      catchError(error => {
-        // Xử lý lỗi từ server
-        if (error.status === 500) {
-          this.messageService.add({
-            severity: 'error',
-            detail: 'Đăng nhập không thành công, mật khẩu hoặc tài khoản không chính xác !',
-          });
-        } else if (error.status === 400) {
-          this.messageService.add({
-            severity: 'error',
-            detail: 'Lỗi đăng nhập !',
-          });
-        }
-        else if(error.status === 401){
-          this.messageService.add({
-            severity: 'error',
-            detail: 'Lỗi quyền truy cập!',
-          });
-        }
-        return throwError(error);
-      }));
-  }
-  //get token
-  currentUserValue(): string {
-    return this.currentUserSubject.value;
-    
+    let options = {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+    };
+    return this.http
+      .post(`${environment.apiUrl}` + '/Account/login', loginData, options)
+      .pipe(
+        map((req: any) => {
+          // đăng nhập thành công lưu lại token
+          if (req) {
+            // Xóa hết cookie
+            this.cookieService.delete('currentUser');
+            localStorage.setItem('isRememberMe', model.isRememberMe.toString());
+            // lưu token vào Cookie
+            if (model.isRememberMe) {
+              this.cookieService.set('currentUser', req.token);
+              sessionStorage.removeItem('currentUser');
+            } else {
+              sessionStorage.setItem('currentUser', req.token);
+              this.cookieService.delete('currentUser', '/');
+            }
+
+            this.currentUserSubject.next(req.token);
+          }
+
+          return req;
+        }),
+        catchError((error) => {
+          // Xử lý lỗi từ server
+          if (error.status === 500) {
+            console.log(
+              'Đăng nhập không thành công, mật khẩu hoặc tài khoản không chính xác !' +
+                error.error
+            );
+          } else if (error.status === 400) {
+            console.log('Lỗi đăng nhập: ' + error.error);
+          }
+
+          return throwError(error);
+        })
+      );
   }
 
-  // getRoleUser() {
-  //   const token = this.currentUserValue();
-  //   if (token) {
-  //     return "Admin";
-  //   } 
-  //   return null;
-  // }
+  currentUserValue(): string {
+    return this.currentUserSubject.value;
+  }
+
+  getRoleUser() {
+    const token = this.currentUserValue();
+    if (token) {
+      return 'Administrator';
+    }
+    return null;
+  }
 
   logout() {
     // remove user from local storage to log user out
-    this.cookieService.delete('currentUser');
-    this.currentUserSubject.next("");
+    this.cookieService.delete('currentUser', '/');
+    this.currentUserSubject.next('');
   }
 }

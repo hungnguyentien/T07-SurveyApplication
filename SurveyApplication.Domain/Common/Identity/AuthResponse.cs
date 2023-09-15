@@ -1,10 +1,9 @@
-﻿namespace SurveyApplication.Domain.Common.Identity
+﻿namespace SurveyApplication.Domain.Common.Identity;
+
+public class AuthResponse
 {
-    public class AuthResponse
-    {
-        public string Id { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Token { get; set; }
-    }
+    public string Id { get; set; }
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    public string Token { get; set; }
 }

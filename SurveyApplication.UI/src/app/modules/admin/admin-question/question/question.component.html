@@ -4,9 +4,11 @@
   </ng-template>
   <ng-template pTemplate="footer">
     <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
-      (click)="cd.reject()"></button>
+      (click)="cd.reject()">
+    </button>
     <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
-      label="Xóa" (click)="cd.accept()"></button>
+      label="Xóa" (click)="cd.accept()">
+    </button>
   </ng-template>
 </p-confirmDialog>
 
@@ -14,12 +16,14 @@
   <h5>Danh mục câu hỏi</h5>
   <div class="d-flex mt-3">
     <div>
-      <button pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"
-        (click)="createDialog()"></button>
+      <button pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button" (click)="createDialog()">
+      </button>
     </div>
     <div class="ml-3">
-      <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
-        class="custom-button" style="background-color: #ea5c5c"></button>
+      <button *ngIf="selectedQuestion && selectedQuestion.length > 0" pButton type="button"
+        (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
+        style="background-color: #ea5c5c">
+      </button>
     </div>
   </div>
   <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
@@ -35,39 +39,39 @@
 </div>
 
 <div class="card mt-3">
-  <p-table #dt [value]="lstQuestion" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
-    scrollHeight="calc(100vh - 396px)" [(selection)]="selectedQuestion" dataKey="id"
+  <p-table #dt ngClass="cust-tbl" [value]="lstQuestion" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
+    [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedQuestion" dataKey="id"
     styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
     currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
-    [globalFilterFields]="['data.maCauHoi', 'data.tieuDe', 'data.loaiCauHoi']">
+    [globalFilterFields]="['data.maCauHoi', 'data.tieuDe', 'data.loaiCauHoi']" [resizableColumns]="true">
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 60px">
+        <th style="width: 40px;">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th style="width: 40px">STT</th>
-        <th style="width: 120px" pSortableColumn="maCauHoi">
+        <th style="width: 60px;">STT</th>
+        <th pResizableColumn pSortableColumn="maCauHoi">
           <div class="flex justify-content-between align-items-center">
             Mã
             <p-sortIcon field="maCauHoi"></p-sortIcon>
             <p-columnFilter type="text" field="maCauHoi" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th style="width: auto" pSortableColumn="tieuDe">
+        <th pResizableColumn pSortableColumn="tieuDe">
           <div class="flex justify-content-between align-items-center">
             Tiêu đề
             <p-sortIcon field="tieuDe"></p-sortIcon>
             <p-columnFilter type="text" field="data.tieuDe" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th style="width: 250px">
+        <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Loại câu hỏi
             <p-columnFilter type="text" field="data.loaiCauHoiText" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th style="width: 120px">
+        <th style="width: 120px;">
           <div>Chức năng</div>
         </th>
       </tr>
@@ -79,19 +83,19 @@
         </td>
         <td>
           <span class="p-column-title">STT</span>
-          {{ rowIndex + 1 }}
+          <span class="vertical-align-middle"> {{ rowIndex + 1 }}</span>
         </td>
         <td>
           <span class="p-column-title">Mã</span>
-          <span class="ml-1 vertical-align-middle">{{ data.maCauHoi }}</span>
+          <span class="vertical-align-middle">{{ data.maCauHoi }}</span>
         </td>
         <td>
           <span class="p-column-title">Tiêu đề</span>
-          <span class="ml-1 vertical-align-middle">{{ data.tieuDe }}</span>
+          <span class="vertical-align-middle">{{ data.tieuDe }}</span>
         </td>
         <td>
           <span class="p-column-title">Loại câu hỏi</span>
-          <span class="ml-1 vertical-align-middle">
+          <span class="vertical-align-middle">
             <p-tag [value]="data.loaiCauHoiText"></p-tag>
           </span>
         </td>
@@ -116,7 +120,7 @@
 </div>
 
 <!-- modal create update -->
-<form #cauHoiForm="ngForm" [formGroup]="frmCauHoi" (ngSubmit)="onSubmit(cauHoiForm)">
+<form *ngIf="frmCauHoi" #cauHoiForm="ngForm" [formGroup]="frmCauHoi" (ngSubmit)="onSubmit(cauHoiForm)">
   <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
     [resizable]="true" [maximizable]="true">
     <ng-template pTemplate="header">
@@ -128,19 +132,10 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label for="maCauHoi" class="col-form-label">Mã: <span style="color: red">*</span></label>
-          <!-- <text-box
-          name="maCauHoi"
-          displayName="Mã câu hỏi"
-          placeholder="VB01"
-          [ngClass]="{
-            'is-invalid': cauHoiForm.submitted && f('maCauHoi').errors
-          }"
-          [submitted]="cauHoiForm.submitted"
-          [fControl]="f('maCauHoi')"
-        ></text-box> -->
           <input type="text" pInputText class="form-control" id="maCauHoi" formControlName="maCauHoi" [ngClass]="{
             'is-invalid': submitted && f('maCauHoi').errors
-          }" placeholder="VB01" />
+          }" placeholder="VB01"  />
+
           <div *ngIf="submitted && f('maCauHoi').errors" class="invalid-feedback">
             <small *ngIf="f('maCauHoi').errors?.['required']">
               Vui lòng nhập mã câu hỏi
@@ -167,6 +162,10 @@
         <label for="tieuDe" class="col-form-label">Tiêu đề:</label>
         <input type="text" pInputText class="form-control" id="tieuDe" formControlName="tieuDe"
           placeholder="Nhập tiêu đề câu hỏi" />
+          <small *ngIf="!frmCauHoi.controls['tieuDe'].valid && frmCauHoi.controls['noidung'].dirty"
+          class="invalid-feedback">
+          Vui lòng nhập tiêu đề
+      </small>
       </div>
 
       <ng-container *ngIf="selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1'">
@@ -174,7 +173,8 @@
           <div class="col-md-6 d-flex align-items-center">
             <div class="d-flex justify-content-start align-items-center">
               <p-checkbox formControlName="isOther" [(ngModel)]="isOther" [binary]="true" inputId="isOther"
-                (change)="handlerChange($event)"></p-checkbox>
+                (change)="handlerChange($event)">
+              </p-checkbox>
               <label for="isOther" class="mb-0 ml-2">Câu trả lời khác</label>
             </div>
           </div>
@@ -197,7 +197,8 @@
                 formControlName="kichThuocFile" [min]="0" [ngClass]="{
                 'is-invalid':
                   cauHoiForm.submitted && f('kichThuocFile').errors
-              }" id="kichThuocFile" placeholder="Số lượng file"></p-inputNumber>
+              }" id="kichThuocFile" placeholder="Số lượng file">
+              </p-inputNumber>
               <div *ngIf="cauHoiForm.submitted && f('kichThuocFile').errors" class="invalid-feedback">
                 <small *ngIf="f('kichThuocFile').errors?.['required']">
                   Vui lòng nhập số lượng file
@@ -213,7 +214,8 @@
                   formControlName="soLuongFileToiDa" [min]="0" [ngClass]="{
                   'is-invalid':
                     cauHoiForm.submitted && f('soLuongFileToiDa').errors
-                }" id="soLuongFileToiDa" placeholder="Nhập khích thước file"></p-inputNumber>
+                }" id="soLuongFileToiDa" placeholder="Nhập khích thước file">
+                </p-inputNumber>
                 <div *ngIf="
                   cauHoiForm.submitted && f('soLuongFileToiDa').errors
                 " class="invalid-feedback">
@@ -228,7 +230,7 @@
       </ng-container>
 
       <div class="form-group">
-        <label for="recipient-name" class="col-form-label">Nội dung:</label>
+        <label for="noidung" class="col-form-label">Nội dung:</label>
         <ckeditor formControlName="noidung" [editor]="Editor"></ckeditor>
       </div>
 
@@ -246,10 +248,10 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>STT</th>
-              <th style="width: 7rem">Mã</th>
+              <th style="width: 3rem">STT</th>
+              <th style="width: 9rem">Mã</th>
               <th>Câu trả lời</th>
-              <th>Chức năng</th>
+              <th style="width: 8rem">Chức năng</th>
             </tr>
           </thead>
           <tbody formArrayName="lstCot">
@@ -259,10 +261,10 @@
                 <input formControlName="id" type="hidden" />
               </td>
               <td>
-                <input formControlName="maCot" class="form-control" style="width: 7rem" type="text" />
+                <input formControlName="maCot" class="form-control" style="width: 100%" type="text" />
               </td>
               <td>
-                <input formControlName="noidung" class="form-control" style="width: 28rem" type="text" />
+                <input formControlName="noidung" class="form-control" style="width: 100%" type="text" />
               </td>
               <td>
                 <div>
@@ -304,10 +306,10 @@
                 <input formControlName="id" type="hidden" />
               </td>
               <td>
-                <input formControlName="maHang" class="form-control" style="width: 7rem" type="text" />
+                <input formControlName="maHang" class="form-control" style="width: 100%" type="text" />
               </td>
               <td>
-                <input formControlName="noidung" class="form-control" style="width: 28rem" type="text" />
+                <input formControlName="noidung" class="form-control" style="width: 100%" type="text" />
               </td>
               <td>
                 <div>
@@ -324,9 +326,16 @@
         </table>
       </div>
     </ng-template>
-    <ng-template pTemplate="footer">
+    <!-- <ng-template pTemplate="footer">
       <button type="button" class="btn btn-secondary" (click)="visible = false">Đóng</button>
       <button type="submit" class="btn btn-primary">Lưu</button>
-    </ng-template>
+    </ng-template> -->
+    <ng-template pTemplate="footer">
+      <input type="hidden" formControlName="id">
+      <button pButton (click)="visible = false" type="button" label="Đóng"
+          class="custom-button surface-600"></button>
+      <button pButton [disabled]="!frmCauHoi.valid" type="submit" icon="pi pi-save" label="Lưu"
+          class="custom-button"></button>
+  </ng-template>
   </p-dialog>
 </form>

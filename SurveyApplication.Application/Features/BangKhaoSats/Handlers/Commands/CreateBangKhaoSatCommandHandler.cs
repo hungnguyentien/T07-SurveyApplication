@@ -1,56 +1,79 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Domain;
-using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
+using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Exceptions;
+using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands
+namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands;
+
+public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures,
+    IRequestHandler<CreateBangKhaoSatCommand, BaseCommandResponse>
 {
-    public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<CreateBangKhaoSatCommand, BaseCommandResponse>
+    private readonly IMapper _mapper;
+
+    public CreateBangKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
     {
-        private readonly IMapper _mapper;
-        public CreateBangKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+        _mapper = mapper;
+    }
+
+    public async Task<BaseCommandResponse> Handle(CreateBangKhaoSatCommand request, CancellationToken cancellationToken)
+    {
+        var response = new BaseCommandResponse();
+        var validator = new CreateBangKhaoSatDtoValidator(_surveyRepo.BangKhaoSat);
+        if (request.BangKhaoSatDto != null)
         {
-            _mapper = mapper;
+            var validatorResult = await validator.ValidateAsync(request.BangKhaoSatDto, cancellationToken);
+            if (validatorResult.IsValid == false)
+            {
+                response.Success = false;
+                response.Message = "Tạo mới thất bại";
+                response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
+                throw new ValidationException(validatorResult);
+            }
         }
 
-        public async Task<BaseCommandResponse> Handle(CreateBangKhaoSatCommand request, CancellationToken cancellationToken)
-        {
-            var response = new BaseCommandResponse();
-            var validator = new CreateBangKhaoSatDtoValidator(_surveyRepo.BangKhaoSat);
-            if (request.BangKhaoSatDto != null)
-            {
-                var validatorResult = await validator.ValidateAsync(request.BangKhaoSatDto, cancellationToken);
-                if (validatorResult.IsValid == false)
-                {
-                    response.Success = false;
-                    response.Message = "Tạo mới thất bại";
-                    response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
-                    throw new ValidationException(validatorResult);
-                }
-            }
+        var dotKhaoSat = await _surveyRepo.DotKhaoSat.GetById(request.BangKhaoSatDto.IdDotKhaoSat ?? 0);
+        if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
+            throw new FluentValidation.ValidationException("Đợt khảo sát đã kết thúc");
 
-            var bangKhaoSat = _mapper.Map<BangKhaoSat>(request.BangKhaoSatDto);
-            bangKhaoSat = await _surveyRepo.BangKhaoSat.Create(bangKhaoSat);
+        if (dotKhaoSat.NgayBatDau.Date <
+            request.BangKhaoSatDto.NgayBatDau.GetValueOrDefault(DateTime.MinValue).Date)
+            throw new FluentValidation.ValidationException("Ngày bắt đầu không được nhỏ hơn ngày bắt đầu đợt khảo sát");
+
+        if (dotKhaoSat.NgayKetThuc.Date <
+            request.BangKhaoSatDto.NgayKetThuc.GetValueOrDefault(DateTime.MinValue).Date)
+            throw new FluentValidation.ValidationException("Ngày kết thúc không được lớn hơn ngày kết thúc đợt khảo sát");
+
+        if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat)
+        {
+            dotKhaoSat.TrangThai = (int)EnumDotKhaoSat.TrangThai.DangKhaoSat;
+            await _surveyRepo.DotKhaoSat.UpdateAsync(dotKhaoSat);
+        }
+
+        var bangKhaoSat = _mapper.Map<BangKhaoSat>(request.BangKhaoSatDto);
+        bangKhaoSat.TrangThai = (int)EnumBangKhaoSat.TrangThai.ChoKhaoSat;
+        await _surveyRepo.BangKhaoSat.Create(bangKhaoSat);
+        await _surveyRepo.SaveAync();
+        if (request.BangKhaoSatDto?.BangKhaoSatCauHoi != null)
+        {
+            var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto.BangKhaoSatCauHoi);
+            lstBangKhaoSatCauHoi.ForEach(x =>
+            {
+                x.IdBangKhaoSat = bangKhaoSat.Id; x.Priority =
+                    lstBangKhaoSatCauHoi.FindIndex(iBks => iBks == x);
+            });
+            await _surveyRepo.BangKhaoSatCauHoi.Creates(lstBangKhaoSatCauHoi);
             await _surveyRepo.SaveAync();
-            if (request.BangKhaoSatDto?.BangKhaoSatCauHoi != null)
-            {
-                var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto.BangKhaoSatCauHoi);
-                lstBangKhaoSatCauHoi?.ForEach(x => x.IdBangKhaoSat = bangKhaoSat.Id);
-                if (lstBangKhaoSatCauHoi != null)
-                {
-                    await _surveyRepo.BangKhaoSatCauHoi.Creates(lstBangKhaoSatCauHoi);
-                    await _surveyRepo.SaveAync();
-                }
-            }
-
-            response.Success = true;
-            response.Message = "Tạo mới thành công";
-            response.Id = bangKhaoSat.Id;
-            return response;
         }
+
+        response.Success = true;
+        response.Message = "Tạo mới thành công";
+        response.Id = bangKhaoSat.Id;
+        return response;
     }
 }

@@ -18,7 +18,8 @@
         IXaPhuongRepository XaPhuong { get; }
         IQuanHuyenRepository QuanHuyen { get; }
         ITinhTpRepository TinhTp { get; }
-
+        IBaoCaoCauHoiRepository BaoCaoCauHoi { get; }
+        IJobScheduleRepository JobSchedule { get; }
 
         //RenderHere
         Task SaveAync();

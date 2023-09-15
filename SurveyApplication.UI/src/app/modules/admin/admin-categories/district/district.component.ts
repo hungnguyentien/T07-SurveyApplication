@@ -124,7 +124,6 @@ export class DistrictComponent {
   }
 
   Edit(data: any) {
-    debugger
     this.visible = !this.visible;
     this.showadd = false;
     this.IdQuanHuyen = data.id;

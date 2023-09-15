@@ -24,3 +24,9 @@
   height: 15px;
   background-size: 15px 10px;
 }
+
+:host {
+  .custom-complete b {
+    color: red;
+  }
+}

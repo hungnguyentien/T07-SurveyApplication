@@ -1,7 +1,6 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface IDotKhaoSatRepository : IGenericRepository<DotKhaoSat>
 {
-    public interface IDotKhaoSatRepository :IGenericRepository<DotKhaoSat>
-    {
-        Task<bool> ExistsByMaDotKhaoSat(string maDotKhaoSat);
-    }
+    Task<bool> ExistsByMaDotKhaoSat(string maDotKhaoSat);
 }

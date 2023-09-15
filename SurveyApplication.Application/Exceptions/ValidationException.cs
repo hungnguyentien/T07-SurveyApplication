@@ -1,22 +1,13 @@
 ﻿using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SurveyApplication.Application.Exceptions
+namespace SurveyApplication.Application.Exceptions;
+
+public class ValidationException : ApplicationException
 {
-    public class ValidationException : ApplicationException
+    public ValidationException(ValidationResult validationResult)
     {
-        public List<string>? Errors { get; set; } = new List<string>();
-
-        public ValidationException(ValidationResult validationResult)
-        {
-            foreach (var error in validationResult.Errors)
-            {
-                Errors.Add(error.ErrorMessage);
-            }
-        }
+        foreach (var error in validationResult.Errors) Errors.Add(error.ErrorMessage);
     }
+
+    public List<string>? Errors { get; set; } = new();
 }

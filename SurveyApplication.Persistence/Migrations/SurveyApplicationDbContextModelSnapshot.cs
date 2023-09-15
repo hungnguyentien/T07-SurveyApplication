@@ -257,6 +257,82 @@ namespace SurveyApplication.Persistence.Migrations
                     b.ToTable("BangKhaoSatCauHoi");
                 });
 
+            modelBuilder.Entity("SurveyApplication.Domain.BaoCaoCauHoi", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ActiveFlag")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CauHoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CauHoiPhu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CauTraLoi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DauThoiGian")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("IdBangKhaoSat")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdCauHoi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdDonVi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdDotKhaoSat")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLoaiHinhDonVi")
+                        .HasColumnType("int");
+
+                    b.Property<short>("LoaiCauHoi")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("MaCauHoi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaCauHoiPhu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaCauTraLoi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenDaiDienCq")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BaoCaoCauHoi");
+                });
+
             modelBuilder.Entity("SurveyApplication.Domain.CauHoi", b =>
                 {
                     b.Property<int>("Id")
@@ -583,6 +659,50 @@ namespace SurveyApplication.Persistence.Migrations
                     b.ToTable("Hang");
                 });
 
+            modelBuilder.Entity("SurveyApplication.Domain.JobSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApiUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CronString")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Interval")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JobName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("JobTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Service")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JobSchedule");
+                });
+
             modelBuilder.Entity("SurveyApplication.Domain.KetQua", b =>
                 {
                     b.Property<int>("Id")
@@ -604,22 +724,26 @@ namespace SurveyApplication.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DauThoiGian")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("IdBangKhaoSat")
+                    b.Property<int>("IdGuiEmail")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdDonVi")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdNguoiDaiDien")
-                        .HasColumnType("int");
+                    b.Property<string>("IpAddressClient")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrangThai")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

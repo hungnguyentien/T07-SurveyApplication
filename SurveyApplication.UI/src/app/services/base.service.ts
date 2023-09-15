@@ -10,11 +10,25 @@ export abstract class BaseService<T> {
     return this._http.get<T[]>(`${this.actionUrl}/GetAll`).pipe(first());
   }
 
+  getAllByObj<T>(): Observable<T[]> {
+    return this._http.get<T[]>(`${this.actionUrl}/GetAll`).pipe(first());
+  }
+
   getById<T>(id: number): Observable<T> {
     return this._http.get<T>(`${this.actionUrl}/GetById/${id}`).pipe(first());
   }
 
   getByCondition(paging: Paging): Observable<BaseQuerieResponse<T>> {
+    let query = Utils.getParamsQuery(
+      Object.keys(paging),
+      Object.values(paging)
+    );
+    return this._http
+      .get<BaseQuerieResponse<T>>(`${this.actionUrl}/GetByCondition${query}`)
+      .pipe(first());
+  }
+
+  getByConditionTepm<T>(paging: Paging): Observable<BaseQuerieResponse<T>> {
     let query = Utils.getParamsQuery(
       Object.keys(paging),
       Object.values(paging)

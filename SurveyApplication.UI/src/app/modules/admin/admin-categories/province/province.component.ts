@@ -148,15 +148,12 @@ export class ProvinceComponent {
   }
 
   SaveEdit() {
-    debugger
     const ObjTinhThanh = this.FormTinhThanh.value;
     ObjTinhThanh['id']=this.getId;
     this.TinhThanhService.update(ObjTinhThanh).subscribe({
       
       next: (res: any) => {
-        debugger
         if (res.success == true) {
-          debugger
           this.messageService.add({
             severity: 'success',
             summary: 'Thành Công',

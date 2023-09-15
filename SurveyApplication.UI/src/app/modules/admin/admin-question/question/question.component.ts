@@ -56,18 +56,21 @@ export class QuestionComponent {
   ) {}
 
   ngOnInit() {
+
     this.loading = true;
     this.cauHoiService.getLoaiCauHoi().subscribe({
       next: (res) => {
+
         this.lstLoaiCauHoi = res;
+        console.log("res",res)
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
         this.loading = false;
       },
+      
     });
     this.createForm();
     Utils.translate('vi', this.translateService, this.config);
@@ -107,7 +110,6 @@ export class QuestionComponent {
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -124,7 +126,6 @@ export class QuestionComponent {
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -153,6 +154,7 @@ export class QuestionComponent {
     this.createForm();
     this.selectedLoaiCauHoi = '0';
   };
+
   updateDialog = (id: number) => {
     this.isCreate = false;
     this.visible = true;
@@ -176,13 +178,12 @@ export class QuestionComponent {
         res.lstHang.forEach((el, i) => {
           const newItem = this.formBuilder.group({
             id: el.id,
-            maCot: el.maHang,
+            maHang: el.maHang,
             noidung: el.noidung,
           });
           this.lstHang.push(newItem);
         });
       },
-      error: (e) => Utils.messageError(this.messageService, e.message),
     });
   };
 
@@ -202,7 +203,6 @@ export class QuestionComponent {
               `Xoá câu hỏi ${ids.length} thành công!`
             );
           },
-          error: (e) => Utils.messageError(this.messageService, e.message),
           complete: () => {
             this.table.reset();
           },
@@ -224,7 +224,6 @@ export class QuestionComponent {
               `Xoá câu hỏi ${title} thành công!`
             );
           },
-          error: (e) => Utils.messageError(this.messageService, e.message),
           complete: () => {
             this.table.reset();
           },
@@ -237,6 +236,12 @@ export class QuestionComponent {
     this.submitted = true;
     if (this.frmCauHoi.invalid) return;
     this.question = data.value;
+    this.question.kichThuocFile = this.question.kichThuocFile
+      ? this.question.kichThuocFile
+      : 0;
+    this.question.soLuongFileToiDa = this.question.soLuongFileToiDa
+      ? this.question.soLuongFileToiDa
+      : 0;
     this.question.batBuoc = false;
     this.question.priority = 0;
     this.cauHoiService.create<CreateUpdateCauHoi>(this.question).subscribe({
@@ -249,7 +254,6 @@ export class QuestionComponent {
           Utils.messageError(this.messageService, res.errors.at(0) ?? '');
         }
       },
-      error: (e) => Utils.messageError(this.messageService, e.message),
     });
   };
 
@@ -257,6 +261,12 @@ export class QuestionComponent {
     this.submitted = true;
     if (this.frmCauHoi.invalid) return;
     this.question = data.value;
+    this.question.kichThuocFile = this.question.kichThuocFile
+      ? this.question.kichThuocFile
+      : 0;
+    this.question.soLuongFileToiDa = this.question.soLuongFileToiDa
+      ? this.question.soLuongFileToiDa
+      : 0;
     this.question.batBuoc = false;
     this.question.priority = 0;
     this.cauHoiService.update<CreateUpdateCauHoi>(this.question).subscribe({
@@ -269,7 +279,6 @@ export class QuestionComponent {
           Utils.messageError(this.messageService, res.errors.at(0) ?? '');
         }
       },
-      error: (e) => Utils.messageError(this.messageService, e.message),
     });
   };
 
@@ -280,6 +289,15 @@ export class QuestionComponent {
 
   handlerChangeLCh = (e: any) => {
     this.selectedLoaiCauHoi = e.value;
+    this.lstCot.clear();
+    this.lstHang.clear();
+    this.f('isOther')?.setValue(false);
+    this.f('labelCauTraLoi')?.setValue('');
+    this.f('maCauHoi')?.setValue('');
+    this.f('tieuDe')?.setValue('');
+    this.f('noidung')?.setValue('');
+    this.f('kichThuocFile')?.setValue('');
+    this.f('soLuongFileToiDa')?.setValue('');
   };
 
   get lstCot(): FormArray {

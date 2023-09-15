@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 import { Login } from '@app/models';
-import { AuthService } from '@app/core/auth.service';
-import { LoginserviceService } from '@app/services';
-import { CookieService } from 'ngx-cookie-service';
+import { LoginService } from '@app/services';
 
 @Component({
   selector: 'app-login',
@@ -12,36 +9,30 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  constructor(private router: Router, private titleService: Title,private loginService: LoginserviceService,private cookieService: CookieService) {
-    this.titleService.setTitle('Quản lý khảo sát');
+  model: Login = {
+    UserName: '',
+    Password: '',
+    grant_type: '',
+    isRememberMe: true,
+  };
+
+  constructor(private router: Router, private loginService: LoginService) {
+    if (this.loginService.currentUserValue()) {
+      this.router.navigate(['admin/dashboard']);
+    }
   }
+
+  ngOnInit() {}
+
+  login() {
+    this.loginService.login(this.model).subscribe((result: any) => {
+      if (result) {
+        this.router.navigate(['admin/dashboard']);
+      }
+    });
+  }
+
   handlerClick = (link: string) => {
     this.router.navigate([link]);
   };
-  ngOnInit(): void {
-    // const tokenExists = this.cookieService.check('currentUser');
-    // if (tokenExists) {
-    //   console.log('Token đã tồn tại trong cookie.');
-    // } else {
-    //   console.log('Token không tồn tại trong cookie.');
-    // }
-  }
-  model:Login = {
-     UserName: '',
-     Password: '', 
-     grant_type: '' 
-  };
-  login() {
-    debugger
-    this.loginService.login(this.model).subscribe((result: any) => {
-      debugger
-      if (result) {
-        // alert("Đăng nhập thành công !")
-        this.router.navigate(['admin/dashboard']);
-      } else {
-        alert("Lỗi không thành công !")
-      }
-    });
-  } 
- 
 }
