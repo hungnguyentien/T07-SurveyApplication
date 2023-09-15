@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.GuiEmail;
 using SurveyApplication.Application.DTOs.LinhVucHoatDong;
+using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
 using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Commands;
 using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -62,12 +64,17 @@ namespace SurveyApplication.API.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<LinhVucHoatDongDto>>> DeleteLinhVucHoatDong(int id)
         {
-            var command = new DeleteLinhVucHoatDongCommand { Id = id };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var command = new DeleteLinhVucHoatDongCommand { Ids = new List<int> { id } };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        {
+            var command = new DeleteLinhVucHoatDongCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

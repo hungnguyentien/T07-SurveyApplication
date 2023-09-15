@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DonViAndNguoiDaiDien;
+using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
@@ -76,12 +78,17 @@ namespace SurveyApplication.API.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<DonViDto>>> DeleteDonVi(int id)
         {
-            var command = new DeleteDonViCommand { Id = id };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var command = new DeleteDonViCommand { Ids = new List<int> { id } };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        {
+            var command = new DeleteDonViCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

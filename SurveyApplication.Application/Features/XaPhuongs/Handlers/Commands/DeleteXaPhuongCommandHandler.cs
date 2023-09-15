@@ -2,6 +2,7 @@
 using MediatR;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Commands;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
@@ -20,14 +21,12 @@ namespace SurveyApplication.Application.Features.XaPhuongs.Handlers.Commands
         {
             var lstXaPhuong = await _surveyRepo.XaPhuong.GetByIds(x => request.Ids.Contains(x.Id));
             if (lstXaPhuong == null || lstXaPhuong.Count == 0)
-            {
-                //throw new NotFoundException(nameof(XaPhuong), request.Ids);
-            }
+                throw new NotFoundException(nameof(XaPhuong), request.Ids);
+
             foreach (var item in lstXaPhuong)
-            {
                 item.Deleted = true;
-            }
-            //await _surveyRepo.XaPhuong.DeleteAsync(lstXaPhuong);
+
+            await _surveyRepo.XaPhuong.UpdateAsync(lstXaPhuong);
             await _surveyRepo.SaveAync();
             return new BaseCommandResponse("Xóa thành công!");
         }

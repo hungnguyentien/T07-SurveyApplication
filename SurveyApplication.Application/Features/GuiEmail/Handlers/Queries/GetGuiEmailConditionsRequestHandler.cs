@@ -24,7 +24,8 @@ namespace SurveyApplication.Application.Features.GuiEmails.Handlers.Queries
             var query = from d in _surveyRepo.GuiEmail.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable()
                         on d.IdBangKhaoSat equals b.Id
-                        where d.MaGuiEmail.Contains(request.Keyword) || b.TenBangKhaoSat.Contains(request.Keyword)
+                        where (d.MaGuiEmail.Contains(request.Keyword) || b.TenBangKhaoSat.Contains(request.Keyword)) &&
+                            d.Deleted == false
                         select new GuiEmailDto
                         {
                             Id = d.Id,

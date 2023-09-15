@@ -27,14 +27,27 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries
                         on d.IdLoaiHinh equals o.Id
                         join s in _surveyRepo.LinhVucHoatDong.GetAllQueryable()
                         on d.IdLinhVuc equals s.Id
-                        where d.MaDonVi.Contains(request.Keyword) || d.TenDonVi.Contains(request.Keyword) ||
-                             d.DiaChi.Contains(request.Keyword) || b.HoTen.Contains(request.Keyword)
+
+                        //join x in _surveyRepo.TinhTp.GetAllQueryable()
+                        //on d.IdTinhTp equals x.Id
+                        //join y in _surveyRepo.QuanHuyen.GetAllQueryable()
+                        //on d.IdQuanHuyen equals y.Id
+                        //join z in _surveyRepo.XaPhuong.GetAllQueryable()
+                        //on d.IdXaPhuong equals z.Id
+
+                        where (d.MaDonVi.Contains(request.Keyword) || d.TenDonVi.Contains(request.Keyword) ||
+                             d.DiaChi.Contains(request.Keyword) || b.HoTen.Contains(request.Keyword)) &&
+                             d.Deleted == false
                         select new DonViDto
                         {
                             IdLinhVuc = s.Id,
                             IdDonVi = d.Id,
                             IdNguoiDaiDien = b.Id,
                             IdLoaiHinh = o.Id,
+
+                            //IdTinhTp = x.Id,
+                            //IdQuanHuyen = y.Id,
+                            //IdXaPhuong= z.Id,
 
                             MaDonVi = d.MaDonVi,
                             TenDonVi = d.TenDonVi,

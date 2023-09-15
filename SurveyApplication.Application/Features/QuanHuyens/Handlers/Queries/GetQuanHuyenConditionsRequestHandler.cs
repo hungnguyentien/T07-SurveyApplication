@@ -23,8 +23,9 @@ namespace SurveyApplication.Application.Features.QuanHuyens.Handlers.Queries
             var query = from d in _surveyRepo.QuanHuyen.GetAllQueryable()
                         join b in _surveyRepo.TinhTp.GetAllQueryable()
                         on d.ParentCode equals b.Code
-                        where d.Code.Contains(request.Keyword) || d.Name.Contains(request.Keyword) ||
-                             b.Code.Contains(request.Keyword) || b.Name.Contains(request.Keyword)
+                        where (d.Code.Contains(request.Keyword) || d.Name.Contains(request.Keyword) ||
+                             b.Code.Contains(request.Keyword) || b.Name.Contains(request.Keyword)) &&
+                             d.Deleted == false
                         select new QuanHuyenDto
                         {
                             Id = d.Id,

@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands
 {
-    public class DeleteDotKhaoSatCommand : IRequest
+    public class DeleteDotKhaoSatCommand : IRequest<BaseCommandResponse>
     {
-        public int Id { get; set; }
+        public List<int> Ids { get; set; }
     }
 }

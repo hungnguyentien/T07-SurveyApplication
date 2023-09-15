@@ -23,8 +23,8 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Queries
                         join b in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
                         on d.IdLoaiHinh equals b.Id
 
-                        where d.MaDotKhaoSat.Contains(request.Keyword) || d.TenDotKhaoSat.Contains(request.Keyword) ||
-                            b.TenLoaiHinh.Contains(request.Keyword)
+                        where (d.MaDotKhaoSat.Contains(request.Keyword) || d.TenDotKhaoSat.Contains(request.Keyword) ||
+                            b.TenLoaiHinh.Contains(request.Keyword)) && d.Deleted == false
                         select new DotKhaoSatDto
                         {
                             Id = d.Id,

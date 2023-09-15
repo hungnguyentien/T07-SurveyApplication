@@ -195,12 +195,12 @@ namespace SurveyApplication.Persistence.Repositories
 
         public async Task<T> SingleAsync(Expression<Func<T, bool>> predicate)
         {
-            return await GetAllQueryable().SingleAsync(predicate);
+            return await GetAllQueryable().AsNoTracking().SingleAsync(predicate);
         }
 
         public async Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
-            return await GetAllQueryable().SingleOrDefaultAsync(predicate);
+            return await GetAllQueryable().AsNoTracking().SingleOrDefaultAsync(predicate);
         }
 
         public T FirstOrDefault(Expression<Func<T, bool>> predicate)

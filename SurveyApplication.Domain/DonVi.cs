@@ -18,6 +18,12 @@ namespace SurveyApplication.Domain
 
         public int IdLinhVuc { get;set; }
 
+        public int IdTinhTp { get; set; }
+
+        public int IdQuanHuyen { get; set; }
+
+        public int IdXaPhuong { get; set; }
+
         [Required]
         public string TenDonVi { get;set; }
 

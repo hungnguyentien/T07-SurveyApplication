@@ -10,8 +10,12 @@ namespace SurveyApplication.Application.DTOs.DonVi
     public interface IDonViDto
     {
         public int Id { get; set; }
+        public string? MaDonVi { get; set; }
         public int? IdLoaiHinh { get; set; }
         public int? IdLinhVuc { get; set; }
+        public int? IdTinhTp { get; set; }
+        public int? IdQuanHuyen { get; set; }
+        public int? IdXaPhuong { get; set; }
         public string? TenDonVi { get; set; }
         public string? DiaChi { get; set; }
         public string? MaSoThue { get; set; }

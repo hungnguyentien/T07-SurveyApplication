@@ -35,7 +35,6 @@ namespace SurveyApplication.Persistence
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.Created = DateTime.Now;
-                    entry.Entity.ActiveFlag = 1;
                 }
             }
 

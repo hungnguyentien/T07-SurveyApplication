@@ -14,5 +14,6 @@ namespace SurveyApplication.Application.DTOs.Common
         public DateTime? Created { get; set; }
         public int? ModifiedBy { get; set; }
         public DateTime? Modified { get; set; }
+        public bool? Deleted { get; set; }
     }
 }

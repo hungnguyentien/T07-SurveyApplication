@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SurveyApplication.Domain.Common.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Commands
 {
-    public class DeleteLinhVucHoatDongCommand : IRequest
+    public class DeleteLinhVucHoatDongCommand : IRequest<BaseCommandResponse>
     {
-        public int Id { get; set; }
+        public List<int> Ids { get; set; }
     }
 }

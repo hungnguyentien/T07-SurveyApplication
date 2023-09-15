@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.QuanHuyen;
+using SurveyApplication.Application.DTOs.XaPhuong;
 using SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
 using SurveyApplication.Application.Features.QuanHuyens.Requests.Queries;
+using SurveyApplication.Application.Features.XaPhuongs.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers
@@ -65,12 +67,17 @@ namespace SurveyApplication.API.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<QuanHuyenDto>>> DeleteQuanHuyen(int id)
         {
-            var command = new DeleteQuanHuyenCommand { Id = id };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var command = new DeleteQuanHuyenCommand { Ids = new List<int> { id } };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        {
+            var command = new DeleteQuanHuyenCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpPost("Import")]

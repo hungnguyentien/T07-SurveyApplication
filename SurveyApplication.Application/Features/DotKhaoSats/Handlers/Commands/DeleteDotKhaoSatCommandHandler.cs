@@ -3,12 +3,13 @@ using MediatR;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
 using SurveyApplication.Domain;
+using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
 {
    
-    public class DeleteDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteDotKhaoSatCommand>
+    public class DeleteDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteDotKhaoSatCommand, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
 
@@ -17,17 +18,35 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(DeleteDotKhaoSatCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(DeleteDotKhaoSatCommand request, CancellationToken cancellationToken)
         {
-            var dotKhaoSatRepository = await _surveyRepo.DotKhaoSat.GetById(request.Id);
-            if (dotKhaoSatRepository == null)
-            {
-                throw new NotFoundException(nameof(DotKhaoSat), request.Id);
-            }
-            await _surveyRepo.DotKhaoSat.Delete(dotKhaoSatRepository);
-            await _surveyRepo.SaveAync();
+            var response = new BaseCommandResponse();
 
-            return Unit.Value;
+            foreach (var item in request.Ids)
+            {
+                var dotKhaoSat = await _surveyRepo.DotKhaoSat.SingleOrDefaultAsync(x => x.Id == item);
+
+                var bangKhaoSat = await _surveyRepo.BangKhaoSat.GetAllListAsync(x => x.IdDotKhaoSat == dotKhaoSat.Id);
+
+                if (bangKhaoSat.Count() != 0)
+                {
+                    response.Success = false;
+                    response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
+                    return response;
+                }
+            }
+
+            var lstDotKhaoSat = await _surveyRepo.DotKhaoSat.GetByIds(x => request.Ids.Contains(x.Id));
+
+            if (lstDotKhaoSat == null || lstDotKhaoSat.Count == 0)
+                throw new NotFoundException(nameof(DotKhaoSat), request.Ids);
+
+            foreach (var item in lstDotKhaoSat)
+                item.Deleted = true;
+
+            await _surveyRepo.DotKhaoSat.UpdateAsync(lstDotKhaoSat);
+            await _surveyRepo.SaveAync();
+            return new BaseCommandResponse("Xóa thành công!");
         }
     }
 }

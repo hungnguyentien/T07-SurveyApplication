@@ -64,12 +64,17 @@ namespace SurveyApplication.API.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<List<BangKhaoSatDto>>> DeleteBangKhaoSat(int id)
         {
-            var command = new DeleteBangKhaoSatCommand { Id = id };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var command = new DeleteBangKhaoSatCommand { Ids = new List<int> { id } };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        {
+            var command = new DeleteBangKhaoSatCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }
