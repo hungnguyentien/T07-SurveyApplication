@@ -33,7 +33,6 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
     public async Task<AuthResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByNameAsync(request.Email);
-
         if (user == null)
         {
             if (request.Email == "admin")
@@ -59,7 +58,7 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
                     NormalizedName = "ADMINISTRATOR"
                 });
                 await _userManager.AddToRoleAsync(userAdmin, "Administrator");
-                user = await _userManager.FindByEmailAsync(request.Email);
+                user = await _userManager.FindByNameAsync(request.Email);
             }
             else
             {
