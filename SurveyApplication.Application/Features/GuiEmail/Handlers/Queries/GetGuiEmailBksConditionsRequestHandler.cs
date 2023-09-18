@@ -20,6 +20,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
             var query = from a in _surveyRepo.BangKhaoSat.GetAllQueryable().AsNoTracking()
                         join b in _surveyRepo.GuiEmail.GetAllQueryable().AsNoTracking() on a.Id equals b.IdBangKhaoSat
                         where !a.Deleted && !b.Deleted
+                        && string.IsNullOrEmpty(request.Keyword) || a.TenBangKhaoSat.Contains(request.Keyword) || a.MaBangKhaoSat.Contains(request.Keyword)
                         select new
                         {
                             a.MaBangKhaoSat,
@@ -30,7 +31,6 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
                             b.TrangThai,
                         };
             var data = from a in query
-                       where string.IsNullOrEmpty(request.Keyword) || a.TenBangKhaoSat.Contains(request.Keyword) || a.MaBangKhaoSat.Contains(request.Keyword)
                        group new { a } by new { a.IdBangKhaoSat, a.NgayBatDau, a.NgayKetThuc, a.MaBangKhaoSat, a.TenBangKhaoSat } into gbks
                        select new GuiEmailBksDto
                        {
