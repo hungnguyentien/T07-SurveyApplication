@@ -10,5 +10,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Queries
         public int? IdLoaiHinhDonVi { get; set; }
         public string? NgayBatDau { get; set; }
         public string? NgayKetThuc { get; set; }
+
+
     }
 }
