@@ -31,5 +31,16 @@ namespace SurveyApplication.Utility
 
             return rs;
         }
+
+        public static Dictionary<int, string> GetDescriptionValue<T>() where T : struct
+        {
+            if (!typeof(T).IsEnum)
+                throw new ArgumentException("T is not an Enum type");
+
+            var enumType = typeof(T);
+            return Enum.GetValues(typeof(T))
+                .Cast<object>()
+                .ToDictionary(k => (int)k, v => enumType.GetMember(v.ToString() ?? string.Empty).FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? v.ToString());
+        }
     }
 }

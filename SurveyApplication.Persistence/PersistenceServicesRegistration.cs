@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Interfaces;
 using SurveyApplication.Domain.Interfaces.Persistence;
@@ -33,7 +34,7 @@ public static class PersistenceServicesRegistration
 
         services.AddDbContext<SurveyApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString"), b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
 
-        services.AddIdentity<ApplicationUser, IdentityRole>()
+        services.AddIdentity<ApplicationUser, Role>()
             .AddEntityFrameworkStores<SurveyApplicationDbContext>().AddDefaultTokenProviders()
             .AddPasswordValidator<PasswordValidator<ApplicationUser>>();
 

@@ -8,8 +8,7 @@ using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries;
 
-public class GetBangKhaoSatDetailRequestHandler : BaseMasterFeatures,
-    IRequestHandler<GetBangKhaoSatDetailRequest, BangKhaoSatDto>
+public class GetBangKhaoSatDetailRequestHandler : BaseMasterFeatures, IRequestHandler<GetBangKhaoSatDetailRequest, BangKhaoSatDto>
 {
     private readonly IMapper _mapper;
 

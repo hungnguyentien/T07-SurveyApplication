@@ -10,3 +10,4 @@ export * from './period-survey.service';
 export * from './table-survey.service';
 export * from './gui-email.service';
 export * from './bao-cao-cau-hoi.service';
+export * from './role.service';
