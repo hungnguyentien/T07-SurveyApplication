@@ -1,17 +1,16 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.GuiEmail;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
 {
     public class GetGuiEmailBksConditionsRequestHandler : BaseMasterFeatures, IRequestHandler<GetGuiEmailBksConditionsRequest, BaseQuerieResponse<GuiEmailBksDto>>
     {
-        public GetGuiEmailBksConditionsRequestHandler(ISurveyRepositoryWrapper surveyRepository) : base(
-            surveyRepository)
+        public GetGuiEmailBksConditionsRequestHandler(ISurveyRepositoryWrapper surveyRepository) : base(surveyRepository)
         {
         }
 
@@ -21,6 +20,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
             var query = from a in _surveyRepo.BangKhaoSat.GetAllQueryable().AsNoTracking()
                         join b in _surveyRepo.GuiEmail.GetAllQueryable().AsNoTracking() on a.Id equals b.IdBangKhaoSat
                         where !a.Deleted && !b.Deleted
+                        && string.IsNullOrEmpty(request.Keyword) || a.TenBangKhaoSat.Contains(request.Keyword) || a.MaBangKhaoSat.Contains(request.Keyword)
                         select new
                         {
                             a.MaBangKhaoSat,
@@ -31,7 +31,6 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
                             b.TrangThai,
                         };
             var data = from a in query
-                       where string.IsNullOrEmpty(request.Keyword) || a.TenBangKhaoSat.Contains(request.Keyword) || a.MaBangKhaoSat.Contains(request.Keyword)
                        group new { a } by new { a.IdBangKhaoSat, a.NgayBatDau, a.NgayKetThuc, a.MaBangKhaoSat, a.TenBangKhaoSat } into gbks
                        select new GuiEmailBksDto
                        {

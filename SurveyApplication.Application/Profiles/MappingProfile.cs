@@ -11,9 +11,9 @@ using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.DTOs.QuanHuyen;
+using SurveyApplication.Application.DTOs.Role;
 using SurveyApplication.Application.DTOs.TinhTp;
 using SurveyApplication.Application.DTOs.XaPhuong;
-using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Models;
 
@@ -64,7 +64,6 @@ public class MappingProfile : Profile
         CreateMap<LinhVucHoatDong, CreateLinhVucHoatDongDto>().ReverseMap();
         CreateMap<LinhVucHoatDong, UpdateLinhVucHoatDongDto>().ReverseMap();
 
-        CreateMap<CreateAccountDto, ApplicationUser>();
 
         CreateMap<XaPhuong, XaPhuongDto>().ReverseMap();
         CreateMap<XaPhuong, CreateXaPhuongDto>().ReverseMap();
@@ -78,5 +77,10 @@ public class MappingProfile : Profile
         CreateMap<TinhTp, CreateTinhTpDto>().ReverseMap();
         CreateMap<TinhTp, UpdateTinhTpDto>().ReverseMap();
         CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
+
+        CreateMap<ApplicationUser, AccountDto>().ReverseMap();
+        CreateMap<CreateAccountDto, ApplicationUser>();
+
+        CreateMap<Role, RoleDto>().ReverseMap();
     }
 }

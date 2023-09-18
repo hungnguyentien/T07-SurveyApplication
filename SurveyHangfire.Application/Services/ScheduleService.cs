@@ -51,7 +51,5 @@ namespace Hangfire.Application.Services
             RecurringJob.AddOrUpdate(jobName, () => _clientServices.RecurringJobAsync(service, apiUrl), cronString);
             return new ServiceResultSuccess("Add or Update success!!!");
         }
-       
-
     }
 }

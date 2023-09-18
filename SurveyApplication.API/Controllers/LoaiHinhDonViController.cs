@@ -1,9 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
-using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
-using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -28,25 +26,27 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
-        [HttpGet("GenerateMaLoaiHinhDonVi")]
-        public async Task<ActionResult<string>> GenerateMaLoaiHinhDonVi()
+        [HttpGet("GenerateMaLoaiHinh")]
+        public async Task<ActionResult<string>> GetLastRecordByMaLoaiHinh()
         {
             var record = await _mediator.Send(new GetLastRecordLoaiHinhDonViRequest());
             return Ok(new
             {
-                MaLoaiHinh = record,
+                MaLoaiHinh = record
             });
         }
 
         [HttpGet("GetByCondition")]
-        public async Task<ActionResult<BaseQuerieResponse<LoaiHinhDonViDto>>> GetByConditionLoaiHinhDonVi([FromQuery] Paging paging)
+        public async Task<ActionResult<BaseQuerieResponse<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition(
+            [FromQuery] Paging paging)
         {
-            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+            var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViConditionsRequest
+            { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return leaveAllocations;
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByIdLoaiHinhDonVi(int id)
+        public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByLoaiHinhDonVi(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViDetailRequest { Id = id });
             return Ok(leaveAllocations);
@@ -67,12 +67,12 @@ namespace SurveyApplication.API.Controllers
             await _mediator.Send(command);
             return Ok(new
             {
-                Success = true,
+                Success = true
             });
         }
 
         [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult<List<LoaiHinhDonViDto>>> DeleteLoaiHinhDonVi(int id)
+        public async Task<ActionResult> DeleteLoaiHinhDonVi(int id)
         {
             var command = new DeleteLoaiHinhDonViCommand { Ids = new List<int> { id } };
             var response = await _mediator.Send(command);

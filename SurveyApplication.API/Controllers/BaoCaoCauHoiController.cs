@@ -1,12 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Queries;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class BaoCaoCauHoiController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -17,6 +21,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetBaoCaoCauHoi")]
+        [HasPermission(new[] { (int)EnumModule.Code.TkKs }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<BaoCaoCauHoiDto>> GetBaoCaoCauHoi([FromQuery] GetBaoCaoCauHoiRequest data)
         {
             var result = await _mediator.Send(data);

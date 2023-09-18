@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.CauHoi;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.CauHoi.Requests.Commands;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.API.Controllers;
 
@@ -24,16 +25,21 @@ public class CauHoiController : ControllerBase
     }
 
     [HttpGet("GetByCondition")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
     public async Task<ActionResult<BaseQuerieResponse<CauHoiDto>>> GetCauHoiByCondition([FromQuery] Paging paging)
     {
         var result = await _mediator.Send(new GetCauHoiConditionsRequest
         {
-            PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword, OrderBy = paging.OrderBy
+            PageIndex = paging.PageIndex,
+            PageSize = paging.PageSize,
+            Keyword = paging.Keyword,
+            OrderBy = paging.OrderBy
         });
         return Ok(result);
     }
 
     [HttpGet("GetById/{id}")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
     public async Task<ActionResult<CauHoiDto>> GetCauHoiById(int id)
     {
         var result = await _mediator.Send(new GetCauHoiDetailRequest { Id = id });
@@ -41,6 +47,7 @@ public class CauHoiController : ControllerBase
     }
 
     [HttpGet("GetLoaiCauHoi")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
     public ActionResult GetLoaiCauHoi()
     {
         var result = EnumUltils.GetDescription<EnumCauHoi.Type>()
@@ -49,6 +56,7 @@ public class CauHoiController : ControllerBase
     }
 
     [HttpPost("Create")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Create })]
     public async Task<ActionResult> CreateCauHoi([FromBody] CreateCauHoiDto obj)
     {
         var command = new CreateCauHoiCommand { CauHoiDto = obj };
@@ -57,6 +65,7 @@ public class CauHoiController : ControllerBase
     }
 
     [HttpPost("Update")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Update })]
     public async Task<ActionResult> UpdateCauHoi([FromBody] UpdateCauHoiDto obj)
     {
         var command = new UpdateCauHoiCommand { CauHoiDto = obj };
@@ -65,6 +74,7 @@ public class CauHoiController : ControllerBase
     }
 
     [HttpDelete("Delete/{id}")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Deleted })]
     public async Task<ActionResult> DeleteCauHoi(int id)
     {
         var command = new DeleteCauHoiCommand { Ids = new List<int> { id } };
@@ -73,6 +83,7 @@ public class CauHoiController : ControllerBase
     }
 
     [HttpDelete("DeleteMultiple")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Deleted })]
     public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
     {
         var command = new DeleteCauHoiCommand { Ids = ids };

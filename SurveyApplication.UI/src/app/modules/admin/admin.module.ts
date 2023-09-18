@@ -108,10 +108,9 @@ import { DistrictComponent } from './admin-categories/district/district.componen
 import { WardsComponent } from './admin-categories/wards/wards.component';
 import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ShareModule } from '@app/layout/share/share.module';
-// import { JwtInterceptor } from '@app/helpers';
-
+import { AdminRoleComponent } from './admin-role/admin-role.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +126,7 @@ import { ShareModule } from '@app/layout/share/share.module';
     DistrictComponent,
     WardsComponent,
     AdminStatisticalComponent,
+    AdminRoleComponent,
   ],
   imports: [
     CommonModule,

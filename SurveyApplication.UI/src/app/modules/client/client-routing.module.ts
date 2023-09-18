@@ -14,7 +14,7 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'thong-tin-chung',
+        path: 'thong-tin-chung/:data',
         component: GeneralInfoComponent,
         title: 'Thông tin chung',
         data: {

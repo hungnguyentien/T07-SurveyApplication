@@ -14,6 +14,7 @@ import { ProvinceComponent } from './admin-categories/province/province.componen
 import { DistrictComponent } from './admin-categories/district/district.component';
 import { WardsComponent } from './admin-categories/wards/wards.component';
 import { Error403Component } from '@app/layout/partials/error403/error403.component';
+import { AdminRoleComponent } from './admin-role/admin-role.component';
 
 const routes: Routes = [
   {
@@ -116,6 +117,14 @@ const routes: Routes = [
         title: 'Quản lý xã/phường',
         data: {
           title: 'Quản lý xã/phường',
+        },
+      },
+      {
+        path: 'nhom-quyen',
+        component:AdminRoleComponent, canActivate: [AuthGuardService],
+        title: 'Quản lý nhóm quyền',
+        data: {
+          title: 'Quản lý nhóm quyền',
         },
       },
       {

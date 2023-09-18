@@ -20,6 +20,7 @@
         ITinhTpRepository TinhTp { get; }
         IBaoCaoCauHoiRepository BaoCaoCauHoi { get; }
         IJobScheduleRepository JobSchedule { get; }
+        IRoleRepository Role { get; }
 
         //RenderHere
         Task SaveAync();

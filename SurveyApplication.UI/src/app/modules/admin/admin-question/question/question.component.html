@@ -13,7 +13,7 @@
 </p-confirmDialog>
 
 <div>
-  <h5>Danh mục câu hỏi</h5>
+  <h5>Danh sách câu hỏi</h5>
   <div class="d-flex mt-3">
     <div>
       <button pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button" (click)="createDialog()">
@@ -135,17 +135,21 @@
           <input type="text" pInputText class="form-control" id="maCauHoi" formControlName="maCauHoi" [ngClass]="{
             'is-invalid': submitted && f('maCauHoi').errors
           }" placeholder="VB01" />
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmCauHoi.controls['maCauHoi'].valid && 
+          frmCauHoi.controls['maCauHoi'].dirty">
+            Vui lòng nhập mã
+          </small>
+          <!-- 
           <div *ngIf="submitted && f('maCauHoi').errors" class="invalid-feedback">
             <small *ngIf="f('maCauHoi').errors?.['required']">
               Vui lòng nhập mã câu hỏi
             </small>
-          </div>
+          </div> -->
         </div>
         <div class="form-group col-md-6">
           <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red">*</span></label>
           <p-dropdown id="loaicauhoi" [options]="lstLoaiCauHoi" [(ngModel)]="selectedLoaiCauHoi" optionLabel="text"
-            optionValue="value" [filter]="true" filterBy="text" emptyMessage="Không có kết quả nào"
-            emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom" [ngClass]="{
+            optionValue="value"  emptyMessage="Không có kết quả nào" class="form-select-custom" [ngClass]="{
             'is-invalid': submitted && f('loaiCauHoi').errors
           }" formControlName="loaiCauHoi" (onChange)="handlerChangeLCh($event)">
           </p-dropdown>
@@ -159,8 +163,14 @@
 
       <div class="form-group">
         <label for="tieuDe" class="col-form-label">Tiêu đề:</label>
+
         <input type="text" pInputText class="form-control" id="tieuDe" formControlName="tieuDe"
-          placeholder="Nhập tiêu đề câu hỏi" />
+          placeholder="Nhập tiêu đề câu hỏi" required />
+
+        <small *ngIf="!frmCauHoi.controls['tieuDe'].valid && frmCauHoi.controls['tieuDe'].dirty"
+          class="invalid-feedback">
+          Vui lòng nhập tiêu đề
+        </small>
       </div>
 
       <ng-container *ngIf="selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1'">
@@ -177,7 +187,9 @@
             <div class="form-group" *ngIf="isOther">
               <label for="labelCauTraLoi" class="col-form-label">Lable câu trả lời khác:</label>
               <input type="text" pInputText class="form-control" formControlName="labelCauTraLoi" id="labelCauTraLoi"
-                placeholder="Nhập tiêu đề câu hỏi" />
+                placeholder="Nhập tiêu đề câu hỏi"  />
+
+              
             </div>
           </div>
         </div>
@@ -226,7 +238,12 @@
 
       <div class="form-group">
         <label for="noidung" class="col-form-label">Nội dung:</label>
-        <ckeditor formControlName="noidung" [editor]="Editor"></ckeditor>
+        <ckeditor formControlName="noidung" [editor]="Editor" required></ckeditor>
+        <small *ngIf="!frmCauHoi.controls['noidung'].valid && frmCauHoi.controls['noidung'].dirty"
+          class="invalid-feedback">
+          Vui lòng nhập nội dung
+        </small>
+
       </div>
 
       <div class="form-group" *ngIf="
@@ -238,7 +255,7 @@
           {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'Đáp án' : 'Cột' }}:
         </label>
         <button type="button" class="btn btn-add float-end" (click)="addItem()">
-          Thêm cột
+          Thêm {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'đáp án' : 'cột' }}
         </button>
         <table class="table table-bordered">
           <thead>
@@ -322,8 +339,10 @@
       </div>
     </ng-template>
     <ng-template pTemplate="footer">
-      <button type="button" class="btn btn-secondary" (click)="visible = false">Đóng</button>
-      <button type="submit" class="btn btn-primary">Lưu</button>
+      <input type="hidden" formControlName="id">
+      <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
+      <button pButton [disabled]="!frmCauHoi.valid" type="submit" icon="pi pi-save" label="Lưu"
+        class="custom-button"></button>
     </ng-template>
   </p-dialog>
 </form>

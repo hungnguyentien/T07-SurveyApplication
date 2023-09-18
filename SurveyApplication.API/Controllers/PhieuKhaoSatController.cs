@@ -20,22 +20,21 @@ using SurveyApplication.Utility;
 
 namespace SurveyApplication.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class PhieuKhaoSatController : ControllerBase
 {
+    private readonly IMediator _mediator;
+    private EmailSettings EmailSettings { get; }
     private const string PathJsonTinh = @"TempData\tinh_tp.json";
     private const string PathJsonQuanHuyen = @"TempData\quan_huyen.json";
     private const string PathJsonPhuongXa = @"TempData\xa_phuong.json";
-    private readonly IMediator _mediator;
 
     public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings)
     {
         _mediator = mediator;
         EmailSettings = emailSettings.Value;
     }
-
-    private EmailSettings EmailSettings { get; }
 
     [HttpGet("GetThongTinChung")]
     public async Task<ActionResult<ThongTinChungDto>> GetThongTinChung(string data)
@@ -55,7 +54,7 @@ public class PhieuKhaoSatController : ControllerBase
                 StringUltils.DecryptWithKey(data, EmailSettings.SecretKey));
         var result = await _mediator.Send(new GetConfigCauHoiRequest
         {
-            IdGuiEmail = thongTinChung.IdGuiEmail ?? 0
+            IdGuiEmail = thongTinChung?.IdGuiEmail ?? 0
         });
         return Ok(result);
     }
@@ -75,7 +74,7 @@ public class PhieuKhaoSatController : ControllerBase
     {
         using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PathJsonTinh));
         var datas = JsonConvert.DeserializeObject<Dictionary<string, HanhChinhVn>>(r.ReadToEnd());
-        return Ok(datas.Values);
+        return Ok(datas?.Values);
     }
 
     [HttpGet("GetQuanHuyen")]
@@ -83,7 +82,7 @@ public class PhieuKhaoSatController : ControllerBase
     {
         using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PathJsonQuanHuyen));
         var datas = JsonConvert.DeserializeObject<Dictionary<string, HanhChinhVn>>(r.ReadToEnd());
-        var quanHuyen = datas.Values.Where(x => x.parent_code == idTinh);
+        var quanHuyen = datas?.Values.Where(x => x.parent_code == idTinh);
         return Ok(quanHuyen);
     }
 
@@ -92,7 +91,7 @@ public class PhieuKhaoSatController : ControllerBase
     {
         using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PathJsonPhuongXa));
         var datas = JsonConvert.DeserializeObject<Dictionary<string, HanhChinhVn>>(r.ReadToEnd());
-        var phuongXa = datas.Values.Where(x => x.parent_code == idQuanHuyen);
+        var phuongXa = datas?.Values.Where(x => x.parent_code == idQuanHuyen);
         return Ok(phuongXa);
     }
 
@@ -104,7 +103,7 @@ public class PhieuKhaoSatController : ControllerBase
         var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViListRequest());
         return Ok(leaveAllocations);
     }
-    
+
     [HttpGet("GetAllLinhVucHoatDong")]
     public async Task<ActionResult<List<LinhVucHoatDongDto>>> GetAllLinhVucHoatDong()
     {

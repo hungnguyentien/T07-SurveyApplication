@@ -1,4 +1,3 @@
-<p-toast [style]="{ width: '20vw', height: '5vh' }"></p-toast>
 <div>
   <h5>Danh sách gửi email</h5>
   <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
@@ -12,6 +11,7 @@
     </button>
   </form>
 </div>
+
 <div class="card mt-3">
   <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
     scrollHeight="calc(100vh - 396px)" [(selection)]="selectedSendEmail" dataKey="id"
@@ -27,43 +27,50 @@
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Mã bảng ks
-            <div type="text" display="menu" class="ml-auto"></div>
+            <p-sortIcon field="maBangKhaoSat"></p-sortIcon>
+            <p-columnFilter type="text" field="mota" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Tên bảng khảo sát
-            <div type="text" display="menu" class="ml-auto"></div>
+            <p-sortIcon field="tenBangKhaoSat"></p-sortIcon>
+            <p-columnFilter type="text" field="mota" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Email đã gửi
-            <div type="text" display="menu" class="ml-auto"></div>
+            <p-sortIcon field="EmailDagui"></p-sortIcon>
+            <p-columnFilter type="text" field="EmailDagui" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thành Công
-            <div type="text" display="menu" class="ml-auto"></div>
+            <p-sortIcon field="thanhCong"></p-sortIcon>
+            <p-columnFilter type="text" field="thanhCong" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Gửi lỗi
-            <div type="text" display="menu" class="ml-auto"></div>
+            <p-sortIcon field="guiLoi"></p-sortIcon>
+            <p-columnFilter type="text" field="GuiLoi" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thu hồi
-            <div type="text" display="menu" class="ml-auto"></div>
+            <p-sortIcon field="ThuHoi"></p-sortIcon>
+            <p-columnFilter type="text" field="thuHoi" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thời gian
-            <div type="text" display="menu" class="ml-auto"></div>
+            <p-sortIcon field="thoiGian"></p-sortIcon>
+            <p-columnFilter type="text" field="mota" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th style="width: 120px;">

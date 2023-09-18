@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Domain;
@@ -17,23 +16,14 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
         public async Task<BaseCommandResponse> Handle(DeleteDonViCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-
-            foreach (var item in request.Ids)
+            if (await _surveyRepo.GuiEmail.Exists(x => !x.Deleted && request.Ids.Contains(x.IdDonVi)))
             {
-                var donVi = await _surveyRepo.DonVi.SingleOrDefaultAsync(x => x.Id == item);
-
-                var nguoiDaiDien = await _surveyRepo.NguoiDaiDien.GetAllListAsync(x => x.IdDonVi == donVi.Id);
-
-                if (nguoiDaiDien.Count() != 0)
-                {
-                    response.Success = false;
-                    response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
-                    return response;
-                }
+                response.Success = false;
+                response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
+                return response;
             }
 
             var lstDonVi = await _surveyRepo.DonVi.GetByIds(x => request.Ids.Contains(x.Id));
-
             if (lstDonVi == null || lstDonVi.Count == 0)
                 throw new NotFoundException(nameof(DonVi), request.Ids);
 

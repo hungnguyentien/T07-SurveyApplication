@@ -12,9 +12,6 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
             _donViRepository = donViViRepository;
 
             RuleFor(p => p.MaDonVi)
-                .NotNull().NotEmpty().WithMessage("Mã đơn vị không được để trống");
-
-            RuleFor(p => p.MaDonVi)
                 .MustAsync(async (maDonVi, token) =>
                 {
                     var DonViViExists = await _donViRepository.ExistsByMaDonVi(maDonVi);

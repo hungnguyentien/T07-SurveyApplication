@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using SurveyApplication.Application.Enums;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.DTOs.CauHoi.Validators;
 

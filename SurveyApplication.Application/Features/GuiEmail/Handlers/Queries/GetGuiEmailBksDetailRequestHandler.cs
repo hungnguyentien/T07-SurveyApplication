@@ -9,7 +9,7 @@ using SurveyApplication.Domain.Common;
 using SurveyApplication.Utility;
 using SurveyApplication.Application.DTOs.CauHoi;
 using Microsoft.Extensions.Options;
-using SurveyApplication.Application.Enums;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
 {
