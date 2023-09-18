@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.GuiEmail;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
 {

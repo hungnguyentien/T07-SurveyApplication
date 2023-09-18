@@ -1,15 +1,19 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class BangKhaoSatController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -20,6 +24,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAll")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<BangKhaoSatDto>>> GetAllBangKhaoSat()
         {
             var lstBangKhaoSat = await _mediator.Send(new GetBangKhaoSatListRequest());
@@ -27,6 +32,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<BaseQuerieResponse<BangKhaoSatDto>>> GetByConditionBangKhaoSat([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
@@ -34,6 +40,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<BangKhaoSatDto>> GetByIdBangKhaoSat(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatDetailRequest { Id = id });
@@ -41,6 +48,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Create")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<BangKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateBangKhaoSatDto obj)
         {
             obj.TrangThai = 1;
@@ -50,6 +58,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Update")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<BangKhaoSatDto>> UpdateBangKhaoSat([FromBody] UpdateBangKhaoSatDto obj)
         {
             var command = new UpdateBangKhaoSatCommand { BangKhaoSatDto = obj };
@@ -62,6 +71,7 @@ namespace SurveyApplication.API.Controllers
 
 
         [HttpDelete("Delete/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult<List<BangKhaoSatDto>>> DeleteBangKhaoSat(int id)
         {
             var command = new DeleteBangKhaoSatCommand { Ids = new List<int> { id } };
@@ -70,6 +80,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("DeleteMultiple")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
         {
             var command = new DeleteBangKhaoSatCommand { Ids = ids };

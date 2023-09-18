@@ -1,15 +1,19 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.GuiEmail;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class GuiEmailController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -20,6 +24,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAll")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<GuiEmailDto>>> GetAllGuiEmail()
         {
             var leaveAllocations = await _mediator.Send(new GetGuiEmailListRequest());
@@ -27,6 +32,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<GuiEmailBksDto>>> GetGuiEmailByCondition([FromQuery] Paging paging)
         {
             var lstGuiMail = await _mediator.Send(new GetGuiEmailBksConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
@@ -34,6 +40,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByIdBangKhaoSat")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<GuiEmailDto>>> GetByIdBangKhaoSat([FromQuery] PagingGuiEmailBks paging)
         {
             var leaveAllocations = await _mediator.Send(new GetGuiEmailBksDetailRequest
@@ -47,6 +54,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<GuiEmailDto>>> GetByGuiEmail(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetGuiEmailDetailRequest { Id = id });
@@ -54,6 +62,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Create")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<GuiEmailDto>> CreateGuiEmail([FromBody] CreateGuiEmailDto obj)
         {
             var command = new CreateGuiEmailCommand { GuiEmailDto = obj };
@@ -62,6 +71,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Update")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<GuiEmailDto>> UpdateGuiEmail([FromBody] UpdateGuiEmailDto obj)
         {
             var command = new UpdateGuiEmailCommand { GuiEmailDto = obj };
@@ -73,6 +83,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult<List<GuiEmailDto>>> DeleteGuiEmail(int id)
         {
             var command = new DeleteGuiEmailCommand { Id = id };
@@ -84,6 +95,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("CreateByDonVi")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<BaseCommandResponse>> CreateByDonVi([FromBody] CreateGuiEmailDto obj)
         {
             var command = new SendKhaoSatCommand { GuiEmailDto = obj };
@@ -92,6 +104,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("GuiLaiEmail")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<BaseCommandResponse>> GuiLaiEmail([FromBody] GuiLaiGuiEmailCommand obj)
         {
             var command = new GuiLaiGuiEmailCommand { GuiEmailDto = obj.GuiEmailDto, LstIdGuiMail = obj.LstIdGuiMail };
@@ -100,6 +113,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("ThuHoiEmail")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlGm }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<BaseCommandResponse>> ThuHoiEmail([FromBody] ThuHoiGuiEmailCommand obj)
         {
             var response = await _mediator.Send(obj);

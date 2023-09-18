@@ -2,9 +2,9 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries;
 

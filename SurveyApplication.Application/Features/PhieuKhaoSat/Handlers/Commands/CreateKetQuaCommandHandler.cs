@@ -6,13 +6,13 @@ using Newtonsoft.Json;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat.Validators;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Utility;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands;
 

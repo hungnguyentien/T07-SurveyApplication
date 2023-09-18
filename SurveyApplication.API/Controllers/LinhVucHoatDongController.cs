@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Models;
-using SurveyApplication.Application.DTOs.GuiEmail;
 using SurveyApplication.Application.DTOs.LinhVucHoatDong;
-using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
 using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Commands;
 using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;

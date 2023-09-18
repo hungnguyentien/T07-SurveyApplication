@@ -1,10 +1,10 @@
 ﻿using AutoMapper.Internal;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 {

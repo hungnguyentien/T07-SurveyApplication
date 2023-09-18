@@ -2,11 +2,11 @@
 using MediatR;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands;
 

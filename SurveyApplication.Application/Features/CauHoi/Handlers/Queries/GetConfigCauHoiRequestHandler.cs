@@ -3,9 +3,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.CauHoi;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries;
 

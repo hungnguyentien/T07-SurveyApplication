@@ -4,9 +4,9 @@ using MediatR;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries;
 

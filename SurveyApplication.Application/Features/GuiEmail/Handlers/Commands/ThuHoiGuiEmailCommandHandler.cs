@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Domain.Interfaces.Infrastructure;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands
 {

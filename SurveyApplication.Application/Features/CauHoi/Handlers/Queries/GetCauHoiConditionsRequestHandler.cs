@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.CauHoi;
-using SurveyApplication.Application.Enums;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Utility;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.CauHoi.Handlers.Queries;
 

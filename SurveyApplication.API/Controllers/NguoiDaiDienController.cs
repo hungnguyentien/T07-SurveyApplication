@@ -8,8 +8,8 @@ using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class NguoiDaiDienController : ControllerBase
 {
     private readonly IMediator _mediator;

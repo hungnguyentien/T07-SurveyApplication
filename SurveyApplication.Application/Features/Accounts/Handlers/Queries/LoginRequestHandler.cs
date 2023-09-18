@@ -10,6 +10,8 @@ using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Common.Identity;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Domain.Models;
+using SurveyApplication.Utility.Constants;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries;
 
@@ -35,30 +37,36 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
         var user = await _userManager.FindByNameAsync(request.Email);
         if (user == null)
         {
-            if (request.Email == "admin")
+            if (request.Email == AccountAdmin.UserName)
             {
                 var hasher = new PasswordHasher<ApplicationUser>();
                 var userAdmin = new ApplicationUser
                 {
-                    Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                    Email = "admin@gmail.com",
-                    NormalizedEmail = "ADMIN@GAMAIL.COM",
-                    Name = "System Admin",
-                    UserName = "admin",
-                    NormalizedUserName = "ADMIN",
-                    PasswordHash = hasher.HashPassword(null!, "123qwe"),
+                    Id = AccountAdmin.Uid,
+                    Email = AccountAdmin.Email,
+                    NormalizedEmail = AccountAdmin.Email.ToUpper(),
+                    Name = AccountAdmin.Name,
+                    UserName = AccountAdmin.UserName,
+                    NormalizedUserName = AccountAdmin.UserName.ToUpper(),
+                    PasswordHash = hasher.HashPassword(null!, AccountAdmin.Password),
                     EmailConfirmed = true,
-                    Address = "Hà Nội, Việt Nam"
+                    Address = AccountAdmin.Address
                 };
                 await _userManager.CreateAsync(userAdmin);
-                await _roleManager.CreateAsync(new IdentityRole
+                var roleAdmin = new IdentityRole
                 {
-                    Id = "cbc43a8e-f7bb-4445-baaf-1add431ffbbf",
-                    Name = "Administrator",
-                    NormalizedName = "ADMINISTRATOR"
-                });
-                await _userManager.AddToRoleAsync(userAdmin, "Administrator");
-                user = await _userManager.FindByNameAsync(request.Email);
+                    Id = RoleAdmin.Id,
+                    Name = RoleAdmin.Name,
+                    NormalizedName = RoleAdmin.Name.ToUpper()
+                };
+                await _roleManager.CreateAsync(roleAdmin);
+                foreach (var claimModule in MapEnum.MatrixPermission)
+                {
+                    await _roleManager.AddClaimAsync(roleAdmin, new Claim((claimModule.Key).ToString(), JsonExtensions.SerializeToJson(claimModule.Value), JsonClaimValueTypes.JsonArray));
+                }
+
+                await _userManager.AddToRoleAsync(userAdmin, RoleAdmin.Name);
+                user = await _userManager.FindByNameAsync(AccountAdmin.UserName);
             }
             else
             {
@@ -86,11 +94,10 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
         var roles = await _userManager.GetRolesAsync(user);
         var userClaims = new List<Claim>();
         var roleClaims = new List<Claim>();
-
-        for (var i = 0; i < roles.Count; i++)
+        foreach (var role in roles)
         {
-            roleClaims.Add(new Claim(ClaimTypes.Role, roles[i]));
-            var roleClaim = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(roles[i]));
+            roleClaims.Add(new Claim(ClaimTypes.Role, role));
+            var roleClaim = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role));
             userClaims.AddRange(roleClaim);
         }
 
@@ -99,8 +106,7 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                //new Claim(CustomClaimTypes.Uid, user.Id)
-                new Claim("uid", user.Id)
+                new Claim(CustomAuth.Uid, user.Id)
             }
             .Union(userClaims)
             .Union(roleClaims);
