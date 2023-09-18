@@ -15,6 +15,7 @@ import { DistrictComponent } from './admin-categories/district/district.componen
 import { WardsComponent } from './admin-categories/wards/wards.component';
 import { Error403Component } from '@app/layout/partials/error403/error403.component';
 import { AdminRoleComponent } from './admin-role/admin-role.component';
+import { AdminAccountComponent } from './admin-account/admin-account.component';
 
 const routes: Routes = [
   {
@@ -125,6 +126,14 @@ const routes: Routes = [
         title: 'Quản lý nhóm quyền',
         data: {
           title: 'Quản lý nhóm quyền',
+        },
+      },
+      {
+        path: 'tai-khoan',
+        component:AdminAccountComponent, canActivate: [AuthGuardService],
+        title: 'Quản lý tài khoản',
+        data: {
+          title: 'Quản lý tài khoản',
         },
       },
       {

@@ -1,6 +1,6 @@
 <p-confirmDialog #cd [style]="{ width: '30vw' }">
     <ng-template pTemplate="header">
-        <h3>Xác nhận xoá nhóm quyền</h3>
+        <h3>Xác nhận xoá tài khoản</h3>
     </ng-template>
     <ng-template pTemplate="footer">
         <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
@@ -13,7 +13,7 @@
 </p-confirmDialog>
 
 <div>
-    <h5>Danh sách nhóm quyền</h5>
+    <h5>Danh sách tài khoản</h5>
     <div class="d-flex mt-3">
         <div>
             <button pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"
@@ -21,7 +21,7 @@
             </button>
         </div>
         <div class="ml-3">
-            <button *ngIf="selectedRole && selectedRole.length > 0" pButton type="button"
+            <button *ngIf="selectedAccount && selectedAccount.length > 0" pButton type="button"
                 (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
                 style="background-color: #ea5c5c">
             </button>
@@ -41,7 +41,7 @@
 
 <div class="card mt-3">
     <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
-        [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedRole" dataKey="id"
+        [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedAccount" dataKey="id"
         styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
         [totalRecords]="dataTotalRecords"
@@ -53,9 +53,16 @@
                     STT
                 </th>
                 <th pResizableColumn>
-                    <div class="flex justify-content-between align-items-center">
-                        Tên nhóm quyền
-                    </div>
+                    Tài khoản
+                </th>
+                <th pResizableColumn>
+                    Tên
+                </th>
+                <th pResizableColumn>
+                    Email
+                </th>
+                <th pResizableColumn>
+                    Địa chỉ
                 </th>
                 <th style="width: 120px;">
                     <div>
@@ -73,14 +80,23 @@
                     {{ rowIndex + 1}}
                 </td>
                 <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.userName }}</span>
+                </td>
+                <td>
                     <span class="ml-1 vertical-align-middle">{{ rowData.name }}</span>
                 </td>
                 <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.email }}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.address }}</span>
+                </td>
+                <td>
                     <div class="d-flex align-items-center justify-content-center">
-                        <a (click)="detailDialog(rowData.id)">
+                        <!-- <a (click)="detailDialog(rowData.id)">
                             <i class="pi pi-eye" style="color: rgba(2, 136, 209, 1)" title="Chi tiết"
                                 aria-hidden="true"></i>
-                        </a>
+                        </a> -->
                     </div>
                 </td>
             </tr>
@@ -88,43 +104,41 @@
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="3" class="text-center">Không có bản ghi nào</td>
+                <td colspan="5" class="text-center">Không có bản ghi nào</td>
             </tr>
         </ng-template>
     </p-table>
 </div>
 
-<form *ngIf="frmRole" #roleForm="ngForm" [formGroup]="frmRole" (ngSubmit)="onSubmit(roleForm)">
+
+<form *ngIf="frmAccount" #accountForm="ngForm" [formGroup]="frmAccount" (ngSubmit)="onSubmit(accountForm)">
     <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
         [resizable]="true" [maximizable]="true">
         <ng-template pTemplate="header">
             <h5 class="modal-title">
-                {{ isCreate === true ? "Thêm mới nhóm quyền" : "Chi tiết nhóm quyền" }}
+                {{ isCreate === true ? "Thêm mới tài khoản" : "Cập nhật tài khoản" }}
             </h5>
         </ng-template>
         <ng-template pTemplate="body">
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="name" class="col-form-label">Tên nhóm quyền: <span style="color: red">*</span></label>
-                    <input type="text" pInputText class="form-control" id="name" formControlName="name" [ngClass]="{
-              'is-invalid': submitted && f('name').errors
+                    <label for="userName" class="col-form-label">Tài khoản: <span style="color: red">*</span></label>
+                    <input type="text" pInputText class="form-control" id="userName" formControlName="userName"
+                        [ngClass]="{
+              'is-invalid': submitted && f('userName').errors
             }" />
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmRole.controls['name'].valid && 
-            frmRole.controls['name'].dirty">
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmAccount.controls['userName'].valid && 
+                    frmAccount.controls['userName'].dirty">
                         Vui lòng nhập tên nhóm quyền
                     </small>
                 </div>
-            </div>
-            <div class="row">
-                <p-tree [value]="treeData" selectionMode="checkbox" class="w-full"
-                    [(selection)]="selectedTreeData"></p-tree>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
             <input type="hidden" formControlName="id">
             <button pButton (click)="visible = false" type="button" label="Đóng"
                 class="custom-button surface-600"></button>
-            <button pButton *ngIf="isCreate" [disabled]="!frmRole.valid" type="submit" icon="pi pi-save" label="Lưu"
+            <button pButton *ngIf="isCreate" [disabled]="!frmAccount.valid" type="submit" icon="pi pi-save" label="Lưu"
                 class="custom-button"></button>
         </ng-template>
     </p-dialog>
