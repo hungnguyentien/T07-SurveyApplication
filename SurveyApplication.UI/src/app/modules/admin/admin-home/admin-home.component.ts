@@ -20,13 +20,8 @@ export class AdminHomeComponent {
   FormAminHome!:FormGroup
   listDashBoard!:any
 
-  labelsDataChart:any
-  realDataChart:any 
-
-//   labelsDataChart2:string[]=[]
-//   realDataChart2:string[]=[]
-
-
+    labelsDataChart:any
+    realDataChart:any 
    sumBangKhoaSat!:number;
    sumDoiKhoaSat!:number;
    sumSoLuongThamGia!:number; 
@@ -34,9 +29,6 @@ export class AdminHomeComponent {
 
   constructor(private adminHomeService:AdminHomeService , private FormBuilder: FormBuilder,private datePipe: DatePipe) {}
   ngOnInit():void {
-    // this.chart1();
-    
-    
     this.FormAminHome = this.FormBuilder.group(
         {
           NgayBatDau: ['', Validators.required],
@@ -44,7 +36,6 @@ export class AdminHomeComponent {
         }
       );
     this.adminHomeService.GetAllDashBoard().subscribe(res=>{
-        debugger
         this.listDashBoard = res
         this.sumBangKhoaSat = this.listDashBoard.countBangKhaoSat;
         this.sumDoiKhoaSat = this.listDashBoard.countDotKhaoSat;
@@ -58,7 +49,6 @@ export class AdminHomeComponent {
 
   ngAfterViewInit(): void {}
   onSubmit(){
-    
     const valuesNgay = this.FormAminHome.value;
     const ngayBatDauMoment = moment(valuesNgay.NgayBatDau);
     const ngayKetThucMoment = moment(valuesNgay.NgayKetThuc);
@@ -76,7 +66,6 @@ export class AdminHomeComponent {
     })
   }
   chart1(datas:any){
-    debugger
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     this.dataNhomDoiTuong = {
@@ -132,19 +121,14 @@ export class AdminHomeComponent {
         const textColor = documentStyle.getPropertyValue('--text-color');
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-        const labelsTinh = datas.listTinhTp.map((item:any) => item.tenTinhTp );
-        const labelsTinhConverted = labelsTinh.join('');
-
+        const labelsTinh = datas.listTinhTp.map((item:any) => item.tenTinhTp);
         const datasTinh = datas.listTinhTp.map((item:any) => item.countTinhTp);
-        const datasTinhConverted = datasTinh.join('');
-
         this.barData = {
-            labels: labelsTinhConverted,
+            labels: labelsTinh,
             datasets: [
                 {
                     label: 'Dữ Liệu',
-                    data: datasTinhConverted,
+                    data: datasTinh,
                     backgroundColor: documentStyle.getPropertyValue('--blue-400'),
                     borderColor: documentStyle.getPropertyValue('--blue-400'),
                     borderWidth: 1,
@@ -167,13 +151,15 @@ export class AdminHomeComponent {
                     ticks: {
                         color: textColorSecondary,
                         font: {
-                            weight: 500
+                            weight: 500,
+                            width:'30'
                         }
                     },
                     grid: {
                         color: surfaceBorder,
                         drawBorder: false
-                    }
+                    },
+                    
                 },
                 y: {
                     ticks: {
@@ -182,12 +168,26 @@ export class AdminHomeComponent {
                     grid: {
                         color: surfaceBorder,
                         drawBorder: false
-                    }
+                    },
+                    barPercentage: 0.3
                 }
 
             }
         };
+        
   }
 
-  reset = () => {}
+  reset = () => {
+    this.FormAminHome.reset();
+    this.adminHomeService.GetAllDashBoard().subscribe(res=>{
+        this.listDashBoard = res
+        this.sumBangKhoaSat = this.listDashBoard.countBangKhaoSat;
+        this.sumDoiKhoaSat = this.listDashBoard.countDotKhaoSat;
+        this.sumSoLuongThamGia = this.listDashBoard.countThamGia;
+        this.realDataChart = this.listDashBoard
+        this.verticalBar(this.realDataChart);
+        this.chart1(this.realDataChart)
+        this.chart2(this.realDataChart)
+    })
+  }
 }

@@ -11,6 +11,7 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
     {
         public int? IdTinhTp { get; set; }
         public int? CountTinhTp { get; set; }
+        public string? TenTinhTp { get; set; }
         public List<DonViDto>? ListDonVi { get; set; }
     }
 }

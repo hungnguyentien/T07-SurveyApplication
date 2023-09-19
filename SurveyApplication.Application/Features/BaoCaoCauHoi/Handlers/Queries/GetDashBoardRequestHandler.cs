@@ -91,15 +91,16 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                  {
                                      Id = c.Id,
                                      IdTinhTp = d.Id,
-                                     TenTinhTp = d.Name,
+                                     TinhTp = d.Name,
                                  }).ToList();
 
-            var tongKhaoSatTinhTp = khaoSatTinhTp.GroupBy(g => new { g.IdTinhTp }).OrderByDescending(group => group.Count()).ToList();
+            var tongKhaoSatTinhTp = khaoSatTinhTp.GroupBy(g => new { g.IdTinhTp, g.TinhTp }).OrderByDescending(group => group.Count()).ToList();
 
             var groupedDataList = tongKhaoSatTinhTp.Select(group => new ListTinhTp
             {
                 IdTinhTp = group.Key.IdTinhTp,
                 CountTinhTp = group.ToList().Count(),
+                TenTinhTp = group.Key.TinhTp,
                 ListDonVi = group.ToList()
             }).ToList();
 
