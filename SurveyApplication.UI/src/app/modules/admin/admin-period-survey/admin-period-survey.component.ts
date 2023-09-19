@@ -139,7 +139,7 @@ export class AdminPeriodSurveyComponent {
   }
 
   Edit(data: any) {
-    debugger
+    
     this.showadd = false;
     this.visible = !this.visible;
     this.IdDotKhaoSat = data.id;
@@ -164,7 +164,7 @@ export class AdminPeriodSurveyComponent {
   }
 
   SaveAdd() {
-    debugger
+    
     if (this.FormPeriodSurvey.valid) {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
       this.PeriodSurveyService.create(ObjPeriodSurvey).subscribe({
@@ -191,7 +191,7 @@ export class AdminPeriodSurveyComponent {
   }
 
   SaveEdit() {
-    debugger
+    
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
     ObjPeriodSurvey.NgayBatDau = moment(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY HH:mm:ss','Asia/Ho_Chi_Minh').toDate();
     ObjPeriodSurvey.NgayKetThuc = moment(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY HH:mm:ss','Asia/Ho_Chi_Minh').toDate();
@@ -238,24 +238,31 @@ export class AdminPeriodSurveyComponent {
   confirmDeleteMultiple() {
     let ids: number[] = [];
     this.selectedPeriodSurvey.forEach((el) => {
-      ids.push(el.Id);
+      ids.push(el.id);
     });
+    
     this.confirmationService.confirm({
       message: `Bạn có chắc chắn muốn xoá ${ids.length} đợt khảo sát này?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        // this.cauHoiService.deleteMultiple(ids).subscribe({
-        //   next: (res) => {
-        //     Utils.messageSuccess(
-        //       this.messageService,
-        //       `Xoá câu hỏi ${ids.length} thành công!`
-        //     );
-        //   },
-        //   error: (e) => Utils.messageError(this.messageService, e.message),
-        //   complete: () => {
-        //     this.table.reset();
-        //   },
-        // });
+        this.PeriodSurveyService.deleteMultiple(ids).subscribe({
+          next: (res:any) => {
+            
+            if(res.success == false){
+              Utils.messageError(this.messageService, res.message)
+            }
+            else{
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} đợt khảo sát thành công!`
+              );
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
       },
       reject: () => { },
     });

@@ -118,6 +118,43 @@ export class AdminTableSurveyComponent {
       { validator: this.dateRangeValidator }
     );
   }
+  confirmDeleteMultiple() {
+    debugger
+    let ids: number[] = [];
+    this.selectedTableSurvey.forEach((el) => {
+      ids.push(el.id);
+    });
+    
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} bảng khảo sát này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.TableSurveyService.deleteMultiple(ids).subscribe({
+          next: (res:any) => {
+          debugger
+            
+            if(res.success == false){
+              Utils.messageError(this.messageService, res.message)
+            }
+            else{
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} bảng khảo sát thành công!`
+              );
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
+      },
+      reject: () => { },
+    });
+  }
+
+
+
 
   dateRangeValidator(
     control: AbstractControl
