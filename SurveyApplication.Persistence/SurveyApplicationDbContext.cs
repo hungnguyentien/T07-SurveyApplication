@@ -7,7 +7,7 @@ using SurveyApplication.Domain.Models;
 
 namespace SurveyApplication.Persistence;
 
-public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
+public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Role, string>
 {
     public SurveyApplicationDbContext(DbContextOptions<SurveyApplicationDbContext> options) : base(options)
     {
@@ -44,6 +44,7 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Ide
         return base.SaveChangesAsync(cancellationToken);
     }
 
+    public DbSet<Role> Role { get; set; }
     public DbSet<ApplicationUser> Account { get; set; }
     public DbSet<LoaiHinhDonVi> LoaiHinhDonVi { get; set; }
     public DbSet<LinhVucHoatDong> LinhVucHoatDong { get; set; }

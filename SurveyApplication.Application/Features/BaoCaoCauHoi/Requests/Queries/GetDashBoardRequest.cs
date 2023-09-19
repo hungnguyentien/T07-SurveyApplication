@@ -1,17 +1,16 @@
 ﻿using MediatR;
 using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Queries
 {
-    public class GetBaoCaoCauHoiRequest : IRequest<BaoCaoCauHoiDto>
+    public class GetDashBoardRequest : IRequest<DashBoardDto>
     {
-        public int IdDotKhaoSat { get; set; }
-        public int IdBangKhaoSat { get; set; }
-        public int? IdLoaiHinhDonVi { get; set; }
-        public int? IdDonVi { get; set; }
-
         public DateTime? NgayBatDau { get; set; }
         public DateTime? NgayKetThuc { get; set; }
-
     }
 }

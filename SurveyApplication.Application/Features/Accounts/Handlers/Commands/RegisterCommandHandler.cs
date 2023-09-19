@@ -48,8 +48,8 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 foreach (var claimModule in request.MatrixPermission)
                 {
                     await _userManager.AddClaimAsync(user,
-                        new Claim((claimModule.Module).ToString(),
-                            JsonExtensions.SerializeToJson(claimModule.LstPermission),
+                        new Claim(claimModule.Module.ToString(),
+                            JsonExtensions.SerializeToJson(claimModule.LstPermission.Select(x => x.Value)),
                             JsonClaimValueTypes.JsonArray));
                 }
 

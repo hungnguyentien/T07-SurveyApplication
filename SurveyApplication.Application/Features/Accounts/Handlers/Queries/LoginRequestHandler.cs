@@ -18,13 +18,13 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries;
 public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequest, AuthResponse>
 {
     private readonly JwtSettings _jwtSettings;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly RoleManager<Domain.Role> _roleManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public LoginRequestHandler(ISurveyRepositoryWrapper surveyRepository,
         UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtSettings,
-        SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager) : base(surveyRepository)
+        SignInManager<ApplicationUser> signInManager, RoleManager<Domain.Role> roleManager) : base(surveyRepository)
     {
         _userManager = userManager;
         _jwtSettings = jwtSettings.Value;
@@ -50,14 +50,18 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
                     NormalizedUserName = AccountAdmin.UserName.ToUpper(),
                     PasswordHash = hasher.HashPassword(null!, AccountAdmin.Password),
                     EmailConfirmed = true,
-                    Address = AccountAdmin.Address
+                    Address = AccountAdmin.Address,
+                    ActiveFlag = (int)EnumCommon.ActiveFlag.Active,
+                    Deleted = false
                 };
                 await _userManager.CreateAsync(userAdmin);
-                var roleAdmin = new IdentityRole
+                var roleAdmin = new Domain.Role
                 {
                     Id = RoleAdmin.Id,
                     Name = RoleAdmin.Name,
-                    NormalizedName = RoleAdmin.Name.ToUpper()
+                    NormalizedName = RoleAdmin.Name.ToUpper(),
+                    ActiveFlag = (int)EnumCommon.ActiveFlag.Active,
+                    Deleted = false
                 };
                 await _roleManager.CreateAsync(roleAdmin);
                 foreach (var claimModule in MapEnum.MatrixPermission)

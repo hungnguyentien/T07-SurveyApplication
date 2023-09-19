@@ -1,0 +1,16 @@
+﻿using SurveyApplication.Application.DTOs.DonVi;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
+{
+    public class ListTinhTp
+    {
+        public int? IdTinhTp { get; set; }
+        public int? CountTinhTp { get; set; }
+        public List<DonViDto>? ListDonVi { get; set; }
+    }
+}

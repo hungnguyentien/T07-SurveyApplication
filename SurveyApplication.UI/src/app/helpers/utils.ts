@@ -605,12 +605,22 @@ export default class Utils {
   };
 
   static encrypt = (dataEncrypt: string): string => {
-    return crypto.AES.encrypt(dataEncrypt, environment.secretKey).toString();
+    try {
+      return crypto.AES.encrypt(dataEncrypt, environment.secretKey).toString();
+    } catch {
+      localStorage.removeItem('grand_client');
+      return '';
+    }
   };
 
   static decrypt = (dataDecrypt: string): string => {
-    return crypto.AES.decrypt(dataDecrypt, environment.secretKey).toString(
-      crypto.enc.Utf8
-    );
+    try {
+      return crypto.AES.decrypt(dataDecrypt, environment.secretKey).toString(
+        crypto.enc.Utf8
+      );
+    } catch {
+      localStorage.removeItem('grand_client');
+      return '';
+    }
   };
 }

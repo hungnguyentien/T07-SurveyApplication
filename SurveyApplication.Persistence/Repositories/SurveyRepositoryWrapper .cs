@@ -77,6 +77,9 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IJobScheduleRepository _jobScheduleRepository;
     public IJobScheduleRepository JobSchedule => _jobScheduleRepository ??= new JobScheduleRepository(_repoContext);
 
+    public IRoleRepository _roleRepository;
+    public IRoleRepository Role => _roleRepository ??= new RoleRepository(_repoContext);
+
     #endregion
 
     //RenderHere
