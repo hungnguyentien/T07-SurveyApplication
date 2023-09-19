@@ -187,30 +187,39 @@ export class ProvinceComponent {
       },
     });
   }
-  // confirmDeleteMultiple() {
-  //   let ids: number[] = [];
-  //   this.selectedTinhThanh.forEach((el) => {
-  //     ids.push(el.id);
-  //   });
-  //   this.confirmationService.confirm({
-  //     message: `Bạn có chắc chắn muốn xoá ${ids.length} loại đơn vị này?`,
-  //     icon: 'pi pi-exclamation-triangle',
-  //     accept: () => {
-  //       this.TinhThanhService.deleteMultiple(ids).subscribe({
-  //         next: (res) => {
-  //           Utils.messageSuccess(
-  //             this.messageService,
-  //             `Xoá câu hỏi ${ids.length} thành công!`
-  //           );
-  //         },
-  //         error: (e) => Utils.messageError(this.messageService, e.message),
-  //         complete: () => {
-  //           this.table.reset();
-  //         },
-  //       });
-  //     },
-  //     reject: () => {},
-  //   });
-  // }
+  confirmDeleteMultiple() {
+    debugger
+    let ids: number[] = [];
+    this.selectedTinhThanh.forEach((el) => {
+      ids.push(el.id);
+    });
+    
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} Tỉnh Thành này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.TinhThanhService.deleteMultiple(ids).subscribe({
+          next: (res:any) => {
+          debugger
+            
+            if(res.success == false){
+              Utils.messageError(this.messageService, res.message)
+            }
+            else{
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} Tỉnh Thành thành công!`
+              );
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
+      },
+      reject: () => { },
+    });
+  }
 
 }

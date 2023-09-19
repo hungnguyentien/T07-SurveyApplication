@@ -1,6 +1,7 @@
 import { Base } from './Common/Base';
 
 export interface TableSurvey extends Base {
+  id:number;
   maBangKhaoSat: string;
   idLoaiHinh: number;
   idDotKhaoSat: string | null;

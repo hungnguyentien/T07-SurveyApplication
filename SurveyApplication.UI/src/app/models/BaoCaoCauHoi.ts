@@ -34,14 +34,13 @@ export interface BaoCaoCauHoi {
   countDonViNganh: number;
 }
 
-export interface BaoCaoDashboard {
-  countBangKhaoSat: number;
-  countDotKhaoSat: number;
-  countLuotKhaoSat: number;
-  
+
+export interface DashBoardRequest {
+  ngayBatDau: string | null;
+  ngayKetThuc: string | null;
 }
-export interface BaoCaoDashboardRequest {
-  idDotKhaoSat: number;
-  idBangKhaoSat: number;
-  
+
+export interface DashBoard {
+  ngayBatDau: string | null;
+  ngayKetThuc: string | null;
 }
