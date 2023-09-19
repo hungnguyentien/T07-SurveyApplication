@@ -19,6 +19,6 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
         public double CountDot2 { get; set; }
         public double CountDot3 { get; set; }
 
-
+        public List<ListTinhTp>? ListTinhTp { get; set; }
     }
 }

@@ -185,32 +185,32 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public T Single(Expression<Func<T, bool>> predicate)
     {
-        return GetAllQueryable().Single(predicate);
+        return GetAllQueryable().AsNoTracking().Single(predicate);
     }
 
     public T SingleOrDefault(Expression<Func<T, bool>> predicate)
     {
-        return GetAllQueryable().SingleOrDefault(predicate);
+        return GetAllQueryable().AsNoTracking().SingleOrDefault(predicate);
     }
 
     public async Task<T> SingleAsync(Expression<Func<T, bool>> predicate)
     {
-        return await GetAllQueryable().SingleAsync(predicate);
+        return await GetAllQueryable().AsNoTracking().SingleAsync(predicate);
     }
 
     public async Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate)
     {
-        return await GetAllQueryable().SingleOrDefaultAsync(predicate);
+        return await GetAllQueryable().AsNoTracking().SingleOrDefaultAsync(predicate);
     }
 
     public T? FirstOrDefault(Expression<Func<T, bool>> predicate)
     {
-        return GetAllQueryable().FirstOrDefault(predicate);
+        return GetAllQueryable().AsNoTracking().FirstOrDefault(predicate);
     }
 
     public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
     {
-        return await GetAllQueryable().FirstOrDefaultAsync(predicate);
+        return await GetAllQueryable().AsNoTracking().FirstOrDefaultAsync(predicate);
     }
 
     #endregion Getting single entity

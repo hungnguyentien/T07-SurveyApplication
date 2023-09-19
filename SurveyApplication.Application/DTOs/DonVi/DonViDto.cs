@@ -14,7 +14,7 @@ namespace SurveyApplication.Application.DTOs.DonVi
         public int? IdLinhVuc { get; set; }
 
         public int? IdTinhTp { get; set; }
-        public string? TenTinhTp { get; set; }
+        public string? TinhTp { get; set; }
 
         public int? IdQuanHuyen { get; set; }
         public int? IdXaPhuong { get; set; }
