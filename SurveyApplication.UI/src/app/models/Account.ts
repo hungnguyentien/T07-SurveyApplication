@@ -10,12 +10,12 @@ export interface Account {
 
 export interface Register {
   id: string;
-  address: string;
-  name: string;
+  address: string | null;
+  name: string | null;
   email: string;
   userName: string;
   password: string;
   passwordConfirmed: string;
-  lstRoleName: string[];
+  lstRoleName: string[] | null;
   matrixPermission: MatrixPermission[] | null;
 }

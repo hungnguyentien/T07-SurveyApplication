@@ -5,20 +5,16 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { Login } from '../models';
 import { CookieService } from 'ngx-cookie-service';
-import { MessageService } from 'primeng/api';
+import jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private currentUserSubject: BehaviorSubject<string>;
   public currentUser: Observable<string>;
+  private currentUserSubject: BehaviorSubject<string>;
 
-  constructor(
-    private http: HttpClient,
-    private cookieService: CookieService,
-    private messageService: MessageService
-  ) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.currentUserSubject = new BehaviorSubject<string>(
       localStorage.getItem('isRememberMe') === 'true'
         ? this.cookieService.get('currentUser')
@@ -74,15 +70,26 @@ export class LoginService {
         })
       );
   }
-
+  /**
+   * Get token currentUser
+   * @returns
+   */
   currentUserValue(): string {
     return this.currentUserSubject.value;
   }
-
-  getRoleUser() {
-    const token = this.currentUserValue();
+  /**
+   * Get data currentUser theo token
+   * @returns
+   */
+  getCurrentUser(token: string = ''): any | null {
+    token = token ? token : this.currentUserValue();
     if (token) {
-      return 'Administrator';
+      try {
+        return jwt_decode(token);
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
     }
     return null;
   }
@@ -90,6 +97,7 @@ export class LoginService {
   logout() {
     // remove user from local storage to log user out
     this.cookieService.delete('currentUser', '/');
+    sessionStorage.removeItem('currentUser');
     this.currentUserSubject.next('');
   }
 }

@@ -1,4 +1,3 @@
-
 export * from './login.service';
 export * from './client-home.service';
 export * from './phieu-khao-sat.service';
@@ -11,3 +10,4 @@ export * from './table-survey.service';
 export * from './gui-email.service';
 export * from './bao-cao-cau-hoi.service';
 export * from './role.service';
+export * from './module.service';

@@ -4,7 +4,6 @@ using SurveyApplication.Application.DTOs.Role;
 using SurveyApplication.Application.Features.Role.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security;
 using System.Security.Claims;
 using SurveyApplication.Utility;
 using SurveyApplication.Utility.Enums;

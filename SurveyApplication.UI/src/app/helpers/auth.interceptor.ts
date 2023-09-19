@@ -7,6 +7,7 @@ import {
 import { LoginService } from '../services/login.service';
 import { MessageService } from 'primeng/api';
 import Utils from './utils';
+import { CodeModule } from '@app/enums';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard {
@@ -17,20 +18,18 @@ export class AuthGuard {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentUserRole = this.loginService.getRoleUser();
-    if (currentUserRole) {
+    const currentUser = this.loginService.getCurrentUser();
+    if (currentUser) {
       // kiểm tra quyền có được truy xuất vào trang không
-      if (
-        route.data['roles'] &&
-        route.data['roles'].indexOf(currentUserRole) === -1
-      ) {
+      let role = route.data?.['role'];
+      let hasPermission = currentUser[role];
+      if (role && role !== CodeModule.Admin && !hasPermission) {
         // nếu không có quyền quay về trang chủ
         Utils.messageError(
           this.messageService,
           'Bạn không có quyền vào trang!'
         );
 
-        this.router.navigate(['/']);
         return false; // Mặc định là false
       }
       // nếu có quyền trả về true

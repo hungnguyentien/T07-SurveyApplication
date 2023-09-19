@@ -104,7 +104,7 @@
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="5" class="text-center">Không có bản ghi nào</td>
+                <td colspan="6" class="text-center">Không có bản ghi nào</td>
             </tr>
         </ng-template>
     </p-table>
@@ -112,7 +112,7 @@
 
 
 <form *ngIf="frmAccount" #accountForm="ngForm" [formGroup]="frmAccount" (ngSubmit)="onSubmit(accountForm)">
-    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
+    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
         [resizable]="true" [maximizable]="true">
         <ng-template pTemplate="header">
             <h5 class="modal-title">
@@ -121,16 +121,61 @@
         </ng-template>
         <ng-template pTemplate="body">
             <div class="row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-6">
                     <label for="userName" class="col-form-label">Tài khoản: <span style="color: red">*</span></label>
                     <input type="text" pInputText class="form-control" id="userName" formControlName="userName"
-                        [ngClass]="{
-              'is-invalid': submitted && f('userName').errors
-            }" />
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmAccount.controls['userName'].valid && 
-                    frmAccount.controls['userName'].dirty">
-                        Vui lòng nhập tên nhóm quyền
+                        [ngClass]="{ 'is-invalid': submitted && f('userName').errors }" />
+                    <small style="color: #e24c4c;" class="ml-2"
+                        *ngIf="!frmAccount.controls['userName'].valid && frmAccount.controls['userName'].dirty && f('userName').errors?.['required']">
+                        Vui lòng nhập tên tài khoản
                     </small>
+                    <small style="color: #e24c4c;" class="ml-2"
+                        *ngIf="!frmAccount.controls['userName'].valid && frmAccount.controls['userName'].dirty && f('userName').errors?.['minlength']">
+                        Tên tài khoản ít nhất phải có {{f('userName').errors?.['minlength'].requiredLength}}
+                    </small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email" class="col-form-label">Email: <span style="color: red">*</span></label>
+                    <input type="text" pInputText class="form-control" id="email" formControlName="email"
+                        [ngClass]="{ 'is-invalid': submitted && f('email').errors }" />
+                    <small style="color: #e24c4c;" class="ml-2"
+                        *ngIf="!frmAccount.controls['email'].valid && frmAccount.controls['email'].dirty && f('email').errors?.['required']">
+                        Vui lòng nhập email
+                    </small>
+                    <small style="color: #e24c4c;" class="ml-2"
+                        *ngIf="!frmAccount.controls['email'].valid && frmAccount.controls['email'].dirty && f('email').errors?.['email']">
+                        Email không đúng định dạng
+                    </small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="password" class="col-form-label">Mật khẩu: <span style="color: red">*</span></label>
+                    <input type="password" pInputText class="form-control" id="password" formControlName="password"
+                        [ngClass]="{ 'is-invalid': submitted && f('password').errors }" />
+                    <small style="color: #e24c4c;" class="ml-2"
+                        *ngIf="!frmAccount.controls['password'].valid && frmAccount.controls['password'].dirty">
+                        Vui lòng nhập mật khẩu
+                    </small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="passwordConfirmed" class="col-form-label">Nhập lại mật khẩu:</label>
+                    <input type="password" pInputText class="form-control" id="passwordConfirmed"
+                        formControlName="passwordConfirmed"
+                        [ngClass]="{ 'is-invalid': submitted && f('passwordConfirmed').errors }" />
+                    <small style="color: #e24c4c;" class="ml-2"
+                        *ngIf="frmAccount.controls['email'].dirty && frmAccount.hasError('notSame')">
+                        Mật khẩu không phù hợp
+                    </small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="lstRoleName" class="col-form-label">Nhóm quyền:</label>
+                    <p-multiSelect [options]="lstRole" [(ngModel)]="selectedRole" defaultLabel="-- Chọn nhóm quyền --"
+                        optionLabel="name" optionValue="name" display="chip" id="lstRoleName"
+                        emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
+                        [ngModelOptions]="{standalone: true}" class="form-select-custom"></p-multiSelect>
                 </div>
             </div>
         </ng-template>

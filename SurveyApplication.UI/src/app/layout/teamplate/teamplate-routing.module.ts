@@ -4,7 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { TemplatePublicComponent } from './public-template/public-template.component';
 import { AdminTempleteComponent } from './admin-templete/admin-templete.component';
 import { LoginComponent } from '../share/login/login.component';
-import { AuthGuardService } from '@app/helpers';
+import { AuthGuard } from '@app/helpers';
+import { CodeModule } from '@app/enums';
 
 const routes: Routes = [
   {
@@ -26,9 +27,10 @@ const routes: Routes = [
               import('../../modules/client/client.module').then(
                 (x) => x.ClientModule
               ),
-          }
+          },
         ],
-      }, {
+      },
+      {
         path: '',
         component: AdminTempleteComponent,
         data: {
@@ -37,11 +39,14 @@ const routes: Routes = [
         children: [
           {
             path: 'admin',
-            canActivate: [AuthGuardService],
             loadChildren: () =>
               import('../../modules/admin/admin.module').then(
                 (x) => x.AdminModule
               ),
+            canActivate: [AuthGuard],
+            data: {
+              role: CodeModule.Admin,
+            },
           },
         ],
       },
@@ -60,4 +65,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TeamplateRoutingModule { }
+export class TeamplateRoutingModule {}

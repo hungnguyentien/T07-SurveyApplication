@@ -79,7 +79,7 @@ public class MappingProfile : Profile
         CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
 
         CreateMap<ApplicationUser, AccountDto>().ReverseMap();
-        CreateMap<CreateAccountDto, ApplicationUser>();
+        CreateMap<RegisterDto, ApplicationUser>();
 
         CreateMap<Role, RoleDto>().ReverseMap();
     }

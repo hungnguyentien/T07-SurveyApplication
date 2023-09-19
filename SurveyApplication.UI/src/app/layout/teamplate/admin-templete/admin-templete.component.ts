@@ -7,7 +7,11 @@ import { LoginService } from '@app/services';
   styleUrls: ['./admin-templete.component.css'],
 })
 export class AdminTempleteComponent {
-  constructor(private loginService: LoginService) {}
+  userName: string = '';
+  constructor(private loginService: LoginService) {
+    this.userName = loginService.getCurrentUser()?.name;
+  }
+  
   logout() {
     this.loginService.logout();
   }

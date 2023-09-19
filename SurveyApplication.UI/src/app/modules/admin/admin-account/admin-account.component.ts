@@ -1,12 +1,18 @@
 import { Component, ViewChild } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Account, Paging, Register } from '@app/models';
+import Utils from '@app/helpers/utils';
+import { Account, Paging, Register, Role } from '@app/models';
+import { RoleService } from '@app/services';
 import { AccountService } from '@app/services/account.service';
+import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 @Component({
@@ -29,18 +35,44 @@ export class AdminAccountComponent {
   visible: boolean = false;
   submitted: boolean = false;
 
+  lstRole: Role[] = [];
+  selectedRole: string[] = [];
+
   constructor(
+    private formBuilder: FormBuilder,
+    private roleService: RoleService,
     private accountService: AccountService,
-    private formBuilder: FormBuilder
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
-    this.frmAccount = this.formBuilder.group({
-      id: new FormControl<string>(''),
-      userName: ['', Validators.required],
-      matrixPermission: this.formBuilder.array([]),
+    this.frmAccount = this.formBuilder.group(
+      {
+        id: new FormControl<string>(''),
+        userName: ['', [Validators.required, Validators.minLength(6)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        passwordConfirmed: [''],
+        lstRoleName: this.formBuilder.array([]),
+        matrixPermission: this.formBuilder.array([]),
+      },
+      { validators: this.checkPasswords }
+    );
+
+    this.roleService.getAll().subscribe({
+      next: (res) => {
+        this.lstRole = res;
+      },
     });
   }
+
+  checkPasswords: ValidatorFn = (
+    group: AbstractControl
+  ): ValidationErrors | null => {
+    let pass = group.get('password')?.value;
+    let confirmPass = group.get('passwordConfirmed')?.value;
+    return pass === confirmPass ? null : { notSame: true };
+  };
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -93,8 +125,27 @@ export class AdminAccountComponent {
   };
 
   onSubmit = (data: any) => {
-    // if (this.isCreate !== null) this.createSubmit(data);
+    if (this.isCreate !== null) this.createSubmit(data);
     // this.isCreate ? this.createSubmit(data) : this.updateSubmit(data);
+  };
+
+  createSubmit = (data: any) => {
+    this.submitted = true;
+    if (this.frmAccount.invalid) return;
+    this.account = data.value;
+    this.account.lstRoleName = this.selectedRole;
+    debugger;
+    this.accountService.register<Register>(this.account).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.table.reset();
+          Utils.messageSuccess(this.messageService, res.message);
+          this.visible = false;
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
+      },
+    });
   };
 
   createDialog = () => {

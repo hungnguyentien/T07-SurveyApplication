@@ -79,7 +79,7 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
         }
 
         var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, false);
-        if (!result.Succeeded) throw new Exception($"Credentials for '{request.Email} aren't valid'.");
+        if (!result.Succeeded) throw new Exception("Mật khẩu hoặc tài khoản không đúng");
 
         var jwtSecurityToken = await GenerateToken(user);
         var response = new AuthResponse
@@ -110,6 +110,7 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Name, user.Name ?? user.UserName),
                 new Claim(CustomAuth.Uid, user.Id)
             }
             .Union(userClaims)

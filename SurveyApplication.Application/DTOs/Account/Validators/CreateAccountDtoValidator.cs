@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.Account.Validators
 {
-    public class CreateAccountDtoValidator : AbstractValidator<CreateAccountDto>
+    public class CreateAccountDtoValidator : AbstractValidator<RegisterDto>
     {
         private readonly IAccountRepository _accountRepository;
 
