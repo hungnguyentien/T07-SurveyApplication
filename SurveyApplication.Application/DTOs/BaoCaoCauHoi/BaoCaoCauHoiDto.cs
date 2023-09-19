@@ -24,5 +24,7 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
         public int CountDonViSo { get; set; }
         public int CountDonViBo { get; set; }
         public int CountDonViNganh { get; set; }
+
+
     }
 }

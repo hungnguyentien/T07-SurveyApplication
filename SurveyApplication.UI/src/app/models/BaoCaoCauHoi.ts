@@ -33,3 +33,15 @@ export interface BaoCaoCauHoi {
   countDonViBo: number;
   countDonViNganh: number;
 }
+
+export interface BaoCaoDashboard {
+  countBangKhaoSat: number;
+  countDotKhaoSat: number;
+  countLuotKhaoSat: number;
+  
+}
+export interface BaoCaoDashboardRequest {
+  idDotKhaoSat: number;
+  idBangKhaoSat: number;
+  
+}
