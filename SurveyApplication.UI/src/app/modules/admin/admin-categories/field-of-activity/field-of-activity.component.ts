@@ -193,7 +193,7 @@ export class FieldOfActivityComponent {
     });
     
     this.confirmationService.confirm({
-      message: `Bạn có chắc chắn muốn xoá ${ids.length} loại hình đơn vị này?`,
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} lĩnh vực này?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.FieldOfActivityService.deleteMultiple(ids).subscribe({
@@ -206,7 +206,7 @@ export class FieldOfActivityComponent {
             else{
               Utils.messageSuccess(
                 this.messageService,
-                `Xoá ${ids.length} loại hình đơn vị thành công!`
+                `Xoá ${ids.length} lĩnh vực thành công!`
               );
             }
           },
