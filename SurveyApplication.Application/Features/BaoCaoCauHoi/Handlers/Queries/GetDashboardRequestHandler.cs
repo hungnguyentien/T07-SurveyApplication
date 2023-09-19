@@ -95,7 +95,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                  {
                                      Id = c.Id,
                                      IdTinhTp = d.Id,
-                                     TenTinhTp = d.Name,
+                                     //TenTinhTp = d.Name,
 
                                  }).ToList();
 
