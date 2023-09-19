@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 {
@@ -93,21 +94,28 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                      TenTinhTp = d.Name,
                                  }).ToList();
 
-            var tongKhaoSatTinhTp = khaoSatTinhTp.GroupBy(record => record.IdTinhTp).OrderByDescending(group => group.Count()).ToList();
+            var tongKhaoSatTinhTp = khaoSatTinhTp.GroupBy(g => new { g.IdTinhTp }).OrderByDescending(group => group.Count()).ToList();
+
+            var groupedDataList = tongKhaoSatTinhTp.Select(group => new ListTinhTp
+            {
+                IdTinhTp = group.Key.IdTinhTp,
+                CountTinhTp = group.ToList().Count(),
+                ListDonVi = group.ToList()
+            }).ToList();
 
             return new DashBoardDto
             {
                 CountDotKhaoSat = tongDotKhaoSat,
                 CountBangKhaoSat = tongBangKhaoSat,
                 CountThamGia = tongThamGiaKhaoSat,
-                CountDonViSo = khaoSatTheoNhom.Count(x => x.Id == 1) / khaoSatTheoNhom.Count() * 100,
-                CountDonViBo = khaoSatTheoNhom.Count(x => x.Id == 2) / khaoSatTheoNhom.Count() * 100,
-                CountDonViNganh = khaoSatTheoNhom.Count(x => x.Id == 3) / khaoSatTheoNhom.Count() * 100,
-                CountDot1 = khaoSatTheoDot.Count(x => x.Id == 1) / khaoSatTheoDot.Count() * 100,
-                CountDot2 = khaoSatTheoDot.Count(x => x.Id == 2) / khaoSatTheoDot.Count() * 100,
-                CountDot3 = khaoSatTheoDot.Count(x => x.Id == 3) / khaoSatTheoDot.Count() * 100,
+                CountDonViSo = khaoSatTheoNhom.Any() ? (khaoSatTheoNhom.Count(x => x.Id == 1) / (double)khaoSatTheoNhom.Count() * 100) : 0,
+                CountDonViBo = khaoSatTheoNhom.Any() ? (khaoSatTheoNhom.Count(x => x.Id == 2) / (double)khaoSatTheoNhom.Count() * 100) : 0,
+                CountDonViNganh = khaoSatTheoNhom.Any() ? (khaoSatTheoNhom.Count(x => x.Id == 3) / (double)khaoSatTheoNhom.Count() * 100) : 0,
+                CountDot1 = khaoSatTheoDot.Any() ? (khaoSatTheoDot.Count(x => x.Id == 1) / (double)khaoSatTheoDot.Count() * 100) : 0,
+                CountDot2 = khaoSatTheoDot.Any() ? (khaoSatTheoDot.Count(x => x.Id == 2) / (double)khaoSatTheoDot.Count() * 100) : 0,
+                CountDot3 = khaoSatTheoDot.Any() ? (khaoSatTheoDot.Count(x => x.Id == 3) / (double)khaoSatTheoDot.Count() * 100) : 0,
 
-
+                ListTinhTp = groupedDataList,
             };
         }
     }

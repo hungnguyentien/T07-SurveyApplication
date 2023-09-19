@@ -9,7 +9,8 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
 {
     public class ListTinhTp
     {
-        public int IdTinhTp { get; set; }
+        public int? IdTinhTp { get; set; }
+        public int? CountTinhTp { get; set; }
         public List<DonViDto>? ListDonVi { get; set; }
     }
 }
