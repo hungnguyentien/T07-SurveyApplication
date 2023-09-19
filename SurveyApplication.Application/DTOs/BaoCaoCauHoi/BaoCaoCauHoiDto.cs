@@ -9,7 +9,7 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
         public int IdBangKhaoSat { get; set; }
         public int IdDonVi { get; set; }
         public int IdLoaiHinhDonVi { get; set; }
-        public string TenLoaiHinhDonVi { get; set; }
+        public string? TenLoaiHinhDonVi { get; set; }
         public string MaCauHoi { get; set; } = string.Empty;
         public string CauHoi { get; set; } = string.Empty;
         public string? MaCauHoiPhu { get; set; }
