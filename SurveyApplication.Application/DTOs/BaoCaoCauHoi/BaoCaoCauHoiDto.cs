@@ -9,6 +9,7 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
         public int IdBangKhaoSat { get; set; }
         public int IdDonVi { get; set; }
         public int IdLoaiHinhDonVi { get; set; }
+        public string TenLoaiHinhDonVi { get; set; }
         public string MaCauHoi { get; set; } = string.Empty;
         public string CauHoi { get; set; } = string.Empty;
         public string? MaCauHoiPhu { get; set; }
@@ -25,6 +26,11 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
         public int CountDonViBo { get; set; }
         public int CountDonViNganh { get; set; }
 
+        public string? DiaChi { get; set; }
 
+        public int? SoLuotChon { get; set; }
+        public double? TyLe { get; set; }
+
+        public List<ListCauHoiTraLoi>? ListCauHoiTraLoi { get; set; }
     }
 }

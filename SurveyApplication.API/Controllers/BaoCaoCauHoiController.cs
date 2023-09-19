@@ -27,12 +27,12 @@ namespace SurveyApplication.API.Controllers
             var result = await _mediator.Send(data);
             return Ok(result);
         }
-        [HttpGet("GetBaoCaoDashboard")]
-        public async Task<ActionResult<BaoCaoCauHoiDto>> GetBaoCaoDashboard([FromQuery] GetDashboardRequest data)
+
+        [HttpGet("GetDashBoard")]
+        public async Task<ActionResult<DashBoardDto>> GetDashBoard([FromQuery] GetDashBoardRequest data)
         {
             var result = await _mediator.Send(data);
             return Ok(result);
         }
-
     }
 }
