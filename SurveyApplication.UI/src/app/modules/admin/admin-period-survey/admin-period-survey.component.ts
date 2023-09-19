@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { Paging, PeriodSurvey } from '@app/models';
+
 import {
   FormGroup,
   Validators,
@@ -12,6 +13,8 @@ import { DatePipe } from '@angular/common';
 import { UnitTypeService, PeriodSurveyService } from '@app/services';
 import { Table } from 'primeng/table';
 import Utils from '@app/helpers/utils';
+import * as moment from 'moment';
+import 'moment-timezone'; // Import 'moment-timezone'
 
 @Component({
   selector: 'app-admin-period-survey',
@@ -35,6 +38,9 @@ export class AdminPeriodSurveyComponent {
   Trangthai!: any;
   DSLoaiHinh: any[] = [];
   dateRangeError = false;
+
+  oldNgayKetThuc!: string | null;
+
   constructor(
     private FormBuilder: FormBuilder,
     private PeriodSurveyService: PeriodSurveyService,
@@ -42,7 +48,7 @@ export class AdminPeriodSurveyComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private datePipe: DatePipe
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.LoadLoaiHinh();
@@ -133,6 +139,7 @@ export class AdminPeriodSurveyComponent {
   }
 
   Edit(data: any) {
+    debugger
     this.showadd = false;
     this.visible = !this.visible;
     this.IdDotKhaoSat = data.id;
@@ -140,22 +147,12 @@ export class AdminPeriodSurveyComponent {
     this.Trangthai = data.trangThai;
     this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(data.maDotKhaoSat);
     this.FormPeriodSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
-    this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(
-      data.tenDotKhaoSat
-    );
-    const ngayBatDauFormatted = this.datePipe.transform(
-      data.ngayBatDau,
-      'yyyy-MM-dd'
-    );
-    const ngayKetThucFormatted = this.datePipe.transform(
-      data.ngayKetThuc,
-      'yyyy-MM-dd'
-    );
+    this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(data.tenDotKhaoSat);
+    const ngayBatDauFormatted = this.datePipe.transform(data.ngayBatDau, 'yyyy-MM-dd');
+    const ngayKetThucFormatted = this.datePipe.transform(data.ngayKetThuc, 'yyyy-MM-dd');
     this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
-    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(
-      ngayKetThucFormatted
-    );
-    console.log(ngayKetThucFormatted);
+    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(ngayKetThucFormatted);
+
   }
 
   Save() {
@@ -167,6 +164,7 @@ export class AdminPeriodSurveyComponent {
   }
 
   SaveAdd() {
+    debugger
     if (this.FormPeriodSurvey.valid) {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
       this.PeriodSurveyService.create(ObjPeriodSurvey).subscribe({
@@ -193,7 +191,10 @@ export class AdminPeriodSurveyComponent {
   }
 
   SaveEdit() {
+    debugger
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
+    ObjPeriodSurvey.NgayBatDau = moment(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY HH:mm:ss','Asia/Ho_Chi_Minh').toDate();
+    ObjPeriodSurvey.NgayKetThuc = moment(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY HH:mm:ss','Asia/Ho_Chi_Minh').toDate();
     ObjPeriodSurvey['id'] = this.IdDotKhaoSat;
     ObjPeriodSurvey['maDotKhaoSat'] = this.MaDotKhaoSat;
     ObjPeriodSurvey['Trangthai'] = this.Trangthai;
@@ -256,7 +257,9 @@ export class AdminPeriodSurveyComponent {
         //   },
         // });
       },
-      reject: () => {},
+      reject: () => { },
     });
   }
 }
+
+
