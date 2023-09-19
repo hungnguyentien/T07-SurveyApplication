@@ -30,14 +30,14 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                          join g in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinhDonVi equals g.Id
 
                          where (request.IdDotKhaoSat == 0 || c.Id == request.IdDotKhaoSat) &&
-                              (request.IdBangKhaoSat == 0 || b.Id == request.IdBangKhaoSat) &&  
+                              (request.IdBangKhaoSat == 0 || b.Id == request.IdBangKhaoSat) &&
                               (request.IdLoaiHinhDonVi == null || g.Id == request.IdLoaiHinhDonVi) &&
                               (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
                               (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
                               a.Deleted == false
 
                          select new BaoCaoCauHoiDto
-                        {
+                         {
                              IdBangKhaoSat = b.Id,
                              IdDotKhaoSat = c.Id,
                              IdCauHoi = d.Id,
@@ -67,7 +67,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                 select new GuiEmailDto
                                 {
                                     Id = a.Id
-                                    
+
                                 }).ToList().Count();
 
             var donViThamGia = (from a in _surveyRepo.GuiEmail.GetAllQueryable()
