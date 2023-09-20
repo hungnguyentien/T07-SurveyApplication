@@ -27,7 +27,7 @@ export class AdminHomeComponent {
    sumSoLuongThamGia!:number; 
 
 
-  constructor(private adminHomeService:AdminHomeService , private FormBuilder: FormBuilder,private datePipe: DatePipe) {}
+  constructor(private adminHomeService:AdminHomeService , private FormBuilder: FormBuilder) {}
   ngOnInit():void {
     this.FormAminHome = this.FormBuilder.group(
         {
@@ -80,10 +80,11 @@ export class AdminHomeComponent {
     };
     this.optionNhomDoiTuong = {
         cutout: '60%',
+       
         plugins: {
             legend: {
                 labels: {
-                    color: textColor
+                    color: textColor,
                 }
             }
         }
@@ -96,13 +97,13 @@ export class AdminHomeComponent {
         labels: ['Đợt 1', 'Đợt 2', 'Đợt 3'],
         datasets: [
             {
+                borderWidth:2,
                 data: [datas.countDot1, datas.countDot2, datas.countDot3],
                 backgroundColor: [documentStyle.getPropertyValue('--orange-400'), documentStyle.getPropertyValue('--green-600'), documentStyle.getPropertyValue('--blue-400')],
                 hoverBackgroundColor: [documentStyle.getPropertyValue('--orange-300'), documentStyle.getPropertyValue('--green-500'), documentStyle.getPropertyValue('--blue-300')]
             }
         ]
     };
-
 
     this.optionDotKhaosat = {
         cutout: '60%',
@@ -132,6 +133,7 @@ export class AdminHomeComponent {
                     backgroundColor: documentStyle.getPropertyValue('--blue-400'),
                     borderColor: documentStyle.getPropertyValue('--blue-400'),
                     borderWidth: 1,
+                    categoryPercentage:0.2// sử dụng set độ rộng của cột
                 }
             ]
         };
@@ -158,8 +160,7 @@ export class AdminHomeComponent {
                     grid: {
                         color: surfaceBorder,
                         drawBorder: false
-                    },
-                    
+                    }
                 },
                 y: {
                     ticks: {
@@ -168,8 +169,7 @@ export class AdminHomeComponent {
                     grid: {
                         color: surfaceBorder,
                         drawBorder: false
-                    },
-                    barPercentage: 0.3
+                    }
                 }
 
             }

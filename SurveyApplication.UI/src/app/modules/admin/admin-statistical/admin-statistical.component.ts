@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import Utils from '@app/helpers/utils';
 import {
@@ -8,8 +8,11 @@ import {
   UnitTypeService,
 } from '@app/services';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
-
+import { MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
+import * as moment from 'moment';
+import 'moment-timezone'; // Import 'moment-timezone'
+import * as XLSX from 'xlsx';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-admin-statistical',
   templateUrl: './admin-statistical.component.html',
@@ -29,7 +32,10 @@ export class AdminStatisticalComponent {
 
   selectedDotKhaoSat: number = 1;
   selectedBangKhaoSat: number = 1;
-
+  datas:any
+  datasKetQuaKhaoSat:any
+  
+  @ViewChild('dt') table!: Table; // Khi sử dụng p-table, sử dụng ViewChild để truy cập nó
   constructor(
     private formBuilder: FormBuilder,
     private periodSurveyService: PeriodSurveyService,
@@ -44,26 +50,34 @@ export class AdminStatisticalComponent {
   ngOnInit() {
     Utils.translate('vi', this.translateService, this.config);
     this.frmStatiscal = this.formBuilder.group({
-      idDotKhaoSat: [this.selectedDotKhaoSat],
-      idBangKhaoSat: [this.selectedBangKhaoSat],
+      idDotKhaoSat: [],
+      idBangKhaoSat: [],
       idLoaiHinh: [],
       ngayBatDau: [],
       ngayKetThuc: [],
     });
-
     this.loadPeriodSurvey();
     this.loadTableSurvey();
     this.loadUnitType();
     this.getVauleChar(this.frmStatiscal.value);
+    
+  
   }
+ 
 
+  exportToExcel() {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table.el.nativeElement);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'ThongKe.xlsx');
+  }
   getVauleChar = (params: any) => {
     this.baoCaoCauHoiService.getBaoCaoCauHoi(params).subscribe({
-      next: (res) => {
-        this.setChar(
-          [res.countDonViMoi, res.countDonViTraLoi],
-          [res.countDonViSo, res.countDonViBo, res.countDonViNganh]
-        );
+      next: (res:any) => {
+       
+        this.datas = res.listCauHoiTraLoi
+        this.datasKetQuaKhaoSat =res.listCauHoiTraLoi
+        this.setChar([res.countDonViMoi, res.countDonViTraLoi],[res.countDonViSo, res.countDonViBo, res.countDonViNganh]);
       },
     });
   };
@@ -152,7 +166,14 @@ export class AdminStatisticalComponent {
   };
 
   search = () => {
+    
     let params = this.frmStatiscal.value;
+    if (this.frmStatiscal.value.ngayBatDau) {
+      params.ngayBatDau = moment(this.frmStatiscal.value.ngayBatDau).format('MM/DD/YYYY');
+    }
+    if (this.frmStatiscal.value.ngayKetThuc) {
+      params.ngayKetThuc = moment(this.frmStatiscal.value.ngayKetThuc).format('MM/DD/YYYY');
+    }
     if (!params.idDotKhaoSat)
       Utils.messageError(this.messageService, `Vui lòng chọn đợt khảo sát!`);
     else if (!params.idBangKhaoSat)
@@ -179,4 +200,5 @@ export class AdminStatisticalComponent {
       this.LstLoaiHinhDv = data; // Lưu dữ liệu vào danh sách
     });
   }
+
 }

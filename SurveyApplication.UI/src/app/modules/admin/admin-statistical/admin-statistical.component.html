@@ -9,7 +9,7 @@
                             <label for="idDotKhaoSat">Đợt khảo sát <span style="color: red;">*</span></label>
                         </div>
                         <div class="col-9">
-                            <p-dropdown id="idDotKhaoSat" [options]="LstDotKhaoSat" [(ngModel)]="selectedDotKhaoSat"
+                            <p-dropdown id="idDotKhaoSat" [options]="LstDotKhaoSat"
                                 optionLabel="tenDotKhaoSat" optionValue="id" [filter]="true" filterBy="tenDotKhaoSat"
                                 emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
                                 [showClear]="true" class="form-select-custom" placeholder="-- Chọn đợt khảo sát --"
@@ -22,7 +22,7 @@
                             <label for="idBangKhaoSat">Bảng khảo sát <span style="color: red;">*</span></label>
                         </div>
                         <div class="col-9">
-                            <p-dropdown id="idBangKhaoSat" [options]="LstBangKhaoSat" [(ngModel)]="selectedBangKhaoSat"
+                            <p-dropdown id="idBangKhaoSat" [options]="LstBangKhaoSat" 
                                 optionLabel="tenBangKhaoSat" optionValue="id" [filter]="true" filterBy="tenBangKhaoSat"
                                 emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
                                 [showClear]="true" class="form-select-custom" placeholder="-- Chọn bảng khảo sát --"
@@ -96,3 +96,217 @@
         </div>
     </div>
 </div>
+
+
+<div class="card mt-5">
+    <div class="row">
+        <p-tabView class="col-md-12">
+            <p-tabPanel header ="Tổng quan">
+                <div class="d-flex ml-3">
+                    <div class=" d-flex">
+                        <button pButton type="button" icon="pi pi-file-export" label="Xuất dữ liệu" class="custom-button"
+                        style="background-color: green;"(click)="exportToExcel()">
+                        </button>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <p-table #dt [value]="datas" [lazy]="true" [scrollable]="true"
+                    scrollHeight="calc(250vh - 396px)"  dataKey="id"
+                    styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true">
+                        <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 60px;">
+                            STT
+                            </th>
+                            <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                                Câu hỏi 
+                            </div>
+                            </th>
+                            <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                                Câu trả lời
+                            </div>
+                            </th>
+                            <th pResizableColumn style="width: 8rem;">
+                            <div class="flex justify-content-between align-items-center">
+                                Số lượt chọn
+                            </div>
+                            </th>
+                            <th pResizableColumn style="width: 8rem;">
+                            <div class="flex justify-content-between align-items-center">
+                                Tỷ lệ (%)
+                            </div>
+                            </th>
+                        </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                        <tr class="table-row">
+                            <td>
+                              <span class="p-column-title">STT</span>
+                                {{ rowIndex + 1}}
+                            </td>
+                            <td>
+                              <p>{{ rowData.cauHoiTraLoi[0].cauHoi }}</p>
+                            </td>
+                            <td >
+                              <p *ngFor="let cauTraLoi of rowData.cauHoiTraLoi">{{ cauTraLoi.cauTraLoi }}</p>
+                            </td>
+                            <td rowspan="1">
+                              <p *ngFor="let cauTraLoi of rowData.cauHoiTraLoi">{{ cauTraLoi.soLuotChon }}</p>
+                            </td>
+                            <td rowspan="1">
+                              <p *ngFor="let cauTraLoi of rowData.cauHoiTraLoi">{{ cauTraLoi.tyLe }}%</p>
+                            </td>
+                        </tr>
+                        </ng-template>
+                        
+                    </p-table>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header ="Chi tiết kết quả khảo sát">
+                <div class="d-flex mt-3">
+                    <div class="ml-3">
+                      <button pButton type="button" icon="pi pi-file-export" label="Xuất Excel" class="custom-button"
+                        style="background-color: green;"(click)="exportToExcel()">
+                      </button>
+                    </div>
+                    <div class="ml-3">
+                      <button pButton type="button" icon="pi pi-file-export" label="Xuất PDF" class="custom-button"
+                        style="background-color: #eab308;">
+                      </button>
+                    </div>
+                    <div class="ml-3">
+                        <form  class="form-inline">
+                            <div class="form-group mb-2">
+                            <label for="keyWord" class="sr-only">Search</label>
+                            <input type="search" class="form-control" id="keyWord"
+                             placeholder="Nhập từ khoá " />
+                            </div>
+                            <button type="submit" class="btn btn-primary ml-2 mb-2">
+                            <i class="pi pi-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <p-table #dt2 [value]="datas" [lazy]="true" [scrollable]="true"
+                    scrollHeight="calc(100vh - 396px)" dataKey="id"
+                    styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+                    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+                    [resizableColumns]="true"
+                    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th pResizableColumn pFrozenColumn>
+                            STT
+                          </th>
+                          <th style="min-width:200px" pResizableColumn pFrozenColumn>
+                            <div class="flex justify-content-between align-items-center">
+                              Dấu thời gian
+                            </div>
+                          </th>
+                          <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                              1. Họ và tên đại diện cơ quan
+                            </div>
+                          </th>
+                          <!-- <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                              2. Mô tả
+                            </div>
+                          </th> -->
+                          <!-- <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                              2. Sử dụng mã số GS1
+                            </div>
+                          </th> -->
+                          <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                              2. Loại hình của đơn vị 
+                            </div>
+                          </th>
+                          <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                              3. Câu hỏi dạng bảng <br>
+                              (1 lựa chọn)
+                            </div>
+                          </th>
+                          <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                                4. Câu hỏi dạng bảng <br>
+                                (nhiều lựa chọn)
+                            </div>
+                          </th>
+                          <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                                5. Câu hỏi dạng bảng <br>
+                                (Văn bản)
+                            </div>
+                          </th>
+                          <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                                6. Địa chỉ cơ quan
+                            </div>
+                          </th>
+                          <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                                7. Câu hỏi dạng tải tệp tin 
+                            </div>
+                          </th>
+                          <th pResizableColumn>
+                            <div class="flex justify-content-between align-items-center">
+                                8. Đơn vị đã có chứng nhận <br>
+                                 về quy trình sản xuất an <br>
+                                  toàn chưa?
+                            </div>
+                          </th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                        <tr>
+
+                          <td pFrozenColumn>
+                            {{ rowIndex + 1}}
+                          </td>
+                          <td pFrozenColumn>
+                            <span class="ml-1 vertical-align-middle">{{ rowData.idCauHoi }}</span>
+                          </td>
+                          <td>
+                            <p>{{ rowData.cauHoiTraLoi[0].tenDaiDienCq }}</p>
+                          </td>
+                          <!-- <td>
+                            <p-tableRadioButton [value]=""></p-tableRadioButton>
+                          </td> -->
+                          <td>
+                            <p *ngFor="let cauTraLoi of rowData.cauHoiTraLoi">{{ cauTraLoi.tenLoaiHinhDonVi }}</p>
+                          </td>
+                          <td>
+                            <span class="ml-1 vertical-align-middle">{{ rowData.tenLoaiHinhDonVi }}</span>
+                          </td>
+                          <td>
+                            <span class="ml-1 vertical-align-middle">{{ rowData.tenLoaiHinhDonVi }}</span>
+                          </td>
+                          <td>
+                            <span class="ml-1 vertical-align-middle">{{ rowData.tenDonVi }}</span>
+                          </td>
+                          <td>
+                            <span class="ml-1 vertical-align-middle">{{ rowData.tenLoaiHinh }}</span>
+                          </td>
+                          <td>
+                            <span class="ml-1 vertical-align-middle">{{ rowData.diaChi }}</span>
+                          </td>
+                          <td>
+                            <p-tableRadioButton [value]=""></p-tableRadioButton>
+                          </td>
+                         
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+    
+</div>
+
