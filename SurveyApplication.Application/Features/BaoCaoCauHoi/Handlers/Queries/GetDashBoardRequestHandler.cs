@@ -21,69 +21,57 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
     public class GetDashBoardRequestHandler : BaseMasterFeatures, IRequestHandler<GetDashBoardRequest, DashBoardDto>
     {
         private readonly IMapper _mapper;
-
         public GetDashBoardRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
             _mapper = mapper;
         }
-
         public async Task<DashBoardDto> Handle(GetDashBoardRequest request, CancellationToken cancellationToken)
         {
             var tongDotKhaoSat = (from a in _surveyRepo.DotKhaoSat.GetAllQueryable()
-                                join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.Id equals b.IdDotKhaoSat
-                                where (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
-                                    (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
-                                    a.Deleted == false
-                                select new DotKhaoSatDto
-                                {
-                                    Id = a.Id
-
-                                }).ToList().Count();
-
+                                  join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.Id equals b.IdDotKhaoSat
+                                  where (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
+                                      (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
+                                      a.Deleted == false
+                                  select new DotKhaoSatDto
+                                  {
+                                      Id = a.Id
+                                  }).ToList().Count();
             var tongBangKhaoSat = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
-                                where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
-                                    (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
-                                    a.Deleted == false
-                                select new BangKhaoSatDto
-                                {
-                                    Id = a.Id
-
-                                }).ToList().Count();
-
+                                   where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
+                                       (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
+                                       a.Deleted == false
+                                   select new BangKhaoSatDto
+                                   {
+                                       Id = a.Id
+                                   }).ToList().Count();
             var tongThamGiaKhaoSat = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                       join b in _surveyRepo.GuiEmail.GetAllQueryable() on a.Id equals b.IdBangKhaoSat
                                       join c in _surveyRepo.KetQua.GetAllQueryable() on b.Id equals c.IdGuiEmail
                                       where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
                                        (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
                                        c.Deleted == false
-                                   select new KetQua
+                                      select new KetQua
+                                      {
+                                          Id = c.Id
+                                      }).ToList().Count();
+            var khaoSatTheoNhom = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
+                                   join b in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinh equals b.Id
+                                   where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
+                                       (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
+                                       b.Deleted == false
+                                   select new LoaiHinhDonViDto
                                    {
-                                       Id = c.Id
-
-                                   }).ToList().Count();
-            //// Đặt lại Dto và tính %
-            //var khaoSatTheoNhom = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
-            //                       join b in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinh equals b.Id
-            //                       where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
-            //                           (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
-            //                           b.Deleted == false
-            //                       select new LoaiHinhDonViDto
-            //                       {
-            //                           Id = b.Id,
-
-            //                       }).ToList().Count();
-            //// Đặt lại Dto và tính %
-            //var khaoSatTheoDot = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
-            //                     join b in _surveyRepo.DotKhaoSat.GetAllQueryable() on a.IdDotKhaoSat equals b.Id
-            //                     where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
-            //                      (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
-            //                      b.Deleted == false
-            //                     select new KetQua
-            //                     {
-            //                         Id = b.Id
-
-            //                     }).ToList().Count();
-
+                                       Id = b.Id,
+                                   }).ToList();
+            var khaoSatTheoDot = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
+                                  join b in _surveyRepo.DotKhaoSat.GetAllQueryable() on a.IdDotKhaoSat equals b.Id
+                                  where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
+                                   (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
+                                   b.Deleted == false
+                                  select new DotKhaoSatDto
+                                  {
+                                      Id = b.Id
+                                  }).ToList();
             var khaoSatTinhTp = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                  join b in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinh equals b.Id
                                  join c in _surveyRepo.DonVi.GetAllQueryable() on b.Id equals c.IdLoaiHinh
@@ -95,24 +83,32 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                  {
                                      Id = c.Id,
                                      IdTinhTp = d.Id,
-                                     //TenTinhTp = d.Name,
-
+                                     TinhTp = d.Name,
                                  }).ToList();
 
-            var tongKhaoSatTinhTp = khaoSatTinhTp.GroupBy(record => record.IdTinhTp).OrderByDescending(group => group.Count()).ToList();
+            var tongKhaoSatTinhTp = khaoSatTinhTp.GroupBy(g => new { g.IdTinhTp, g.TinhTp }).OrderByDescending(group => group.Count()).ToList();
+
+            var groupedDataList = tongKhaoSatTinhTp.Select(group => new ListTinhTp
+            {
+                IdTinhTp = group.Key.IdTinhTp,
+                CountTinhTp = group.ToList().Count(),
+                TenTinhTp = group.Key.TinhTp,
+                ListDonVi = group.ToList()
+            }).ToList();
 
             return new DashBoardDto
             {
-                //CountDotKhaoSat = ,
-                //CountBangKhaoSat = ,
-                //CountThamGia = ,
-                //CountDonViBo = ,
-                //CountDonViSo = ,
-                //CountDonViNganh = ,
-                //CountDot1 = ,
-                //CountDot2 = ,
-                //CountDot3 = ,
-    };
+                CountDotKhaoSat = tongDotKhaoSat,
+                CountBangKhaoSat = tongBangKhaoSat,
+                CountThamGia = tongThamGiaKhaoSat,
+                CountDonViSo = khaoSatTheoNhom.Any() ? (khaoSatTheoNhom.Count(x => x.Id == 1) / (double)khaoSatTheoNhom.Count() * 100) : 0,
+                CountDonViBo = khaoSatTheoNhom.Any() ? (khaoSatTheoNhom.Count(x => x.Id == 2) / (double)khaoSatTheoNhom.Count() * 100) : 0,
+                CountDonViNganh = khaoSatTheoNhom.Any() ? (khaoSatTheoNhom.Count(x => x.Id == 3) / (double)khaoSatTheoNhom.Count() * 100) : 0,
+                CountDot1 = khaoSatTheoDot.Any() ? (khaoSatTheoDot.Count(x => x.Id == 1) / (double)khaoSatTheoDot.Count() * 100) : 0,
+                CountDot2 = khaoSatTheoDot.Any() ? (khaoSatTheoDot.Count(x => x.Id == 2) / (double)khaoSatTheoDot.Count() * 100) : 0,
+                CountDot3 = khaoSatTheoDot.Any() ? (khaoSatTheoDot.Count(x => x.Id == 3) / (double)khaoSatTheoDot.Count() * 100) : 0,
+                ListTinhTp = groupedDataList,
+            };
         }
     }
 }

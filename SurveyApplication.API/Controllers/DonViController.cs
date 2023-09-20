@@ -93,7 +93,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpDelete("DeleteMultiple")]
         [HasPermission(new[] { (int)EnumModule.Code.QlDv }, new[] { (int)EnumPermission.Type.Deleted })]
-        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        public async Task<ActionResult> DeleteMultipleDonVi(List<int> ids)
         {
             var command = new DeleteDonViCommand { Ids = ids };
             var response = await _mediator.Send(command);

@@ -44,6 +44,7 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
         return base.SaveChangesAsync(cancellationToken);
     }
 
+    public DbSet<Module> Module { get; set; }
     public DbSet<Role> Role { get; set; }
     public DbSet<ApplicationUser> Account { get; set; }
     public DbSet<LoaiHinhDonVi> LoaiHinhDonVi { get; set; }

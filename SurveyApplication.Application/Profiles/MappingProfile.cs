@@ -8,6 +8,7 @@ using SurveyApplication.Application.DTOs.DotKhaoSat;
 using SurveyApplication.Application.DTOs.GuiEmail;
 using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
+using SurveyApplication.Application.DTOs.Module;
 using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.DTOs.QuanHuyen;
@@ -76,8 +77,14 @@ public class MappingProfile : Profile
         CreateMap<TinhTp, TinhTpDto>().ReverseMap();
         CreateMap<TinhTp, CreateTinhTpDto>().ReverseMap();
         CreateMap<TinhTp, UpdateTinhTpDto>().ReverseMap();
+
+        CreateMap<Module, ModuleDto>().ReverseMap();
+        CreateMap<Module, CreateModuleDto>().ReverseMap();
+        CreateMap<Module, UpdateModuleDto>().ReverseMap();
+
         CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
 
+        CreateMap<ApplicationUser, UpdateAccountDto>().ReverseMap();
         CreateMap<ApplicationUser, AccountDto>().ReverseMap();
         CreateMap<RegisterDto, ApplicationUser>();
 

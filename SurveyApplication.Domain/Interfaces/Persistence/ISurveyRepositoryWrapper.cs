@@ -21,6 +21,7 @@
         IBaoCaoCauHoiRepository BaoCaoCauHoi { get; }
         IJobScheduleRepository JobSchedule { get; }
         IRoleRepository Role { get; }
+        IModuleRepository Module { get; }
 
         //RenderHere
         Task SaveAync();
