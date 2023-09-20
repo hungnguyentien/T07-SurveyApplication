@@ -108,7 +108,8 @@ public class Startup
 
     private static void UpdatePermissionTable(IServiceProvider serviceProvider)
     {
-        var dataDefaultService = (IDataDefaultService)serviceProvider.GetService(typeof(IDataDefaultService))!;
-        dataDefaultService.DataAdmin().Wait();
+        var dataDefaultService = (IDataDefaultService)serviceProvider.GetService(typeof(IDataDefaultService));
+        if (dataDefaultService != null)
+            dataDefaultService.DataAdmin().Wait();
     }
 }
