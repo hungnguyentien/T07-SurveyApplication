@@ -30,31 +30,7 @@ namespace SurveyApplication.API.Attributes
             _codeModules = codeModules;
             _permissions = permission;
         }
-        //public Task OnAuthorizationAsync(AuthorizationFilterContext context)
-        //{
-        //    try
-        //    {
-        //        // Lấy token từ headers
-        //        var token = GetToken(context);
-        //        if (string.IsNullOrEmpty(token))
-        //        {
-        //            context.Result = new UnauthorizedResult();
-        //            return Task.CompletedTask;
-        //        }
 
-        //        var handler = new JwtSecurityTokenHandler();
-        //        var decodedToken = handler.ReadJwtToken(token);
-        //        var isAccess = decodedToken.Claims.Any(x => _codeModules.Select(m => m.ToString()).Contains(x.Type) && _permissions.All(p => JsonExtensions.DeserializeFromJson<List<int>>(x.Value).Contains(p)));
-        //        if (!isAccess)
-        //            context.Result = new ForbidResult(); // Forbidden
-        //    }
-        //    catch (SecurityTokenException)
-        //    {
-        //        context.Result = new UnauthorizedResult(); // Unauthorized
-        //    }
-
-        //    return Task.CompletedTask;
-        //}
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             try
@@ -76,11 +52,9 @@ namespace SurveyApplication.API.Attributes
                 foreach (var roleName in rolesInToken)
                 {
                     var role = await roleManager.FindByNameAsync(roleName);
-                    if (role != null && role.Deleted)
-                    {
-                        context.Result = new ForbidResult(); // Forbidden
-                        return;
-                    }
+                    if (role is not { Deleted: true }) continue;
+                    context.Result = new ForbidResult(); // Forbidden
+                    return;
                 }
                 // Tiếp tục kiểm tra quyền truy cập bình thường
                 var isAccess = decodedToken.Claims.Any(x => _codeModules.Select(m => m.ToString()).Contains(x.Type) && _permissions.All(p => JsonExtensions.DeserializeFromJson<List<int>>(x.Value).Contains(p)));
