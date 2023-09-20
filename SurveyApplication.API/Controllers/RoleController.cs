@@ -83,12 +83,5 @@ namespace SurveyApplication.API.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("DeleteMultiple")]
-        public async Task<ActionResult> DeleteMultipleRole(List<string> ids)
-        {
-            var command = new DeleteRoleCommand { Ids = ids };
-            var response = await _mediator.Send(command);
-            return Ok(response);
-        }
     }
 }

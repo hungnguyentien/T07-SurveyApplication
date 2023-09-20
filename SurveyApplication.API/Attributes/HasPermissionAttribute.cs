@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.Text.RegularExpressions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using SurveyApplication.Domain;
+using System.Security.Claims;
 
 namespace SurveyApplication.API.Attributes
 {
@@ -27,7 +30,32 @@ namespace SurveyApplication.API.Attributes
             _codeModules = codeModules;
             _permissions = permission;
         }
-        public Task OnAuthorizationAsync(AuthorizationFilterContext context)
+        //public Task OnAuthorizationAsync(AuthorizationFilterContext context)
+        //{
+        //    try
+        //    {
+        //        // Lấy token từ headers
+        //        var token = GetToken(context);
+        //        if (string.IsNullOrEmpty(token))
+        //        {
+        //            context.Result = new UnauthorizedResult();
+        //            return Task.CompletedTask;
+        //        }
+
+        //        var handler = new JwtSecurityTokenHandler();
+        //        var decodedToken = handler.ReadJwtToken(token);
+        //        var isAccess = decodedToken.Claims.Any(x => _codeModules.Select(m => m.ToString()).Contains(x.Type) && _permissions.All(p => JsonExtensions.DeserializeFromJson<List<int>>(x.Value).Contains(p)));
+        //        if (!isAccess)
+        //            context.Result = new ForbidResult(); // Forbidden
+        //    }
+        //    catch (SecurityTokenException)
+        //    {
+        //        context.Result = new UnauthorizedResult(); // Unauthorized
+        //    }
+
+        //    return Task.CompletedTask;
+        //}
+        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             try
             {
@@ -36,11 +64,25 @@ namespace SurveyApplication.API.Attributes
                 if (string.IsNullOrEmpty(token))
                 {
                     context.Result = new UnauthorizedResult();
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 var handler = new JwtSecurityTokenHandler();
                 var decodedToken = handler.ReadJwtToken(token);
+
+                // Kiểm tra xem vai trò có bị đánh dấu Deleted không
+                var roleManager = context.HttpContext.RequestServices.GetRequiredService<RoleManager<Role>>();
+                var rolesInToken = decodedToken.Claims.Where(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Select(x => x.Value);
+                foreach (var roleName in rolesInToken)
+                {
+                    var role = await roleManager.FindByNameAsync(roleName);
+                    if (role != null && role.Deleted)
+                    {
+                        context.Result = new ForbidResult(); // Forbidden
+                        return;
+                    }
+                }
+                // Tiếp tục kiểm tra quyền truy cập bình thường
                 var isAccess = decodedToken.Claims.Any(x => _codeModules.Select(m => m.ToString()).Contains(x.Type) && _permissions.All(p => JsonExtensions.DeserializeFromJson<List<int>>(x.Value).Contains(p)));
                 if (!isAccess)
                     context.Result = new ForbidResult(); // Forbidden
@@ -49,8 +91,6 @@ namespace SurveyApplication.API.Attributes
             {
                 context.Result = new UnauthorizedResult(); // Unauthorized
             }
-
-            return Task.CompletedTask;
         }
 
         #region Private
