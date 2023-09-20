@@ -24,16 +24,11 @@ export class LoginService {
   }
 
   login(model: Login) {
-    const loginData = {
-      Email: model.UserName,
-      Password: model.Password,
-      grant_type: 'Password',
-    };
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     };
     return this.http
-      .post(`${environment.apiUrl}` + '/Account/login', loginData, options)
+      .post(`${environment.apiUrl}` + '/Account/login', model, options)
       .pipe(
         map((req: any) => {
           // đăng nhập thành công lưu lại token

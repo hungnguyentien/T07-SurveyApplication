@@ -23,12 +23,23 @@ export class SidebarComponent implements OnInit {
         this.lstModule = [];
         const currentUser = this.loginService.getCurrentUser();
         res.forEach((x) => {
-          if (x.routerLink === '#') this.lstModule.push(x);
+          if (
+            x.routerLink === '#' &&
+            this.hasModuleChil(
+              res.filter((p) => p.idParent == x.id),
+              currentUser
+            )
+          )
+            this.lstModule.push(x);
           else if (currentUser[(CodeModule as any)[x.codeModule]])
             this.lstModule.push(x);
         });
       },
     });
+  }
+
+  hasModuleChil(chil: Module[], currentUser: any): boolean {
+    return !!chil.find((x) => currentUser[(CodeModule as any)[x.codeModule]]);
   }
 
   ngAfterViewChecked() {

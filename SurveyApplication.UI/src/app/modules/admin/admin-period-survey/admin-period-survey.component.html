@@ -19,7 +19,8 @@
         </div>
         <div class="ml-3">
             <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
-                class="custom-button" style="background-color: #ea5c5c;"></button>
+                *ngIf="selectedPeriodSurvey && selectedPeriodSurvey.length > 0" class="custom-button"
+                style="background-color: #ea5c5c;"></button>
         </div>
     </div>
     <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
@@ -54,13 +55,15 @@
                     <div class="flex justify-content-between align-items-center">
                         Mã đợt
                         <p-sortIcon field="maDotKhaoSat"></p-sortIcon>
-                        <p-columnFilter type="text" field="maDotKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
+                        <p-columnFilter type="text" field="maDotKhaoSat" display="menu"
+                            class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Tên đợt<table><p-sortIcon field="tenDotKhaoSat"></p-sortIcon>
-                            <p-columnFilter type="text" field="tenDotKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
+                            <p-columnFilter type="text" field="tenDotKhaoSat" display="menu"
+                                class="ml-auto"></p-columnFilter>
                         </table>
                     </div>
                 </th>
@@ -199,7 +202,7 @@
                             style="color: red;">*</span></label>
                     <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name"
                         placeholder="Ngày Bắt Đầu">
-                        <!-- <p-calendar formControlName="NgayBatDau" id="NgayBatDau" appendTo="body" 
+                    <!-- <p-calendar formControlName="NgayBatDau" id="NgayBatDau" appendTo="body" 
                          dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"></p-calendar> -->
                     <small style="color: #e24c4c;" class="ml-2"
                         *ngIf="!FormPeriodSurvey.get('NgayBatDau')?.valid && FormPeriodSurvey.get('NgayBatDau')?.dirty">
@@ -214,7 +217,7 @@
                             style="color: red;">*</span></label>
                     <input type="date" formControlName="NgayKetThuc" class="form-control" id="recipient-name"
                         placeholder="Ngày kết thúc">
-                        <!-- <p-calendar formControlName="NgayKetThuc" id="NgayKetThuc" appendTo="body" 
+                    <!-- <p-calendar formControlName="NgayKetThuc" id="NgayKetThuc" appendTo="body" 
                          dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"></p-calendar> -->
                     <small style="color: #e24c4c;" class="ml-2"
                         *ngIf="!FormPeriodSurvey.get('NgayKetThuc')?.valid && FormPeriodSurvey.get('NgayKetThuc')?.dirty">

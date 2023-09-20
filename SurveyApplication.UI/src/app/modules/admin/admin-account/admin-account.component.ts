@@ -53,6 +53,8 @@ export class AdminAccountComponent {
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         passwordConfirmed: [''],
+        name: [''],
+        address: [''],
         lstRoleName: this.formBuilder.array([]),
         matrixPermission: this.formBuilder.array([]),
       },
@@ -134,7 +136,6 @@ export class AdminAccountComponent {
     if (this.frmAccount.invalid) return;
     this.account = data.value;
     this.account.lstRoleName = this.selectedRole;
-    debugger;
     this.accountService.register<Register>(this.account).subscribe({
       next: (res) => {
         if (res.success) {

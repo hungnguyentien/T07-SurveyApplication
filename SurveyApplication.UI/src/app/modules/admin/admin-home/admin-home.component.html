@@ -1,7 +1,7 @@
 <div>
   <h5 class="m-4">Dashboard</h5>  
   <!-- <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" [editable]="true" optionLabel="name"></p-dropdown> -->
-  <form [formGroup]="FormAminHome" class="row" (ngSubmit)="onSubmit()">
+  <form *ngIf="FormAminHome" [formGroup]="FormAminHome" class="row" (ngSubmit)="onSubmit()">
       <div class="form-group form-inline col-4">
           <div class="col-4">
               <label for="ngayBatDau">Ngày bắt đầu</label>

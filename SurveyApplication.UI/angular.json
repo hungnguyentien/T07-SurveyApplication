@@ -40,8 +40,10 @@
             ],
             "allowedCommonJsDependencies": [
               "Utils",
+              "moment",
               "crypto-js",
               "survey-core",
+              "moment-timezone",
               "survey-creator-core",
               "survey-core/survey.i18n",
               "@ckeditor/ckeditor5-build-classic"

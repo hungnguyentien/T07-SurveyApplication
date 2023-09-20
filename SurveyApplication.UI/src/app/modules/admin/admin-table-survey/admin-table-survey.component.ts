@@ -119,7 +119,6 @@ export class AdminTableSurveyComponent {
     );
   }
   confirmDeleteMultiple() {
-    debugger
     let ids: number[] = [];
     this.selectedTableSurvey.forEach((el) => {
       ids.push(el.id);
@@ -131,8 +130,6 @@ export class AdminTableSurveyComponent {
       accept: () => {
         this.TableSurveyService.deleteMultiple(ids).subscribe({
           next: (res:any) => {
-          debugger
-            
             if(res.success == false){
               Utils.messageError(this.messageService, res.message)
             }
