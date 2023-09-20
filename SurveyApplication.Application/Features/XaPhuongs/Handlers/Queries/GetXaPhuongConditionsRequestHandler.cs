@@ -42,11 +42,8 @@ namespace SurveyApplication.Application.Features.XaPhuongs.Handlers.Queries
                             CodeQuanHuyen = b.Code,
                             NameQuanHuyen = b.Name,
                         };
-            var totalCount = await query.LongCountAsync();
-            var pageCount = (int)Math.Ceiling(totalCount / (double)request.PageSize);
-
-            var pageResults = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
-
+            var totalCount = await query.LongCountAsync(cancellationToken: cancellationToken);
+            var pageResults = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).ToListAsync(cancellationToken: cancellationToken);
             return new BaseQuerieResponse<XaPhuongDto>
             {
                 PageIndex = request.PageIndex,
