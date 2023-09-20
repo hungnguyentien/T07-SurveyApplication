@@ -53,6 +53,7 @@
     "survey-creator-angular": "^1.9.103",
     "survey-creator-knockout": "^1.9.103",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
