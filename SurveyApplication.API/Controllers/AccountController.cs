@@ -42,5 +42,37 @@ namespace SurveyApplication.API.Controllers
             var response = await _mediator.Send(new GetAccountConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword, OrderBy = paging.OrderBy });
             return response;
         }
+
+
+        [HttpGet("GetById/{id}")]
+        public async Task<ActionResult<List<AccountDto>>> GetByAccount(string id)
+        {
+            var leaveAllocations = await _mediator.Send(new GetAccountDetailRequest { Id = id });
+            return Ok(leaveAllocations);
+        }
+
+        [HttpPost("Update")]
+        public async Task<ActionResult<AccountDto>> UpdateAccount([FromBody] UpdateAccountDto obj)
+        {
+            var command = new UpdateAccountCommand { AccountDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult> DeleteAccount(string id)
+        {
+            var command = new DeleteAccountCommand { Ids = new List<string> { id } };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("DeleteMultiple")]
+        public async Task<ActionResult> DeleteMultipleAccount(List<string> ids)
+        {
+            var command = new DeleteAccountCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
     }
 }

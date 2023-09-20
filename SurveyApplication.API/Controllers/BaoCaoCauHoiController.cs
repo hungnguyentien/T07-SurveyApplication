@@ -26,11 +26,10 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<BaoCaoCauHoiDto>> GetBaoCaoCauHoi([FromQuery] GetBaoCaoCauHoiRequest data)
         {
             var result = await _mediator.Send(data);
-            return Ok(result);
-            //return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-            //{
-            //    NullValueHandling = NullValueHandling.Ignore
-            //}));
+            return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }));
         }
 
         [HttpGet("GetDashBoard")]
@@ -38,11 +37,10 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<DashBoardDto>> GetDashBoard([FromQuery] GetDashBoardRequest data)
         {
             var result = await _mediator.Send(data);
-            return Ok(result);
-            //return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-            //{
-            //    NullValueHandling = NullValueHandling.Ignore
-            //}));
+            return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }));
         }
     }
 }

@@ -36,7 +36,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             };
             var existingEmail = await _userManager.FindByEmailAsync(request.Register.Email);
             if (existingEmail != null) throw new Exception($"Email {request.Register.Email} đã tồn tại!");
-            var result = await _userManager.CreateAsync(user, new PasswordHasher<ApplicationUser>().HashPassword(null!, request.Register.Password));
+            var result = await _userManager.CreateAsync(user, request.Register.Password);
             if (result.Succeeded)
             {
                 foreach (var roleName in request.Register.LstRoleName ?? new List<string>())

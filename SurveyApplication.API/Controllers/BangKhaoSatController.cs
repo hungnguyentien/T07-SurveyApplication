@@ -81,7 +81,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpDelete("DeleteMultiple")]
         [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Deleted })]
-        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        public async Task<ActionResult> DeleteMultipleBangKhaoSat(List<int> ids)
         {
             var command = new DeleteBangKhaoSatCommand { Ids = ids };
             var response = await _mediator.Send(command);
