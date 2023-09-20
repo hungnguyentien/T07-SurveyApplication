@@ -24,7 +24,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAll")]
-        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs, (int)EnumModule.Code.TkKs }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<BangKhaoSatDto>>> GetAllBangKhaoSat()
         {
             var lstBangKhaoSat = await _mediator.Send(new GetBangKhaoSatListRequest());

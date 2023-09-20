@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SurveyApplication.Application.Features.Accounts.Handlers.Queries;
 using SurveyApplication.Application.Features.Accounts.Requests.Queries;
+using SurveyApplication.Application.Services;
+using SurveyApplication.Application.Services.Interfaces;
 using SurveyApplication.Domain.Common.Identity;
 using SurveyApplication.Infrastructure;
 using SurveyApplication.Persistence;
@@ -20,6 +22,7 @@ public static class ApplicationServicesRegistration
         services.ConfigureInfrastructureServices(configuration);
         services.ConfigurePersistenceServices(configuration);
         services.AddTransient<IRequestHandler<LoginRequest, AuthResponse>, LoginRequestHandler>();
+        services.AddScoped<IDataDefaultService, DataDefaultService>();
         return services;
     }
 }
