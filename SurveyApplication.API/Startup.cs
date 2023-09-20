@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Models;
 using SurveyApplication.API.Middleware;
 using SurveyApplication.Application;
 using SurveyApplication.Application.Services.Interfaces;
+using SurveyApplication.Utility.LogUtils;
 
 namespace SurveyApplication.API;
 
@@ -32,6 +33,7 @@ public class Startup
                     .AllowAnyMethod()
                     .AllowAnyHeader());
         });
+        services.AddSingleton<ILoggerManager, LoggerManager>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

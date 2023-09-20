@@ -35,7 +35,7 @@
   </form>
 </div>
 <div class="card mt-3">
-  <p-table #dt [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
+  <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
     scrollHeight="calc(100vh - 396px)" [(selection)]="selectedQuanHuyen" dataKey="id"
     styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
@@ -46,7 +46,7 @@
         <th style="width: 40px;">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th style="width: 60px;">
+        <th style="width: 60px;text-align: center;">
           STT
         </th>
         <th pResizableColumn>
@@ -64,12 +64,11 @@
             Loại Quận/Huyện
           </div>
         </th>
-        <th style="width: 120px;">
+        <th style="width: 120px;text-align: center;">
           <div>
             Chức năng
           </div>
         </th>
-
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -77,7 +76,7 @@
         <td>
           <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
         </td>
-        <td>
+        <td class="text-center align-items-center">
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>
@@ -94,9 +93,9 @@
         </td>
 
         <td>
-          <a class="m-3"><span data-toggle="modal" data-target="#createForm" (click)="Edit(rowData)"
-              class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
-          <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;"
+          <a class="m-3" (click)="Edit(rowData)"><span class="pi pi-pencil" title="Cập nhật"
+              aria-hidden="true"></span></a>
+          <a class="m-3" (click)="Delete(rowData)"><span class="pi pi-trash" title="Xoá" style="color: red;"
               aria-hidden="true"></span></a>
         </td>
       </tr>

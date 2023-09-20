@@ -48,48 +48,36 @@
                 <th style="width: 40px;">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th style="width: 60px;">
+                <th style="width: 60px;text-align: center;">
                     STT
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Mã đợt
-                        <p-sortIcon field="maDotKhaoSat"></p-sortIcon>
-                        <p-columnFilter type="text" field="maDotKhaoSat" display="menu"
-                            class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Tên đợt<table><p-sortIcon field="tenDotKhaoSat"></p-sortIcon>
-                            <p-columnFilter type="text" field="tenDotKhaoSat" display="menu"
-                                class="ml-auto"></p-columnFilter>
-                        </table>
+                        Tên đợt
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Loại hình đơn vị khảo sát
-                        <p-sortIcon field="loaiHinhDonVi"></p-sortIcon>
-                        <p-columnFilter type="text" field="mota" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Thời gian
-                        <p-sortIcon field="thoiGian"></p-sortIcon>
-                        <p-columnFilter type="text" field="thoiGian" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Trạng thái
-                        <p-sortIcon field="trangThai"></p-sortIcon>
-                        <p-columnFilter type="text" field="trangThai" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
 
-                <th style="width: 120px;">
+                <th style="width: 120px;text-align: center;">
                     <div>
                         Chức năng
                     </div>
@@ -100,11 +88,10 @@
 
         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
             <tr class="p-selectable-row">
-
                 <td>
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
-                <td>
+                <td style="text-align: center;">
                     <span class="p-column-title">STT</span>
                     {{ rowIndex + 1}}
                 </td>

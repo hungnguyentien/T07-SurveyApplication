@@ -5,8 +5,6 @@ import {
   MessageService,
 } from 'primeng/api';
 import { Table } from 'primeng/table';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
 import { Paging, CauHoi, CreateUpdateCauHoi, Select } from '@app/models';
 import Utils from '@app/helpers/utils';
 import { CauHoiService } from '@app/services';
@@ -26,8 +24,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./question.component.css'],
 })
 export class QuestionComponent {
-  public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
-
   @ViewChild('dt') table!: Table;
   loading: boolean = true;
   lstQuestion!: CauHoi[];
@@ -56,7 +52,6 @@ export class QuestionComponent {
   ) {}
 
   ngOnInit() {
-
     this.loading = true;
     this.cauHoiService.getLoaiCauHoi().subscribe({
       next: (res) => {

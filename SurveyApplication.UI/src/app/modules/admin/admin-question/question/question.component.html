@@ -50,7 +50,7 @@
         <th style="width: 40px;">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th style="width: 60px;">STT</th>
+        <th style="width: 60px;text-align: center;">STT</th>
         <th pResizableColumn pSortableColumn="maCauHoi">
           <div class="flex justify-content-between align-items-center">
             Mã
@@ -71,7 +71,7 @@
             <p-columnFilter type="text" field="data.loaiCauHoiText" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th style="width: 120px;">
+        <th style="width: 120px;text-align: center;">
           <div>Chức năng</div>
         </th>
       </tr>
@@ -81,33 +81,28 @@
         <td>
           <p-tableCheckbox [value]="data"></p-tableCheckbox>
         </td>
-        <td>
-          <span class="p-column-title">STT</span>
+        <td style="text-align: center;">
           <span class="vertical-align-middle"> {{ rowIndex + 1 }}</span>
         </td>
         <td>
-          <span class="p-column-title">Mã</span>
           <span class="vertical-align-middle">{{ data.maCauHoi }}</span>
         </td>
         <td>
-          <span class="p-column-title">Tiêu đề</span>
           <span class="vertical-align-middle">{{ data.tieuDe }}</span>
         </td>
         <td>
-          <span class="p-column-title">Loại câu hỏi</span>
           <span class="vertical-align-middle">
-            <p-tag [value]="data.loaiCauHoiText"></p-tag>
+            {{data.loaiCauHoiText}}
+            <!-- <p-tag [value]="data.loaiCauHoiText"></p-tag> -->
           </span>
         </td>
         <td>
-          <div class="d-flex justify-content-center align-items-center">
-            <a class="m-2" (click)="updateDialog(data.id)">
-              <span class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span>
-            </a>
-            <a class="m-2" (click)="confirmDelete(data.tieuDe, data.id)">
-              <span class="pi pi-trash" title="Xoá" style="color: red" aria-hidden="true"></span>
-            </a>
-          </div>
+          <a class="m-3" (click)="updateDialog(data.id)">
+            <span class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span>
+          </a>
+          <a class="m-3" (click)="confirmDelete(data.tieuDe, data.id)">
+            <span class="pi pi-trash" title="Xoá" style="color: red" aria-hidden="true"></span>
+          </a>
         </td>
       </tr>
     </ng-template>
@@ -139,12 +134,6 @@
           frmCauHoi.controls['maCauHoi'].dirty">
             Vui lòng nhập mã
           </small>
-          <!-- 
-          <div *ngIf="submitted && f('maCauHoi').errors" class="invalid-feedback">
-            <small *ngIf="f('maCauHoi').errors?.['required']">
-              Vui lòng nhập mã câu hỏi
-            </small>
-          </div> -->
         </div>
         <div class="form-group col-md-6">
           <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red">*</span></label>
@@ -238,7 +227,7 @@
 
       <div class="form-group">
         <label for="noidung" class="col-form-label">Nội dung:</label>
-        <ckeditor formControlName="noidung" [editor]="Editor" required></ckeditor>
+        <p-editor formControlName="noidung" [style]="{ height: '100px' }"></p-editor>
         <small *ngIf="!frmCauHoi.controls['noidung'].valid && frmCauHoi.controls['noidung'].dirty"
           class="invalid-feedback">
           Vui lòng nhập nội dung
@@ -260,15 +249,15 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th style="width: 3rem">STT</th>
+              <th style="width: 60px;text-align: center;">STT</th>
               <th style="width: 9rem">Mã</th>
               <th>Câu trả lời</th>
-              <th style="width: 8rem">Chức năng</th>
+              <th style="width: 120px; text-align: center;">Chức năng</th>
             </tr>
           </thead>
           <tbody formArrayName="lstCot">
             <tr *ngFor="let item of lstCot.controls; let i = index" [formGroupName]="i">
-              <td class="text-center">
+              <td class="text-center vertical-align-middle">
                 {{ i + 1 }}
                 <input formControlName="id" type="hidden" />
               </td>
@@ -278,7 +267,7 @@
               <td>
                 <input formControlName="noidung" class="form-control" style="width: 100%" type="text" />
               </td>
-              <td>
+              <td class="text-center vertical-align-middle">
                 <div>
                   <button class="ml-2 btn_plus" type="button" (click)="addItem()">
                     <i class="fa fa-plus" aria-hidden="true"></i>
@@ -305,15 +294,15 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>STT</th>
-              <th style="width: 7rem">Mã</th>
+              <th style="width: 60px;text-align: center;">STT</th>
+              <th style="width: 9rem">Mã</th>
               <th>Câu trả lời</th>
-              <th>Chức năng</th>
+              <th style="width: 120px;text-align: center;">Chức năng</th>
             </tr>
           </thead>
           <tbody formArrayName="lstHang">
             <tr *ngFor="let item of lstHang.controls; let i = index" [formGroupName]="i">
-              <td class="text-center">
+              <td class="text-center vertical-align-middle">
                 {{ i + 1 }}
                 <input formControlName="id" type="hidden" />
               </td>
@@ -323,7 +312,7 @@
               <td>
                 <input formControlName="noidung" class="form-control" style="width: 100%" type="text" />
               </td>
-              <td>
+              <td class="text-center vertical-align-middle">
                 <div>
                   <button class="ml-2 btn_plus" type="button" (click)="addItem(false)">
                     <i class="fa fa-plus" aria-hidden="true"></i>

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -134,7 +133,6 @@ import { AdminAccountComponent } from './admin-account/admin-account.component';
     CommonModule,
     FormsModule,
     AdminRoutingModule,
-    CKEditorModule,
     ReactiveFormsModule,
     // Import PrimeNG modules
     AvatarModule,
@@ -164,7 +162,7 @@ import { AdminAccountComponent } from './admin-account/admin-account.component';
     DragDropModule,
     DropdownModule,
     DynamicDialogModule,
-    // EditorModule,
+    EditorModule,
     FieldsetModule,
     FileUploadModule,
     GalleriaModule,

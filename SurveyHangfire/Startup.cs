@@ -6,10 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Hangfire.Application.Enums;
 using Hangfire.Application.Interfaces;
-using Hangfire.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,8 +17,6 @@ using Hangfire.Application;
 using SurveyApplication.Domain;
 using SurveyApplication.Utility.LogUtils;
 using SurveyApplication.Persistence;
-using SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations;
-using SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces;
 
 namespace Hangfire
 {

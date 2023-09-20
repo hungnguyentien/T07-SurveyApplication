@@ -26,6 +26,8 @@
             ],
             "styles": [
               "node_modules/primeicons/primeicons.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
@@ -36,17 +38,18 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/chart.js/dist/chart.js"
+              "node_modules/chart.js/dist/chart.js",
+              "node_modules/quill/dist/quill.js"
             ],
             "allowedCommonJsDependencies": [
+              "quill",
               "Utils",
               "moment",
               "crypto-js",
               "survey-core",
               "moment-timezone",
               "survey-creator-core",
-              "survey-core/survey.i18n",
-              "@ckeditor/ckeditor5-build-classic"
+              "survey-core/survey.i18n"
             ]
           },
           "configurations": {

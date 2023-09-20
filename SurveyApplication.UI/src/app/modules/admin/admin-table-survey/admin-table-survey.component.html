@@ -40,8 +40,8 @@
     </form>
 </div>
 <div class="card mt-3">
-    <p-table #dt [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
-        scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTableSurvey" dataKey="id"
+    <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
+        [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTableSurvey" dataKey="id"
         styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
         [totalRecords]="dataTotalRecords" [resizableColumns]="true"
@@ -51,58 +51,41 @@
                 <th style="width: 40px;">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th style="width: 60px;">
+                <th style="width: 60px;text-align: center;">
                     STT
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Mã bảng khảo sát<div type="text" display="menu" class="ml-auto"></div>
-                        <p-sortIcon field="maBangKhaoSat"></p-sortIcon>
-                        <p-columnFilter type="text" field="maBangKhaoSat" display="menu"
-                            class="ml-auto"></p-columnFilter>
+                        Mã bảng khảo sát
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Tên bảng khảo sát
-                        <p-sortIcon field="tenBangKhaoSat"></p-sortIcon>
-                        <p-columnFilter type="text" field="tenBangKhaoSat" display="menu"
-                            class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Đợt khảo sát<div type="text" display="menu" class="ml-auto"></div>
-                        <p-sortIcon field="dotKhaoSat"></p-sortIcon>
-                        <p-columnFilter type="text" field="dotKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
+                        Đợt khảo sát
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Loại hình đơn vị khảo sát<div type="text" display="menu" class="ml-auto">
-                            <p-sortIcon field="loaiHinhDonVi"></p-sortIcon>
-                            <p-columnFilter type="text" field="loaiHinhDonVi" display="menu"
-                                class="ml-auto"></p-columnFilter>
-                        </div>
+                        Loại hình đơn vị khảo sát
                     </div>
                 </th>
 
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Thời gian
-                        <p-sortIcon field="thoiGian"></p-sortIcon>
-                        <p-columnFilter type="text" field="thoiGian" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Trạng thái khảo sát
-                        <p-sortIcon field="trangThai"></p-sortIcon>
-                        <p-columnFilter type="text" field="data.trangThai" display="menu"
-                            class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
-                <th pResizableColumn>
+                <th style="width: 120px;text-align: center;">
                     <div>
                         Chức năng
                     </div>
@@ -115,7 +98,7 @@
                 <td>
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
-                <td>
+                <td class="text-center">
                     <span class="p-column-title">STT</span>
                     {{ rowIndex + 1}}
                 </td>
@@ -150,33 +133,37 @@
                     </ng-container>
                 </td>
                 <td>
-                    <a class="m-3">
-                        <ng-container *ngIf="rowData.trangThai == 0">
-                            <span (click)="Edit(rowData)" class="pi pi-pencil " title="Cập nhật" aria-hidden="true"
-                                style="margin-right: 30px;"></span>
-                        </ng-container>
+                    <ng-container *ngIf="rowData.trangThai == 0">
+                        <a class="m-3" (click)="Edit(rowData)">
+                            <span class="pi pi-pencil " title="Cập nhật" aria-hidden="true"></span>
+                        </a>
+                    </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 0">
-                            <span class="pi pi-trash " title="Xoá" (click)="Delete(rowData)"
-                                style="color: red;margin-right: 15px;" aria-hidden="true"></span>
-                        </ng-container>
+                    <ng-container *ngIf="rowData.trangThai == 0">
+                        <a class="m-3" (click)="Delete(rowData)">
+                            <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
+                        </a>
+                    </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 3">
-                            <span (click)="ToggleStatus(rowData)" class="pi pi-caret-right " title="Tiếp tục"
-                                style="color: rgb(32, 154, 60);margin-right: 15px;" aria-hidden="true"></span>
-                        </ng-container>
+                    <ng-container *ngIf="rowData.trangThai == 3">
+                        <a class="m-3" (click)="ToggleStatus(rowData)">
+                            <span class="pi pi-caret-right " title="Tiếp tục" style="color: rgb(32, 154, 60);"
+                                aria-hidden="true"></span>
+                        </a>
+                    </ng-container>
 
-                        <ng-container *ngIf="rowData.trangThai == 1">
-                            <span (click)="ToggleStatus(rowData)" class="pi pi-pause " title="Dừng"
-                                style="color: rgb(212, 22, 22);margin-right: 30px;" aria-hidden="true"></span>
-                        </ng-container>
+                    <ng-container *ngIf="rowData.trangThai == 1">
+                        <a class="m-3" (click)="ToggleStatus(rowData)">
+                            <span class="pi pi-pause " title="Dừng" style="color: rgb(212, 22, 22);"
+                                aria-hidden="true"></span>
+                        </a>
+                    </ng-container>
 
-                        <ng-container
-                            *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
-                            <span routerLink="admin/thong-ke-khao-sat" class="pi pi-eye " title="Xem" aria-hidden="true"
-                                style="margin-right: 5px;"></span>
-                        </ng-container>
-                    </a>
+                    <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
+                        <a class="m-3" (click)="handlerClick('admin/thong-ke-khao-sat')">
+                            <span class="pi pi-eye " title="Xem" aria-hidden="true"></span>
+                        </a>
+                    </ng-container>
                 </td>
             </tr>
         </ng-template>
@@ -298,16 +285,16 @@
                     <table #viewtable class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="width: 60px;">STT</th>
+                                <th style="width: 60px;text-align: center;">STT</th>
                                 <th style="width: 8rem">Mã câu hỏi</th>
                                 <th>Tiêu đề</th>
                                 <th style="width: 7rem">Bắt buộc</th>
-                                <th style="width: 120px;">Chức năng</th>
+                                <th style="width: 120px;text-align: center;">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody formArrayName="bangKhaoSatCauHoi">
                             <tr *ngFor="let item of lstBangKhaoSatCauHoi.controls; let i = index" [formGroupName]="i">
-                                <td class="text-center">
+                                <td class="text-center align-items-center">
                                     {{ i + 1 }}
                                     <input formControlName="id" type="hidden" />
                                     <input formControlName="idCauHoi" type="hidden" />
@@ -373,10 +360,10 @@
             [resizableColumns]="true">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 4rem">
+                    <th style="width: 40px">
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <th style="width: 60px;">
+                    <th style="width: 60px; text-align: center;">
                         STT
                     </th>
                     <th pResizableColumn>
@@ -402,8 +389,8 @@
                     <td>
                         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                     </td>
-                    <td>
-                        <span class="p-column-title">STT</span>
+                    <td class="text-center align-items-center">
+                        <span class=" p-column-title">STT</span>
                         {{ rowIndex + 1}}
                     </td>
 
@@ -468,8 +455,7 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="noidung" class="col-form-label">Nhập nội dung <span style="color: red;">*</span></label>
-                    <ckeditor formControlName="noidung" [editor]="Editor" id="noidung">
-                    </ckeditor>
+                    <p-editor formControlName="noidung" [style]="{ height: '100px' }" id="noidung"></p-editor>
                     <small *ngIf="!frmGuiEmail.controls['noidung'].valid && frmGuiEmail.controls['noidung'].dirty"
                         class="invalid-feedback">
                         Vui lòng nhập tiêu đề

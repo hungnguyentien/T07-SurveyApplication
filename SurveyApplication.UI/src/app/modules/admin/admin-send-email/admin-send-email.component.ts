@@ -14,7 +14,6 @@ import {
 import { GuiEmailService, ObjectSurveyService } from '@app/services';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { GuiEmailTrangThai } from '@app/enums';
 import { DatePipe } from '@angular/common';
 
@@ -24,7 +23,6 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./admin-send-email.component.css'],
 })
 export class AdminSendEmailComponent {
-  public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
   @ViewChild('dt') table!: Table;
   loading: boolean = true;
   datas!: GuiEmailBks[];
