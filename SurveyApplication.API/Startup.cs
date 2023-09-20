@@ -8,8 +8,13 @@ namespace SurveyApplication.API;
 public class Startup
 {
     private IConfiguration Configuration { get; }
+    [Obsolete("Obsolete")]
     public Startup(IConfiguration configuration)
     {
+        //Config NLog
+        var appBasePath = Directory.GetCurrentDirectory();
+        NLog.GlobalDiagnosticsContext.Set("appbasepath", appBasePath);
+        NLog.LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config")).GetCurrentClassLogger();
         Configuration = configuration;
     }
 
@@ -50,6 +55,7 @@ public class Startup
 
         app.UseCors("CorsPolicy");
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        //TODO BUG
         UpdatePermissionTable(serviceProvider);
     }
 
