@@ -24,6 +24,17 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             if (existingUser != null)
                 throw new Exception($"Tài khoản '{request.Register.UserName}' đã tồn tại");
 
+            if (request.Register.Img != null && request.Register.Img.Length > 0)
+            {
+                var fileName = DateTime.Now.Ticks.ToString() + ".jpg";
+                request.Register.Image = fileName;
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await request.Register.Img.CopyToAsync(fileStream);
+                }
+            }
+
             var user = new ApplicationUser
             {
                 Email = request.Register.Email,
@@ -32,7 +43,8 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 UserName = request.Register.UserName,
                 NormalizedUserName = request.Register.UserName.ToUpper(),
                 EmailConfirmed = true,
-                Address = request.Register.Address
+                Address = request.Register.Address,
+                Image = request.Register.Image,
             };
             var existingEmail = await _userManager.FindByEmailAsync(request.Register.Email);
             if (existingEmail != null) throw new Exception($"Email {request.Register.Email} đã tồn tại!");

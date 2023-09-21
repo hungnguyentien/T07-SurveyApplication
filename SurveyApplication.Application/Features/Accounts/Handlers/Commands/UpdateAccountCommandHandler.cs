@@ -30,11 +30,45 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             if (validatorResult.IsValid == false) throw new ValidationException(validatorResult);
 
             var account = await _surveyRepo.Account.GetAsync(request.AccountDto?.Id ?? "");
+
+            if (request.AccountDto.Img != null && request.AccountDto.Img.Length > 0)
+            {
+                // Xóa ảnh cũ (nếu có)
+                if (!string.IsNullOrEmpty(account.Image))
+                {
+                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", account.Image);
+                    if (File.Exists(oldImagePath))
+                    {
+                        File.Delete(oldImagePath);
+                    }
+                }
+
+                // Tạo tên file và lưu ảnh mới
+                var fileName = DateTime.Now.Ticks.ToString() + ".jpg";
+                account.Image = fileName;
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Imagebaiviet", fileName);
+                using (var stream = File.Create(path))
+                {
+                    await request.AccountDto.Img.CopyToAsync(stream);
+                }
+            }
+
+            if (request.AccountDto.EmailConfirmed == null)
+            {
+                request.AccountDto.EmailConfirmed = true;
+            }
+
+            if (request.AccountDto.LockoutEnabled == null)
+            {
+                request.AccountDto.LockoutEnabled = true;
+            }
+
             request.AccountDto.NormalizedEmail = request.AccountDto.Email.ToUpper();
             request.AccountDto.NormalizedUserName = request.AccountDto.UserName.ToUpper();
-            request.AccountDto.EmailConfirmed = true;
+            //request.AccountDto.EmailConfirmed = true;
             request.AccountDto.PasswordHash = account.PasswordHash;
-            request.AccountDto.LockoutEnabled = true;
+            //request.AccountDto.LockoutEnabled = true;
+            request.AccountDto.Image = account.Image;
 
             _mapper.Map(request.AccountDto, account);
             await _surveyRepo.Account.Update(account);
