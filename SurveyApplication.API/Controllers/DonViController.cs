@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Diagnostics;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Attributes;
@@ -53,15 +54,16 @@ namespace SurveyApplication.API.Controllers
         [HasPermission(new[] { (int)EnumModule.Code.QlDv }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<DonViDto>> CreateDonVi([FromBody] CreateDonViAndNguoiDaiDienDto obj)
         {
-            var command_1 = new CreateDonViCommand { DonViDto = obj.DonViDto };
-            var response_1 = await _mediator.Send(command_1);
-            obj.NguoiDaiDienDto.IdDonVi = response_1.Id;
-            var command_2 = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
-            var response_2 = await _mediator.Send(command_2);
+            var command1 = new CreateDonViCommand { DonViDto = obj.DonViDto };
+            var response1 = await _mediator.Send(command1);
+            Debug.Assert(obj.NguoiDaiDienDto != null, "obj.NguoiDaiDienDto != null");
+            obj.NguoiDaiDienDto.IdDonVi = response1.Id;
+            var command2 = new CreateNguoiDaiDienCommand { NguoiDaiDienDto = obj.NguoiDaiDienDto };
+            var response2 = await _mediator.Send(command2);
             return Ok(new
             {
-                response_1 = response_1,
-                response_2 = response_2,
+                response_1 = response1,
+                response_2 = response2,
             });
         }
 

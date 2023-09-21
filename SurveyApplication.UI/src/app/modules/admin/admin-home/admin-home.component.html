@@ -1,43 +1,38 @@
 <div>
-  <h5 class="m-4">Dashboard</h5>  
-  <!-- <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" [editable]="true" optionLabel="name"></p-dropdown> -->
+  <h5>Dashboard</h5>
   <form *ngIf="FormAminHome" [formGroup]="FormAminHome" class="row" (ngSubmit)="onSubmit()">
-      <div class="form-group form-inline col-4">
-          <div class="col-4">
-              <label for="ngayBatDau">Ngày bắt đầu</label>
-          </div>
-          <div class="col-8">
-              <p-calendar formControlName="NgayBatDau" value="valueNgayBatDau" id="ngayBatDau" class="input-date-custom"
-                  dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
-          </div>
+    <div class="form-group form-inline col-3 my-0">
+      <div class="col-4">
+        <label for="ngayBatDau">Ngày bắt đầu</label>
       </div>
-      <div class="form-group form-inline col-4">
-          <div class="col-4">
-            <label for="ngayKetThuc">Ngày kết thúc</label>
-          </div>
-          <div class="col-8">
-              <p-calendar formControlName="NgayKetThuc"value="valueNgayKetThuc" id="ngayKetThuc" class="input-date-custom"
-                  dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
-          </div>
+      <div class="col-8">
+        <p-calendar formControlName="NgayBatDau" value="valueNgayBatDau" id="ngayBatDau" class="input-date-custom"
+          dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
       </div>
-      <div class="form-group form-inline col-4">
-        <button pButton type="submit" icon="pi pi-search" label="Tìm Kiếm" 
-            class="btn btn-primary custom-button ml-3" style="padding: 9.25px 20px;">
-        </button>
-        <button pButton type="button" icon="pi pi-refresh" label="Reset" (click)="reset()"
-            class="btn btn-primary custom-button ml-3" style="padding: 9.25px 20px;">
-        </button>
+    </div>
+    <div class="form-group form-inline col-3 my-0">
+      <div class="col-4">
+        <label for="ngayKetThuc">Ngày kết thúc</label>
       </div>
-      <div class="form-group form-inline col-4">
+      <div class="col-8">
+        <p-calendar formControlName="NgayKetThuc" value="valueNgayKetThuc" id="ngayKetThuc" class="input-date-custom"
+          dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
       </div>
+    </div>
+    <div class="form-group form-inline col-3 my-0">
+      <button pButton type="submit" icon="pi pi-search" label="Tìm Kiếm" class="btn btn-primary custom-button ml-3"
+        style="padding: 9.25px 20px;">
+      </button>
+      <button pButton type="button" icon="pi pi-refresh" label="Reset" (click)="reset()"
+        class="btn btn-primary custom-button ml-3" style="padding: 9.25px 20px;">
+      </button>
+    </div>
   </form>
 </div>
 
 <div>
   <hr>
-  <h5 class="m-4">Thống kê</h5>  
-  <!--  -->
-  <div class="card">
+  <div class="card mt-5">
     <div class="row">
       <div class="col-md-4 style_sum">
         <div class="row" [ngStyle]="{backgroundColor:'var(--green-600)', height: '100px'}">
@@ -46,20 +41,20 @@
         </div>
       </div>
       <div class="col-md-4 style_sum">
-        <div class="row"[ngStyle]="{backgroundColor:'var(--orange-400)', height: '100px'}">
+        <div class="row" [ngStyle]="{backgroundColor:'var(--orange-400)', height: '100px'}">
           <h5 class="col-md-8">Tổng số bảng khảo sát</h5>
           <p class="col-md-4">{{sumBangKhoaSat}}</p>
         </div>
       </div>
       <div class="col-md-4 style_sum">
-        <div class="row"[ngStyle]="{backgroundColor:'var(--indigo-500)', height: '100px'}">
+        <div class="row" [ngStyle]="{backgroundColor:'var(--indigo-500)', height: '100px'}">
           <h5 class="col-md-8">Tổng số lượt tham gia khảo sát</h5>
           <p class="col-md-4">{{sumSoLuongThamGia}}</p>
         </div>
       </div>
     </div>
   </div>
-<!--  -->
+  <!--  -->
   <div class="card mt-5">
     <div class="row">
       <div class="col-md-6">
@@ -67,7 +62,7 @@
         <div class="flex justify-content-center">
           <p-chart type="doughnut" [data]="dataNhomDoiTuong" [options]="optionNhomDoiTuong"></p-chart>
           <div>
-            <a href=""><i class="pi pi-eye"></i>Xem thêm</a>
+            <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem thêm</a>
           </div>
         </div>
       </div>
@@ -76,7 +71,7 @@
         <div class="flex justify-content-center">
           <p-chart type="doughnut" [data]="dataDotKhaosat" [options]="optionDotKhaosat"></p-chart>
           <div>
-            <a routerLink=""><i class="pi pi-eye"></i>Xem thêm</a>
+            <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem thêm</a>
           </div>
         </div>
       </div>
@@ -86,12 +81,13 @@
   <div class="card mt-5">
     <div class="row">
       <div class="col-md-12">
-        <h6 class="flex mt-4 mb-4 ml-4">Số đơn vị tham gia khảo sát theo Tỉnh/Thành phố  <span class="ml-4"> <a href=""><i class="pi pi-eye"></i>Xem thêm</a></span></h6> 
-        <div class="card">
+        <h6 class="flex mt-4 mb-4 ml-4">Số đơn vị tham gia khảo sát theo Tỉnh/Thành phố <span class="ml-4">
+            <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem thêm</a></span></h6>
+        <div class="card p-3" style="border: 0;">
           <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
         </div>
       </div>
     </div>
   </div>
-  
+
 </div>

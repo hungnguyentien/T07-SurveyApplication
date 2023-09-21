@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Queries;
+using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.API.Controllers
@@ -26,10 +27,15 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<BaoCaoCauHoiDto>> GetBaoCaoCauHoi([FromQuery] GetBaoCaoCauHoiRequest data)
         {
             var result = await _mediator.Send(data);
-            return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            }));
+            return Ok(result);
+        }
+
+        [HttpGet("GetBaoCaoCauHoiChiTiet")]
+        [HasPermission(new[] { (int)EnumModule.Code.TkKs }, new[] { (int)EnumPermission.Type.Read })]
+        public async Task<ActionResult<BaseQuerieResponse<BaoCaoCauHoiChiTietDto>>> GetBaoCaoCauHoiChiTiet([FromQuery] GetBaoCaoCauHoiChiTietRequest data)
+        {
+            var result = await _mediator.Send(data);
+            return Ok(result);
         }
 
         [HttpGet("GetDashBoard")]
@@ -37,10 +43,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<DashBoardDto>> GetDashBoard([FromQuery] GetDashBoardRequest data)
         {
             var result = await _mediator.Send(data);
-            return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            }));
+            return Ok(result);
         }
     }
 }
+

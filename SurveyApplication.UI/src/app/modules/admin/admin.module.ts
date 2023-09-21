@@ -111,6 +111,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ShareModule } from '@app/layout/share/share.module';
 import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { AdminAccountComponent } from './admin-account/admin-account.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { AdminAccountComponent } from './admin-account/admin-account.component';
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     AdminRoutingModule,
     ReactiveFormsModule,
     // Import PrimeNG modules
@@ -224,9 +226,9 @@ import { AdminAccountComponent } from './admin-account/admin-account.component';
     AnimateModule,
     CardModule,
     HttpClientModule,
-    ShareModule
+    ShareModule,
   ],
- 
+
   providers: [DatePipe],
 })
 export class AdminModule {}
