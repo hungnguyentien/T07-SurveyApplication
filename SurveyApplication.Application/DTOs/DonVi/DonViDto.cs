@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.DonVi
 {
-    public partial class DonViDto : BaseDto
+    public class DonViDto : BaseDto
     {
         public string? MaDonVi { get; set; }
         public int? IdLoaiHinh { get; set; }

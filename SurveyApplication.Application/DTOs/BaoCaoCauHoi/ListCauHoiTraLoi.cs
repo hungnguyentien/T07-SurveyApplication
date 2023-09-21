@@ -9,7 +9,8 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
 {
     public class ListCauHoiTraLoi
     {
-        public int IdCauHoi { get; set; }
+        public int? IdCauHoi { get; set; }
+        public string? TenCauHoi { get; set; }
         public List<BaoCaoCauHoiDto>? CauHoiTraLoi { get; set; }
     }
 }

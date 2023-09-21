@@ -188,7 +188,6 @@ export class ProvinceComponent {
     });
   }
   confirmDeleteMultiple() {
-    debugger
     let ids: number[] = [];
     this.selectedTinhThanh.forEach((el) => {
       ids.push(el.id);
@@ -200,8 +199,6 @@ export class ProvinceComponent {
       accept: () => {
         this.TinhThanhService.deleteMultiple(ids).subscribe({
           next: (res:any) => {
-          debugger
-            
             if(res.success == false){
               Utils.messageError(this.messageService, res.message)
             }

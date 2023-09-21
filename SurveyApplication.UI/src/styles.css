@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
-@import 'primeflex/primeflex.css';
+@import "primeflex/primeflex.css";
 @import "assets/css/custom.css";
 
 img {
@@ -126,4 +126,3 @@ input[type="button"].sd-btn:focus {
 .icon-gui-thong-tin {
   background-image: url("/assets/img/icons/gui-thong-tin.svg");
 }
-

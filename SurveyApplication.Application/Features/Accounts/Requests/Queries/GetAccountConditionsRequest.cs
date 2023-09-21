@@ -5,7 +5,7 @@ using SurveyApplication.Domain.Common.Responses;
 
 namespace SurveyApplication.Application.Features.Accounts.Requests.Queries
 {
-    public class GetUserConditionsRequest : BasePagingDto, IRequest<BaseQuerieResponse<AccountDto>>
+    public class GetAccountConditionsRequest : BasePagingDto, IRequest<BaseQuerieResponse<AccountDto>>
     {
     }
 }

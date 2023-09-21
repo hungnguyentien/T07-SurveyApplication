@@ -8,15 +8,15 @@ using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
 {
-    public class GetUserConditionsRequestHandler : BaseMasterFeatures, IRequestHandler<GetUserConditionsRequest, BaseQuerieResponse<AccountDto>>
+    public class GetAccountConditionsRequestHandler : BaseMasterFeatures, IRequestHandler<GetAccountConditionsRequest, BaseQuerieResponse<AccountDto>>
     {
         private readonly IMapper _mapper;
-        public GetUserConditionsRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+        public GetAccountConditionsRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
         {
             _mapper = mapper;
         }
 
-        public async Task<BaseQuerieResponse<AccountDto>> Handle(GetUserConditionsRequest request, CancellationToken cancellationToken)
+        public async Task<BaseQuerieResponse<AccountDto>> Handle(GetAccountConditionsRequest request, CancellationToken cancellationToken)
         {
             var lstAccount = await _surveyRepo.Account.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize,
                 x => (string.IsNullOrEmpty(request.Keyword) || x.UserName.Contains(request.Keyword)) &&

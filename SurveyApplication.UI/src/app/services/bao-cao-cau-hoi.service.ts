@@ -17,4 +17,13 @@ export class BaoCaoCauHoiService {
       `${environment.apiUrl}/BaoCaoCauHoi/GetBaoCaoCauHoi${query}`
     );
   }
+
+  // getBaoCaoDashboard(params: BaoCaoDashboardRequest) {
+  //   let query = Utils.getParamsQuery(Object.keys(params), Object.values(params));
+  //   return this.http.get<BaoCaoDashboard>(
+  //     `${environment.apiUrl}/BaoCaoCauHoi/GetBaoCaoDashboard${query}`
+  //   );
+    
+  // }
+
 }

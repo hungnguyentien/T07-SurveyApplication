@@ -25,6 +25,13 @@ namespace SurveyApplication.API.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<RoleDto>>> GetAll()
+        {
+            var response = await _mediator.Send(new GetRoleListRequest());
+            return response;
+        }
+
         [HttpGet("GetByCondition")]
         public async Task<ActionResult<BaseQuerieResponse<RoleDto>>> GetByCondition([FromQuery] Paging paging)
         {

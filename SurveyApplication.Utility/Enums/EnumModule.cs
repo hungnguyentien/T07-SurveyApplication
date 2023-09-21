@@ -20,7 +20,7 @@ namespace SurveyApplication.Utility.Enums
             QlKs = 6,
             [Description("Quản lý gửi email")]
             QlGm = 7,
-            [Description("Danh sách thống kê khảo sát")]
+            [Description("Thống kê báo cáo")]
             TkKs = 8,
             [Description("Quản lý lĩnh vực hoạt động")]
             LvHd = 9,
@@ -30,7 +30,11 @@ namespace SurveyApplication.Utility.Enums
             QlQh = 11,
             [Description("Quản lý xã/phường")]
             QlPx = 12,
-            ///Max = 12
+            [Description("Quản lý nhóm quyền")]
+            QlNq = 13,
+            [Description("Quản lý tài khoản")]
+            QlTk = 14,
+            ///Max = 14
         }
     }
 }

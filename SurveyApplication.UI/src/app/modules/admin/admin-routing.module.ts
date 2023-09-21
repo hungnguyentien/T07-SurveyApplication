@@ -8,133 +8,158 @@ import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-s
 import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
 import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';
 import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
-import { AuthGuardService } from '@app/helpers/auth-guard.service';
 import { FieldOfActivityComponent } from './admin-categories/field-of-activity/field-of-activity.component';
 import { ProvinceComponent } from './admin-categories/province/province.component';
 import { DistrictComponent } from './admin-categories/district/district.component';
 import { WardsComponent } from './admin-categories/wards/wards.component';
 import { Error403Component } from '@app/layout/partials/error403/error403.component';
 import { AdminRoleComponent } from './admin-role/admin-role.component';
+import { AdminAccountComponent } from './admin-account/admin-account.component';
+import { AuthGuard } from '@app/helpers';
+import { CodeModule } from '@app/enums';
 
 const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Admin',   
+      title: 'Admin',
     },
     children: [
       {
         path: 'dashboard',
-        component: AdminHomeComponent, canActivate: [AuthGuardService],
+        component: AdminHomeComponent,
         title: 'Dashboard',
+        canActivate: [AuthGuard],
         data: {
-          title: 'Dashboard',
+          role: CodeModule.Dashboard,
         },
       },
       {
         path: 'loai-hinh-don-vi',
-        component: AdminUnitTypeComponent, canActivate: [AuthGuardService],
+        component: AdminUnitTypeComponent,
         title: 'Quản lý loại hình đơn vị',
+        canActivate: [AuthGuard],
         data: {
-          title: 'loai-hinh-don-vi',
+          role: CodeModule.QlLhDv,
         },
       },
       {
         path: 'quan-ly-don-vi',
-        component: AdminObjectSurveyComponent, canActivate: [AuthGuardService],
+        component: AdminObjectSurveyComponent,
         title: 'Quản lý đơn vị',
+        canActivate: [AuthGuard],
         data: {
-          title: 'quan-ly-don-vi',
+          role: CodeModule.QlDv,
         },
       },
       {
         path: 'quan-ly-cau-hoi',
-        component: QuestionComponent, canActivate: [AuthGuardService],
+        component: QuestionComponent,
         title: 'Quản lý câu hỏi',
+        canActivate: [AuthGuard],
         data: {
-          title: 'Quản lý câu hỏi',
+          role: CodeModule.QlCh,
         },
       },
       {
         path: 'dot-khao-sat',
-        component: AdminPeriodSurveyComponent, canActivate: [AuthGuardService],
+        component: AdminPeriodSurveyComponent,
         title: 'Quản lý đợt khảo sát',
+        canActivate: [AuthGuard],
         data: {
-          title: 'dot-khao-sat',
+          role: CodeModule.QlDks,
         },
       },
       {
         path: 'bang-khao-sat',
-        component:AdminTableSurveyComponent, canActivate: [AuthGuardService],
+        component: AdminTableSurveyComponent,
         title: 'Quản lý bảng khảo sát',
+        canActivate: [AuthGuard],
         data: {
-          title: 'bang-khao-sat',
+          role: CodeModule.QlKs,
         },
       },
       {
         path: 'gui-email',
-        component:AdminSendEmailComponent, canActivate: [AuthGuardService],
+        component: AdminSendEmailComponent,
         title: 'Quản lý gửi email',
+        canActivate: [AuthGuard],
         data: {
-          title: 'gui-email',
+          role: CodeModule.QlGm,
         },
-      }, {
+      },
+      {
         path: 'thong-ke-khao-sat',
-        component:AdminStatisticalComponent,
+        component: AdminStatisticalComponent,
         title: 'Danh sách thống kê khảo sát',
+        canActivate: [AuthGuard],
         data: {
-          title: 'thong-ke-khao-sat',
+          role: CodeModule.TkKs,
         },
       },
 
       {
         path: 'linh-vuc-hoat-dong',
-        component: FieldOfActivityComponent, canActivate: [AuthGuardService],
+        component: FieldOfActivityComponent,
         title: 'Quản lý lĩnh vực hoạt động',
+        canActivate: [AuthGuard],
         data: {
           title: 'Quản lý lĩnh vực hoạt động',
         },
       },
       {
         path: 'tinh-thanh',
-        component: ProvinceComponent, canActivate: [AuthGuardService],
+        component: ProvinceComponent,
         title: 'Quản lý tỉnh thành',
+        canActivate: [AuthGuard],
         data: {
           title: 'Quản lý tỉnh thành',
         },
       },
       {
         path: 'quan-huyen',
-        component:DistrictComponent, canActivate: [AuthGuardService],
+        component: DistrictComponent,
         title: 'Quản lý quận/huyện',
+        canActivate: [AuthGuard],
         data: {
           title: 'Quản lý quận/huyện',
         },
       },
       {
         path: 'xa-phuong',
-        component:WardsComponent, canActivate: [AuthGuardService],
+        component: WardsComponent,
         title: 'Quản lý xã/phường',
+        canActivate: [AuthGuard],
         data: {
           title: 'Quản lý xã/phường',
         },
       },
       {
         path: 'nhom-quyen',
-        component:AdminRoleComponent, canActivate: [AuthGuardService],
+        component: AdminRoleComponent,
         title: 'Quản lý nhóm quyền',
+        canActivate: [AuthGuard],
         data: {
           title: 'Quản lý nhóm quyền',
         },
       },
       {
+        path: 'tai-khoan',
+        component: AdminAccountComponent,
+        title: 'Quản lý tài khoản',
+        canActivate: [AuthGuard],
+        data: {
+          title: 'Quản lý tài khoản',
+        },
+      },
+      {
         path: 'error-403',
-        component:Error403Component,
+        component: Error403Component,
         title: 'error-403',
         data: {
           title: 'error-403',
         },
-      }
+      },
     ],
   },
 ];

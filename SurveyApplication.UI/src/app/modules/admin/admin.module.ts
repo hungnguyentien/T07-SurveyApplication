@@ -111,6 +111,7 @@ import { AdminStatisticalComponent } from './admin-statistical/admin-statistical
 import { HttpClientModule } from '@angular/common/http';
 import { ShareModule } from '@app/layout/share/share.module';
 import { AdminRoleComponent } from './admin-role/admin-role.component';
+import { AdminAccountComponent } from './admin-account/admin-account.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import { AdminRoleComponent } from './admin-role/admin-role.component';
     WardsComponent,
     AdminStatisticalComponent,
     AdminRoleComponent,
+    AdminAccountComponent,
   ],
   imports: [
     CommonModule,

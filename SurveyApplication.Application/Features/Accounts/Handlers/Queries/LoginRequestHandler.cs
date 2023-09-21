@@ -34,53 +34,9 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
 
     public async Task<AuthResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByNameAsync(request.Email);
-        if (user == null)
-        {
-            if (request.Email == AccountAdmin.UserName)
-            {
-                var hasher = new PasswordHasher<ApplicationUser>();
-                var userAdmin = new ApplicationUser
-                {
-                    Id = AccountAdmin.Uid,
-                    Email = AccountAdmin.Email,
-                    NormalizedEmail = AccountAdmin.Email.ToUpper(),
-                    Name = AccountAdmin.Name,
-                    UserName = AccountAdmin.UserName,
-                    NormalizedUserName = AccountAdmin.UserName.ToUpper(),
-                    PasswordHash = hasher.HashPassword(null!, AccountAdmin.Password),
-                    EmailConfirmed = true,
-                    Address = AccountAdmin.Address,
-                    ActiveFlag = (int)EnumCommon.ActiveFlag.Active,
-                    Deleted = false
-                };
-                await _userManager.CreateAsync(userAdmin);
-                var roleAdmin = new Domain.Role
-                {
-                    Id = RoleAdmin.Id,
-                    Name = RoleAdmin.Name,
-                    NormalizedName = RoleAdmin.Name.ToUpper(),
-                    ActiveFlag = (int)EnumCommon.ActiveFlag.Active,
-                    Deleted = false
-                };
-                await _roleManager.CreateAsync(roleAdmin);
-                foreach (var claimModule in MapEnum.MatrixPermission)
-                {
-                    await _roleManager.AddClaimAsync(roleAdmin, new Claim((claimModule.Key).ToString(), JsonExtensions.SerializeToJson(claimModule.Value), JsonClaimValueTypes.JsonArray));
-                }
-
-                await _userManager.AddToRoleAsync(userAdmin, RoleAdmin.Name);
-                user = await _userManager.FindByNameAsync(AccountAdmin.UserName);
-            }
-            else
-            {
-                throw new Exception($"User with {request.Email} not found.");
-            }
-        }
-
+        var user = await _userManager.FindByNameAsync(request.UserName) ?? throw new Exception($"Tài khoản {request.UserName} không tồn tại.");
         var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, false);
-        if (!result.Succeeded) throw new Exception($"Credentials for '{request.Email} aren't valid'.");
-
+        if (!result.Succeeded) throw new Exception("Mật khẩu hoặc tài khoản không đúng");
         var jwtSecurityToken = await GenerateToken(user);
         var response = new AuthResponse
         {
@@ -110,6 +66,7 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Name, user.Name ?? user.UserName),
                 new Claim(CustomAuth.Uid, user.Id)
             }
             .Union(userClaims)

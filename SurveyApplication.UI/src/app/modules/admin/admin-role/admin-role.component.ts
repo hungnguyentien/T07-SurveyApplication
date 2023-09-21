@@ -47,6 +47,10 @@ export class AdminRoleComponent {
   ) {}
 
   ngOnInit() {
+    this.createForm();
+  }
+
+  createForm = () => {
     this.frmRole = this.formBuilder.group({
       id: new FormControl<string>(''),
       name: ['', Validators.required],
@@ -54,7 +58,7 @@ export class AdminRoleComponent {
     });
     this.treeData = [];
     this.selectedTreeData = [];
-  }
+  };
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -150,8 +154,7 @@ export class AdminRoleComponent {
     this.isCreate = true;
     this.visible = true;
     this.submitted = false;
-    this.treeData = [];
-    this.selectedTreeData = [];
+    this.createForm();
     this.roleService.getMatrixPermission().subscribe({
       next: (res) => {
         res.forEach((el) => {
@@ -180,8 +183,7 @@ export class AdminRoleComponent {
     this.isCreate = false;
     this.visible = true;
     this.submitted = false;
-    this.treeData = [];
-    this.selectedTreeData = [];
+    this.createForm();
     this.roleService.getPermissionById(id).subscribe({
       next: (res) => {
         let k = Object.keys(res);

@@ -70,7 +70,7 @@ public class NguoiDaiDienController : ControllerBase
     }
 
     [HttpDelete("DeleteMultiple")]
-    public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+    public async Task<ActionResult> DeleteMultipleLinhVucHoatDong(List<int> ids)
     {
         var command = new DeleteNguoiDaiDienCommand { Ids = ids };
         var response = await _mediator.Send(command);

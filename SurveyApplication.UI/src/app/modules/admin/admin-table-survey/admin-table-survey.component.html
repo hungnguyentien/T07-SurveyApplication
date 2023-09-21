@@ -18,8 +18,8 @@
                 class="custom-button"></button>
         </div>
         <div class="ml-3">
-            <button pButton type="button"(click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
-                style="background-color: #ea5c5c;"></button>
+            <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
+                class="custom-button" style="background-color: #ea5c5c;"></button>
         </div>
         <div class="ml-3">
             <button *ngIf="selectedTableSurvey && selectedTableSurvey.length > 0" pButton type="button"
@@ -56,21 +56,23 @@
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Mã bảng khảo sát<div type="text"  display="menu" class="ml-auto"></div>
+                        Mã bảng khảo sát<div type="text" display="menu" class="ml-auto"></div>
                         <p-sortIcon field="maBangKhaoSat"></p-sortIcon>
-                        <p-columnFilter type="text" field="maBangKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
+                        <p-columnFilter type="text" field="maBangKhaoSat" display="menu"
+                            class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
                         Tên bảng khảo sát
                         <p-sortIcon field="tenBangKhaoSat"></p-sortIcon>
-                        <p-columnFilter type="text" field="tenBangKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
+                        <p-columnFilter type="text" field="tenBangKhaoSat" display="menu"
+                            class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
                     <div class="flex justify-content-between align-items-center">
-                        Đợt khảo sát<div type="text"  display="menu" class="ml-auto"></div>
+                        Đợt khảo sát<div type="text" display="menu" class="ml-auto"></div>
                         <p-sortIcon field="dotKhaoSat"></p-sortIcon>
                         <p-columnFilter type="text" field="dotKhaoSat" display="menu" class="ml-auto"></p-columnFilter>
                     </div>
@@ -79,7 +81,8 @@
                     <div class="flex justify-content-between align-items-center">
                         Loại hình đơn vị khảo sát<div type="text" display="menu" class="ml-auto">
                             <p-sortIcon field="loaiHinhDonVi"></p-sortIcon>
-                        <p-columnFilter type="text" field="loaiHinhDonVi" display="menu" class="ml-auto"></p-columnFilter>
+                            <p-columnFilter type="text" field="loaiHinhDonVi" display="menu"
+                                class="ml-auto"></p-columnFilter>
                         </div>
                     </div>
                 </th>
@@ -95,7 +98,8 @@
                     <div class="flex justify-content-between align-items-center">
                         Trạng thái khảo sát
                         <p-sortIcon field="trangThai"></p-sortIcon>
-                        <p-columnFilter type="text" field="data.trangThai" display="menu" class="ml-auto"></p-columnFilter>
+                        <p-columnFilter type="text" field="data.trangThai" display="menu"
+                            class="ml-auto"></p-columnFilter>
                     </div>
                 </th>
                 <th pResizableColumn>
@@ -294,11 +298,11 @@
                     <table #viewtable class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="width: 5rem">STT</th>
+                                <th style="width: 60px;">STT</th>
                                 <th style="width: 8rem">Mã câu hỏi</th>
                                 <th>Tiêu đề</th>
                                 <th style="width: 7rem">Bắt buộc</th>
-                                <th style="width: 7rem">Chức năng</th>
+                                <th style="width: 120px;">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody formArrayName="bangKhaoSatCauHoi">
@@ -365,26 +369,27 @@
             styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
             [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loadingCauHoi"
             [paginator]="true" [totalRecords]="dataTotalRecordsCauHoi"
-            currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+            currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+            [resizableColumns]="true">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 4rem">
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <th style="min-width: 0rem">
+                    <th style="width: 60px;">
                         STT
                     </th>
-                    <th style="min-width: 8rem">
+                    <th pResizableColumn>
                         <div class="flex justify-content-between align-items-center">
                             Mã
                         </div>
                     </th>
-                    <th style="min-width: 16rem">
+                    <th pResizableColumn>
                         <div class="flex justify-content-between align-items-center">
                             Tiêu đề
                         </div>
                     </th>
-                    <th style="min-width: 16rem">
+                    <th pResizableColumn>
                         <div class="flex justify-content-between align-items-center">
                             Loại câu hỏi
                         </div>

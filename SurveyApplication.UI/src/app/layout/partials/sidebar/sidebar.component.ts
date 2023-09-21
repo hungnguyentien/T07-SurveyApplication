@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { CodeModule, KqTrangThai } from '@app/enums';
+import { Module } from '@app/models';
+import { LoginService, ModuleService } from '@app/services';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,39 +10,63 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
-  constructor(private router: Router) {}
+  lstModule: Module[] = [];
+  module!: Module;
+  constructor(
+    private router: Router,
+    private moduleService: ModuleService,
+    private loginService: LoginService
+  ) {}
   ngOnInit(): void {
+    this.moduleService.getAll().subscribe({
+      next: (res) => {
+        this.lstModule = [];
+        const currentUser = this.loginService.getCurrentUser();
+        res.forEach((x) => {
+          if (
+            x.routerLink === '#' &&
+            this.hasModuleChil(
+              res.filter((p) => p.idParent == x.id),
+              currentUser
+            )
+          )
+            this.lstModule.push(x);
+          else if (currentUser[(CodeModule as any)[x.codeModule]])
+            this.lstModule.push(x);
+        });
+      },
+    });
+  }
+
+  hasModuleChil(chil: Module[], currentUser: any): boolean {
+    return !!chil.find((x) => currentUser[(CodeModule as any)[x.codeModule]]);
+  }
+
+  ngAfterViewChecked() {
     document.querySelectorAll(`a[href="${this.router.url}"]`).forEach((el) => {
       el.parentElement?.classList.add('active');
-    });
-    const navItems = document.querySelectorAll('.nav-item');
-    const removeActive = () => {
-      navItems.forEach((navItem) => {
-        navItem.classList.remove('active');
-      });
-    };
-    navItems.forEach((item) => {
-      item.addEventListener('click', () => {
-        removeActive();
-        item.classList.add('active');
-      });
-    });
-    // Lấy tất cả các phần tử mục con
-    let collapseItems = document.querySelectorAll('.collapse-item');
-    // Lặp qua tất cả các mục con và thêm/xóa lớp active khi mục được nhấp
-    collapseItems.forEach(function (item) {
-      item.addEventListener('click', function () {
-        // Xóa lớp active từ tất cả các mục con
-        collapseItems.forEach(function (item) {
-          item.classList.remove('active');
-        });
-        // Thêm lớp active vào mục con được nhấp
-        item.classList.add('active');
-      });
     });
   }
 
   handlerClick = (link: string) => {
     this.router.navigate([link]);
   };
+
+  trackByFn(index: number) {
+    return index;
+  }
+
+  getLstModuleNoChil(): Module[] {
+    return this.lstModule.filter(
+      (x) => x.routerLink !== '#' && x.idParent === 0
+    );
+  }
+
+  getLstModuleParent(): Module[] {
+    return this.lstModule.filter((x) => x.routerLink === '#');
+  }
+
+  getLstModuleChil(idParent: number): Module[] {
+    return this.lstModule.filter((x) => x.idParent === idParent);
+  }
 }

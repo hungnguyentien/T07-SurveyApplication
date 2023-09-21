@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Queries;
@@ -25,14 +26,21 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<BaoCaoCauHoiDto>> GetBaoCaoCauHoi([FromQuery] GetBaoCaoCauHoiRequest data)
         {
             var result = await _mediator.Send(data);
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }));
         }
 
         [HttpGet("GetDashBoard")]
+        [HasPermission(new[] { (int)EnumModule.Code.Dashboard }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<DashBoardDto>> GetDashBoard([FromQuery] GetDashBoardRequest data)
         {
             var result = await _mediator.Send(data);
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }));
         }
     }
 }
