@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.Role;
 using SurveyApplication.Application.DTOs.TinhTp;
@@ -26,6 +27,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAll")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlNq }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<RoleDto>>> GetAll()
         {
             var response = await _mediator.Send(new GetRoleListRequest());
@@ -33,6 +35,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlNq }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<BaseQuerieResponse<RoleDto>>> GetByCondition([FromQuery] Paging paging)
         {
             var response = await _mediator.Send(new GetConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword, OrderBy = paging.OrderBy });
@@ -40,6 +43,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetMatrixPermission")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlNq }, new[] { (int)EnumPermission.Type.Read })]
         public ActionResult<List<MatrixPermission>> GetMatrixPermission()
         {
             return MapEnum.MatrixPermission.Select(x => new MatrixPermission
@@ -55,6 +59,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlNq }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<UpdateRoleDto>> GetById(string id)
         {
             var response = await _mediator.Send(new GetRoleDetailRequest { Id = id });
@@ -62,6 +67,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Create")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlNq }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<BaseCommandResponse>> CreateRole(CreateRoleDto role)
         {
             var response = await _mediator.Send(new RoleCommand { CreateRoleDto = role });
@@ -69,6 +75,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Update")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlNq }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<BaseCommandResponse>> UpdateRole(UpdateRoleDto role)
         {
             var response = await _mediator.Send(new UpdateRoleCommand { UpdateRoleDto = role });
@@ -76,6 +83,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlNq }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult<List<BaseCommandResponse>>> DeleteRole(string id)
         {
             var command = new DeleteRoleCommand { Ids = new List<string> { id } };
@@ -84,6 +92,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("DeleteMultiple")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlNq }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult> DeleteMultipleRole(List<string> ids)
         {
             var command = new DeleteRoleCommand { Ids = ids };

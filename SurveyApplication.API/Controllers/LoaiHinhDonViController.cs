@@ -1,13 +1,17 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LoaiHinhDonViController : ControllerBase
@@ -20,6 +24,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAll")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlLhDv }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetAllLoaiHinhDonVi()
         {
             var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViListRequest());
@@ -37,6 +42,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlLhDv }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<BaseQuerieResponse<LoaiHinhDonViDto>>> GetLoaiHinhDonViByCondition(
             [FromQuery] Paging paging)
         {
@@ -46,6 +52,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlLhDv }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetByLoaiHinhDonVi(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetLoaiHinhDonViDetailRequest { Id = id });
@@ -53,6 +60,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Create")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlLhDv }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<LoaiHinhDonViDto>> CreateLoaiHinhDonVi([FromBody] CreateLoaiHinhDonViDto obj)
         {
             var command = new CreateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
@@ -61,6 +69,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Update")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlLhDv }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<LoaiHinhDonViDto>> UpdateLoaiHinhDonVi([FromBody] UpdateLoaiHinhDonViDto obj)
         {
             var command = new UpdateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
@@ -72,6 +81,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlLhDv }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult> DeleteLoaiHinhDonVi(int id)
         {
             var command = new DeleteLoaiHinhDonViCommand { Ids = new List<int> { id } };
@@ -80,6 +90,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("DeleteMultiple")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlLhDv }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult> DeleteMultipleLoaiHinhDonVi(List<int> ids)
         {
             var command = new DeleteLoaiHinhDonViCommand { Ids = ids };

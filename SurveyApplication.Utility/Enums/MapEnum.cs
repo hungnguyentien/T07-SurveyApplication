@@ -134,6 +134,24 @@ namespace SurveyApplication.Utility.Enums
                             EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
                             EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
                         }
+                    },
+
+                    {
+                        (int)EnumModule.Code.QlMd,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
+
+                    {
+                        (int)EnumModule.Code.QlNdd,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
                     }
                 };
 

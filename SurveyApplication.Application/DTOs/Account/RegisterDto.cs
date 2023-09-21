@@ -1,5 +1,7 @@
-﻿using SurveyApplication.Application.DTOs.Role;
+﻿using Microsoft.AspNetCore.Http;
+using SurveyApplication.Application.DTOs.Role;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SurveyApplication.Application.DTOs.Account
 {
@@ -24,6 +26,11 @@ namespace SurveyApplication.Application.DTOs.Account
         [Required]
         [MinLength(6)]
         public string PasswordConfirmed { get; set; }
+
+        public string? Image { get; set; }
+
+        public IFormFile? Img { get; set; }
+
         public List<MatrixPermission>? MatrixPermission { get; set; }
 
         public List<string>? LstRoleName { get; set; }

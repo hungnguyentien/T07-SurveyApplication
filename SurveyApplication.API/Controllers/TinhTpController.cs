@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.DTOs.TinhTp;
@@ -8,9 +10,11 @@ using SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
 using SurveyApplication.Application.Features.TinhTps.Requests.Commands;
 using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TinhTpController : ControllerBase
@@ -23,6 +27,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAll")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTt }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<TinhTpDto>>> GetAllTinhTp()
         {
             var leaveAllocations = await _mediator.Send(new GetTinhTpListRequest());
@@ -30,6 +35,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTt }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<BaseQuerieResponse<TinhTpDto>>> GetByConditionTinhTp([FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetTinhTpConditionsRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
@@ -37,6 +43,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTt }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<TinhTpDto>>> GetByIdTinhTp(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetTinhTpDetailRequest { Id = id });
@@ -44,6 +51,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Create")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTt }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<TinhTpDto>> CreateTinhTp([FromBody] CreateTinhTpDto obj)
         {
             var command = new CreateTinhTpCommand { TinhTpDto = obj };
@@ -52,6 +60,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Update")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTt }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<TinhTpDto>> UpdateTinhTp([FromBody] UpdateTinhTpDto obj)
         {
             var command = new UpdateTinhTpCommand { TinhTpDto = obj };
@@ -63,6 +72,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTt }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult<List<TinhTpDto>>> DeleteTinhTp(int id)
         {
             var command = new DeleteTinhTpCommand { Ids = new List<int> { id } };
@@ -71,6 +81,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("DeleteMultiple")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTt }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult> DeleteMultipleTinhTp(List<int> ids)
         {
             var command = new DeleteTinhTpCommand { Ids = ids };
@@ -79,6 +90,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Import")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTt }, new[] { (int)EnumPermission.Type.Import })]
         public async Task<IActionResult> ImportTinhTp([FromForm] ImportTinhTpDto obj)
         {
             var command = new ImportTinhTpCommand { File = obj.File };
