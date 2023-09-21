@@ -213,10 +213,10 @@
             currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
             <ng-template pTemplate="header">
               <tr>
-                <th style="min-width: 60px;text-align: center;" class="pFrozen">
+                <th style="min-width: 60px;text-align: center;" class="pFrozen top-0">
                   STT
                 </th>
-                <th style="width: 150px;text-align: center;" class="pFrozen pFrozen-1">
+                <th style="width: 150px;text-align: center;" class="pFrozen pFrozen-1 top-0">
                   Dấu thời gian
                 </th>
                 <th pResizableColumn *ngFor="let col of lstTh; trackBy:trackByFn">
