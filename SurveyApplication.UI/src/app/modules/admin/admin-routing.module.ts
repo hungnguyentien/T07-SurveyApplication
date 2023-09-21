@@ -17,6 +17,7 @@ import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { AdminAccountComponent } from './admin-account/admin-account.component';
 import { AuthGuard } from '@app/helpers';
 import { CodeModule } from '@app/enums';
+import { AdminModuleManagementComponent } from './admin-module-management/admin-module-management.component';
 
 const routes: Routes = [
   {
@@ -150,6 +151,15 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: {
           title: 'Quản lý tài khoản',
+        },
+      },
+      {
+        path: 'quan-ly-module',
+        component: AdminModuleManagementComponent,
+        title: 'Quản lý module',
+        canActivate: [AuthGuard],
+        data: {
+          title: 'Quản lý module',
         },
       },
       {

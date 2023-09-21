@@ -111,6 +111,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ShareModule } from '@app/layout/share/share.module';
 import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { AdminAccountComponent } from './admin-account/admin-account.component';
+import { AdminModuleManagementComponent } from './admin-module-management/admin-module-management.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -129,6 +130,7 @@ import { RouterModule } from '@angular/router';
     AdminStatisticalComponent,
     AdminRoleComponent,
     AdminAccountComponent,
+    AdminModuleManagementComponent,
   ],
   imports: [
     CommonModule,

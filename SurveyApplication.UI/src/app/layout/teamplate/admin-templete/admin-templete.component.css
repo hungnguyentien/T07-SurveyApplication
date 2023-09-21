@@ -1,0 +1,27 @@
+.style-profile{
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    transform: translate(40px, 10px);
+}
+
+.style-profile-input-img{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.style-profile>img{
+    width: 100%;
+    border-radius: 100%;
+}
+.style-profile-title{
+    /* text-align: center; */
+    transform: translate(55px, 10px);
+}
+.style-profile-title>ul>li{
+    list-style: none;
+}
+.style-profile-title>ul{
+    text-decoration: none;
+}
