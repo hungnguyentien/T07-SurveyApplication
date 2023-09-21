@@ -195,29 +195,38 @@ export class DistrictComponent {
       },
     });
   }
-//   confirmDeleteMultiple() {
-//     let ids: number[] = [];
-//     this.selectedQuanHuyen.forEach((el) => {
-//       ids.push(el.Id);
-//     });
-//     this.confirmationService.confirm({
-//       message: `Bạn có chắc chắn muốn xoá ${ids.length} loại đơn vị này?`,
-//       icon: 'pi pi-exclamation-triangle',
-//       accept: () => {
-//         this.cauHoiService.deleteMultiple(ids).subscribe({
-//           next: (res) => {
-//             Utils.messageSuccess(
-//               this.messageService,
-//               `Xoá câu hỏi ${ids.length} thành công!`
-//             );
-//           },
-//           error: (e) => Utils.messageError(this.messageService, e.message),
-//           complete: () => {
-//             this.table.reset();
-//           },
-//         });
-//       },
-//       reject: () => {},
-//     });
-//   }
+  confirmDeleteMultiple() {
+    
+    let ids: number[] = [];
+    this.selectedQuanHuyen.forEach((el) => {
+      ids.push(el.id);
+    });
+    
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} Quận/ Huyện này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.QuanHuyenService.deleteMultiple(ids).subscribe({
+          next: (res:any) => {
+          
+            
+            if(res.success == false){
+              Utils.messageError(this.messageService, res.message)
+            }
+            else{
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} Quận/ Huyện thành công!`
+              );
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
+      },
+      reject: () => { },
+    });
+  }
 }

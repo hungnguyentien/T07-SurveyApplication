@@ -1,5 +1,5 @@
 export interface PeriodSurvey{
-    Id:number
+    id:number
     MaDotKhaoSat:string;
     IdLoaiHinh:number;
     TenDotKhaoSat:string;

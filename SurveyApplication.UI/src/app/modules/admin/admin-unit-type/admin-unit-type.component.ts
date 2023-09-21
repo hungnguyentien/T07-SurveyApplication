@@ -198,28 +198,37 @@ export class AdminUnitTypeComponent {
     });
   }
   confirmDeleteMultiple() {
+    debugger
     let ids: number[] = [];
     this.selectedUnitType.forEach((el) => {
-      ids.push(el.Id);
+      ids.push(el.id);
     });
+    
     this.confirmationService.confirm({
-      message: `Bạn có chắc chắn muốn xoá ${ids.length} loại đơn vị này?`,
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} loại hình đơn vị này?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        // this.cauHoiService.deleteMultiple(ids).subscribe({
-        //   next: (res) => {
-        //     Utils.messageSuccess(
-        //       this.messageService,
-        //       `Xoá câu hỏi ${ids.length} thành công!`
-        //     );
-        //   },
-        //   error: (e) => Utils.messageError(this.messageService, e.message),
-        //   complete: () => {
-        //     this.table.reset();
-        //   },
-        // });
+        this.UnitTypeService.deleteMultiple(ids).subscribe({
+          next: (res:any) => {
+          debugger
+            
+            if(res.success == false){
+              Utils.messageError(this.messageService, res.message)
+            }
+            else{
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} loại hình đơn vị thành công!`
+              );
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
       },
-      reject: () => {},
+      reject: () => { },
     });
   }
 }

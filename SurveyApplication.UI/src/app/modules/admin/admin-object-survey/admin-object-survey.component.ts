@@ -165,7 +165,6 @@ export class AdminObjectSurveyComponent {
       next: (res) => {
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
-        console.log('res1', res);
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);
@@ -202,7 +201,6 @@ export class AdminObjectSurveyComponent {
   }
 
   Edit(data: any) {
-    debugger
     this.showadd = false;
     this.visible = !this.visible;
     this.objectSurveyService.getById<CreateUnitAndRep>(data.idDonVi).subscribe({
@@ -256,7 +254,6 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveEdit() {
-    debugger
     const updatedFormObjectSurveyValue = { ...this.FormObjectSurvey.value };
     updatedFormObjectSurveyValue['Id'] = this.IdDonVi;
     const updatedFormRepresentativeValue = { ...this.FormRepresentative.value };

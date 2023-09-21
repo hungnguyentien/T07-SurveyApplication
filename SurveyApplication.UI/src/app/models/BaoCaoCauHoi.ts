@@ -33,3 +33,14 @@ export interface BaoCaoCauHoi {
   countDonViBo: number;
   countDonViNganh: number;
 }
+
+
+export interface DashBoardRequest {
+  ngayBatDau: string | null;
+  ngayKetThuc: string | null;
+}
+
+export interface DashBoard {
+  ngayBatDau: string | null;
+  ngayKetThuc: string | null;
+}
