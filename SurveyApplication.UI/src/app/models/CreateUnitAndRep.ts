@@ -14,6 +14,7 @@ export interface ObjectSurvey extends Base {
   Email: string;
   WebSite: string;
   SoDienThoai: string;
+  MaDonVi: string | null;
 }
 export interface Representative extends Base {
   SoDienThoai: string;
