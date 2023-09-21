@@ -319,4 +319,37 @@ export class AdminObjectSurveyComponent {
       },
     });
   }
+
+  confirmDeleteMultiple() {
+    let ids: number[] = [];
+    this.selectedObjectSurvey.forEach((el) => {
+      ids.push(el.id);
+    });
+    
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} đơn vị này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.objectSurveyService.deleteMultiple(ids).subscribe({
+          next: (res:any) => {
+            
+            if(res.success == false){
+              Utils.messageError(this.messageService, res.message)
+            }
+            else{
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} đơn vị thành công!`
+              );
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
+      },
+      reject: () => { },
+    });
+  }
 }
