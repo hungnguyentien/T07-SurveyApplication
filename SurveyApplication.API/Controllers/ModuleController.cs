@@ -1,14 +1,18 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.Module;
 using SurveyApplication.Application.Features.Module.Requests.Commands;
 using SurveyApplication.Application.Features.Module.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ModuleController : ControllerBase
@@ -21,6 +25,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetAll")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlMd }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<ModuleDto>>> GetAllModule()
         {
             var leaveAllocations = await _mediator.Send(new GetModuleListRequest());
@@ -28,6 +33,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetByCondition")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlMd }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<BaseQuerieResponse<ModuleDto>>> GetModuleByCondition(
             [FromQuery] Paging paging)
         {
@@ -37,6 +43,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlMd }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<ModuleDto>>> GetByModule(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetModuleDetailRequest { Id = id });
@@ -44,6 +51,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Create")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlMd }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<ModuleDto>> CreateModule([FromBody] CreateModuleDto obj)
         {
             var command = new CreateModuleCommand { ModuleDto = obj };
@@ -52,6 +60,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("Update")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlMd }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<ModuleDto>> UpdateModule([FromBody] UpdateModuleDto obj)
         {
             var command = new UpdateModuleCommand { ModuleDto = obj };
@@ -63,6 +72,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlMd }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult> DeleteModule(int id)
         {
             var command = new DeleteModuleCommand { Ids = new List<int> { id } };
@@ -71,6 +81,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("DeleteMultiple")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlMd }, new[] { (int)EnumPermission.Type.Deleted })]
         public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
         {
             var command = new DeleteModuleCommand { Ids = ids };
