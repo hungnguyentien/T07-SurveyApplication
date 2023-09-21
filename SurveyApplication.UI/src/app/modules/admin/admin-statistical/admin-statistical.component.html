@@ -1,10 +1,10 @@
 <div>
   <h5>Bảng thống kê khảo sát</h5>
-  <div class="d-flex mt-3">
-    <form class="mt-4 w-100" [formGroup]="frmStatiscal" (ngSubmit)="search()">
+  <div class="d-flex">
+    <form class="w-100" [formGroup]="frmStatiscal" (ngSubmit)="search()">
       <div class="col-12">
         <div class="row">
-          <div class="form-group form-inline col-4">
+          <div class="form-group form-inline col-4 mb-0 pb-0">
             <div class="col-3">
               <label for="idDotKhaoSat">Đợt khảo sát <span style="color: red;">*</span></label>
             </div>
@@ -16,7 +16,7 @@
               </p-dropdown>
             </div>
           </div>
-          <div class="form-group form-inline col-4">
+          <div class="form-group form-inline col-4 mb-0 pb-0">
             <div class="col-3">
               <label for="idBangKhaoSat">Bảng khảo sát <span style="color: red;">*</span></label>
             </div>
@@ -28,7 +28,7 @@
               </p-dropdown>
             </div>
           </div>
-          <div class="form-group form-inline col-4">
+          <div class="form-group form-inline col-4 mb-0 pb-0">
             <div class="col-3">
               <label for="idLoaiHinh">Đối tượng</label>
             </div>
@@ -38,7 +38,6 @@
                 emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
                 placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinh">
               </p-dropdown>
-
               <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmStatiscal.controls['idLoaiHinh'].valid && 
                             frmStatiscal.controls['idLoaiHinh'].dirty">
                 Vui lòng chọn bảng khảo sát
@@ -47,25 +46,25 @@
           </div>
         </div>
         <div class="row">
-          <div class="form-group form-inline col-4">
+          <div class="form-group form-inline col-4 mb-0 pt-0">
             <div class="col-3">
               <label for="ngayBatDau">Ngày bắt đầu</label>
             </div>
             <div class="col-9">
               <p-calendar formControlName="ngayBatDau" id="ngayBatDau" class="input-date-custom" dateFormat="dd/mm/yy"
-                [showIcon]="true"></p-calendar>
+                [showIcon]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
             </div>
           </div>
-          <div class="form-group form-inline col-4">
+          <div class="form-group form-inline col-4 mb-0 pt-0">
             <div class="col-3">
               <label for="ngayKetThuc">Ngày kết thúc</label>
             </div>
             <div class="col-9">
               <p-calendar formControlName="ngayKetThuc" id="ngayKetThuc" class="input-date-custom" dateFormat="dd/mm/yy"
-                [showIcon]="true"></p-calendar>
+                [showIcon]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
             </div>
           </div>
-          <div class="form-group form-inline col-4">
+          <div class="form-group form-inline col-4  mb-0 pt-0">
             <button pButton type="submit" icon="pi pi-search" label="Tìm kiếm"
               class="btn btn-primary custom-button mr-2" style="padding: 9.25px 20px;">
             </button>
@@ -77,6 +76,7 @@
       </div>
     </form>
   </div>
+  <hr>
 </div>
 
 <div class="card mt-3">
@@ -94,8 +94,7 @@
   </div>
 </div>
 
-
-<div class="card mt-5">
+<div class="card mt-3">
   <div class="row">
     <p-tabView class="col-md-12">
       <p-tabPanel header="Tổng quan">
@@ -144,7 +143,7 @@
                   {{ rowIndex + 1}}
                 </td>
                 <td>
-                  <p>{{ rowData.cauHoiTraLoi[0].cauHoi }}</p>
+                  <p>{{ rowIndex }}</p>
                 </td>
                 <td>
                   <p *ngFor="let cauTraLoi of rowData.cauHoiTraLoi">{{ cauTraLoi.cauTraLoi }}</p>
@@ -161,6 +160,7 @@
           </p-table>
         </div>
       </p-tabPanel>
+
       <p-tabPanel header="Chi tiết kết quả khảo sát">
         <div class="d-flex mt-3">
           <div class="ml-3">
@@ -186,7 +186,7 @@
           </div>
         </div>
         <div class="card mt-3">
-          <table class="table table-bordered">
+          <table class="table table-bordered mb-0">
             <thead>
               <tr>
                 <th>STT</th>
@@ -202,10 +202,24 @@
                 <td>{{item.dauThoiGian | date:'dd/MM/yyyy hh:ss'}}</td>
                 <td *ngFor="let item of item.lstCauHoiCauTraLoi; trackBy:trackByFn">
                   <div [ngSwitch]="item.loaiCauHoi">
-                    <div *ngSwitchCase="0">output</div>
-                    <div *ngSwitchDefault>output2</div>
+                    <div *ngSwitchCase="5">
+                      <p *ngFor="let item of item.cauTraLoi; trackBy:trackByFn">{{getDataKqBangMotLuaChon(item)}}</p>
+                    </div>
+                    <div *ngSwitchCase="2">
+                      <p *ngFor="let item of item.cauTraLoi; trackBy:trackByFn">{{item}}</p>
+                    </div>
+                    <div *ngSwitchCase="7">
+                      <div *ngFor="let item of item.cauTraLoi; trackBy:trackByFn">
+                        <a (click)="downloadFileBase64(item)"
+                          *ngFor="let item of getDataKqFile(item); trackBy:trackByFn" title="{{item.name}}">
+                          {{item.name}}
+                        </a>
+                      </div>
+                    </div>
+                    <div *ngSwitchDefault>
+                      <p *ngFor="let item of item.cauTraLoi; trackBy:trackByFn">{{getDataKq(item)}}</p>
+                    </div>
                   </div>
-                  <p *ngFor="let item of item.cauTraLoi; trackBy:trackByFn">{{item}}</p>
                 </td>
               </tr>
             </tbody>

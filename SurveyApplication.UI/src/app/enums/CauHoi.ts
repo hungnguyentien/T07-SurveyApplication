@@ -8,3 +8,17 @@ export enum TypeCauHoi {
   MultiTextMatrix = 6,
   UploadFile = 7,
 }
+
+export enum TypeSurvey {
+  Radiogroup = 'radiogroup',
+  Checkbox = 'checkbox',
+  Comment = 'comment',
+  Text = 'text',
+  Matrix = 'matrix',
+  File = 'file',
+}
+
+export const KqSurveyCheckBox = {
+  value: '1',
+  text: 'Có',
+};

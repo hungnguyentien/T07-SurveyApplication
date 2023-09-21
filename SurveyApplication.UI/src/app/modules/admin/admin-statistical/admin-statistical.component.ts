@@ -16,8 +16,10 @@ import { Table } from 'primeng/table';
 import {
   BaoCaoCauHoiChiTiet,
   BaseQuerieResponse,
+  FileQuestion,
   ListCauHoiTraLoi,
 } from '@app/models';
+import { KqSurveyCheckBox } from '@app/enums';
 @Component({
   selector: 'app-admin-statistical',
   templateUrl: './admin-statistical.component.html',
@@ -78,7 +80,6 @@ export class AdminStatisticalComponent {
         this.lstTh = [];
         this.datas = res.data;
         res.data[0].lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
-        debugger;
       },
     });
   }
@@ -231,4 +232,26 @@ export class AdminStatisticalComponent {
       this.LstLoaiHinhDv = data; // Lưu dữ liệu vào danh sách
     });
   }
+
+  getDataKqBangMotLuaChon = (data: string) => {
+    return data && JSON.parse(data) == KqSurveyCheckBox.value
+      ? KqSurveyCheckBox.text
+      : '';
+  };
+
+  getDataKqFile = (data: string): any[] => {
+    return data && JSON.parse(data) ? JSON.parse(data) : [];
+  };
+
+  getDataKq = (data: string) => {
+    try {
+      return data && JSON.parse(data) ? JSON.parse(data) : '';
+    } catch {
+      return data;
+    }
+  };
+
+  downloadFileBase64 = (file: FileQuestion) => {
+    console.log({ msg: `Cooming soon!`, ...file });
+  };
 }

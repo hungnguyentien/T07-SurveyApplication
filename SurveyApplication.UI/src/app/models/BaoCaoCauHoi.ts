@@ -103,3 +103,9 @@ export interface BaoCaoCauHoiChiTiet {
   dauThoiGian: string;
   lstCauHoiCauTraLoi: CauHoiCauTraLoiChiTiet[];
 }
+
+export interface FileQuestion {
+  content: string;
+  name: string;
+  string: string;
+}

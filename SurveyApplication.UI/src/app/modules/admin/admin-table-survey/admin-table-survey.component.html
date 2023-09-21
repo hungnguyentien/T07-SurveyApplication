@@ -18,8 +18,9 @@
                 class="custom-button"></button>
         </div>
         <div class="ml-3">
-            <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
-                class="custom-button" style="background-color: #ea5c5c;"></button>
+            <button *ngIf="selectedTableSurvey && selectedTableSurvey.length > 0" pButton type="button"
+                (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
+                style="background-color: #ea5c5c;"></button>
         </div>
         <div class="ml-3">
             <button *ngIf="selectedTableSurvey && selectedTableSurvey.length > 0" pButton type="button"
@@ -351,8 +352,8 @@
                 <i class="pi pi-search"></i>
             </button>
         </form>
-        <p-table #dtq [value]="datasCauHoi" [lazy]="true" (onLazyLoad)="loadListLazyCauHoi($event)" [scrollable]="true"
-            scrollHeight="calc(100vh - 396px)" [(selection)]="selectedCauHoi" dataKey="id"
+        <p-table #dtq ngClass="cust-tbl" [value]="datasCauHoi" [lazy]="true" (onLazyLoad)="loadListLazyCauHoi($event)"
+            [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedCauHoi" dataKey="id"
             styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
             [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loadingCauHoi"
             [paginator]="true" [totalRecords]="dataTotalRecordsCauHoi"

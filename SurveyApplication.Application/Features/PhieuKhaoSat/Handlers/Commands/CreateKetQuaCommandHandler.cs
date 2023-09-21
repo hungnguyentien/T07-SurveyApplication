@@ -45,7 +45,7 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
         if (validationResult.IsValid == false)
         {
             response.Success = false;
-            response.Message = "Gửi thông tin không thành công!";
+            response.Message = $"{(request.CreateKetQuaDto?.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh ? "Gửi thông tin" : "Lưu tạm")} không thành công!";
             response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
             return response;
         }
@@ -97,7 +97,7 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
 
         await _surveyRepo.SaveAync();
         response.Success = true;
-        response.Message = "Gửi thông tin thành công!";
+        response.Message = $"{(request.CreateKetQuaDto?.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh ? "Gửi thông tin" : "Lưu tạm")} thành công!";
         response.Id = ketQua.Id;
         return response;
     }

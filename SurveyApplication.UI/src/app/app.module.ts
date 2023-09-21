@@ -12,9 +12,6 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-import { ChooseAnAnswerComponent } from './modules/admin/admin-question/choose-an-answer/choose-an-answer.component';
-import { LongTextComponent } from './modules/admin/admin-question/long-text/long-text.component';
-
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
@@ -29,7 +26,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [AppComponent, ChooseAnAnswerComponent, LongTextComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
