@@ -71,7 +71,7 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpDelete("DeleteMultiple")]
-        public async Task<ActionResult> DeleteMultipleCauHoi(List<int> ids)
+        public async Task<ActionResult> DeleteMultipleXaPhuong(List<int> ids)
         {
             var command = new DeleteXaPhuongCommand { Ids = ids };
             var response = await _mediator.Send(command);

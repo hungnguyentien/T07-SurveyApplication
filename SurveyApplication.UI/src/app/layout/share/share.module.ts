@@ -8,8 +8,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { HighlightDirective } from './highlight.directive';
 import { HighlightGuiEmailDirective } from './highlight-gui-email.directive';
+import { ModuleDirective } from './module.directive';
 @NgModule({
-  declarations: [LoginComponent, HighlightDirective, HighlightGuiEmailDirective],
+  declarations: [LoginComponent, HighlightDirective, HighlightGuiEmailDirective, ModuleDirective],
   imports: [
     CommonModule,
     FormsModule,
@@ -17,6 +18,6 @@ import { HighlightGuiEmailDirective } from './highlight-gui-email.directive';
     ReactiveFormsModule,
     ToastModule,
   ],
-  exports: [HighlightDirective, HighlightGuiEmailDirective],
+  exports: [HighlightDirective, HighlightGuiEmailDirective, ModuleDirective],
 })
 export class ShareModule {}

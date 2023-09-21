@@ -42,7 +42,7 @@
                     </li>
 
                     <!-- Nav Item - Messages -->
-                    <li class="nav-item dropdown no-arrow mx-1">
+                    <li class="nav-item dropdown no-arrow mx-1" hidden>
                         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope fa-fw"></i>
@@ -110,26 +110,18 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Linh</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{userName}}</span>
                             <img class="img-profile rounded-circle" src="assets/img/undraw_profile.svg">
                         </a>
                         <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" 
                             aria-labelledby="userDropdown">
-                            <a class="dropdown-item">
+                            <a style="cursor: pointer;"class="dropdown-item" (click)="EditHS()">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Hồ Sơ
                             </a>
-                            <a class="dropdown-item">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Cài đặt
-                            </a>
-                            <!-- <a class="dropdown-item" href="#">
-                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
-                            </a> -->
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/" data-toggle="modal" data-target="#logoutModal" >
+                            <a style="cursor: pointer;" class="dropdown-item" href="/" data-toggle="modal" data-target="#logoutModal" >
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Đăng xuất
                             </a>
@@ -151,7 +143,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <!-- <span>Copyright &copy; Your Website 2020</span> -->
+                    
                 </div>
             </div>
         </footer>
@@ -169,7 +161,7 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="logoutModal" tabindex="-1"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -187,4 +179,74 @@
         </div>
     </div>
 </div>
+
+<!-- modal hồ sở cá nhân-->
+<form [formGroup]="FormProfile" (ngSubmit)="Save()">
+    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '80vw',height: '90vh' }" [draggable]="false"
+        [resizable]="true" [maximizable]="true">
+        <ng-template pTemplate="header">
+            <h5 class="modal-title">
+              Hồ sơ cá nhân
+            </h5>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <div class="row">
+                <div class="col-md-4"> 
+                    <div class="style-profile">
+                        <img formControlName="HinhAnh" [src]="urlFist || 'http://placehold.it/180'" />
+                    </div>
+                    <div class="style-profile-input-img">
+                        <div class="w-75 mt-2">
+                            <div class="mt-3 mb-3 m-auto ">
+                                <div class="imageUpload mb-2 ">
+                                    <input style="display: none;" type="file" class="custom-file-input" id="FileImage"
+                                    (change)="onFileChanged($event)" accept=".jpg,.png">
+                                    <label   class="btn btn-secondary"   for="FileImage"><i class="pi pi-upload" style="font-size: 1em"></i> Thay đổi ảnh đại diện</label>    
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="style-profile-title">
+                        <h6><i class="pi pi pi-user"></i> : {{Name}}</h6>
+                        <h6><i class="pi pi-briefcase"></i> : {{Role}}</h6>
+                        <h6><i class="pi pi-map-marker"></i> : {{Address}}</h6>
+                       
+                    </div>
+                </div>
+                <div class="row col-md-8">
+                    <div class="form-group col-md-12">
+                        <label for="recipient-name" class="col-form-label">Email: <span
+                                style="color: red;">*</span></label>
+                        <input type="text" formControlName="email" class="form-control" id="recipient-name"
+                            pInputText placeholder="Nhập Email">
+                 
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="recipient-name" class="col-form-label">Tên người dùng: <span
+                                style="color: red;">*</span></label>
+                        <input type="text" formControlName="name" class="form-control" id="recipient-name"
+                            pInputText placeholder="Nhập Tên người dùng">
+                  
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="recipient-name" class="col-form-label">Tên đăng nhập: <span style="color: red;">*</span></label>
+                    <input type="text" formControlName="userName" class="form-control" id="recipient-name" pInputText
+                        placeholder="Nhập Tên đăng nhập">
+          
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="recipient-name" class="col-form-label">Địa chỉ: <span style="color: red;">*</span></label>
+                    <input type="text" formControlName="address" class="form-control" id="recipient-name" pInputText
+                        placeholder="Nhập Địa chỉ">
+             
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton type="button" (click)="visible = false" label="Đóng"class="custom-button surface-600"></button>
+            <button pButton type="submit" icon="pi pi-save" label="Lưu thay đổi" class="custom-button"></button>
+        </ng-template>
+    </p-dialog>
+</form>
 <p-toast></p-toast>

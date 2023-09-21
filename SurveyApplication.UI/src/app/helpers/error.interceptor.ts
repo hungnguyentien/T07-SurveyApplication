@@ -46,7 +46,9 @@ export class ErrorInterceptor implements HttpInterceptor {
           else if (err.error)
             Utils.messageError(
               this.messageService,
-              err.error.ErrorMessage ?? err.message
+              err.error.errors
+                ? JSON.stringify(err.error.errors)
+                : err.error.ErrorMessage ?? err.message
             );
           if (err.status === 500 && this.router.url.indexOf('/phieu') >= 0) {
             this.router.navigate(['phieu/error-500'], {

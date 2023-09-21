@@ -1,10 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  Validators,
-  FormControl,
-  FormGroup,
-  FormBuilder,
-} from '@angular/forms';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {
   LinhVucHoatDongService,
@@ -13,7 +8,7 @@ import {
 } from '@app/services';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { Table } from 'primeng/table';
-import { LinhVucHoatDong, Paging } from '@app/models';
+import { DonVi, LinhVucHoatDong, Paging } from '@app/models';
 import Utils from '@app/helpers/utils';
 
 @Component({
@@ -24,8 +19,8 @@ import Utils from '@app/helpers/utils';
 export class AdminObjectSurveyComponent {
   @ViewChild('dt') table!: Table;
   loading: boolean = true;
-  selectedObjectSurvey!: CreateUnitAndRep[];
-  datas: CreateUnitAndRep[] = [];
+  selectedObjectSurvey!: DonVi[];
+  datas: DonVi[] = [];
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
@@ -77,6 +72,7 @@ export class AdminObjectSurveyComponent {
       //   DiaChiChiTiet: new FormControl('')
       // }),
     });
+
     this.FormRepresentative = new FormGroup({
       HoTen: new FormControl('', Validators.required),
       ChucVu: new FormControl('', Validators.required),
@@ -84,6 +80,7 @@ export class AdminObjectSurveyComponent {
       SoDienThoai: new FormControl('', Validators.required),
       MoTa: new FormControl(''),
     });
+
     this.objectSurveyService.getCities().subscribe((data: any) => {
       this.cities = data;
     });
@@ -161,7 +158,7 @@ export class AdminObjectSurveyComponent {
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
     };
-    this.objectSurveyService.getByCondition(this.paging).subscribe({
+    this.objectSurveyService.getByConditionTepm<DonVi>(this.paging).subscribe({
       next: (res) => {
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
@@ -178,7 +175,7 @@ export class AdminObjectSurveyComponent {
 
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
-    this.objectSurveyService.getByCondition(this.paging).subscribe({
+    this.objectSurveyService.getByConditionTepm<DonVi>(this.paging).subscribe({
       next: (res) => {
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
@@ -205,8 +202,18 @@ export class AdminObjectSurveyComponent {
     this.visible = !this.visible;
     this.objectSurveyService.getById<CreateUnitAndRep>(data.idDonVi).subscribe({
       next: (res) => {
-        Utils.setValueForm(this.FormObjectSurvey,Object.keys(res.donViDto),Object.values(res.donViDto),true);
-        Utils.setValueForm(this.FormRepresentative,Object.keys(res.nguoiDaiDienDto),Object.values(res.nguoiDaiDienDto),true);
+        Utils.setValueForm(
+          this.FormObjectSurvey,
+          Object.keys(res.donViDto),
+          Object.values(res.donViDto),
+          true
+        );
+        Utils.setValueForm(
+          this.FormRepresentative,
+          Object.keys(res.nguoiDaiDienDto),
+          Object.values(res.nguoiDaiDienDto),
+          true
+        );
         this.IdDonVi = res.donViDto.id.toString();
         this.IdNguoiDaiDien = res.nguoiDaiDienDto.id.toString();
       },
@@ -240,7 +247,6 @@ export class AdminObjectSurveyComponent {
             this.FormObjectSurvey.reset();
             this.FormRepresentative.reset();
             this.visible = false;
-            
           } else {
             this.messageService.add({
               severity: 'error',

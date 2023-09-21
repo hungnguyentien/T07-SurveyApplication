@@ -20,7 +20,7 @@
       </button>
     </div>
     <div class="ml-3">
-      <button  pButton type="button"
+      <button pButton type="button" *ngIf="selectedQuestion && selectedQuestion.length > 0"
         (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
         style="background-color: #ea5c5c">
       </button>
@@ -149,7 +149,7 @@
         <div class="form-group col-md-6">
           <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red">*</span></label>
           <p-dropdown id="loaicauhoi" [options]="lstLoaiCauHoi" [(ngModel)]="selectedLoaiCauHoi" optionLabel="text"
-            optionValue="value"  emptyMessage="Không có kết quả nào" class="form-select-custom" [ngClass]="{
+            optionValue="value" emptyMessage="Không có kết quả nào" class="form-select-custom" [ngClass]="{
             'is-invalid': submitted && f('loaiCauHoi').errors
           }" formControlName="loaiCauHoi" (onChange)="handlerChangeLCh($event)">
           </p-dropdown>
@@ -187,9 +187,9 @@
             <div class="form-group" *ngIf="isOther">
               <label for="labelCauTraLoi" class="col-form-label">Lable câu trả lời khác:</label>
               <input type="text" pInputText class="form-control" formControlName="labelCauTraLoi" id="labelCauTraLoi"
-                placeholder="Nhập tiêu đề câu hỏi"  />
+                placeholder="Nhập tiêu đề câu hỏi" />
 
-              
+
             </div>
           </div>
         </div>

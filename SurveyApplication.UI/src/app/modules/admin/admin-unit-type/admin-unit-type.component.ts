@@ -24,7 +24,7 @@ export class AdminUnitTypeComponent {
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
-  
+
   submitted: boolean = false;
 
   first = 0;
@@ -198,24 +198,20 @@ export class AdminUnitTypeComponent {
     });
   }
   confirmDeleteMultiple() {
-    debugger
     let ids: number[] = [];
     this.selectedUnitType.forEach((el) => {
       ids.push(el.id);
     });
-    
+
     this.confirmationService.confirm({
       message: `Bạn có chắc chắn muốn xoá ${ids.length} loại hình đơn vị này?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.UnitTypeService.deleteMultiple(ids).subscribe({
-          next: (res:any) => {
-          debugger
-            
-            if(res.success == false){
-              Utils.messageError(this.messageService, res.message)
-            }
-            else{
+          next: (res: any) => {
+            if (res.success == false) {
+              Utils.messageError(this.messageService, res.message);
+            } else {
               Utils.messageSuccess(
                 this.messageService,
                 `Xoá ${ids.length} loại hình đơn vị thành công!`
@@ -228,7 +224,7 @@ export class AdminUnitTypeComponent {
           },
         });
       },
-      reject: () => { },
+      reject: () => {},
     });
   }
 }

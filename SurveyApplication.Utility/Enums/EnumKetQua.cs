@@ -2,7 +2,7 @@
 
 namespace SurveyApplication.Utility.Enums
 {
-    public class EnumKetQua
+    public static class EnumKetQua
     {
         public enum TrangThai
         {

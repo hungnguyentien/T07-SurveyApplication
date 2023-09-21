@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using SurveyApplication.API.Middleware;
 using SurveyApplication.Application;
+using SurveyApplication.Application.Services.Interfaces;
 
 namespace SurveyApplication.API;
 
@@ -29,7 +30,7 @@ public class Startup
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
     {
         if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
@@ -49,7 +50,7 @@ public class Startup
 
         app.UseCors("CorsPolicy");
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
+        UpdatePermissionTable(serviceProvider);
     }
 
     private static void AddSwaggerDoc(IServiceCollection services)
@@ -97,5 +98,11 @@ public class Startup
                 }
             });
         });
+    }
+
+    private static void UpdatePermissionTable(IServiceProvider serviceProvider)
+    {
+        var dataDefaultService = (IDataDefaultService)serviceProvider.GetService(typeof(IDataDefaultService))!;
+        dataDefaultService.DataAdmin().Wait();
     }
 }

@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.Account
 {
-    public class CreateAccountDto : IdentityUser
+    public class UpdateAccountDto : AccountDto
     {
-        public string? Name { get; set; }
-        public string? Address { get; set; }
-        public string? Password { get; set; }
     }
 }

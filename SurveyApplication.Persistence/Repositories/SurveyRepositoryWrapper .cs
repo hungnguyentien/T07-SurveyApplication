@@ -80,6 +80,9 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IRoleRepository _roleRepository;
     public IRoleRepository Role => _roleRepository ??= new RoleRepository(_repoContext);
 
+    public IModuleRepository _moduleRepository;
+    public IModuleRepository Module => _moduleRepository ??= new ModuleRepository(_repoContext);
+
     #endregion
 
     //RenderHere

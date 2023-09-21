@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace SurveyApplication.Utility.Enums
 {
-    public class EnumPermission
+    public static class EnumPermission
     {
         public enum Type
         {

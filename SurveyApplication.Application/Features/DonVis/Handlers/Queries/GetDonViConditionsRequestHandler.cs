@@ -65,6 +65,7 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                         SoDienThoaiNguoiDaiDien = b.SoDienThoai,
                         EmailNguoiDaiDien = b.Email,
                         MoTa = b.MoTa,
+                        Id = d.Id
                     };
         var totalCount = await query.LongCountAsync();
         var pageCount = (int)Math.Ceiling(totalCount / (double)request.PageSize);

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SurveyApplication.Utility.Enums
 {
@@ -30,25 +28,113 @@ namespace SurveyApplication.Utility.Enums
                         }
                     },
 
-                    { (int)EnumModule.Code.QlDv, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.QlDv,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.QlCh, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.QlCh,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.QlDks, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.QlDks,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.QlKs, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.QlKs,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.QlGm, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.QlGm,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.TkKs, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.TkKs,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.LvHd, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.LvHd,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.QlTt, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.QlTt,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.QlQh, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } },
+                    {
+                        (int)EnumModule.Code.QlQh,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
 
-                    { (int)EnumModule.Code.QlPx, new List<EnumPermission.Type> { EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update, EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export } }
+                    {
+                        (int)EnumModule.Code.QlPx,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
+
+                    {
+                        (int)EnumModule.Code.QlNq,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    },
+
+                    {
+                        (int)EnumModule.Code.QlTk,
+                        new List<EnumPermission.Type>
+                        {
+                            EnumPermission.Type.Read, EnumPermission.Type.Create, EnumPermission.Type.Update,
+                            EnumPermission.Type.Deleted, EnumPermission.Type.Import, EnumPermission.Type.Export
+                        }
+                    }
                 };
 
                 return map;
