@@ -45,6 +45,8 @@ export class AdminObjectSurveyComponent {
   visible: boolean = false;
   lstLinhVuc: LinhVucHoatDong[] | undefined;
 
+  
+
   constructor(
     private objectSurveyService: ObjectSurveyService,
     private unitTypeService: UnitTypeService,
@@ -65,6 +67,7 @@ export class AdminObjectSurveyComponent {
       WebSite: new FormControl('', Validators.required),
       SoDienThoai: new FormControl('', Validators.required),
       DiaChi: new FormControl('', Validators.required),
+      
       // DiaChi: new FormGroup({
       //   TinhThanh: new FormControl(''),
       //   QuanHuyen: new FormControl(''),
@@ -200,6 +203,7 @@ export class AdminObjectSurveyComponent {
   Edit(data: any) {
     this.showadd = false;
     this.visible = !this.visible;
+    this.Madonvi=data.maDonVi;
     this.objectSurveyService.getById<CreateUnitAndRep>(data.idDonVi).subscribe({
       next: (res) => {
         Utils.setValueForm(
@@ -230,14 +234,18 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveAdd() {
+    debugger
     if (this.FormObjectSurvey.valid && this.FormRepresentative.valid) {
       const obj: CreateUnitAndRep = {
+        
         donViDto: this.FormObjectSurvey.value,
         nguoiDaiDienDto: this.FormRepresentative.value,
       };
       this.objectSurveyService.create(obj).subscribe({
         next: (res) => {
+          debugger
           if (res != null) {
+            console.log("res",res)
             this.messageService.add({
               severity: 'success',
               summary: 'Thành Công',
@@ -260,8 +268,13 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveEdit() {
+    debugger
     const updatedFormObjectSurveyValue = { ...this.FormObjectSurvey.value };
     updatedFormObjectSurveyValue['Id'] = this.IdDonVi;
+    updatedFormObjectSurveyValue['MaDonVi'] = this.Madonvi;
+
+
+  
     const updatedFormRepresentativeValue = { ...this.FormRepresentative.value };
     updatedFormRepresentativeValue['Id'] = this.IdNguoiDaiDien;
     updatedFormRepresentativeValue['IdDonVi'] = this.IdDonVi;
@@ -271,7 +284,10 @@ export class AdminObjectSurveyComponent {
     };
     this.objectSurveyService.update(obj).subscribe({
       next: (res) => {
+        debugger
         if (res != null) {
+           debugger
+           
           this.messageService.add({
             severity: 'success',
             summary: 'Thành Công',
@@ -282,6 +298,7 @@ export class AdminObjectSurveyComponent {
           this.FormRepresentative.reset();
           this.visible = false;
         } else {
+          debugger
           this.messageService.add({
             severity: 'error',
             summary: 'Lỗi',
