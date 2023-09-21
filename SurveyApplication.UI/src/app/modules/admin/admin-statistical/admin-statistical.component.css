@@ -27,3 +27,19 @@
 a {
   cursor: pointer;
 }
+
+::ng-deep .pFrozen {
+  left: 0px;
+}
+
+::ng-deep .pFrozen-1 {
+  left: 60px;
+}
+
+:host {
+  .pFrozen {
+    position: sticky;
+    z-index: 10;
+    background-color: white;
+  }
+}

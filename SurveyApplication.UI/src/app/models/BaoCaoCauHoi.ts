@@ -74,8 +74,16 @@ export interface BaoCaoCauHoi extends Base {
 }
 
 export interface ListCauHoiTraLoi {
-  idCauHoi: number;
-  cauHoiTraLoi: BaoCaoCauHoi[] | null;
+  idCauHoi: number | null;
+  loaiCauHoi: number;
+  tenCauHoi: string | null;
+  cauHoiTraLoi: CauHoiTraLoi[] | null;
+}
+
+export interface CauHoiTraLoi {
+  cauTraLoi: string | null;
+  soLuotChon: number;
+  tyLe: number;
 }
 
 export interface BaoCaoCauHoiChiTietRequest {
@@ -107,5 +115,5 @@ export interface BaoCaoCauHoiChiTiet {
 export interface FileQuestion {
   content: string;
   name: string;
-  string: string;
+  type: string;
 }

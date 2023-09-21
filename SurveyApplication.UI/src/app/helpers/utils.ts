@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { KqSurveyCheckBox, KqTrangThai, TypeCauHoi } from '@app/enums';
-import { CreateBaoCaoCauHoi, SurveyConfig } from '@app/models';
+import { CreateBaoCaoCauHoi, FileQuestion, SurveyConfig } from '@app/models';
 import { jsonDataFake } from './json';
 import { themeJson } from './theme';
 import { environment } from '@environments/environment';
@@ -628,5 +628,29 @@ export default class Utils {
       localStorage.removeItem('grand_client');
       return '';
     }
+  };
+
+  static base64ToBytes = (base64: string) => {
+    let arr = base64.split(',');
+    let s = window.atob(arr[arr.length - 1]);
+    let bytes = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) bytes[i] = s.charCodeAt(i);
+    return bytes;
+  };
+
+  static downloadFileBase64 = (file: FileQuestion) => {
+    let filename = file.name;
+    let type = file.type;
+    let bytes = this.base64ToBytes(file.content);
+    let blob = new Blob([bytes], { type: type });
+    let downloadUrl = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = downloadUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      URL.revokeObjectURL(downloadUrl);
+    }, 100);
   };
 }

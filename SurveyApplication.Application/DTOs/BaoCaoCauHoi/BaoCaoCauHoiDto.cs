@@ -25,11 +25,7 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
         public int CountDonViSo { get; set; }
         public int CountDonViBo { get; set; }
         public int CountDonViNganh { get; set; }
-
         public string? DiaChi { get; set; }
-
-        public int? SoLuotChon { get; set; }
-        public double? TyLe { get; set; }
 
         public List<ListCauHoiTraLoi>? ListCauHoiTraLoi { get; set; }
     }

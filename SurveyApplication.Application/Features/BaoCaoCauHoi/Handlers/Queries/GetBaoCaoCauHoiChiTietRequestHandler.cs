@@ -22,6 +22,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                               (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
                               (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
                               (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
+                              !string.IsNullOrEmpty(a.CauTraLoi) &&
                               (string.IsNullOrEmpty(request.Keyword) || a.CauHoi.Contains(request.Keyword)) &&
                               a.Deleted == false
                         select a;
@@ -39,7 +40,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                 {
                                     CauHoi = x.First().CauHoi,
                                     LoaiCauHoi = x.First().LoaiCauHoi,
-                                    CauTraLoi = x.Where(ctl => ctl.LoaiCauHoi == x.Key).Select(ctl => ctl.CauTraLoi).ToList(),
+                                    CauTraLoi = x.Where(ctl => ctl.LoaiCauHoi == x.Key).GroupBy(ctl => new {ctl.CauTraLoi, ctl.MaCauTraLoi}).Select(ctl => ctl.Key.CauTraLoi).ToList(),
                                 }).ToList()
                        };
 

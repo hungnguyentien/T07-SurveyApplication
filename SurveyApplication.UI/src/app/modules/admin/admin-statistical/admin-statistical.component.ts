@@ -15,9 +15,8 @@ import * as XLSX from 'xlsx';
 import { Table } from 'primeng/table';
 import {
   BaoCaoCauHoiChiTiet,
-  BaseQuerieResponse,
+  BaoCaoCauHoiChiTietRequest,
   FileQuestion,
-  ListCauHoiTraLoi,
 } from '@app/models';
 import { KqSurveyCheckBox } from '@app/enums';
 @Component({
@@ -39,9 +38,17 @@ export class AdminStatisticalComponent {
 
   selectedDotKhaoSat: number = 1;
   selectedBangKhaoSat: number = 1;
-  datas: BaoCaoCauHoiChiTiet[] = [];
+
+  datas: any;
+
+  @ViewChild('dtCt') tableCt!: Table;
+  loading: boolean = true;
+  selectedBaoCaoChiTiet!: BaoCaoCauHoiChiTiet[];
+  dataChiTiet: BaoCaoCauHoiChiTiet[] = [];
+  dataTotalRecords!: number;
+  keyWord!: string;
+  paging!: BaoCaoCauHoiChiTietRequest;
   lstTh: string[] = [];
-  datasKetQuaKhaoSat: any;
 
   @ViewChild('dt') table!: Table; // Khi sử dụng p-table, sử dụng ViewChild để truy cập nó
   constructor(
@@ -68,20 +75,58 @@ export class AdminStatisticalComponent {
     this.loadTableSurvey();
     this.loadUnitType();
     this.getVauleChar(this.frmStatiscal.value);
+  }
 
-    let params = {
+  loadListLazy = (event: any) => {
+    this.loading = true;
+    let pageSize = event.rows;
+    let pageIndex = event.first / pageSize + 1;
+    this.paging = {
       ...this.frmStatiscal.value,
-      pageIndex: 1,
-      pageSize: 10,
+      pageIndex: pageIndex,
+      pageSize: pageSize,
       keyword: '',
     };
-    this.baoCaoCauHoiService.getBaoCaoCauHoiChiTiet(params).subscribe({
+    this.baoCaoCauHoiService.getBaoCaoCauHoiChiTiet(this.paging).subscribe({
       next: (res) => {
         this.lstTh = [];
-        this.datas = res.data;
+        this.dataChiTiet = res.data;
         res.data[0].lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       },
     });
+  };
+
+  onSubmitSearch = () => {
+    this.paging.keyword = this.keyWord;
+    this.getBaoCaoCauHoiChiTiet(this.paging);
+  };
+
+  getBaoCaoCauHoiChiTiet = (paging: BaoCaoCauHoiChiTietRequest) => {
+    this.baoCaoCauHoiService.getBaoCaoCauHoiChiTiet(paging).subscribe({
+      next: (res) => {
+        this.lstTh = [];
+        this.dataChiTiet = res.data;
+        res.data[0].lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  };
+
+  countSpan() {
+    return this.lstTh.length + 2;
   }
 
   trackByFn(index: number) {
@@ -100,7 +145,7 @@ export class AdminStatisticalComponent {
   getVauleChar = (params: any) => {
     this.baoCaoCauHoiService.getBaoCaoCauHoi(params).subscribe({
       next: (res) => {
-        this.datasKetQuaKhaoSat = res.listCauHoiTraLoi;
+        this.datas = res.listCauHoiTraLoi ?? [];
         this.setChar(
           [res.countDonViMoi, res.countDonViTraLoi],
           [res.countDonViSo, res.countDonViBo, res.countDonViNganh]
@@ -208,7 +253,16 @@ export class AdminStatisticalComponent {
       Utils.messageError(this.messageService, `Vui lòng chọn đợt khảo sát!`);
     else if (!params.idBangKhaoSat)
       Utils.messageError(this.messageService, `Vui lòng chọn bảng khảo sát!`);
-    else this.getVauleChar(params);
+    else {
+      this.getVauleChar(params);
+      this.paging.keyword = this.keyWord;
+      this.paging.idBangKhaoSat = params.idBangKhaoSat;
+      this.paging.idDotKhaoSat = params.idDotKhaoSat;
+      this.paging.idLoaiHinhDonVi = params.idLoaiHinh;
+      this.paging.ngayBatDau = params.ngayBatDau;
+      this.paging.ngayKetThuc = params.ngayKetThuc;
+      this.getBaoCaoCauHoiChiTiet(this.paging);
+    }
   };
 
   reset = () => {
@@ -252,6 +306,6 @@ export class AdminStatisticalComponent {
   };
 
   downloadFileBase64 = (file: FileQuestion) => {
-    console.log({ msg: `Cooming soon!`, ...file });
+    Utils.downloadFileBase64(file);
   };
 }
