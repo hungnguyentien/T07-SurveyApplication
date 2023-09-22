@@ -5,11 +5,13 @@ using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Domain;
+using SurveyApplication.Application.DTOs.DonVi;
+using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Application.DTOs.GuiEmail;
 
 namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 {
-    public class GetBaoCaoCauHoiRequestHandler : BaseMasterFeatures, IRequestHandler<GetBaoCaoCauHoiRequest, BaoCaoCauHoiDto>
+    public class GetBaoCaoCauHoiRequestHandler : BaseMasterFeatures, IRequestHandler<GetBaoCaoCauHoiRequest, ThongKeBaoCaoDto>
     {
         private readonly IMapper _mapper;
 
@@ -18,7 +20,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             _mapper = mapper;
         }
 
-        public async Task<BaoCaoCauHoiDto> Handle(GetBaoCaoCauHoiRequest request, CancellationToken cancellationToken)
+        public async Task<ThongKeBaoCaoDto> Handle(GetBaoCaoCauHoiRequest request, CancellationToken cancellationToken)
         {
             var query = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
@@ -26,14 +28,15 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                         join d in _surveyRepo.CauHoi.GetAllQueryable() on a.IdCauHoi equals d.Id
                         join e in _surveyRepo.DonVi.GetAllQueryable() on a.IdDonVi equals e.Id
                         join g in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinhDonVi equals g.Id
-                        where (request.IdDotKhaoSat == 0 || c.Id == request.IdDotKhaoSat) &&
-                             (request.IdBangKhaoSat == 0 || b.Id == request.IdBangKhaoSat) &&
-                             (request.IdLoaiHinhDonVi == null || g.Id == request.IdLoaiHinhDonVi) &&
+
+                        where (request.IdDotKhaoSat == 0 || a.IdDotKhaoSat == request.IdDotKhaoSat) &&
+                             (request.IdBangKhaoSat == 0 || a.IdBangKhaoSat == request.IdBangKhaoSat) &&
+                             (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
                              (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
                              (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
                              a.Deleted == false
 
-                        select new BaoCaoCauHoiDto
+                        select new CauHoiTraLoi
                         {
                             IdBangKhaoSat = b.Id,
                             IdDotKhaoSat = c.Id,
@@ -64,7 +67,6 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                       select new GuiEmailDto
                                       {
                                           Id = a.Id
-
                                       }).CountAsync(cancellationToken: cancellationToken);
 
             var donViThamGia = await (from a in _surveyRepo.KetQua.GetAllQueryable()
@@ -77,35 +79,35 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                       select new KetQua
                                       {
                                           Id = c.Id
-
                                       }).CountAsync(cancellationToken: cancellationToken);
 
-            var groupedResults = query.GroupBy(g => new { g.IdCauHoi, g.CauHoi, g.LoaiCauHoi }).OrderBy(o => o.Key.IdCauHoi);
+            var groupedResults = query.GroupBy(g => new { g.IdCauHoi, g.CauHoi, g.DauThoiGian }).OrderBy(o => o.Key.IdCauHoi);
+
             var groupedDataList = await groupedResults.Select(group => new ListCauHoiTraLoi
             {
                 IdCauHoi = group.Key.IdCauHoi,
-                LoaiCauHoi = group.Key.LoaiCauHoi,
                 TenCauHoi = group.Key.CauHoi,
-                CauHoiTraLoi = group.Where(x => !string.IsNullOrEmpty(x.CauTraLoi)).Select(x => new CauHoiTraLoi { CauTraLoi = x.CauTraLoi }).ToList()
+                DauThoiGian = group.Key.DauThoiGian,
+                CauHoiTraLoi = group.ToList()
             }).ToListAsync(cancellationToken: cancellationToken);
 
             foreach (var item in groupedDataList)
             {
-                foreach (var cauHoiTraLoi in item.CauHoiTraLoi ?? new List<CauHoiTraLoi>())
+                foreach (var cauHoiTraLoi in item.CauHoiTraLoi)
                 {
-                    cauHoiTraLoi.SoLuotChon = item.CauHoiTraLoi?.Count(x => x.CauTraLoi == cauHoiTraLoi.CauTraLoi) ?? 0;
-                    cauHoiTraLoi.TyLe = (double)cauHoiTraLoi.SoLuotChon / (item.CauHoiTraLoi?.Count ?? 0) * 100;
+                    cauHoiTraLoi.SoLuotChon = item.CauHoiTraLoi.Count(x => x.CauTraLoi == cauHoiTraLoi.CauTraLoi);
+                    cauHoiTraLoi.TyLe = (double)cauHoiTraLoi.SoLuotChon / item.CauHoiTraLoi.Count * 100;
                 }
 
                 // Loại bỏ các bản ghi trùng lặp trong danh sách CauHoiTraLoi
-                item.CauHoiTraLoi = item.CauHoiTraLoi?.GroupBy(x => x.CauTraLoi).Select(group => group.First()).ToList();
+                item.CauHoiTraLoi = item.CauHoiTraLoi.GroupBy(x => x.CauTraLoi).Select(group => group.First()).ToList();
             }
 
-            return new BaoCaoCauHoiDto
+            return new ThongKeBaoCaoDto
             {
-                CountDonViSo = query.Count(x => x.IdLoaiHinhDonVi == 1),
-                CountDonViBo = query.Count(x => x.IdLoaiHinhDonVi == 2),
-                CountDonViNganh = query.Count(x => x.IdLoaiHinhDonVi == 3),
+                CountDonViSo = await query.CountAsync(x => x.IdLoaiHinhDonVi == 1),
+                CountDonViBo = await query.CountAsync(x => x.IdLoaiHinhDonVi == 2),
+                CountDonViNganh = await query.CountAsync(x => x.IdLoaiHinhDonVi == 3),
                 CountDonViMoi = donViDuocMoi,
                 CountDonViTraLoi = donViThamGia,
                 ListCauHoiTraLoi = groupedDataList,

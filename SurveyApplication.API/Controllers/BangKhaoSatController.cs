@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
+using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
+using SurveyApplication.Application.Features.QuanHuyens.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 
@@ -44,6 +46,14 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<BangKhaoSatDto>> GetByIdBangKhaoSat(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetBangKhaoSatDetailRequest { Id = id });
+            return Ok(leaveAllocations);
+        }
+
+        [HttpGet("GetByDotKhaoSat/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
+        public async Task<ActionResult<List<BangKhaoSatDto>>> GetByDotKhaoSat(int id)
+        {
+            var leaveAllocations = await _mediator.Send(new GetBangKhaoSatByDotKhaoSatRequest { Id = id });
             return Ok(leaveAllocations);
         }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
 {
-    public class DashBoardDto : BaseDto
+    public class DashBoardDto
     {
         public int CountDotKhaoSat { get; set; }
         public int CountBangKhaoSat { get; set; }

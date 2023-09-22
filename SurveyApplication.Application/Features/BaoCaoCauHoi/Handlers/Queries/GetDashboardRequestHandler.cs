@@ -27,7 +27,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
         }
         public async Task<DashBoardDto> Handle(GetDashBoardRequest request, CancellationToken cancellationToken)
         {
-            var tongDotKhaoSat = (from a in _surveyRepo.DotKhaoSat.GetAllQueryable()
+            var tongDotKhaoSat = await (from a in _surveyRepo.DotKhaoSat.GetAllQueryable()
                                   join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.Id equals b.IdDotKhaoSat
                                   where (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
                                       (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
@@ -35,16 +35,18 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                   select new DotKhaoSatDto
                                   {
                                       Id = a.Id
-                                  }).ToList().Count();
-            var tongBangKhaoSat = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
+                                  }).CountAsync();
+
+            var tongBangKhaoSat = await (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                    where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
                                        (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
                                        a.Deleted == false
                                    select new BangKhaoSatDto
                                    {
                                        Id = a.Id
-                                   }).ToList().Count();
-            var tongThamGiaKhaoSat = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
+                                   }).CountAsync();
+
+            var tongThamGiaKhaoSat = await (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                       join b in _surveyRepo.GuiEmail.GetAllQueryable() on a.Id equals b.IdBangKhaoSat
                                       join c in _surveyRepo.KetQua.GetAllQueryable() on b.Id equals c.IdGuiEmail
                                       where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
@@ -53,8 +55,9 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                       select new KetQua
                                       {
                                           Id = c.Id
-                                      }).ToList().Count();
-            var khaoSatTheoNhom = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
+                                      }).CountAsync();
+
+            var khaoSatTheoNhom = await (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                    join b in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinh equals b.Id
                                    where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
                                        (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
@@ -62,8 +65,9 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                    select new LoaiHinhDonViDto
                                    {
                                        Id = b.Id,
-                                   }).ToList();
-            var khaoSatTheoDot = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
+                                   }).ToListAsync();
+
+            var khaoSatTheoDot = await (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                   join b in _surveyRepo.DotKhaoSat.GetAllQueryable() on a.IdDotKhaoSat equals b.Id
                                   where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
                                    (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
@@ -71,20 +75,21 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                   select new DotKhaoSatDto
                                   {
                                       Id = b.Id
-                                  }).ToList();
-            var khaoSatTinhTp = (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
+                                  }).ToListAsync();
+
+            var khaoSatTinhTp = await (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                  join b in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinh equals b.Id
                                  join c in _surveyRepo.DonVi.GetAllQueryable() on b.Id equals c.IdLoaiHinh
                                  join d in _surveyRepo.TinhTp.GetAllQueryable() on c.IdTinhTp equals d.Id
                                  where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
                                   (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
                                   c.Deleted == false
-                                 select new DonViDto
+                                 select new DonViTinhTpDto
                                  {
                                      Id = c.Id,
                                      IdTinhTp = d.Id,
                                      TinhTp = d.Name,
-                                 }).ToList();
+                                 }).ToListAsync();
 
             var tongKhaoSatTinhTp = khaoSatTinhTp.GroupBy(g => new { g.IdTinhTp, g.TinhTp }).OrderByDescending(group => group.Count()).ToList();
 
