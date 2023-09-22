@@ -37,11 +37,8 @@ public class EmailSender : IEmailSender
             {
                 var userEmail = EmailSettings.Username;
                 var passwordEmail = EmailSettings.Password;
-                string externalHtmlContent = File.ReadAllText("F:\\T07-SurveyApplication\\Infrastructure\\Mail\\EmailSender.html");
-
-                string body = externalHtmlContent.Replace("{{TieuDe}}", "John Doe")
-                                .Replace("{{NoiDung}}", "Khảo sát mẫu");
-
+                //string externalHtmlContent = File.ReadAllText(@"D:\LamViecCty\TriNam\HR.LeaveManagement\Infrastructure\Mail\EmailSender.html");
+                //string bodyHtml = externalHtmlContent.Replace("{{TieuDe}}", title).Replace("{{NoiDung}}", body);
                 if (toEmail != null)
                 {
                     var mailMessage = new MailMessage(userEmail, toEmail, title, body)

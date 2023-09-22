@@ -35,25 +35,40 @@
 
 .style_sum {
   box-sizing: border-box;
-  height: 25vh;
+  height: auto;
   line-height: 15vh;
   color: #ffffff;
 }
-.style_sum > div > h5 {
-  margin-top: 40px;
-}
+
 .style_sum > div > p {
   font-size: 22px;
 }
+
 .style_sum > div {
-  margin: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  padding: 0 12px;
 }
+
+.style_sum > div h5 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.style_sum > div p {
+  margin: 0;
+  font-size: 3.6rem;
+  text-align: center;
+}
+
 ::ng-deep .p-calendar {
   height: 35px;
 }
+
 ::ng-deep .p-datepicker-group-container {
   width: 50vh;
 }
+
 ::ng-deep .ng-trigger-overlayAnimation {
   width: 30px;
 }

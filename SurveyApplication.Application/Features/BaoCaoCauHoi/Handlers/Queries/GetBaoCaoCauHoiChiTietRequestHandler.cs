@@ -17,8 +17,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
         {
             var query = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
-                        where (request.IdDotKhaoSat == 0 || a.IdDotKhaoSat == request.IdDotKhaoSat) &&
-                              (request.IdBangKhaoSat == 0 || a.IdBangKhaoSat == request.IdBangKhaoSat) &&
+                        where a.IdDotKhaoSat == request.IdDotKhaoSat &&
+                              a.IdBangKhaoSat == request.IdBangKhaoSat &&
                               (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
                               (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
                               (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
@@ -28,7 +28,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                         select a;
 
             var data = from a in query
-                       group new { a } by new { a.IdBangKhaoSat, a.IdDotKhaoSat, a.IdDonVi } into grBc
+                       group new { a } by new { a.IdBangKhaoSat, a.IdDotKhaoSat, a.IdDonVi, a.IdGuiEmail } into grBc
                        select new BaoCaoCauHoiChiTietDto
                        {
                            IdDonVi = grBc.Key.IdDonVi,
@@ -40,7 +40,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                 {
                                     CauHoi = x.First().CauHoi,
                                     LoaiCauHoi = x.First().LoaiCauHoi,
-                                    CauTraLoi = x.Where(ctl => ctl.LoaiCauHoi == x.Key).GroupBy(ctl => new {ctl.CauTraLoi, ctl.MaCauTraLoi}).Select(ctl => ctl.Key.CauTraLoi).ToList(),
+                                    CauTraLoi = x.Where(ctl => ctl.LoaiCauHoi == x.Key).GroupBy(ctl => new { ctl.CauTraLoi, ctl.MaCauTraLoi }).Select(ctl => ctl.Key.CauTraLoi).ToList(),
                                 }).ToList()
                        };
 

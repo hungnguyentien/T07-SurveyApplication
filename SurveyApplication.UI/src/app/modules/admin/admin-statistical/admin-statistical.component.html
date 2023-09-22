@@ -213,10 +213,11 @@
             currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
             <ng-template pTemplate="header">
               <tr>
-                <th style="min-width: 60px;text-align: center;" class="pFrozen top-0">
+                <th style="min-width: 60px;text-align: center;max-width: 60px; width: 60px;" class="pFrozen top-0">
                   STT
                 </th>
-                <th style="width: 150px;text-align: center;" class="pFrozen pFrozen-1 top-0">
+                <th [style]="lstTh.length > 0 ? 'width: 150px;text-align: center;' : 'width: auto;text-align: center;'"
+                  class="pFrozen pFrozen-1 top-0">
                   Dấu thời gian
                 </th>
                 <th pResizableColumn *ngFor="let col of lstTh; trackBy:trackByFn">
@@ -239,8 +240,7 @@
                       <p *ngFor="let item of item.cauTraLoi; trackBy:trackByFn">{{getDataKqBangMotLuaChon(item)}}</p>
                     </div>
                     <div *ngSwitchCase="7">
-                      <ng-container *ngFor="let item of item.cauTraLoi; trackBy:trackByFn">
-                        <ng-container *ngFor="let item of getDataKqFile(item); trackBy:trackByFn"></ng-container>
+                      <ng-container *ngFor="let item of getDataKqFile2(item.cauTraLoi); trackBy:trackByFn">
                         <a (click)="downloadFileBase64(item)" download title="{{item.name}}">
                           {{item.name}}
                         </a>

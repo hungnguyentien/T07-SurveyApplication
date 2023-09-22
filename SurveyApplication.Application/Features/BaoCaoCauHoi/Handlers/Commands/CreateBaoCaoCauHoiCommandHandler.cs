@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Commands;
-using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
@@ -52,6 +51,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Commands
                 x.IdCauHoi = cauHoi.IdCauHoi;
                 x.IdDonVi = cauHoi.IdDonVi;
                 x.DauThoiGian = DateTime.Now;
+                x.IdGuiEmail = idGuiEmail;
             });
             await _surveyRepo.BaoCaoCauHoi.InsertAsync(lstBaoCaoCauHoi);
             await _surveyRepo.SaveAync();

@@ -91,7 +91,7 @@ export class AdminStatisticalComponent {
       next: (res) => {
         this.lstTh = [];
         this.dataChiTiet = res.data;
-        res.data[0].lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
+        res.data[0]?.lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
@@ -294,6 +294,10 @@ export class AdminStatisticalComponent {
   };
 
   getDataKqFile = (data: string): any[] => {
+    return data && JSON.parse(data) ? JSON.parse(data) : [];
+  };
+
+  getDataKqFile2 = (data: string): any[] => {
     return data && JSON.parse(data) ? JSON.parse(data) : [];
   };
 
