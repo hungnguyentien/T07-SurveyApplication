@@ -84,8 +84,7 @@ export class AdminTableSurveyComponent {
   lstIdDonViError: boolean = false;
 
 
-  DsDetail: any[]=[]; 
-
+  
   constructor(
     private router: Router,
     private FormBuilder: FormBuilder,
@@ -271,29 +270,14 @@ export class AdminTableSurveyComponent {
       },
     });
   };
-  OpenDetail(rowData: any) {
-    this.visibleDetail = !this.visibleDetail;
-    
-    this.TableSurveyService.getById(rowData.id).subscribe(
-      (data: any) => {
-        this.DsDetail = [data];
-       
-        console.log("DsDetail",this.DsDetail)
-      },
-      (error) => {
-        console.error('Lỗi khi lấy chi tiết:', error);
-      }
-    );
-  }
+  
   
 
   
   CloseModal() {
     this.visible = false;
   }
-  CloseDetail() {
-    this.visibleDetail = !this.visibleDetail;
-  }
+  
 
   LoadUnitType() {
     this.unitTypeService.getAll().subscribe((data) => {
