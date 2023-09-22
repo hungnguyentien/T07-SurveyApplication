@@ -66,7 +66,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             request.AccountDto.NormalizedEmail = request.AccountDto.Email.ToUpper();
             request.AccountDto.NormalizedUserName = request.AccountDto.UserName.ToUpper();
             //request.AccountDto.EmailConfirmed = true;
-            request.AccountDto.PasswordHash = account.PasswordHash;
+            //request.AccountDto.PasswordHash = account.PasswordHash;
             //request.AccountDto.LockoutEnabled = true;
             request.AccountDto.Image = account.Image;
 
