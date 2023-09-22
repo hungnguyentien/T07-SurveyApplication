@@ -179,29 +179,16 @@
               emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
               placeholder="-- Chọn Lĩnh vực hoạt động --" formControlName="IdLinhVuc">
             </p-dropdown>
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['IdLinhVuc'].valid && 
-              FormObjectSurvey.controls['IdLinhVuc'].dirty">
-              Vui lòng chọn Lĩnh vực hoạt động
-            </small>
           </div>
 
           <div class="form-group col-md-6">
             <label for="sothue" class="col-form-label">Mã số thuế: </label>
             <input formControlName="MaSoThue" type="text" pInputText class="form-control" id="sothue">
 
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['MaSoThue'].valid && 
-              FormObjectSurvey.controls['MaSoThue'].dirty">
-              Vui lòng nhập mã số thuế
-            </small>
           </div>
           <div class="form-group col-md-6">
             <label for="Website" class="col-form-label">Website:</label>
             <input formControlName="WebSite" type="text" pInputText class="form-control" id="Website">
-
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['WebSite'].valid && 
-              FormObjectSurvey.controls['WebSite'].dirty">
-              Vui lòng nhập Website
-            </small>
           </div>
           <div class="form-group col-md-6">
             <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>

@@ -164,7 +164,6 @@ export class AdminPeriodSurveyComponent {
   }
 
   SaveAdd() {
-    
     if (this.FormPeriodSurvey.valid) {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
       this.PeriodSurveyService.create(ObjPeriodSurvey).subscribe({

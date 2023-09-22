@@ -7,12 +7,12 @@ export interface CreateUnitAndRep {
 
 export interface ObjectSurvey extends Base {
   IdLoaiHinh: number;
-  IdLinhVuc: number;
+  IdLinhVuc: number | null;
   TenDonVi: string;
   DiaChi: string;
-  MaSoThue: string;
-  Email: string;
-  WebSite: string;
+  MaSoThue: string | null;
+  Email: string ;
+  WebSite: string | null;
   SoDienThoai: string;
   MaDonVi: string | null;
 }
@@ -21,7 +21,7 @@ export interface Representative extends Base {
   HoTen: string;
   ChucVu: string;
   Email: string;
-  MoTa: string;
+  MoTa: string | null;
 }
 
 export interface DonVi extends Base {

@@ -151,7 +151,7 @@
       </div>
 
       <div class="form-group">
-        <label for="tieuDe" class="col-form-label">Tiêu đề:</label>
+        <label for="tieuDe" class="col-form-label">Tiêu đề: <span style="color: red">*</span></label>
 
         <input type="text" pInputText class="form-control" id="tieuDe" formControlName="tieuDe"
           placeholder="Nhập tiêu đề câu hỏi" required />
@@ -243,7 +243,7 @@
         <label class="col-form-label">
           {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'Đáp án' : 'Cột' }}:
         </label>
-        <button type="button" class="btn btn-add float-end" (click)="addItem()">
+        <button type="button"class="btn btn-add float-end custom-button mb-3" (click)="addItem()"> <i class="pi pi-plus mr-2"></i>
           Thêm {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'đáp án' : 'cột' }}
         </button>
         <table class="table table-bordered">
@@ -273,7 +273,7 @@
                     <i class="fa fa-plus" aria-hidden="true"></i>
                   </button>
                   <button class="ml-3 btn_delete" type="button" (click)="deleteItem(i)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i class="pi pi-trash" aria-hidden="true"></i>
                   </button>
                 </div>
               </td>
@@ -288,7 +288,7 @@
         selectedLoaiCauHoi === '4'
       ">
         <label class="col-form-label">Hàng:</label>
-        <button type="button" class="btn btn-add float-end" (click)="addItem(false)">
+        <button type="button" class="btn btn-add float-end custom-button mb-3" (click)="addItem(false)"><i class="pi pi-plus mr-1"></i> 
           Thêm hàng
         </button>
         <table class="table table-bordered">
@@ -318,7 +318,7 @@
                     <i class="fa fa-plus" aria-hidden="true"></i>
                   </button>
                   <button class="ml-3 btn_delete" type="button" (click)="deleteItem(i, false)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i class="pi pi-trash" aria-hidden="true"></i>
                   </button>
                 </div>
               </td>
