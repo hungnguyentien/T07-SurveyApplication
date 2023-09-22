@@ -11,7 +11,7 @@ using SurveyApplication.Application.DTOs.GuiEmail;
 
 namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 {
-    public class GetBaoCaoCauHoiRequestHandler : BaseMasterFeatures, IRequestHandler<GetBaoCaoCauHoiRequest, BaoCaoCauHoiDto>
+    public class GetBaoCaoCauHoiRequestHandler : BaseMasterFeatures, IRequestHandler<GetBaoCaoCauHoiRequest, ThongKeBaoCaoDto>
     {
         private readonly IMapper _mapper;
 
@@ -20,7 +20,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             _mapper = mapper;
         }
 
-        public async Task<BaoCaoCauHoiDto> Handle(GetBaoCaoCauHoiRequest request, CancellationToken cancellationToken)
+        public async Task<ThongKeBaoCaoDto> Handle(GetBaoCaoCauHoiRequest request, CancellationToken cancellationToken)
         {
             var query = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
@@ -29,14 +29,14 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                         join e in _surveyRepo.DonVi.GetAllQueryable() on a.IdDonVi equals e.Id
                         join g in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinhDonVi equals g.Id
 
-                        where (request.IdDotKhaoSat == 0 || c.Id == request.IdDotKhaoSat) &&
-                             (request.IdBangKhaoSat == 0 || b.Id == request.IdBangKhaoSat) &&
-                             (request.IdLoaiHinhDonVi == null || g.Id == request.IdLoaiHinhDonVi) &&
+                        where (request.IdDotKhaoSat == 0 || a.IdDotKhaoSat == request.IdDotKhaoSat) &&
+                             (request.IdBangKhaoSat == 0 || a.IdBangKhaoSat == request.IdBangKhaoSat) &&
+                             (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
                              (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
                              (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
                              a.Deleted == false
 
-                        select new BaoCaoCauHoiDto
+                        select new CauHoiTraLoi
                         {
                             IdBangKhaoSat = b.Id,
                             IdDotKhaoSat = c.Id,
@@ -67,7 +67,6 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                       select new GuiEmailDto
                                       {
                                           Id = a.Id
-
                                       }).CountAsync(cancellationToken: cancellationToken);
 
             var donViThamGia = await (from a in _surveyRepo.KetQua.GetAllQueryable()
@@ -80,7 +79,6 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                       select new KetQua
                                       {
                                           Id = c.Id
-
                                       }).CountAsync(cancellationToken: cancellationToken);
 
             var groupedResults = query.GroupBy(g => new { g.IdCauHoi, g.CauHoi, g.DauThoiGian }).OrderBy(o => o.Key.IdCauHoi);
@@ -105,11 +103,11 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                 item.CauHoiTraLoi = item.CauHoiTraLoi.GroupBy(x => x.CauTraLoi).Select(group => group.First()).ToList();
             }
 
-            return new BaoCaoCauHoiDto
+            return new ThongKeBaoCaoDto
             {
-                CountDonViSo = query.Count(x => x.IdLoaiHinhDonVi == 1),
-                CountDonViBo = query.Count(x => x.IdLoaiHinhDonVi == 2),
-                CountDonViNganh = query.Count(x => x.IdLoaiHinhDonVi == 3),
+                CountDonViSo = await query.CountAsync(x => x.IdLoaiHinhDonVi == 1),
+                CountDonViBo = await query.CountAsync(x => x.IdLoaiHinhDonVi == 2),
+                CountDonViNganh = await query.CountAsync(x => x.IdLoaiHinhDonVi == 3),
                 CountDonViMoi = donViDuocMoi,
                 CountDonViTraLoi = donViThamGia,
                 ListCauHoiTraLoi = groupedDataList,

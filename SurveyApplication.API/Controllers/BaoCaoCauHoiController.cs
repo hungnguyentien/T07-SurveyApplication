@@ -23,13 +23,10 @@ namespace SurveyApplication.API.Controllers
 
         [HttpGet("GetBaoCaoCauHoi")]
         [HasPermission(new[] { (int)EnumModule.Code.TkKs }, new[] { (int)EnumPermission.Type.Read })]
-        public async Task<ActionResult<BaoCaoCauHoiDto>> GetBaoCaoCauHoi([FromQuery] GetBaoCaoCauHoiRequest data)
+        public async Task<ActionResult<ThongKeBaoCaoDto>> GetBaoCaoCauHoi([FromQuery] GetBaoCaoCauHoiRequest data)
         {
             var result = await _mediator.Send(data);
-            return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            }));
+            return Ok(result);
         }
 
         [HttpGet("GetDashBoard")]
@@ -37,10 +34,7 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<DashBoardDto>> GetDashBoard([FromQuery] GetDashBoardRequest data)
         {
             var result = await _mediator.Send(data);
-            return Ok(JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            }));
+            return Ok(result);
         }
     }
 }

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.DTOs.XaPhuong;
+using SurveyApplication.Application.Features.QuanHuyens.Requests.Queries;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Commands;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -44,6 +46,14 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<List<XaPhuongDto>>> GetByIdXaPhuong(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetXaPhuongDetailRequest { Id = id });
+            return Ok(leaveAllocations);
+        }
+
+        [HttpGet("GetByQuanHuyen/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlPx }, new[] { (int)EnumPermission.Type.Read })]
+        public async Task<ActionResult<List<QuanHuyenDto>>> GetByQuanHuyen(string id)
+        {
+            var leaveAllocations = await _mediator.Send(new GetXaPhuonByQuanHuyenRequest { Id = id });
             return Ok(leaveAllocations);
         }
 
