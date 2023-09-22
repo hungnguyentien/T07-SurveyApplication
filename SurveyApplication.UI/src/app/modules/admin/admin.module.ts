@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -98,7 +97,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
 import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';
-import { QuestionComponent } from './admin-question/question/question.component';
+import { QuestionComponent } from './admin-question/question.component';
 import { AdminObjectSurveyComponent } from './admin-object-survey/admin-object-survey.component';
 import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.component';
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
@@ -112,6 +111,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ShareModule } from '@app/layout/share/share.module';
 import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { AdminAccountComponent } from './admin-account/admin-account.component';
+import { AdminModuleManagementComponent } from './admin-module-management/admin-module-management.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -129,12 +130,13 @@ import { AdminAccountComponent } from './admin-account/admin-account.component';
     AdminStatisticalComponent,
     AdminRoleComponent,
     AdminAccountComponent,
+    AdminModuleManagementComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     AdminRoutingModule,
-    CKEditorModule,
     ReactiveFormsModule,
     // Import PrimeNG modules
     AvatarModule,
@@ -164,7 +166,7 @@ import { AdminAccountComponent } from './admin-account/admin-account.component';
     DragDropModule,
     DropdownModule,
     DynamicDialogModule,
-    // EditorModule,
+    EditorModule,
     FieldsetModule,
     FileUploadModule,
     GalleriaModule,
@@ -226,9 +228,9 @@ import { AdminAccountComponent } from './admin-account/admin-account.component';
     AnimateModule,
     CardModule,
     HttpClientModule,
-    ShareModule
+    ShareModule,
   ],
- 
+
   providers: [DatePipe],
 })
 export class AdminModule {}

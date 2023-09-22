@@ -2,14 +2,20 @@ using Microsoft.OpenApi.Models;
 using SurveyApplication.API.Middleware;
 using SurveyApplication.Application;
 using SurveyApplication.Application.Services.Interfaces;
+using SurveyApplication.Utility.LogUtils;
 
 namespace SurveyApplication.API;
 
 public class Startup
 {
     private IConfiguration Configuration { get; }
+    [Obsolete("Obsolete")]
     public Startup(IConfiguration configuration)
     {
+        //Config NLog
+        var appBasePath = Directory.GetCurrentDirectory();
+        NLog.GlobalDiagnosticsContext.Set("appbasepath", appBasePath);
+        NLog.LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config")).GetCurrentClassLogger();
         Configuration = configuration;
     }
 
@@ -27,6 +33,7 @@ public class Startup
                     .AllowAnyMethod()
                     .AllowAnyHeader());
         });
+        services.AddSingleton<ILoggerManager, LoggerManager>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +60,7 @@ public class Startup
         app.UseCors("CorsPolicy");
 
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
+        //TODO BUG
         UpdatePermissionTable(serviceProvider);
     }
 
@@ -106,7 +113,8 @@ public class Startup
 
     private static void UpdatePermissionTable(IServiceProvider serviceProvider)
     {
-        var dataDefaultService = (IDataDefaultService)serviceProvider.GetService(typeof(IDataDefaultService))!;
-        dataDefaultService.DataAdmin().Wait();
+        var dataDefaultService = (IDataDefaultService)serviceProvider.GetService(typeof(IDataDefaultService));
+        if (dataDefaultService != null)
+            dataDefaultService.DataAdmin().Wait();
     }
 }

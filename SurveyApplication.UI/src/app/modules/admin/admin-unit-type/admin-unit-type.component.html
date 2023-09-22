@@ -14,8 +14,7 @@
   <h5>Danh sách loại hình đơn vị</h5>
   <div class="d-flex mt-3">
     <div>
-      <button (click)=" Add()" pButton type="button" icon="pi pi-plus"
-        label="Thêm mới" class="custom-button"></button>
+      <button (click)=" Add()" pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"></button>
     </div>
     <div class="ml-3">
       <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
@@ -34,7 +33,7 @@
   </form>
 </div>
 <div class="card mt-3">
-  <p-table #dt [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
+  <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
     scrollHeight="calc(100vh - 396px)" [(selection)]="selectedUnitType" dataKey="id"
     styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
@@ -45,38 +44,30 @@
         <th style="width: 40px;">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th style="width: 60px;">
+        <th style="width: 60px;text-align: center;">
           STT
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Mã nhóm
-            <p-sortIcon field="maLoaiHinh"></p-sortIcon>
-            <p-columnFilter type="text" field="maLoaiHinh" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Tên nhóm
-            <p-sortIcon field="tenLoaiHinh"></p-sortIcon>
-            <p-columnFilter type="text" field="tenLoaiHinh" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Mô tả
-            <p-sortIcon field="moTa"></p-sortIcon>
-            <p-columnFilter type="text" field="mota" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
 
-        <th style="width: 120px;">
+        <th style="width: 120px;text-align: center;">
           <div>
             Chức năng
-            
           </div>
         </th>
-
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -84,7 +75,7 @@
         <td>
           <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
         </td>
-        <td>
+        <td class="text-center align-items-center">
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>

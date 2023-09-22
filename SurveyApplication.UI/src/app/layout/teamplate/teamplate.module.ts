@@ -9,6 +9,9 @@ import { TemplatePublicComponent } from './public-template/public-template.compo
 import { PartialsModule } from '../partials/partials.module';
 import { ShareModule } from '../share/share.module';
 import { AdminTempleteComponent } from './admin-templete/admin-templete.component';
+import { DialogModule } from 'primeng/dialog';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [TemplatePublicComponent, AdminTempleteComponent],
   imports: [
@@ -19,6 +22,9 @@ import { AdminTempleteComponent } from './admin-templete/admin-templete.componen
     PartialsModule,
     ShareModule,
     ToastModule,
+    DialogModule,
+    FileUploadModule,
+    ConfirmDialogModule
   ],
 })
 export class TeamplateModule {}

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.component';
 import { AdminObjectSurveyComponent } from './admin-object-survey/admin-object-survey.component';
-import { QuestionComponent } from './admin-question/question/question.component';
+import { QuestionComponent } from './admin-question/question.component';
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
 import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
 import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';
@@ -17,6 +17,7 @@ import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { AdminAccountComponent } from './admin-account/admin-account.component';
 import { AuthGuard } from '@app/helpers';
 import { CodeModule } from '@app/enums';
+import { AdminModuleManagementComponent } from './admin-module-management/admin-module-management.component';
 
 const routes: Routes = [
   {
@@ -150,6 +151,15 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: {
           title: 'Quản lý tài khoản',
+        },
+      },
+      {
+        path: 'quan-ly-module',
+        component: AdminModuleManagementComponent,
+        title: 'Quản lý module',
+        canActivate: [AuthGuard],
+        data: {
+          title: 'Quản lý module',
         },
       },
       {

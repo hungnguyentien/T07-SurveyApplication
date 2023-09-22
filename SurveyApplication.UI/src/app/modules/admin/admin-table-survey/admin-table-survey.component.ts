@@ -27,9 +27,9 @@ import {
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { HttpErrorResponse } from '@angular/common/http';
 import { BksTrangThai } from '@app/enums';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -78,9 +78,9 @@ export class AdminTableSurveyComponent {
   lstDonVi!: DonVi[];
   selectedDonVi!: number[];
   lstIdDonViError: boolean = false;
-  public Editor = ClassicEditor; // Tham chiếu đến ClassicEditor
 
   constructor(
+    private router: Router,
     private FormBuilder: FormBuilder,
     private TableSurveyService: TableSurveyService,
     private messageService: MessageService,
@@ -91,8 +91,7 @@ export class AdminTableSurveyComponent {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
-    private guiEmailService: GuiEmailService,
-    private http: HttpClient
+    private guiEmailService: GuiEmailService
   ) {}
 
   ngOnInit() {
@@ -118,22 +117,33 @@ export class AdminTableSurveyComponent {
       { validator: this.dateRangeValidator }
     );
   }
+
+  handlerClick = (link: string) => {
+    this.router.navigate([link]);
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach((navItem) => {
+      navItem.classList.remove('active');
+      navItem.children[0].classList.add('collapsed');
+      let div = navItem.children[1];
+      div && div.classList.remove('show');
+    });
+  };
+
   confirmDeleteMultiple() {
     let ids: number[] = [];
     this.selectedTableSurvey.forEach((el) => {
       ids.push(el.id);
     });
-    
+
     this.confirmationService.confirm({
       message: `Bạn có chắc chắn muốn xoá ${ids.length} bảng khảo sát này?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.TableSurveyService.deleteMultiple(ids).subscribe({
-          next: (res:any) => {
-            if(res.success == false){
-              Utils.messageError(this.messageService, res.message)
-            }
-            else{
+          next: (res: any) => {
+            if (res.success == false) {
+              Utils.messageError(this.messageService, res.message);
+            } else {
               Utils.messageSuccess(
                 this.messageService,
                 `Xoá ${ids.length} bảng khảo sát thành công!`
@@ -146,12 +156,9 @@ export class AdminTableSurveyComponent {
           },
         });
       },
-      reject: () => { },
+      reject: () => {},
     });
   }
-
-
-
 
   dateRangeValidator(
     control: AbstractControl

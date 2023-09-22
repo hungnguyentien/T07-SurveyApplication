@@ -82,7 +82,7 @@ export class SurveyInfoComponent {
                     this.messageService,
                     res.errors?.at(0) ?? ''
                   );
-              //TODO đồng bộ kết quả sau khi lưu khảo sát
+              //TODO đồng bộ kết quả sau khi hoàn thành khảo sát
               if (res.success && status === KqTrangThai.HoanThanh) {
                 let data = {
                   lstBaoCaoCauHoi: this.lstBaoCaoCauHoi,

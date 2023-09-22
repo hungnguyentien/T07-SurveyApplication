@@ -98,6 +98,24 @@
       }
     }
   }
+
+  .p-datatable {
+    .p-datatable-thead {
+      > tr {
+        > th {
+          padding: 0.6rem 0.6rem;
+        }
+      }
+    }
+
+    .p-datatable-tbody {
+      > tr {
+        > td {
+          padding: 0.6rem 0.6rem;
+        }
+      }
+    }
+  }
 }
 
 .ck.ck-editor__main > .ck-editor__editable {

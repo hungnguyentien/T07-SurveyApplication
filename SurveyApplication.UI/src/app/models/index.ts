@@ -23,3 +23,4 @@ export * from './XaPhuong';
 export * from './Role';
 export * from './Account';
 export * from './Module';
+export * from './TinhThanh';
