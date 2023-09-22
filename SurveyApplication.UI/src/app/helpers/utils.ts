@@ -97,7 +97,7 @@ export default class Utils {
     messageService.clear();
     messageService.add({
       severity: 'info',
-      summary: 'info',
+      summary: 'Info',
       detail: message,
     });
   };

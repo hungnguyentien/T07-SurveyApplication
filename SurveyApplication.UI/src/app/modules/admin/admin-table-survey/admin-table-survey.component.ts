@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import {
+  BangKhaoSatCauHoi,
   CauHoi,
   CreateGuiEmail,
   CreateUpdateBangKhaoSat,
@@ -74,10 +75,13 @@ export class AdminTableSurveyComponent {
   visibleCauHoi: boolean = false;
 
   frmGuiEmail!: FormGroup;
+
   visibleGuiEmail: boolean = false;
   lstDonVi!: DonVi[];
   selectedDonVi!: number[];
   lstIdDonViError: boolean = false;
+
+  iPanelTitle!: number;
 
   constructor(
     private router: Router,
@@ -99,7 +103,6 @@ export class AdminTableSurveyComponent {
       searchText: [''], // Khởi tạo FormControl searchText
       idDotKhaoSat: [''], // Khởi tạo FormControl idDotKhaoSat
     });
-
     this.LoadUnitType();
     this.LoadPeriodSurvey();
     this.formTableSurvey = this.FormBuilder.group(
@@ -113,51 +116,10 @@ export class AdminTableSurveyComponent {
         ngayBatDau: ['', Validators.required],
         ngayKetThuc: ['', Validators.required],
         bangKhaoSatCauHoi: this.FormBuilder.array([]),
+        bangKhaoSatCauHoiGroup: this.FormBuilder.array([]),
       },
       { validator: this.dateRangeValidator }
     );
-  }
-
-  handlerClick = (link: string) => {
-    this.router.navigate([link]);
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach((navItem) => {
-      navItem.classList.remove('active');
-      navItem.children[0].classList.add('collapsed');
-      let div = navItem.children[1];
-      div && div.classList.remove('show');
-    });
-  };
-
-  confirmDeleteMultiple() {
-    let ids: number[] = [];
-    this.selectedTableSurvey.forEach((el) => {
-      ids.push(el.id);
-    });
-
-    this.confirmationService.confirm({
-      message: `Bạn có chắc chắn muốn xoá ${ids.length} bảng khảo sát này?`,
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.TableSurveyService.deleteMultiple(ids).subscribe({
-          next: (res: any) => {
-            if (res.success == false) {
-              Utils.messageError(this.messageService, res.message);
-            } else {
-              Utils.messageSuccess(
-                this.messageService,
-                `Xoá ${ids.length} bảng khảo sát thành công!`
-              );
-            }
-          },
-          error: (e) => Utils.messageError(this.messageService, e.message),
-          complete: () => {
-            this.table.reset();
-          },
-        });
-      },
-      reject: () => {},
-    });
   }
 
   dateRangeValidator(
@@ -172,6 +134,31 @@ export class AdminTableSurveyComponent {
 
     return null;
   }
+
+  LoadUnitType() {
+    this.unitTypeService.getAll().subscribe((data) => {
+      this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
+    });
+  }
+
+  LoadPeriodSurvey() {
+    this.periodSurveyService.getAll().subscribe((data) => {
+      this.DSDotKhaoSat = data; // Lưu dữ liệu vào danh sách
+    });
+  }
+
+  handlerClick = (link: string) => {
+    this.router.navigate([link]);
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach((navItem) => {
+      navItem.classList.remove('active');
+      navItem.children[0].classList.add('collapsed');
+      let div = navItem.children[1];
+      div && div.classList.remove('show');
+    });
+  };
+
+  //#region Loadding table and search
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -261,39 +248,16 @@ export class AdminTableSurveyComponent {
     });
   };
 
-  CloseModal() {
-    this.visible = false;
-  }
+  //#endregion
 
-  LoadUnitType() {
-    this.unitTypeService.getAll().subscribe((data) => {
-      this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
-    });
-  }
-
-  LoadPeriodSurvey() {
-    this.periodSurveyService.getAll().subscribe((data) => {
-      this.DSDotKhaoSat = data; // Lưu dữ liệu vào danh sách
-    });
-  }
-
-  toggleHeader() {
-    this.showHeader = !this.showHeader; // Đảo ngược giá trị của biến showHeader
-  }
+  //#region CRUD
 
   Add() {
     this.formTableSurvey.reset();
     this.showadd = true;
     this.visible = !this.visible;
-    for (let i = this.lstBangKhaoSatCauHoi.length - 1; i >= 0; i--) {
-      const control = this.lstBangKhaoSatCauHoi.at(i).get('idCauHoi');
-      if (control !== null) {
-        const idCauHoi = control.value;
-        if (idCauHoi === null) {
-          this.lstBangKhaoSatCauHoi.removeAt(i);
-        }
-      }
-    }
+    this.lstBangKhaoSatCauHoi.clear();
+    this.lstBangKhaoSatCauHoiGroup.clear();
   }
 
   Edit(data: any) {
@@ -512,12 +476,56 @@ export class AdminTableSurveyComponent {
     });
   }
 
+  confirmDeleteMultiple() {
+    let ids: number[] = [];
+    this.selectedTableSurvey.forEach((el) => {
+      ids.push(el.id);
+    });
+
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} bảng khảo sát này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.TableSurveyService.deleteMultiple(ids).subscribe({
+          next: (res: any) => {
+            if (res.success == false) {
+              Utils.messageError(this.messageService, res.message);
+            } else {
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} bảng khảo sát thành công!`
+              );
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
+      },
+      reject: () => {},
+    });
+  }
+
+  CloseModal() {
+    this.visible = false;
+  }
+  /** Đảo ngược giá trị của biến showHeader */
+  toggleHeader() {
+    this.showHeader = !this.showHeader;
+  }
+
+  //#endregion
+
+  //#region Lst BangKhaoSatCauHoi không có group
+
   get lstBangKhaoSatCauHoi(): FormArray {
     return this.formTableSurvey.get('bangKhaoSatCauHoi') as FormArray;
   }
 
   showSialogCh = () => {
     this.selectedCauHoi = [];
+    this.lstBangKhaoSatCauHoiGroup.clear();
     this.visibleCauHoi = true;
   };
 
@@ -544,6 +552,78 @@ export class AdminTableSurveyComponent {
   deleteItem(index: number) {
     this.lstBangKhaoSatCauHoi.removeAt(index);
   }
+
+  //#endregion
+
+  get lstBangKhaoSatCauHoiGroup(): FormArray {
+    return this.formTableSurvey.get('bangKhaoSatCauHoiGroup') as FormArray;
+  }
+
+  addGroup = () => {
+    this.lstBangKhaoSatCauHoi.clear();
+    const newItem = this.FormBuilder.group({
+      panelTitle: ['', Validators.required],
+      bangKhaoSatCauHoi: this.FormBuilder.array<BangKhaoSatCauHoi>([]),
+    });
+    this.lstBangKhaoSatCauHoiGroup.push(newItem);
+  };
+
+  deleteGroup(index: number) {
+    this.lstBangKhaoSatCauHoiGroup.removeAt(index);
+  }
+
+  lstBangKhaoSatCauHoiGroupItem(index: number): FormArray {
+    let lstBangKhaoSatCauHoiGroupItem = this.lstBangKhaoSatCauHoiGroup
+      .at(index)
+      .get('bangKhaoSatCauHoi');
+    return lstBangKhaoSatCauHoiGroupItem as FormArray;
+  }
+
+  showGroupDialogCh = (index: number) => {
+    this.selectedCauHoi = [];
+    this.visibleCauHoi = true;
+    this.iPanelTitle = index;
+  };
+
+  addGroupItem() {
+    this.selectedCauHoi.forEach((el, i) => {
+      const newItem = this.FormBuilder.group<BangKhaoSatCauHoi>({
+        id: 0,
+        idCauHoi: el.id,
+        priority: i,
+        isRequired: false,
+        panelTitle: '',
+        maCauHoi: el.maCauHoi,
+        tieuDe: el.tieuDe,
+      });
+
+      for (
+        let index = 0;
+        index < this.lstBangKhaoSatCauHoiGroup.length;
+        index++
+      ) {
+        let itemCheck = this.lstBangKhaoSatCauHoiGroupItem(index).value.find(
+          (x: { maCauHoi: string }) => x.maCauHoi === el.maCauHoi
+        );
+        if (itemCheck) {
+          Utils.messageInfo(
+            this.messageService,
+            `Trường ${itemCheck.maCauHoi} trùng nhau`
+          );
+          return;
+        }
+      }
+
+      this.lstBangKhaoSatCauHoiGroupItem(this.iPanelTitle).push(newItem);
+    });
+    this.visibleCauHoi = false;
+  }
+
+  deleteGroupItem(index: number, iPanelTitle: number) {
+    this.lstBangKhaoSatCauHoiGroupItem(iPanelTitle).removeAt(index);
+  }
+
+  //#region Event gửi mail
 
   openGuiEmail = () => {
     this.visibleGuiEmail = true;
@@ -600,4 +680,6 @@ export class AdminTableSurveyComponent {
       },
     });
   };
+
+  //#endregion
 }
