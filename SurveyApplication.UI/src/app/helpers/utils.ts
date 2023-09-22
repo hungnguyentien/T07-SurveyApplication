@@ -4,8 +4,8 @@ import { Model } from 'survey-core';
 import { Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
-import { KqTrangThai, TypeCauHoi } from '@app/enums';
-import { CreateBaoCaoCauHoi, SurveyConfig } from '@app/models';
+import { KqSurveyCheckBox, KqTrangThai, TypeCauHoi } from '@app/enums';
+import { CreateBaoCaoCauHoi, FileQuestion, SurveyConfig } from '@app/models';
 import { jsonDataFake } from './json';
 import { themeJson } from './theme';
 import { environment } from '@environments/environment';
@@ -414,8 +414,8 @@ export default class Utils {
           rows: rows,
           choices: [
             {
-              value: '1',
-              text: 'Có',
+              value: KqSurveyCheckBox.value,
+              text: KqSurveyCheckBox.text,
             },
           ],
           cellType: 'checkbox',
@@ -499,7 +499,8 @@ export default class Utils {
         cauHoi: el.title,
         cauHoiPhu: '',
         maCauHoiPhu: '',
-        loaiCauHoi: TypeCauHoi.Radio,
+        loaiCauHoi:
+          el.type === 'radiogroup' ? TypeCauHoi.Radio : TypeCauHoi.CheckBox,
         maCauTraLoi: `${el.name}-Comment`,
         cauTraLoi: dataKq[`${el.name}-Comment`],
       } as CreateBaoCaoCauHoi);
@@ -508,6 +509,7 @@ export default class Utils {
 
   static addDataBaoCao = (...args: any[]): CreateBaoCaoCauHoi[] => {
     const [configCauHoi, dataKq, status, lstBaoCaoCauHoi, generalInfo] = args;
+    // if (configCauHoi && dataKq) {
     if (configCauHoi && dataKq && status == KqTrangThai.HoanThanh) {
       let dataDefault = {
         idBangKhaoSat: 0,
@@ -518,7 +520,7 @@ export default class Utils {
       };
       (configCauHoi as any[]).forEach((el) => {
         if (el.type === 'radiogroup' || el.type === 'checkbox') {
-          (el.choices as any[]).forEach((choice) => {
+          (el.choices as any[]).forEach((choice, i) => {
             lstBaoCaoCauHoi.push({
               ...dataDefault,
               maCauHoi: el.name,
@@ -531,7 +533,11 @@ export default class Utils {
                   : TypeCauHoi.CheckBox,
               maCauTraLoi: choice.text,
               cauTraLoi:
-                dataKq[el.name] === choice.value ? dataKq[el.name] : '',
+                el.type === 'radiogroup'
+                  ? dataKq[el.name] === choice.value
+                    ? dataKq[el.name]
+                    : ''
+                  : dataKq[el.name][i],
             } as CreateBaoCaoCauHoi);
           });
           this.addOtherItem(el, dataKq, lstBaoCaoCauHoi, dataDefault);
@@ -561,8 +567,8 @@ export default class Utils {
                     ? TypeCauHoi.MultiSelectMatrix
                     : TypeCauHoi.MultiTextMatrix,
                 maCauTraLoi: cEl.name,
-                cauTraLoi: dataKq[el.name]?.[rEl.value]?.[cEl.value]
-                  ? JSON.stringify(dataKq[el.name][rEl.value][cEl.value])
+                cauTraLoi: dataKq[el.name]?.[rEl.value]?.[cEl.name]
+                  ? JSON.stringify(dataKq[el.name][rEl.value][cEl.name])
                   : '',
               } as CreateBaoCaoCauHoi);
             });
@@ -575,11 +581,11 @@ export default class Utils {
                 maCauHoi: el.name,
                 cauHoi: el.title,
                 cauHoiPhu: rEl.title,
-                maCauHoiPhu: rEl.name,
+                maCauHoiPhu: rEl.value,
                 loaiCauHoi: TypeCauHoi.SingleSelectMatrix,
                 maCauTraLoi: cEl.name,
-                cauTraLoi: dataKq[el.name]?.[rEl.name]
-                  ? cEl.value == dataKq[el.name][rEl.name]
+                cauTraLoi: dataKq[el.name]?.[rEl.value]
+                  ? cEl.value == dataKq[el.name][rEl.value]
                     ? cEl.text
                     : ''
                   : '',
@@ -622,5 +628,29 @@ export default class Utils {
       localStorage.removeItem('grand_client');
       return '';
     }
+  };
+
+  static base64ToBytes = (base64: string) => {
+    let arr = base64.split(',');
+    let s = window.atob(arr[arr.length - 1]);
+    let bytes = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) bytes[i] = s.charCodeAt(i);
+    return bytes;
+  };
+
+  static downloadFileBase64 = (file: FileQuestion) => {
+    let filename = file.name;
+    let type = file.type;
+    let bytes = this.base64ToBytes(file.content);
+    let blob = new Blob([bytes], { type: type });
+    let downloadUrl = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = downloadUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      URL.revokeObjectURL(downloadUrl);
+    }, 100);
   };
 }

@@ -8,11 +8,17 @@ import {
   UnitTypeService,
 } from '@app/services';
 import { TranslateService } from '@ngx-translate/core';
-import { MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import * as moment from 'moment';
 import 'moment-timezone'; // Import 'moment-timezone'
 import * as XLSX from 'xlsx';
 import { Table } from 'primeng/table';
+import {
+  BaoCaoCauHoiChiTiet,
+  BaoCaoCauHoiChiTietRequest,
+  FileQuestion,
+} from '@app/models';
+import { KqSurveyCheckBox } from '@app/enums';
 @Component({
   selector: 'app-admin-statistical',
   templateUrl: './admin-statistical.component.html',
@@ -32,9 +38,18 @@ export class AdminStatisticalComponent {
 
   selectedDotKhaoSat: number = 1;
   selectedBangKhaoSat: number = 1;
-  datas:any
-  datasKetQuaKhaoSat:any
-  
+
+  datas: any;
+
+  @ViewChild('dtCt') tableCt!: Table;
+  loading: boolean = true;
+  selectedBaoCaoChiTiet!: BaoCaoCauHoiChiTiet[];
+  dataChiTiet: BaoCaoCauHoiChiTiet[] = [];
+  dataTotalRecords!: number;
+  keyWord!: string;
+  paging!: BaoCaoCauHoiChiTietRequest;
+  lstTh: string[] = [];
+
   @ViewChild('dt') table!: Table; // Khi sử dụng p-table, sử dụng ViewChild để truy cập nó
   constructor(
     private formBuilder: FormBuilder,
@@ -60,24 +75,81 @@ export class AdminStatisticalComponent {
     this.loadTableSurvey();
     this.loadUnitType();
     this.getVauleChar(this.frmStatiscal.value);
-    
-  
   }
- 
+
+  loadListLazy = (event: any) => {
+    this.loading = true;
+    let pageSize = event.rows;
+    let pageIndex = event.first / pageSize + 1;
+    this.paging = {
+      ...this.frmStatiscal.value,
+      pageIndex: pageIndex,
+      pageSize: pageSize,
+      keyword: '',
+    };
+    this.baoCaoCauHoiService.getBaoCaoCauHoiChiTiet(this.paging).subscribe({
+      next: (res) => {
+        this.lstTh = [];
+        this.dataChiTiet = res.data;
+        res.data[0]?.lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  };
+
+  onSubmitSearch = () => {
+    this.paging.keyword = this.keyWord;
+    this.getBaoCaoCauHoiChiTiet(this.paging);
+  };
+
+  getBaoCaoCauHoiChiTiet = (paging: BaoCaoCauHoiChiTietRequest) => {
+    this.baoCaoCauHoiService.getBaoCaoCauHoiChiTiet(paging).subscribe({
+      next: (res) => {
+        this.lstTh = [];
+        this.dataChiTiet = res.data;
+        res.data[0].lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  };
+
+  countSpan() {
+    return this.lstTh.length + 2;
+  }
+
+  trackByFn(index: number) {
+    return index;
+  }
 
   exportToExcel() {
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table.el.nativeElement);
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+      this.table.el.nativeElement
+    );
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'ThongKe.xlsx');
   }
+
   getVauleChar = (params: any) => {
     this.baoCaoCauHoiService.getBaoCaoCauHoi(params).subscribe({
-      next: (res:any) => {
-       
-        this.datas = res.listCauHoiTraLoi
-        this.datasKetQuaKhaoSat =res.listCauHoiTraLoi
-        this.setChar([res.countDonViMoi, res.countDonViTraLoi],[res.countDonViSo, res.countDonViBo, res.countDonViNganh]);
+      next: (res) => {
+        this.datas = res.listCauHoiTraLoi ?? [];
+        this.setChar(
+          [res.countDonViMoi, res.countDonViTraLoi],
+          [res.countDonViSo, res.countDonViBo, res.countDonViNganh]
+        );
       },
     });
   };
@@ -166,22 +238,36 @@ export class AdminStatisticalComponent {
   };
 
   search = () => {
-    
     let params = this.frmStatiscal.value;
     if (this.frmStatiscal.value.ngayBatDau) {
-      params.ngayBatDau = moment(this.frmStatiscal.value.ngayBatDau).format('MM/DD/YYYY');
+      params.ngayBatDau = moment(this.frmStatiscal.value.ngayBatDau).format(
+        'MM/DD/YYYY'
+      );
     }
     if (this.frmStatiscal.value.ngayKetThuc) {
-      params.ngayKetThuc = moment(this.frmStatiscal.value.ngayKetThuc).format('MM/DD/YYYY');
+      params.ngayKetThuc = moment(this.frmStatiscal.value.ngayKetThuc).format(
+        'MM/DD/YYYY'
+      );
     }
     if (!params.idDotKhaoSat)
       Utils.messageError(this.messageService, `Vui lòng chọn đợt khảo sát!`);
     else if (!params.idBangKhaoSat)
       Utils.messageError(this.messageService, `Vui lòng chọn bảng khảo sát!`);
-    else this.getVauleChar(params);
+    else {
+      this.getVauleChar(params);
+      this.paging.keyword = this.keyWord;
+      this.paging.idBangKhaoSat = params.idBangKhaoSat;
+      this.paging.idDotKhaoSat = params.idDotKhaoSat;
+      this.paging.idLoaiHinhDonVi = params.idLoaiHinh;
+      this.paging.ngayBatDau = params.ngayBatDau;
+      this.paging.ngayKetThuc = params.ngayKetThuc;
+      this.getBaoCaoCauHoiChiTiet(this.paging);
+    }
   };
 
-  reset = () => {this.frmStatiscal.reset()}
+  reset = () => {
+    this.frmStatiscal.reset();
+  };
 
   loadPeriodSurvey() {
     this.periodSurveyService.getAll().subscribe((data) => {
@@ -201,4 +287,29 @@ export class AdminStatisticalComponent {
     });
   }
 
+  getDataKqBangMotLuaChon = (data: string) => {
+    return data && JSON.parse(data) == KqSurveyCheckBox.value
+      ? KqSurveyCheckBox.text
+      : '';
+  };
+
+  getDataKqFile = (data: string): any[] => {
+    return data && JSON.parse(data) ? JSON.parse(data) : [];
+  };
+
+  getDataKqFile2 = (data: string): any[] => {
+    return data && JSON.parse(data) ? JSON.parse(data) : [];
+  };
+
+  getDataKq = (data: string) => {
+    try {
+      return data && JSON.parse(data) ? JSON.parse(data) : '';
+    } catch {
+      return data;
+    }
+  };
+
+  downloadFileBase64 = (file: FileQuestion) => {
+    Utils.downloadFileBase64(file);
+  };
 }

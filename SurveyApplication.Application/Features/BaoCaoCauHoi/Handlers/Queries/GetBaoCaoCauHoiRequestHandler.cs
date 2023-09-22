@@ -5,8 +5,6 @@ using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Domain;
-using SurveyApplication.Application.DTOs.DonVi;
-using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Application.DTOs.GuiEmail;
 
 namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
@@ -28,7 +26,6 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                         join d in _surveyRepo.CauHoi.GetAllQueryable() on a.IdCauHoi equals d.Id
                         join e in _surveyRepo.DonVi.GetAllQueryable() on a.IdDonVi equals e.Id
                         join g in _surveyRepo.LoaiHinhDonVi.GetAllQueryable() on a.IdLoaiHinhDonVi equals g.Id
-
                         where (request.IdDotKhaoSat == 0 || c.Id == request.IdDotKhaoSat) &&
                              (request.IdBangKhaoSat == 0 || b.Id == request.IdBangKhaoSat) &&
                              (request.IdLoaiHinhDonVi == null || g.Id == request.IdLoaiHinhDonVi) &&
@@ -83,26 +80,25 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 
                                       }).CountAsync(cancellationToken: cancellationToken);
 
-            var groupedResults = query.GroupBy(g => new { g.IdCauHoi, g.CauHoi, g.DauThoiGian }).OrderBy(o => o.Key.IdCauHoi);
-
+            var groupedResults = query.GroupBy(g => new { g.IdCauHoi, g.CauHoi, g.LoaiCauHoi }).OrderBy(o => o.Key.IdCauHoi);
             var groupedDataList = await groupedResults.Select(group => new ListCauHoiTraLoi
             {
                 IdCauHoi = group.Key.IdCauHoi,
+                LoaiCauHoi = group.Key.LoaiCauHoi,
                 TenCauHoi = group.Key.CauHoi,
-                DauThoiGian = group.Key.DauThoiGian,
-                CauHoiTraLoi = group.ToList()
+                CauHoiTraLoi = group.Where(x => !string.IsNullOrEmpty(x.CauTraLoi)).Select(x => new CauHoiTraLoi { CauTraLoi = x.CauTraLoi }).ToList()
             }).ToListAsync(cancellationToken: cancellationToken);
 
             foreach (var item in groupedDataList)
             {
-                foreach (var cauHoiTraLoi in item.CauHoiTraLoi)
+                foreach (var cauHoiTraLoi in item.CauHoiTraLoi ?? new List<CauHoiTraLoi>())
                 {
-                    cauHoiTraLoi.SoLuotChon = item.CauHoiTraLoi.Count(x => x.CauTraLoi == cauHoiTraLoi.CauTraLoi);
-                    cauHoiTraLoi.TyLe = (double)cauHoiTraLoi.SoLuotChon / item.CauHoiTraLoi.Count * 100;
+                    cauHoiTraLoi.SoLuotChon = item.CauHoiTraLoi?.Count(x => x.CauTraLoi == cauHoiTraLoi.CauTraLoi) ?? 0;
+                    cauHoiTraLoi.TyLe = (double)cauHoiTraLoi.SoLuotChon / (item.CauHoiTraLoi?.Count ?? 0) * 100;
                 }
 
                 // Loại bỏ các bản ghi trùng lặp trong danh sách CauHoiTraLoi
-                item.CauHoiTraLoi = item.CauHoiTraLoi.GroupBy(x => x.CauTraLoi).Select(group => group.First()).ToList();
+                item.CauHoiTraLoi = item.CauHoiTraLoi?.GroupBy(x => x.CauTraLoi).Select(group => group.First()).ToList();
             }
 
             return new BaoCaoCauHoiDto

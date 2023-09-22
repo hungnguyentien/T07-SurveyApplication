@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminUnitTypeComponent } from './admin-unit-type/admin-unit-type.component';
 import { AdminObjectSurveyComponent } from './admin-object-survey/admin-object-survey.component';
-import { QuestionComponent } from './admin-question/question/question.component';
+import { QuestionComponent } from './admin-question/question.component';
 import { AdminPeriodSurveyComponent } from './admin-period-survey/admin-period-survey.component';
 import { AdminSendEmailComponent } from './admin-send-email/admin-send-email.component';
 import { AdminTableSurveyComponent } from './admin-table-survey/admin-table-survey.component';

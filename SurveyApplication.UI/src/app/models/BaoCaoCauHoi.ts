@@ -1,4 +1,4 @@
-import { Base } from "./Common/Base";
+import { Base } from './Common/Base';
 
 export interface CreateBaoCaoCauHoi {
   idCauHoi: number;
@@ -36,7 +36,6 @@ export interface BaoCaoCauHoiRequest {
 //   countDonViNganh: number;
 // }
 
-
 export interface DashBoardRequest {
   ngayBatDau: string | null;
   ngayKetThuc: string | null;
@@ -48,33 +47,73 @@ export interface DashBoard {
 }
 
 export interface BaoCaoCauHoi extends Base {
-    idCauHoi: number;
-    idDotKhaoSat: number;
-    idBangKhaoSat: number;
-    idDonVi: number;
-    idLoaiHinhDonVi: number;
-    tenLoaiHinhDonVi: string | null;
-    maCauHoi: string;
-    cauHoi: string;
-    maCauHoiPhu: string | null;
-    cauHoiPhu: string | null;
-    maCauTraLoi: string | null;
-    cauTraLoi: string | null;
-    loaiCauHoi: number;
-    tenDaiDienCq: string;
-    dauThoiGian: string | null;
-    countDonViMoi: number;
-    countDonViTraLoi: number;
-    countDonViSo: number;
-    countDonViBo: number;
-    countDonViNganh: number;
-    diaChi: string | null;
-    soLuotChon: number | null;
-    tyLe: number | null;
-    listCauHoiTraLoi: ListCauHoiTraLoi[] | null;
+  idCauHoi: number;
+  idDotKhaoSat: number;
+  idBangKhaoSat: number;
+  idDonVi: number;
+  idLoaiHinhDonVi: number;
+  tenLoaiHinhDonVi: string | null;
+  maCauHoi: string;
+  cauHoi: string;
+  maCauHoiPhu: string | null;
+  cauHoiPhu: string | null;
+  maCauTraLoi: string | null;
+  cauTraLoi: string | null;
+  loaiCauHoi: number;
+  tenDaiDienCq: string;
+  dauThoiGian: string | null;
+  countDonViMoi: number;
+  countDonViTraLoi: number;
+  countDonViSo: number;
+  countDonViBo: number;
+  countDonViNganh: number;
+  diaChi: string | null;
+  soLuotChon: number | null;
+  tyLe: number | null;
+  listCauHoiTraLoi: ListCauHoiTraLoi[] | null;
 }
 
 export interface ListCauHoiTraLoi {
-    idCauHoi: number;
-    cauHoiTraLoi: BaoCaoCauHoi[] | null;
+  idCauHoi: number | null;
+  loaiCauHoi: number;
+  tenCauHoi: string | null;
+  cauHoiTraLoi: CauHoiTraLoi[] | null;
+}
+
+export interface CauHoiTraLoi {
+  cauTraLoi: string | null;
+  soLuotChon: number;
+  tyLe: number;
+}
+
+export interface BaoCaoCauHoiChiTietRequest {
+  idDotKhaoSat: number;
+  idBangKhaoSat: number;
+  idLoaiHinhDonVi: number | null;
+  idDonVi: number | null;
+  ngayBatDau: string | null;
+  ngayKetThuc: string | null;
+  pageIndex: number;
+  pageSize: number;
+  keyword: string | null;
+}
+
+export interface CauHoiCauTraLoiChiTiet {
+  cauHoi: string;
+  loaiCauHoi: string;
+  cauTraLoi: string[];
+}
+
+export interface BaoCaoCauHoiChiTiet {
+  idDonVi: number;
+  idBangKhaoSat: number;
+  idDotKhaoSat: number;
+  dauThoiGian: string;
+  lstCauHoiCauTraLoi: CauHoiCauTraLoiChiTiet[];
+}
+
+export interface FileQuestion {
+  content: string;
+  name: string;
+  type: string;
 }

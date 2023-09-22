@@ -22,7 +22,9 @@ export class LoginComponent {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.clear();
+  }
 
   login() {
     this.loginService.login(this.model).subscribe((result: any) => {

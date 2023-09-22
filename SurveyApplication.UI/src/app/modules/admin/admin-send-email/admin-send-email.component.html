@@ -21,59 +21,45 @@
     [resizableColumns]="true">
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 60px;">
+        <th style="width: 60px;text-align: center;">
           STT
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Mã bảng ks
-            <p-sortIcon field="maBangKhaoSat"></p-sortIcon>
-            <p-columnFilter type="text" field="mota" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Tên bảng khảo sát
-            <p-sortIcon field="tenBangKhaoSat"></p-sortIcon>
-            <p-columnFilter type="text" field="mota" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Email đã gửi
-            <p-sortIcon field="EmailDagui"></p-sortIcon>
-            <p-columnFilter type="text" field="EmailDagui" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thành Công
-            <p-sortIcon field="thanhCong"></p-sortIcon>
-            <p-columnFilter type="text" field="thanhCong" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Gửi lỗi
-            <p-sortIcon field="guiLoi"></p-sortIcon>
-            <p-columnFilter type="text" field="GuiLoi" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thu hồi
-            <p-sortIcon field="ThuHoi"></p-sortIcon>
-            <p-columnFilter type="text" field="thuHoi" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Thời gian
-            <p-sortIcon field="thoiGian"></p-sortIcon>
-            <p-columnFilter type="text" field="mota" display="menu" class="ml-auto"></p-columnFilter>
           </div>
         </th>
-        <th style="width: 120px;">
+        <th style="width: 120px; text-align: center;">
           <div>
             Chức năng
           </div>
@@ -112,12 +98,10 @@
             |
             date:'dd/MM/yyyy'}}</span>
         </td>
-        <td>
-          <div class="d-flex align-items-center justify-content-center">
-            <a (click)="detailDialog(rowData)">
-              <i class="pi pi-eye" style="color: rgba(2, 136, 209, 1)" title="Chi tiết" aria-hidden="true"></i>
-            </a>
-          </div>
+        <td class="text-center">
+          <a (click)="detailDialog(rowData)" class="m-3">
+            <i class="pi pi-eye" style="color: rgba(2, 136, 209, 1)" title="Chi tiết" aria-hidden="true"></i>
+          </a>
         </td>
       </tr>
     </ng-template>
@@ -194,7 +178,7 @@
               <th style="width: 40px;">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
-              <th style="width: 60px;">
+              <th style="width: 60px;text-align: center;">
                 STT
               </th>
               <th pResizableColumn>
@@ -308,8 +292,7 @@
         </div>
         <div class="form-group col-md-12">
           <label for="noidung" class="col-form-label">Nhập nội dung <span style="color: red;">*</span></label>
-          <ckeditor formControlName="noidung" [editor]="Editor" id="noidung">
-          </ckeditor>
+          <p-editor formControlName="noidung" [style]="{ height: '100px' }" id="noidung"></p-editor>
           <small *ngIf="!frmGuiEmail.controls['noidung'].valid && frmGuiEmail.controls['noidung'].dirty"
             class="invalid-feedback">
             Vui lòng nhập tiêu đề
@@ -355,8 +338,7 @@
         </div>
         <div class="form-group col-md-12">
           <label for="noidung" class="col-form-label">Nhập nội dung <span style="color: red;">*</span></label>
-          <ckeditor formControlName="noidung" [editor]="Editor" id="noidung">
-          </ckeditor>
+          <p-editor formControlName="noidung" [style]="{ height: '100px' }" id="noidung"></p-editor>
           <small *ngIf="!frmThuHoiEmail.controls['noidung'].valid && frmThuHoiEmail.controls['noidung'].dirty"
             class="invalid-feedback">
             Vui lòng nhập tiêu đề
