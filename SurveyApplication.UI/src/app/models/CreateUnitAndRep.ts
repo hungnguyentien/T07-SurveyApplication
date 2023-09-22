@@ -34,9 +34,9 @@ export interface DonVi extends Base {
   idXaPhuong: number | null;
   tenDonVi: string | null;
   diaChi: string | null;
-  maSoThue: string | null;
+  maSoThue: string ;
   email: string | null;
-  webSite: string | null;
+  webSite: string ;
   soDienThoai: string | null;
   idDonVi: number | null;
   idNguoiDaiDien: number | null;
