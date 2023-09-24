@@ -23,6 +23,7 @@ import {
   CauHoiService,
   ObjectSurveyService,
   GuiEmailService,
+  BaoCaoCauHoiService,
 } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
@@ -79,7 +80,7 @@ export class AdminTableSurveyComponent {
   selectedDonVi!: number[];
   lstIdDonViError: boolean = false;
 
-  @Input() receivedData: any;
+  // @Input() receivedData: any;
 
   constructor(
     private router: Router,
@@ -93,7 +94,8 @@ export class AdminTableSurveyComponent {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
-    private guiEmailService: GuiEmailService
+    private guiEmailService: GuiEmailService,
+    private baocaocauhoiservice:BaoCaoCauHoiService
   ) {}
 
   ngOnInit() {
@@ -135,8 +137,8 @@ export class AdminTableSurveyComponent {
 
   // xem chi tiết của bảng khảo khát
   detailTableSurvey(data:any){
-    debugger
-    this.router.navigate(['/admin/thong-ke-khao-sat', data]);
+    this.baocaocauhoiservice.setSharedData(data);
+    this.router.navigate(['/admin/thong-ke-khao-sat']);
   }
 
   confirmDeleteMultiple() {
