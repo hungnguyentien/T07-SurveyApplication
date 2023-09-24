@@ -26,8 +26,9 @@
       </button>
     </div>
     <div class="ml-3">
-      <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"(click)="confirmDeleteMultiple()"
-        *ngIf="selectedObjectSurvey && selectedObjectSurvey.length > 0" style="background-color: #ea5c5c;">
+      <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"
+        (click)="confirmDeleteMultiple()" *ngIf="selectedObjectSurvey && selectedObjectSurvey.length > 0"
+        style="background-color: #ea5c5c;">
       </button>
     </div>
   </div>
@@ -150,24 +151,14 @@
       </div>
       <div class="modal-body">
         <h6>Thông tin đơn vị </h6>
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label for="recipient-name" class="col-form-label">Mã đơn vị: <span style="color: red;">*</span></label>
-            <input type="text" formControlName="MaDonVi" pInputText class="form-control" id="recipient-name">
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['MaDonVi'].valid && 
-                FormObjectSurvey.controls['MaDonVi'].dirty">
-              Vui lòng nhập mã đơn vị
-            </small>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="recipient-name" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
-            <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="recipient-name">
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
-                FormObjectSurvey.controls['TenDonVi'].dirty">
-              Vui lòng nhập tên đơn vị
-            </small>
-          </div>
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
+          <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="recipient-name">
         </div>
+        <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
+            FormObjectSurvey.controls['TenDonVi'].dirty">
+          Vui lòng nhập tên đơn vị
+        </small>
         <div class="row">
           <div class="form-group col-md-6">
             <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị: <span
@@ -189,16 +180,21 @@
               emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
               placeholder="-- Chọn Lĩnh vực hoạt động --" formControlName="IdLinhVuc">
             </p-dropdown>
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['IdLinhVuc'].valid && 
+              FormObjectSurvey.controls['IdLinhVuc'].dirty">
+              Vui lòng chọn Lĩnh vực hoạt động
+            </small>
           </div>
 
           <div class="form-group col-md-6">
             <label for="sothue" class="col-form-label">Mã số thuế: </label>
             <input formControlName="MaSoThue" type="text" pInputText class="form-control" id="sothue">
-
           </div>
           <div class="form-group col-md-6">
             <label for="Website" class="col-form-label">Website:</label>
             <input formControlName="WebSite" type="text" pInputText class="form-control" id="Website">
+
+
           </div>
           <div class="form-group col-md-6">
             <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
@@ -212,10 +208,11 @@
             <label for="sdt" class="col-form-label">Số điện thoại: <span style="color: red;">*</span></label>
             <input formControlName="SoDienThoai" type="text" pInputText class="form-control" id="sdt">
 
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['SoDienThoai'].valid && 
-              FormObjectSurvey.controls['SoDienThoai'].dirty">
+            <small style="color: #e24c4c;" class="ml-2"
+              *ngIf="FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')&&FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')">
               Vui lòng nhập Số điện thoại
             </small>
+
           </div>
         </div>
         <div class="row">
@@ -277,8 +274,9 @@
           <div class="form-group col-md-6">
             <label for="sdt" class="col-form-label">Số điện thoại: <span style="color: red;">*</span></label>
             <input formControlName="SoDienThoai" pInputText type="text" class="form-control" id="sdt">
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormRepresentative.controls['SoDienThoai'].valid && 
-                FormRepresentative.controls['SoDienThoai'].dirty">
+
+            <small style="color: #e24c4c;" class="ml-2"
+              *ngIf="!FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')&&FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')">
               Vui lòng nhập Số điện thoại
             </small>
           </div>

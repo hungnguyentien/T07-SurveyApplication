@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   CauHoi,
   CreateGuiEmail,
@@ -23,7 +23,6 @@ import {
   CauHoiService,
   ObjectSurveyService,
   GuiEmailService,
-  BaoCaoCauHoiService,
 } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
@@ -47,6 +46,9 @@ export class AdminTableSurveyComponent {
   dataTotalRecords!: number;
   keyWord!: string;
 
+  detaiDatas:any[]=[];
+  id!:number;
+
   confirmationHeader: string = '';
 
   showadd: boolean = false;
@@ -64,6 +66,7 @@ export class AdminTableSurveyComponent {
   serverError: string = '';
 
   visible: boolean = false;
+  visibleDetail: boolean = false;
 
   @ViewChild('dtq') tableQ!: Table;
   loadingCauHoi: boolean = true;
@@ -80,8 +83,8 @@ export class AdminTableSurveyComponent {
   selectedDonVi!: number[];
   lstIdDonViError: boolean = false;
 
-  // @Input() receivedData: any;
 
+  
   constructor(
     private router: Router,
     private FormBuilder: FormBuilder,
@@ -94,8 +97,7 @@ export class AdminTableSurveyComponent {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
-    private guiEmailService: GuiEmailService,
-    private baocaocauhoiservice:BaoCaoCauHoiService
+    private guiEmailService: GuiEmailService
   ) {}
 
   ngOnInit() {
@@ -109,11 +111,11 @@ export class AdminTableSurveyComponent {
     this.formTableSurvey = this.FormBuilder.group(
       {
         id: [''],
-        maBangKhaoSat: ['', Validators.required],
+        maBangKhaoSat: [''],
         idLoaiHinh: ['', Validators.required],
         idDotKhaoSat: ['', Validators.required],
         tenBangKhaoSat: ['', Validators.required],
-        moTa: [''],
+        moTa: ['', Validators.required],
         ngayBatDau: ['', Validators.required],
         ngayKetThuc: ['', Validators.required],
         bangKhaoSatCauHoi: this.FormBuilder.array([]),
@@ -122,24 +124,18 @@ export class AdminTableSurveyComponent {
     );
   }
 
-  // handlerClick = (link: string) => {
-  //   this.router.navigate([link]);
-  //   const navItems = document.querySelectorAll('.nav-item');
-  //   navItems.forEach((navItem) => {
-  //     navItem.classList.remove('active');
-  //     navItem.children[0].classList.add('collapsed');
-  //     let div = navItem.children[1];
-  //     div && div.classList.remove('show');
-  //   });
+  handlerClick = (link: string) => {
+    this.router.navigate([link]);
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach((navItem) => {
+      navItem.classList.remove('active');
+      navItem.children[0].classList.add('collapsed');
+      let div = navItem.children[1];
+      div && div.classList.remove('show');
+    });
+  };
 
-    
-  // };
-
-  // xem chi tiết của bảng khảo khát
-  detailTableSurvey(data:any){
-    this.baocaocauhoiservice.setSharedData(data);
-    this.router.navigate(['/admin/thong-ke-khao-sat']);
-  }
+  
 
   confirmDeleteMultiple() {
     let ids: number[] = [];
@@ -184,6 +180,7 @@ export class AdminTableSurveyComponent {
 
     return null;
   }
+ 
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -211,6 +208,7 @@ export class AdminTableSurveyComponent {
       },
     });
   };
+  
 
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
@@ -228,7 +226,7 @@ export class AdminTableSurveyComponent {
       },
     });
   };
-
+ 
   loadListLazyCauHoi = (event: any) => {
     this.loadingCauHoi = true;
     let pageSize = event.rows;
@@ -272,10 +270,14 @@ export class AdminTableSurveyComponent {
       },
     });
   };
+  
+  
 
+  
   CloseModal() {
     this.visible = false;
   }
+  
 
   LoadUnitType() {
     this.unitTypeService.getAll().subscribe((data) => {
@@ -294,6 +296,7 @@ export class AdminTableSurveyComponent {
   }
 
   Add() {
+    debugger
     this.formTableSurvey.reset();
     this.showadd = true;
     this.visible = !this.visible;
@@ -384,11 +387,13 @@ export class AdminTableSurveyComponent {
   }
 
   SaveAdd() {
+    debugger
     if (this.formTableSurvey.valid) {
       const ObjTableSurvey = this.formTableSurvey.value;
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
           if (res != null) {
+            debugger
             this.messageService.add({
               severity: 'success',
               summary: 'Thành Công',
