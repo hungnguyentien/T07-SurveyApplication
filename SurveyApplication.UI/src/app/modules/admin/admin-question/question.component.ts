@@ -192,7 +192,7 @@ export class QuestionComponent {
           next: (res) => {
             Utils.messageSuccess(
               this.messageService,
-              `Xoá câu hỏi ${ids.length} thành công!`
+              `Xoá ${ids.length} câu hỏi thành công!`
             );
           },
           complete: () => {
