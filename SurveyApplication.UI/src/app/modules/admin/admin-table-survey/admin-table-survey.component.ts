@@ -46,8 +46,8 @@ export class AdminTableSurveyComponent {
   dataTotalRecords!: number;
   keyWord!: string;
 
-  detaiDatas:any[]=[];
-  id!:number;
+  detaiDatas: any[] = [];
+  id!: number;
 
   confirmationHeader: string = '';
 
@@ -85,8 +85,6 @@ export class AdminTableSurveyComponent {
   lstIdDonViError: boolean = false;
 
   iPanelTitle!: number;
-
-  @Input() receivedData: any;
 
   constructor(
     private router: Router,
@@ -190,7 +188,6 @@ export class AdminTableSurveyComponent {
       },
     });
   };
-  
 
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
@@ -207,7 +204,7 @@ export class AdminTableSurveyComponent {
       },
     });
   };
- 
+
   loadListLazyCauHoi = (event: any) => {
     this.loadingCauHoi = true;
     let pageSize = event.rows;
@@ -378,13 +375,11 @@ export class AdminTableSurveyComponent {
   }
 
   SaveAdd() {
-    debugger
     if (this.formTableSurvey.valid) {
       const ObjTableSurvey = this.formTableSurvey.value;
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
           if (res != null) {
-            debugger
             this.messageService.add({
               severity: 'success',
               summary: 'Thành Công',
@@ -718,4 +713,9 @@ export class AdminTableSurveyComponent {
   };
 
   //#endregion
+
+  // xem chi tiết của bảng khảo khát
+  detailTableSurvey(data: any) {
+    this.router.navigate(['/admin/thong-ke-khao-sat', data]);
+  }
 }
