@@ -41,8 +41,8 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
         {
             var user = await _userManager.FindByEmailAsync(request.Email) ?? throw new Exception($"Tài khoản {request.Email} không tồn tại.");
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            //var bodyEmail = $"{EmailSettings.LinkKhaoSat}{request.Email}{token}";
-            //var resultSend = await _emailSender.SendEmail(bodyEmail, user.Email);
+            var bodyEmail = $"{request.Email}{token}";
+            var resultSend = await _emailSender.SendEmail(bodyEmail, "Nhấn vào đường link để xác nhận tài khoản:", user.Email);
             return new BaseCommandResponse
             {
                 Message = "Gửi thành công"

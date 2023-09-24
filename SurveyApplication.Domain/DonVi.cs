@@ -9,7 +9,7 @@ public class DonVi : BaseDomainEntity
 
     public int IdLoaiHinh { get; set; }
 
-    public int IdLinhVuc { get; set; }
+    public int? IdLinhVuc { get; set; }
 
     public int IdTinhTp { get; set; }
 
@@ -22,11 +22,11 @@ public class DonVi : BaseDomainEntity
 
     [Required] public string DiaChi { get; set; }
 
-    [Required] public string MaSoThue { get; set; }
+    public string? MaSoThue { get; set; }
 
     [Required] public string Email { get; set; }
 
-    [Required] public string WebSite { get; set; }
+    public string? WebSite { get; set; }
 
     [Required] public string SoDienThoai { get; set; }
 }
