@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SurveyApplication.Domain.Common;
+using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Domain.Interfaces.Infrastructure;
 using SurveyApplication.Infrastructure.Mail;
 

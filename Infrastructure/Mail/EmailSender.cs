@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Options;
-using SurveyApplication.Domain;
-using SurveyApplication.Domain.Common;
+using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Infrastructure;
 

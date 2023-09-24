@@ -1,4 +1,4 @@
-﻿namespace SurveyApplication.Domain.Common
+﻿namespace SurveyApplication.Domain.Common.Configurations
 {
     public class SurveyConfiguration
     {

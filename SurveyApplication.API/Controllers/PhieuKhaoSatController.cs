@@ -18,7 +18,7 @@ using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Queries;
 using SurveyApplication.Application.Features.QuanHuyens.Requests.Queries;
 using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
-using SurveyApplication.Domain.Common;
+using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Utility;
 
 namespace SurveyApplication.API.Controllers;

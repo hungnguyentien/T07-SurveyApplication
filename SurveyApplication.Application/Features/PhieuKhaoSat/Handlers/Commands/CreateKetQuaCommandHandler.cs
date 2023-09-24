@@ -8,7 +8,7 @@ using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat.Validators;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
 using SurveyApplication.Domain;
-using SurveyApplication.Domain.Common;
+using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Utility;
