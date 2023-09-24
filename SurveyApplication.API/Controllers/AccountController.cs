@@ -57,7 +57,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpGet("ForgotPassword/{email}")]
         [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Read })]
-        public async Task<ActionResult<ForgotPasswordDto>> ForgotPassword(string email)
+        public async Task<ActionResult> ForgotPassword(string email)
         {
             var leaveAllocations = await _mediator.Send(new GetForgotPasswordRequest { Email = email });
             return Ok(leaveAllocations);

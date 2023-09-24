@@ -8,6 +8,8 @@ using SurveyApplication.Domain;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Application.DTOs.GuiEmail;
+using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 
 namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 {
@@ -22,6 +24,14 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 
         public async Task<ThongKeBaoCaoDto> Handle(GetBaoCaoCauHoiRequest request, CancellationToken cancellationToken)
         {
+            DateTime? ngayBatDau = null;
+            if (!string.IsNullOrEmpty(request.NgayBatDau))
+                ngayBatDau = DateTime.ParseExact(request.NgayBatDau, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+            DateTime? ngayKetThuc = null;
+            if (!string.IsNullOrEmpty(request.NgayKetThuc))
+                ngayKetThuc = DateTime.ParseExact(request.NgayKetThuc, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                
             var query = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
                         join c in _surveyRepo.DotKhaoSat.GetAllQueryable() on a.IdDotKhaoSat equals c.Id
@@ -32,8 +42,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                         where (request.IdDotKhaoSat == 0 || a.IdDotKhaoSat == request.IdDotKhaoSat) &&
                              (request.IdBangKhaoSat == 0 || a.IdBangKhaoSat == request.IdBangKhaoSat) &&
                              (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
-                             (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
-                             (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
+                             (ngayBatDau == null || b.NgayBatDau >= ngayBatDau) &&
+                             (ngayKetThuc == null || b.NgayKetThuc <= ngayKetThuc) &&
                              a.Deleted == false
 
                         select new CauHoiTraLoi
@@ -61,8 +71,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             var donViDuocMoi = await (from a in _surveyRepo.GuiEmail.GetAllQueryable()
                                       join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
                                       where (request.IdBangKhaoSat == 0 || b.Id == request.IdBangKhaoSat) &&
-                                          (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
-                                          (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
+                                          (request.NgayBatDau == null || b.NgayBatDau >= ngayBatDau) &&
+                                          (request.NgayKetThuc == null || b.NgayKetThuc <= ngayKetThuc) &&
                                           a.Deleted == false
                                       select new GuiEmailDto
                                       {
@@ -73,8 +83,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                       join b in _surveyRepo.GuiEmail.GetAllQueryable() on a.IdGuiEmail equals b.Id
                                       join c in _surveyRepo.BangKhaoSat.GetAllQueryable() on b.IdBangKhaoSat equals c.Id
                                       where (request.IdBangKhaoSat == 0 || c.Id == request.IdBangKhaoSat) &&
-                                          (request.NgayBatDau == null || c.NgayBatDau >= request.NgayBatDau) &&
-                                          (request.NgayKetThuc == null || c.NgayKetThuc <= request.NgayKetThuc) &&
+                                          (request.NgayBatDau == null || c.NgayBatDau >= ngayBatDau) &&
+                                          (request.NgayKetThuc == null || c.NgayKetThuc <= ngayKetThuc) &&
                                           c.Deleted == false
                                       select new KetQua
                                       {
