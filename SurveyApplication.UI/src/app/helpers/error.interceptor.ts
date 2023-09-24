@@ -60,7 +60,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         console.log(message);
         // Xóa Console log
         environment.production && console.clear();
-        return throwError(err);
+        return throwError(() => err);
       })
     );
   }

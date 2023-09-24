@@ -205,16 +205,23 @@ export class QuestionComponent {
   }
 
   confirmDelete = (title: string, id: number) => {
+    debugger
     this.confirmationService.confirm({
       message: `Bạn có chắc chắn muốn xoá câu hỏi ${title} không?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.cauHoiService.delete(id).subscribe({
           next: (res) => {
-            Utils.messageSuccess(
-              this.messageService,
-              `Xoá câu hỏi ${title} thành công!`
-            );
+            if(res.success == true){
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá câu hỏi ${title} thành công!`
+                );
+              }
+            if(res.errors!=null)
+            {
+              Utils.messageError(this.messageService, res.message);
+            }
           },
           complete: () => {
             this.table.reset();
