@@ -19,6 +19,7 @@ import {
   FileQuestion,
 } from '@app/models';
 import { KqSurveyCheckBox } from '@app/enums';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-admin-statistical',
   templateUrl: './admin-statistical.component.html',
@@ -50,6 +51,8 @@ export class AdminStatisticalComponent {
   paging!: BaoCaoCauHoiChiTietRequest;
   lstTh: string[] = [];
 
+  dataTableSurvey!:any;
+
   @ViewChild('dt') table!: Table; // Khi sử dụng p-table, sử dụng ViewChild để truy cập nó
   constructor(
     private formBuilder: FormBuilder,
@@ -59,7 +62,8 @@ export class AdminStatisticalComponent {
     private config: PrimeNGConfig,
     private translateService: TranslateService,
     private messageService: MessageService,
-    private baoCaoCauHoiService: BaoCaoCauHoiService
+    private baoCaoCauHoiService: BaoCaoCauHoiService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -75,6 +79,17 @@ export class AdminStatisticalComponent {
     this.loadTableSurvey();
     this.loadUnitType();
     this.getVauleChar(this.frmStatiscal.value);
+    
+    //Nhận data từ bên bảng khảo sát
+    this.route.params.subscribe((params) => {
+      this.dataTableSurvey = params;
+      this.frmStatiscal.controls['idDotKhaoSat'].setValue(this.dataTableSurvey.idDotKhaoSat);
+      this.frmStatiscal.controls['idBangKhaoSat'].setValue(this.dataTableSurvey.idBangKhaoSat);
+      this.frmStatiscal.controls['idLoaiHinh'].setValue(this.dataTableSurvey.idLoaiHinh);
+      this.frmStatiscal.controls['ngayBatDau'].setValue(this.dataTableSurvey.ngayBatDau);
+      this.frmStatiscal.controls['ngayKetThuc'].setValue(this.dataTableSurvey.ngayKetThuc);
+      console.log(this.dataTableSurvey);
+    });
   }
 
   loadListLazy = (event: any) => {

@@ -60,12 +60,11 @@ export class AdminObjectSurveyComponent {
     this.GetUnitType();
     this.FormObjectSurvey = new FormGroup({
       IdLoaiHinh: new FormControl('', Validators.required),
-      IdLinhVuc: new FormControl('', Validators.required),
-      MaDonVi: new FormControl('', Validators.required),
+      IdLinhVuc: new FormControl(''),
       TenDonVi: new FormControl('', Validators.required),
-      MaSoThue: new FormControl('', Validators.required),
+      MaSoThue: new FormControl(''),
       Email: new FormControl('', Validators.required),
-      WebSite: new FormControl('', Validators.required),
+      WebSite: new FormControl(''),
       SoDienThoai: new FormControl('', Validators.required),
       DiaChi: new FormControl('', Validators.required),
       

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import {
   CauHoi,
   CreateGuiEmail,
@@ -79,6 +79,8 @@ export class AdminTableSurveyComponent {
   selectedDonVi!: number[];
   lstIdDonViError: boolean = false;
 
+  @Input() receivedData: any;
+
   constructor(
     private router: Router,
     private FormBuilder: FormBuilder,
@@ -105,11 +107,11 @@ export class AdminTableSurveyComponent {
     this.formTableSurvey = this.FormBuilder.group(
       {
         id: [''],
-        maBangKhaoSat: [''],
+        maBangKhaoSat: ['', Validators.required],
         idLoaiHinh: ['', Validators.required],
         idDotKhaoSat: ['', Validators.required],
         tenBangKhaoSat: ['', Validators.required],
-        moTa: ['', Validators.required],
+        moTa: [''],
         ngayBatDau: ['', Validators.required],
         ngayKetThuc: ['', Validators.required],
         bangKhaoSatCauHoi: this.FormBuilder.array([]),
@@ -118,16 +120,24 @@ export class AdminTableSurveyComponent {
     );
   }
 
-  handlerClick = (link: string) => {
-    this.router.navigate([link]);
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach((navItem) => {
-      navItem.classList.remove('active');
-      navItem.children[0].classList.add('collapsed');
-      let div = navItem.children[1];
-      div && div.classList.remove('show');
-    });
-  };
+  // handlerClick = (link: string) => {
+  //   this.router.navigate([link]);
+  //   const navItems = document.querySelectorAll('.nav-item');
+  //   navItems.forEach((navItem) => {
+  //     navItem.classList.remove('active');
+  //     navItem.children[0].classList.add('collapsed');
+  //     let div = navItem.children[1];
+  //     div && div.classList.remove('show');
+  //   });
+
+    
+  // };
+
+  // xem chi tiết của bảng khảo khát
+  detailTableSurvey(data:any){
+    debugger
+    this.router.navigate(['/admin/thong-ke-khao-sat', data]);
+  }
 
   confirmDeleteMultiple() {
     let ids: number[] = [];
