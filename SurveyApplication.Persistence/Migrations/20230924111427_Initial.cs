@@ -14,6 +14,12 @@ namespace SurveyApplication.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ActiveFlag = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -30,6 +36,13 @@ namespace SurveyApplication.Persistence.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ActiveFlag = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -60,7 +73,7 @@ namespace SurveyApplication.Persistence.Migrations
                     IdLoaiHinh = table.Column<int>(type: "int", nullable: false),
                     IdDotKhaoSat = table.Column<int>(type: "int", nullable: false),
                     TenBangKhaoSat = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NgayBatDau = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayKetThuc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: true),
@@ -86,6 +99,7 @@ namespace SurveyApplication.Persistence.Migrations
                     IdCauHoi = table.Column<int>(type: "int", nullable: false),
                     Priority = table.Column<int>(type: "int", nullable: true),
                     IsRequired = table.Column<bool>(type: "bit", nullable: true),
+                    PanelTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ActiveFlag = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -105,8 +119,10 @@ namespace SurveyApplication.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdCauHoi = table.Column<int>(type: "int", nullable: false),
+                    IdGuiEmail = table.Column<int>(type: "int", nullable: false),
                     IdDotKhaoSat = table.Column<int>(type: "int", nullable: false),
                     IdBangKhaoSat = table.Column<int>(type: "int", nullable: false),
+                    IdDonVi = table.Column<int>(type: "int", nullable: false),
                     IdLoaiHinhDonVi = table.Column<int>(type: "int", nullable: false),
                     MaCauHoi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CauHoi = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -184,12 +200,15 @@ namespace SurveyApplication.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MaDonVi = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     IdLoaiHinh = table.Column<int>(type: "int", nullable: false),
-                    IdLinhVuc = table.Column<int>(type: "int", nullable: false),
+                    IdLinhVuc = table.Column<int>(type: "int", nullable: true),
+                    IdTinhTp = table.Column<int>(type: "int", nullable: false),
+                    IdQuanHuyen = table.Column<int>(type: "int", nullable: false),
+                    IdXaPhuong = table.Column<int>(type: "int", nullable: false),
                     TenDonVi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaSoThue = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MaSoThue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WebSite = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WebSite = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ActiveFlag = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
@@ -275,6 +294,27 @@ namespace SurveyApplication.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "JobSchedule",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JobTypeId = table.Column<int>(type: "int", nullable: false),
+                    JobName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CronString = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Service = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApiUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Interval = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobSchedule", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "KetQua",
                 columns: table => new
                 {
@@ -284,6 +324,7 @@ namespace SurveyApplication.Persistence.Migrations
                     IdGuiEmail = table.Column<int>(type: "int", nullable: false),
                     TrangThai = table.Column<int>(type: "int", nullable: false),
                     DauThoiGian = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IpAddressClient = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ActiveFlag = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -339,6 +380,30 @@ namespace SurveyApplication.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Module",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    RouterLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CodeModule = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdParent = table.Column<int>(type: "int", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    ActiveFlag = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Module", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NguoiDaiDien",
                 columns: table => new
                 {
@@ -383,6 +448,26 @@ namespace SurveyApplication.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_QuanHuyen", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReleaseHistory",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IDChannel = table.Column<int>(type: "int", nullable: false),
+                    BuildNumber = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    MigrationId = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CustomerCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Env = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReleaseHistory", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -619,6 +704,9 @@ namespace SurveyApplication.Persistence.Migrations
                 name: "Hang");
 
             migrationBuilder.DropTable(
+                name: "JobSchedule");
+
+            migrationBuilder.DropTable(
                 name: "KetQua");
 
             migrationBuilder.DropTable(
@@ -628,10 +716,16 @@ namespace SurveyApplication.Persistence.Migrations
                 name: "LoaiHinhDonVi");
 
             migrationBuilder.DropTable(
+                name: "Module");
+
+            migrationBuilder.DropTable(
                 name: "NguoiDaiDien");
 
             migrationBuilder.DropTable(
                 name: "QuanHuyen");
+
+            migrationBuilder.DropTable(
+                name: "ReleaseHistory");
 
             migrationBuilder.DropTable(
                 name: "TinhTp");

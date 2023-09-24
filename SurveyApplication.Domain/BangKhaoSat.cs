@@ -13,7 +13,7 @@ public class BangKhaoSat : BaseDomainEntity
 
     [Required] public string TenBangKhaoSat { get; set; }
 
-    public string MoTa { get; set; }
+    public string? MoTa { get; set; }
 
     [Required] public DateTime NgayBatDau { get; set; }
 

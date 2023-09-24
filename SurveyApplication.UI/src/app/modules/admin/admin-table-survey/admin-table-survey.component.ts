@@ -335,16 +335,19 @@ export class AdminTableSurveyComponent {
           }
 
           if (bangKhaoSatCauHoiGroup.length > 0) {
-            bangKhaoSatCauHoiGroup.filter(Utils.onlyUnique).forEach((x, i) => {
+            const groupTitle = bangKhaoSatCauHoiGroup
+              .map((x) => x.panelTitle)
+              .filter(Utils.onlyUnique);
+            groupTitle.forEach((x, i) => {
               const newItem = this.FormBuilder.group({
-                panelTitle: [x.panelTitle, Validators.required],
+                panelTitle: [x, Validators.required],
                 bangKhaoSatCauHoi: this.FormBuilder.array<BangKhaoSatCauHoi>(
                   []
                 ),
               });
               this.lstBangKhaoSatCauHoiGroup.push(newItem);
               bangKhaoSatCauHoiGroup
-                .filter((g) => g.panelTitle == x.panelTitle)
+                .filter((g) => g.panelTitle == x)
                 .forEach((el) => {
                   const newItem = this.FormBuilder.group<BangKhaoSatCauHoi>({
                     id: 0,

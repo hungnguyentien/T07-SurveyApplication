@@ -15,6 +15,7 @@ import { jsonDataFake } from './json';
 import { themeJson } from './theme';
 import { environment } from '@environments/environment';
 import * as crypto from 'crypto-js';
+import * as moment from 'moment';
 
 export default class Utils {
   static translate = (
@@ -704,4 +705,8 @@ export default class Utils {
       URL.revokeObjectURL(downloadUrl);
     }, 100);
   };
+  /** format any sang datetime server + 1 */
+  static anyToDateServer(dateStr: any, format: string = 'DD/MM/YYYY') {
+    return moment(dateStr.format(format)).days(1);
+  }
 }

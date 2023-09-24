@@ -175,7 +175,6 @@ export class AdminObjectSurveyComponent {
     };
     this.objectSurveyService.getByConditionTepm<DonVi>(this.paging).subscribe({
       next: (res) => {
-        debugger
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
      

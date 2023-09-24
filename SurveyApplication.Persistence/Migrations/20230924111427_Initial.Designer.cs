@@ -12,8 +12,8 @@ using SurveyApplication.Persistence;
 namespace SurveyApplication.Persistence.Migrations
 {
     [DbContext(typeof(SurveyApplicationDbContext))]
-    [Migration("20230924035259_AddTblReleaseHistory")]
-    partial class AddTblReleaseHistory
+    [Migration("20230924111427_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -162,7 +162,6 @@ namespace SurveyApplication.Persistence.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("MoTa")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Modified")
@@ -447,7 +446,7 @@ namespace SurveyApplication.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdLinhVuc")
+                    b.Property<int?>("IdLinhVuc")
                         .HasColumnType("int");
 
                     b.Property<int>("IdLoaiHinh")
@@ -468,7 +467,6 @@ namespace SurveyApplication.Persistence.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("MaSoThue")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Modified")
@@ -486,7 +484,6 @@ namespace SurveyApplication.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WebSite")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
