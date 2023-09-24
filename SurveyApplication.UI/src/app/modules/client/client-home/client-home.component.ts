@@ -181,18 +181,18 @@ export class ClientHomeComponent {
     if (e) {
       if (e.value) {
         this.setDiaChi();
-        this.phieuKhaoSatService.getQuanHuyen(e.value).subscribe({
-          next: (res) => {
-            this.quanHuyen = res;
-          },
-          error: (e) => {
-            Utils.messageError(this.messageService, e.message);
-            this.loading = false;
-          },
-          complete: () => {
-            this.loading = false;
-          },
-        });
+        // this.phieuKhaoSatService.getQuanHuyen(e.value).subscribe({
+        //   next: (res) => {
+        //     this.quanHuyen = res;
+        //   },
+        //   error: (e) => {
+        //     Utils.messageError(this.messageService, e.message);
+        //     this.loading = false;
+        //   },
+        //   complete: () => {
+        //     this.loading = false;
+        //   },
+        // });
       }
     }
   };
@@ -202,18 +202,18 @@ export class ClientHomeComponent {
     if (e) {
       if (e.value) {
         this.setDiaChi();
-        this.phieuKhaoSatService.getPhuongXa(e.value).subscribe({
-          next: (res) => {
-            this.phuongXa = res;
-          },
-          error: (e) => {
-            Utils.messageError(this.messageService, e.message);
-            this.loading = false;
-          },
-          complete: () => {
-            this.loading = false;
-          },
-        });
+        // this.phieuKhaoSatService.getPhuongXa(e.value).subscribe({
+        //   next: (res) => {
+        //     this.phuongXa = res;
+        //   },
+        //   error: (e) => {
+        //     Utils.messageError(this.messageService, e.message);
+        //     this.loading = false;
+        //   },
+        //   complete: () => {
+        //     this.loading = false;
+        //   },
+        // });
       }
     }
   };

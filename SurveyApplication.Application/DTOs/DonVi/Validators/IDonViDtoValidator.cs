@@ -17,6 +17,10 @@ public class IDonViDtoValidator : AbstractValidator<IDonViDto>
         RuleFor(p => p.IdLinhVuc).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
         ;
 
+        RuleFor(p => p.MaDonVi)
+               .NotEmpty().WithMessage("{PropertyName} is required.")
+               .NotNull();
+
         RuleFor(p => p.TenDonVi)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();

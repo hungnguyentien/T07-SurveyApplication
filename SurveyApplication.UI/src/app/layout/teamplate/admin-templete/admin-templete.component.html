@@ -116,7 +116,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" 
                             aria-labelledby="userDropdown">
-                            <a style="cursor: pointer;"class="dropdown-item" (click)="EditHS()">
+                            <a style="cursor: pointer;"class="dropdown-item" (click)="editProfile()">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Hồ Sơ
                             </a>
@@ -181,7 +181,7 @@
 </div>
 
 <!-- modal hồ sở cá nhân-->
-<form [formGroup]="FormProfile" (ngSubmit)="Save()">
+<form [formGroup]="FormProfile" (ngSubmit)="save()">
     <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '80vw',height: '90vh' }" [draggable]="false"
         [resizable]="true" [maximizable]="true">
         <ng-template pTemplate="header">
@@ -193,7 +193,7 @@
             <div class="row">
                 <div class="col-md-4"> 
                     <div class="style-profile">
-                        <img formControlName="HinhAnh" [src]="urlFist || 'http://placehold.it/180'" />
+                        <img [src]="urlFist || 'http://placehold.it/180'" />
                     </div>
                     <div class="style-profile-input-img">
                         <div class="w-75 mt-2">

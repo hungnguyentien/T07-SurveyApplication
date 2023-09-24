@@ -289,7 +289,7 @@
                         <button type="button" class="btn btn-add float-end" (click)="showSialogCh()">
                             Thêm câu hỏi
                         </button>
-                        <table #viewtable class="table table-bordered">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th style="width: 60px;text-align: center;">STT</th>
@@ -485,7 +485,6 @@
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <input type="hidden" formControlName="id">
         <button pButton (click)="visibleCauHoi = false" type="button" label="Đóng"
             class="custom-button surface-600"></button>
         <button pButton

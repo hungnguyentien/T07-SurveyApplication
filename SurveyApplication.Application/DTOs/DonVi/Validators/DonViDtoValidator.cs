@@ -10,7 +10,9 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
         public DonViDtoValidator(IDonViRepository donViViRepository)
         {
             _donViRepository = donViViRepository;
-
+            RuleFor(p => p.MaDonVi)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
             RuleFor(p => p.MaDonVi)
                 .MustAsync(async (maDonVi, token) =>
                 {

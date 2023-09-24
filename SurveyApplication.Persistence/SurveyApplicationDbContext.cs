@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Models;
@@ -13,10 +13,18 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
     {
     }
 
+    [Obsolete]
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SurveyApplicationDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDbFunction(typeof(JsonSqlExtensions).GetMethod(nameof(JsonSqlExtensions.JsonValue))!)
+                .HasTranslation(e => SqlFunctionExpression.Create(
+                    "JSON_VALUE", e, typeof(string), null));
+
+        modelBuilder.HasDbFunction(typeof(JsonSqlExtensions).GetMethod(nameof(JsonSqlExtensions.IsJson))!)
+            .HasTranslation(e => SqlFunctionExpression.Create(
+                "ISJSON", e, typeof(int), null));
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -70,4 +78,5 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
     #endregion
 
     public DbSet<JobSchedule> JobSchedule { get; set; }
+    public DbSet<ReleaseHistory> ReleaseHistory { get; set; }
 }

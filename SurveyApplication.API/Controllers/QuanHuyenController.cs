@@ -1,16 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.QuanHuyen;
-using SurveyApplication.Application.DTOs.XaPhuong;
 using SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
 using SurveyApplication.Application.Features.QuanHuyens.Requests.Queries;
-using SurveyApplication.Application.Features.XaPhuongs.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 

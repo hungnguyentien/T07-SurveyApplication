@@ -11,10 +11,8 @@ import {
 } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ErrorInterceptor, JwtInterceptor } from './helpers';
@@ -35,7 +33,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HttpClientModule,
     ReactiveFormsModule,
     ConfirmDialogModule,
-    MessagesModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

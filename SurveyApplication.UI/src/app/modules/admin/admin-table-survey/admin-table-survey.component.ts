@@ -39,7 +39,6 @@ import { Router } from '@angular/router';
 })
 export class AdminTableSurveyComponent {
   @ViewChild('dt') table!: Table;
-  @ViewChild('viewtable') viewtable!: Table;
   loading: boolean = true;
   selectedTableSurvey!: TableSurvey[];
   datas: TableSurvey[] = [];
@@ -178,7 +177,6 @@ export class AdminTableSurveyComponent {
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -195,7 +193,6 @@ export class AdminTableSurveyComponent {
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -216,13 +213,12 @@ export class AdminTableSurveyComponent {
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
     };
-    this.cauHoiService.getByCondition(this.paging).subscribe({
+    this.cauHoiService.getByCondition(this.pagingCauHoi).subscribe({
       next: (res) => {
         this.datasCauHoi = res.data;
         this.dataTotalRecordsCauHoi = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loadingCauHoi = false;
       },
       complete: () => {
@@ -239,7 +235,6 @@ export class AdminTableSurveyComponent {
         this.dataTotalRecordsCauHoi = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loadingCauHoi = false;
       },
       complete: () => {
@@ -264,7 +259,8 @@ export class AdminTableSurveyComponent {
     this.showadd = false;
     this.visible = !this.visible;
     this.Gettrangthai = data.trangThai;
-
+    this.lstBangKhaoSatCauHoi.clear();
+    this.lstBangKhaoSatCauHoiGroup.clear();
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
       {
         next: (res) => {
@@ -285,28 +281,42 @@ export class AdminTableSurveyComponent {
           this.formTableSurvey.controls['ngayKetThuc'].setValue(
             ngayKetThuFormatted
           );
+          let bangKhaoSatCauHoiGroup: BangKhaoSatCauHoi[] = [];
           res.bangKhaoSatCauHoi?.forEach((el, i) => {
-            const idCauHoi = el.idCauHoi;
-            // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
-            const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some(
-              (control) => {
-                const idCauHoiControl = control.get('idCauHoi');
-                return idCauHoiControl
-                  ? idCauHoiControl.value === idCauHoi
-                  : false;
-              }
-            );
-            if (!idCauHoiExists) {
-              // Nếu idCauHoi chưa tồn tại, thêm mới
-              const newItem = this.FormBuilder.group({
-                id: 0,
-                idCauHoi: idCauHoi,
+            if (el.panelTitle) {
+              const newItem = {
+                id: el.id,
+                idCauHoi: el.idCauHoi,
                 priority: i,
                 isRequired: el.isRequired,
+                panelTitle: el.panelTitle,
                 maCauHoi: el.maCauHoi,
                 tieuDe: el.tieuDe,
-              });
-              this.lstBangKhaoSatCauHoi.push(newItem);
+              };
+              bangKhaoSatCauHoiGroup.push(newItem);
+            } else {
+              const idCauHoi = el.idCauHoi;
+              // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
+              const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some(
+                (control) => {
+                  const idCauHoiControl = control.get('idCauHoi');
+                  return idCauHoiControl
+                    ? idCauHoiControl.value === idCauHoi
+                    : false;
+                }
+              );
+              if (!idCauHoiExists) {
+                // Nếu idCauHoi chưa tồn tại, thêm mới
+                const newItem = this.FormBuilder.group({
+                  id: 0,
+                  idCauHoi: idCauHoi,
+                  priority: i,
+                  isRequired: el.isRequired,
+                  maCauHoi: el.maCauHoi,
+                  tieuDe: el.tieuDe,
+                });
+                this.lstBangKhaoSatCauHoi.push(newItem);
+              }
             }
           });
           // Lọc bỏ các giá trị null sau khi thêm mới
@@ -320,9 +330,34 @@ export class AdminTableSurveyComponent {
             }
           }
 
+          if (bangKhaoSatCauHoiGroup.length > 0) {
+            bangKhaoSatCauHoiGroup.filter(Utils.onlyUnique).forEach((x, i) => {
+              const newItem = this.FormBuilder.group({
+                panelTitle: [x.panelTitle, Validators.required],
+                bangKhaoSatCauHoi: this.FormBuilder.array<BangKhaoSatCauHoi>(
+                  []
+                ),
+              });
+              this.lstBangKhaoSatCauHoiGroup.push(newItem);
+              bangKhaoSatCauHoiGroup
+                .filter((g) => g.panelTitle == x.panelTitle)
+                .forEach((el) => {
+                  const newItem = this.FormBuilder.group<BangKhaoSatCauHoi>({
+                    id: 0,
+                    idCauHoi: el.idCauHoi,
+                    priority: i,
+                    isRequired: el.isRequired,
+                    panelTitle: el.panelTitle,
+                    maCauHoi: el.maCauHoi,
+                    tieuDe: el.tieuDe,
+                  });
+                  this.lstBangKhaoSatCauHoiGroupItem(i).push(newItem);
+                });
+            });
+          }
+
           console.log('Danh sách sau khi xử lý:', this.lstBangKhaoSatCauHoi);
         },
-        error: (e) => Utils.messageError(this.messageService, e.message),
       }
     );
   }
@@ -497,7 +532,6 @@ export class AdminTableSurveyComponent {
               );
             }
           },
-          error: (e) => Utils.messageError(this.messageService, e.message),
           complete: () => {
             this.table.reset();
           },
@@ -666,13 +700,6 @@ export class AdminTableSurveyComponent {
           this.table.reset();
         } else {
           Utils.messageError(this.messageService, res.errors.at(0) ?? '');
-        }
-      },
-      error: (e) => {
-        if (e.error && e.error.ErrorMessage) {
-          Utils.messageError(this.messageService, e.error.ErrorMessage);
-        } else {
-          Utils.messageError(this.messageService, e.message);
         }
       },
       complete: () => {

@@ -83,6 +83,9 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IModuleRepository _moduleRepository;
     public IModuleRepository Module => _moduleRepository ??= new ModuleRepository(_repoContext);
 
+    public IReleaseHistoryRepository _releaseHistoryRepository;
+    public IReleaseHistoryRepository ReleaseHistory => _releaseHistoryRepository ??= new ReleaseHistoryRepository(_repoContext);
+
     #endregion
 
     //RenderHere

@@ -1,14 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using SurveyApplication.API.Middleware;
 using SurveyApplication.Application;
 using SurveyApplication.Application.Services.Interfaces;
+using SurveyApplication.Domain;
+using SurveyApplication.Domain.Common;
+using SurveyApplication.Persistence;
 using SurveyApplication.Utility.LogUtils;
+using System.Reflection;
 
 namespace SurveyApplication.API;
 
 public class Startup
 {
     private IConfiguration Configuration { get; }
+
     [Obsolete("Obsolete")]
     public Startup(IConfiguration configuration)
     {
@@ -60,6 +68,9 @@ public class Startup
         app.UseCors("CorsPolicy");
 
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+        // Auto Migration
+        AutoMigration(Configuration, app);
         //TODO BUG
         UpdatePermissionTable(serviceProvider);
     }
@@ -116,5 +127,89 @@ public class Startup
         var dataDefaultService = (IDataDefaultService)serviceProvider.GetService(typeof(IDataDefaultService));
         if (dataDefaultService != null)
             dataDefaultService.DataAdmin().Wait();
+    }
+
+    private static void AutoMigration(IConfiguration Configuration, IApplicationBuilder app)
+    {
+        using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+        {
+            var settings = Configuration.GetSection(nameof(SurveyConfiguration)).Get<SurveyConfiguration>();
+            var context = serviceScope.ServiceProvider.GetRequiredService<SurveyApplicationDbContext>();
+            string migrationId = string.Empty;
+            List<string> migrationIds = new();
+            string buildNumber = settings.BuildNumber;
+            string enviroment = settings.Env;
+            string customerCode = settings.CustomerCode;
+            try
+            {
+                var dbAssebmly = Assembly.GetAssembly(context.GetType());
+                var types = dbAssebmly.GetTypes();
+                if (types.Any())
+                {
+                    //var typeMigrations = types.Where(x => x.BaseType == typeof(Migration));
+                    migrationIds = types.Where(x => x.BaseType == typeof(Migration))
+                        .Select(item => item.GetCustomAttributes<MigrationAttribute>().First().Id)
+                        .OrderBy(o => o).ToList();
+                    migrationId = migrationIds.LastOrDefault();
+                    if (settings.UseDebugMode)
+                    {
+                        var logManager = new LoggerManager();
+                        logManager.LogInfo("Survey: MigrationId  List:");
+                        for (int i = migrationIds.Count - 1; i >= 0; i--)
+                        {
+                            logManager.LogInfo($"Survey: MigrationId => {migrationIds[i]}");
+                        }
+                    }
+                }
+
+                // 1. Migration
+                if (settings.AutoMigration)   // automatic migrations: add migration + update database
+                {
+                    context.Database.Migrate();
+                }
+                else // insert all of migrations
+                {
+                    if (migrationIds != null && migrationIds.Any())
+                    {
+                        var version = typeof(Migration).Assembly.GetName().Version ?? new Version();
+                        string efVersion = $"{version.Major}.{version.Minor}.{version.Build}";
+                        foreach (var mid in migrationIds)
+                        {
+                            string sql =
+                                $@" IF NOT EXISTS ( SELECT 1 FROM __EFMigrationsHistory WHERE MigrationId = '{mid}' )
+                                BEGIN
+                                    INSERT INTO __EFMigrationsHistory(MigrationId,ProductVersion) VALUES ('{mid}','{efVersion}')
+                                END";
+
+                            context.Database.ExecuteSqlRaw(sql);
+                        }
+                    }
+                }
+
+                // 2. Release History
+                if (!string.IsNullOrEmpty(buildNumber) && buildNumber != "#{Octopus.Release.Number}" && !string.IsNullOrEmpty(migrationId) && enviroment != "#{Octopus.Environment.Name}")
+                {
+                    var existed = context.ReleaseHistory.FirstOrDefault(x => x.BuildNumber == buildNumber && x.MigrationId == migrationId);
+                    if (existed == null)
+                    {
+                        context.ReleaseHistory.Add(new ReleaseHistory
+                        {
+                            BuildNumber = buildNumber,
+                            MigrationId = migrationId,
+                            ReleaseDate = DateTime.Now,
+                            CustomerCode = customerCode,
+                            Env = enviroment
+                        });
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var logManager = new LoggerManager();
+                logManager.LogError(ex, $"AutoMigration StackTrace: {ex.StackTrace}");
+                logManager.LogError(ex, $"AutoMigration Message: {ex.Message}");
+            }
+        }
     }
 }

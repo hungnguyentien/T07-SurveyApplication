@@ -33,7 +33,6 @@ export class LoginService {
       .pipe(
         map((req: any) => {
           // đăng nhập thành công lưu lại token
-          debugger
           if (req) {
             this.datas = req.id;
             // Xóa hết cookie
@@ -42,11 +41,9 @@ export class LoginService {
             // lưu token vào Cookie
             if (model.isRememberMe) {
               this.cookieService.set('currentUser', req.token);
-              this.cookieService.set('IdcurrentUser', req.id);
               sessionStorage.removeItem('currentUser');
             } else {
               sessionStorage.setItem('currentUser', req.token);
-              this.cookieService.set('IdcurrentUser', req.id);
               this.cookieService.delete('currentUser', '/');
             }
 
@@ -98,11 +95,10 @@ export class LoginService {
     // remove user from local storage to log user out
     this.cookieService.delete('currentUser', '/');
     sessionStorage.removeItem('currentUser');
-    this.cookieService.delete('IdcurrentUser', '/');
-    sessionStorage.removeItem('IdcurrentUser');
     this.currentUserSubject.next('');
   
   }
+  
   getByIdUser<T>(id: number): Observable<T> {
     return this.http.get<T>(`${environment.apiUrl}/Account/GetById/${id}`);
   }
