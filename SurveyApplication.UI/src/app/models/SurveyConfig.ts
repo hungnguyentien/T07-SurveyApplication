@@ -14,6 +14,7 @@ export interface CauHoiConfig {
   loaiCauHoi: number;
   maCauHoi: string;
   batBuoc?: boolean;
+  panelTitle: string;
   tieuDe: string;
   isOther?: boolean;
   labelCauTraLoi: string;

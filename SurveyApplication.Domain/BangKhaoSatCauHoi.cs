@@ -8,4 +8,5 @@ public class BangKhaoSatCauHoi : BaseDomainEntity
     public int IdCauHoi { get; set; }
     public int? Priority { get; set; }
     public bool? IsRequired { get; set; }
+    public string PanelTitle { get; set; }
 }

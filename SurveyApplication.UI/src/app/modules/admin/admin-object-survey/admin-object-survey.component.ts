@@ -4,11 +4,12 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import {
   LinhVucHoatDongService,
   ObjectSurveyService,
+  PhieuKhaoSatService,
   UnitTypeService,
 } from '@app/services';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { Table } from 'primeng/table';
-import { DonVi, LinhVucHoatDong, Paging } from '@app/models';
+import { DonVi, HanhChinhVn, LinhVucHoatDong, Paging } from '@app/models';
 import Utils from '@app/helpers/utils';
 
 @Component({
@@ -38,24 +39,25 @@ export class AdminObjectSurveyComponent {
   listlinhvuchoatdong: any[] = [];
   ContainerAdd: any[] = [];
 
-  combinedArray: any[] = [];
-  cities: any[] = [];
-  districts: any[] = [];
-  wards: any[] = [];
   visible: boolean = false;
   lstLinhVuc: LinhVucHoatDong[] | undefined;
 
-  
+  cities: HanhChinhVn[] = [];
+  districts: HanhChinhVn[] = [];
+  wards: HanhChinhVn[] = [];
+  selectedTinh: string | undefined;
+  selectedQuanHuyen: string | undefined;
+  selectedPhuongXa: string | undefined;
 
   constructor(
     private objectSurveyService: ObjectSurveyService,
     private unitTypeService: UnitTypeService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private linhVucHoatDongService: LinhVucHoatDongService
+    private linhVucHoatDongService: LinhVucHoatDongService,
+    private phieuKhaoSatService: PhieuKhaoSatService
   ) {}
   ngOnInit() {
-    // this.GetObjectSurvey();
     this.GetAllFieldOfActivity();
     this.GetUnitType();
     this.FormObjectSurvey = new FormGroup({
@@ -63,17 +65,14 @@ export class AdminObjectSurveyComponent {
       IdLinhVuc: new FormControl(''),
       TenDonVi: new FormControl('', Validators.required),
       MaSoThue: new FormControl(''),
+      MaDonVi: new FormControl('', Validators.required),
       Email: new FormControl('', Validators.required),
       WebSite: new FormControl(''),
       SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10}$')] ),
       DiaChi: new FormControl('', Validators.required),
-      
-      // DiaChi: new FormGroup({
-      //   TinhThanh: new FormControl(''),
-      //   QuanHuyen: new FormControl(''),
-      //   PhuongXa: new FormControl(''),
-      //   DiaChiChiTiet: new FormControl('')
-      // }),
+      IdTinhTp: new FormControl('', Validators.required),
+      IdQuanHuyen: new FormControl('', Validators.required),
+      IdXaPhuong: new FormControl('', Validators.required),
     });
 
     this.FormRepresentative = new FormGroup({
@@ -84,9 +83,21 @@ export class AdminObjectSurveyComponent {
       MoTa: new FormControl(''),
     });
 
-    this.objectSurveyService.getCities().subscribe((data: any) => {
-      this.cities = data;
-    });
+    this.phieuKhaoSatService
+      .getTinh()
+      .subscribe((data) => (this.cities = data));
+
+    this.phieuKhaoSatService
+      .getQuanHuyen()
+      .subscribe((data) => (this.districts = data));
+
+    this.phieuKhaoSatService
+      .getPhuongXa()
+      .subscribe((data) => (this.wards = data));
+
+    this.phieuKhaoSatService
+      .getTinh()
+      .subscribe((data) => (this.cities = data));
 
     this.linhVucHoatDongService.getAll().subscribe({
       next: (res) => {
@@ -103,37 +114,23 @@ export class AdminObjectSurveyComponent {
     });
   }
 
-  onCityChange(event: any): void {
-    const selectedCityId = event.target.value;
-    const selectedCity = this.cities.find((city) => city.Id === selectedCityId);
-    this.districts = selectedCity?.Districts || [];
+  onCityChange(): void {
+    const code = this.selectedTinh;
     this.wards = [];
-    this.combineArrays();
+    this.phieuKhaoSatService
+      .getQuanHuyen()
+      .subscribe(
+        (data) => (this.districts = data.filter((x) => x.parent_code === code))
+      );
   }
 
-  onDistrictChange(event: any): void {
-    const selectedDistrictId: string = event.target.value;
-    const selectedCityId: string | undefined = this.cities.find((city) =>
-      city.Districts.some(
-        (district: { Id: string }) => district.Id === selectedDistrictId
-      )
-    )?.Id;
-
-    const selectedCity = this.cities.find((city) => city.Id === selectedCityId);
-    const selectedDistrict = selectedCity?.Districts.find(
-      (district: { Id: string }) => district.Id === selectedDistrictId
-    );
-
-    this.wards = selectedDistrict?.Wards || [];
-    this.combineArrays();
-  }
-
-  combineArrays(): void {
-    this.combinedArray = [...this.cities, ...this.districts, ...this.wards];
-  }
-
-  getCombinedArrayAsString(): string {
-    return this.combinedArray.map((item) => item.Id).join(',');
+  onDistrictChange(): void {
+    const code = this.selectedQuanHuyen;
+    this.phieuKhaoSatService
+      .getPhuongXa()
+      .subscribe(
+        (data) => (this.wards = data.filter((x) => x.parent_code === code))
+      );
   }
 
   GetUnitType() {
@@ -141,6 +138,7 @@ export class AdminObjectSurveyComponent {
       this.listloaihinhdonvi = response;
     });
   }
+
   GetAllFieldOfActivity() {
     this.objectSurveyService
       .GetAllFieldOfActivity()
@@ -148,6 +146,20 @@ export class AdminObjectSurveyComponent {
         this.listlinhvuchoatdong = response;
       });
   }
+
+  //#region
+
+  setValueDiaChi = () => {
+    this.FormObjectSurvey.get('IdTinhTp')?.setValue(
+      this.cities.find((x) => x.code === this.selectedTinh)?.id
+    );
+    this.FormObjectSurvey.get('IdQuanHuyen')?.setValue(
+      this.districts.find((x) => x.code === this.selectedQuanHuyen)?.id
+    );
+    this.FormObjectSurvey.get('IdXaPhuong')?.setValue(
+      this.wards.find((x) => x.code === this.selectedPhuongXa)?.id
+    );
+  };
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -205,7 +217,7 @@ export class AdminObjectSurveyComponent {
   Edit(data: any) {
     this.showadd = false;
     this.visible = !this.visible;
-    this.Madonvi=data.maDonVi;
+    this.Madonvi = data.maDonVi;
     this.objectSurveyService.getById<CreateUnitAndRep>(data.idDonVi).subscribe({
       next: (res) => {
         Utils.setValueForm(
@@ -222,8 +234,16 @@ export class AdminObjectSurveyComponent {
         );
         this.IdDonVi = res.donViDto.id.toString();
         this.IdNguoiDaiDien = res.nguoiDaiDienDto.id.toString();
+        this.selectedTinh = this.cities.find(
+          (x) => x.id === res.donViDto.idTinhTp
+        )?.code;
+        this.selectedQuanHuyen = this.districts.find(
+          (x) => x.id === res.donViDto.idQuanHuyen
+        )?.code;
+        this.selectedPhuongXa = this.wards.find(
+          (x) => x.id === res.donViDto.idXaPhuong
+        )?.code;
       },
-      error: (e) => Utils.messageError(this.messageService, e.message),
     });
   }
 
@@ -236,18 +256,16 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveAdd() {
-    debugger
+    this.setValueDiaChi();
     if (this.FormObjectSurvey.valid && this.FormRepresentative.valid) {
       const obj: CreateUnitAndRep = {
-        
         donViDto: this.FormObjectSurvey.value,
         nguoiDaiDienDto: this.FormRepresentative.value,
       };
       this.objectSurveyService.create(obj).subscribe({
         next: (res) => {
-          debugger
           if (res != null) {
-            console.log("res",res)
+            console.log('res', res);
             this.messageService.add({
               severity: 'success',
               summary: 'Thành Công',
@@ -270,13 +288,10 @@ export class AdminObjectSurveyComponent {
   }
 
   SaveEdit() {
-    debugger
+    this.setValueDiaChi();
     const updatedFormObjectSurveyValue = { ...this.FormObjectSurvey.value };
     updatedFormObjectSurveyValue['Id'] = this.IdDonVi;
     updatedFormObjectSurveyValue['MaDonVi'] = this.Madonvi;
-
-
-  
     const updatedFormRepresentativeValue = { ...this.FormRepresentative.value };
     updatedFormRepresentativeValue['Id'] = this.IdNguoiDaiDien;
     updatedFormRepresentativeValue['IdDonVi'] = this.IdDonVi;
@@ -286,10 +301,7 @@ export class AdminObjectSurveyComponent {
     };
     this.objectSurveyService.update(obj).subscribe({
       next: (res) => {
-        debugger
         if (res != null) {
-           debugger
-           
           this.messageService.add({
             severity: 'success',
             summary: 'Thành Công',
@@ -300,7 +312,6 @@ export class AdminObjectSurveyComponent {
           this.FormRepresentative.reset();
           this.visible = false;
         } else {
-          debugger
           this.messageService.add({
             severity: 'error',
             summary: 'Lỗi',
@@ -344,18 +355,16 @@ export class AdminObjectSurveyComponent {
     this.selectedObjectSurvey.forEach((el) => {
       ids.push(el.id);
     });
-    
+
     this.confirmationService.confirm({
       message: `Bạn có chắc chắn muốn xoá ${ids.length} đơn vị này?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.objectSurveyService.deleteMultiple(ids).subscribe({
-          next: (res:any) => {
-            
-            if(res.success == false){
-              Utils.messageError(this.messageService, res.message)
-            }
-            else{
+          next: (res: any) => {
+            if (res.success == false) {
+              Utils.messageError(this.messageService, res.message);
+            } else {
               Utils.messageSuccess(
                 this.messageService,
                 `Xoá ${ids.length} đơn vị thành công!`
@@ -368,7 +377,9 @@ export class AdminObjectSurveyComponent {
           },
         });
       },
-      reject: () => { },
+      reject: () => {},
     });
   }
+
+  //#endregion
 }

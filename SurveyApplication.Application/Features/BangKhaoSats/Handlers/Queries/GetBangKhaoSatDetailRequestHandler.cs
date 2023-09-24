@@ -23,19 +23,20 @@ public class GetBangKhaoSatDetailRequestHandler : BaseMasterFeatures, IRequestHa
         var bks = await _surveyRepo.BangKhaoSat.GetById(request.Id);
         var rs = _mapper.Map<BangKhaoSatDto>(bks);
         var lstKhaoSatCauHoi = from a in _surveyRepo.BangKhaoSatCauHoi.GetAllQueryable()
-            join b in _surveyRepo.CauHoi.GetAllQueryable() on a.IdCauHoi equals b.Id
-            where a.IdBangKhaoSat == bks.Id && b.ActiveFlag == (int)EnumCommon.ActiveFlag.Active && !a.Deleted &&
-                  !b.Deleted
-            select new BangKhaoSatCauHoiDto
-            {
-                Id = a.Id,
-                IdBangKhaoSat = a.IdBangKhaoSat,
-                IdCauHoi = a.IdCauHoi,
-                Priority = a.Priority,
-                IsRequired = a.IsRequired,
-                TieuDe = b.TieuDe,
-                MaCauHoi = b.MaCauHoi
-            };
+                               join b in _surveyRepo.CauHoi.GetAllQueryable() on a.IdCauHoi equals b.Id
+                               where a.IdBangKhaoSat == bks.Id && b.ActiveFlag == (int)EnumCommon.ActiveFlag.Active && !a.Deleted &&
+                                     !b.Deleted
+                               select new BangKhaoSatCauHoiDto
+                               {
+                                   Id = a.Id,
+                                   IdBangKhaoSat = a.IdBangKhaoSat,
+                                   IdCauHoi = a.IdCauHoi,
+                                   Priority = a.Priority,
+                                   IsRequired = a.IsRequired,
+                                   PanelTitle = a.PanelTitle,
+                                   TieuDe = b.TieuDe,
+                                   MaCauHoi = b.MaCauHoi
+                               };
         rs.BangKhaoSatCauHoi = await lstKhaoSatCauHoi.ToListAsync(cancellationToken);
         return rs;
     }

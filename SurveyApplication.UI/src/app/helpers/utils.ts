@@ -5,7 +5,12 @@ import { Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { KqSurveyCheckBox, KqTrangThai, TypeCauHoi } from '@app/enums';
-import { CreateBaoCaoCauHoi, FileQuestion, SurveyConfig } from '@app/models';
+import {
+  CauHoiConfig,
+  CreateBaoCaoCauHoi,
+  FileQuestion,
+  SurveyConfig,
+} from '@app/models';
 import { jsonDataFake } from './json';
 import { themeJson } from './theme';
 import { environment } from '@environments/environment';
@@ -77,27 +82,25 @@ export default class Utils {
     messageService.clear();
     messageService.add({
       severity: 'success',
-      summary: 'Success',
+      summary: 'Thành công',
       detail: message,
     });
   };
 
   static messageError = (messageService: MessageService, message: string) => {
-    if (message || !environment.production) {
-      messageService.clear();
-      messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: message,
-      });
-    }
+    messageService.clear();
+    messageService.add({
+      severity: 'error',
+      summary: 'Lỗi',
+      detail: message,
+    });
   };
 
   static messageInfo = (messageService: MessageService, message: string) => {
     messageService.clear();
     messageService.add({
       severity: 'info',
-      summary: 'info',
+      summary: 'Thông tin',
       detail: message,
     });
   };
@@ -105,8 +108,8 @@ export default class Utils {
   static messageWarring = (messageService: MessageService, message: string) => {
     messageService.clear();
     messageService.add({
-      severity: 'warring',
-      summary: 'Warring',
+      severity: 'warning',
+      summary: 'Cảnh báo',
       detail: message,
     });
   };
@@ -286,174 +289,215 @@ export default class Utils {
     return survey;
   };
 
-  static configCauHoi = (res: SurveyConfig): any[] => {
-    let els: any[] = [];
-    let readOnly = res.trangThaiKq === KqTrangThai.HoanThanh;
-    res.lstCauHoi.forEach((el, i) => {
-      let loaiCauHoi = el.loaiCauHoi;
-      let name = el.maCauHoi;
-      let title = `${el.tieuDe}`;
-      let isRequired = el.batBuoc ?? false;
-      let requiredErrorText = isRequired
-        ? 'Vui lòng nhập câu trả lời của bạn!'
-        : '';
-      let description = el.noidung;
-      let choicesRadio = new Array();
-      el.lstCot.forEach((el, i) => {
-        choicesRadio.push({
-          value: el.noidung,
-          text: `${el.noidung}`,
-        });
+  /**
+   * Sắp xếp mảng theo property
+   * @param property Thếm dấu trừ là DESC
+   * @returns
+   */
+  static dynamicSort(property: string) {
+    let sortOrder = 1;
+    if (property[0] === '-') {
+      sortOrder = -1;
+      property = property.substr(1);
+    }
+    return (a: any, b: any) => {
+      const result =
+        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+      return result * sortOrder;
+    };
+  }
+  /**
+   * configCauHoiEl
+   * @param el
+   * @param readOnly
+   * @param els
+   */
+  static configCauHoiEl(el: CauHoiConfig, readOnly: boolean, els: any[]) {
+    let loaiCauHoi = el.loaiCauHoi;
+    let name = el.maCauHoi;
+    let title = `${el.tieuDe}`;
+    let isRequired = el.batBuoc ?? false;
+    let requiredErrorText = isRequired
+      ? 'Vui lòng nhập câu trả lời của bạn!'
+      : '';
+    let description = el.noidung;
+    let choicesRadio = new Array();
+    el.lstCot.forEach((el, i) => {
+      choicesRadio.push({
+        value: el.noidung,
+        text: `${el.noidung}`,
       });
-      let choices = new Array();
-      el.lstCot.forEach((el, i) => {
-        choices.push({
-          value: el.noidung,
-          text: `${el.noidung}`,
-        });
-      });
-      let showOtherItem = el.isOther ?? false;
-      let otherPlaceholder = showOtherItem ? 'Câu trả lời của bạn' : '';
-      let otherText = showOtherItem ? el.labelCauTraLoi : '';
-
-      let columns = new Array();
-      let isMatrixdropdown = loaiCauHoi == TypeCauHoi.SingleSelectMatrix;
-      el.lstCot.forEach((el, i) => {
-        columns.push(
-          isMatrixdropdown
-            ? {
-                value: el.maCot,
-                text: el.noidung,
-              }
-            : {
-                name: el.maCot,
-                title: el.noidung,
-              }
-        );
-      });
-      let rows = new Array();
-      el.lstHang.forEach((el, i) => {
-        rows.push({
-          value: el.maHang,
-          text: el.noidung,
-        });
-      });
-
-      let maxSize = el.kichThuocFile;
-      if (loaiCauHoi === TypeCauHoi.Radio) {
-        els.push({
-          type: 'radiogroup',
-          name: name,
-          title: title,
-          isRequired: isRequired,
-          requiredErrorText: requiredErrorText,
-          description: description,
-          choices: choicesRadio,
-          showOtherItem: showOtherItem,
-          otherPlaceholder: otherPlaceholder,
-          otherText: otherText,
-          readOnly: readOnly,
-        });
-      } else if (loaiCauHoi === TypeCauHoi.CheckBox) {
-        els.push({
-          type: 'checkbox',
-          name: name,
-          title: title,
-          isRequired: isRequired,
-          requiredErrorText: requiredErrorText,
-          description: description,
-          choices: choices,
-          showOtherItem: showOtherItem,
-          otherPlaceholder: otherPlaceholder,
-          otherText: otherText,
-          readOnly: readOnly,
-        });
-      } else if (loaiCauHoi == TypeCauHoi.Text) {
-        els.push({
-          type: 'text',
-          name: name,
-          title: title,
-          isRequired: isRequired,
-          requiredErrorText: requiredErrorText,
-          description: description,
-          readOnly: readOnly,
-        });
-      } else if (loaiCauHoi == TypeCauHoi.LongText) {
-        els.push({
-          type: 'comment',
-          name: name,
-          title: title,
-          isRequired: isRequired,
-          requiredErrorText: requiredErrorText,
-          description: description,
-          readOnly: readOnly,
-        });
-      } else if (loaiCauHoi == TypeCauHoi.SingleSelectMatrix) {
-        els.push({
-          type: 'matrix',
-          name: name,
-          title: title,
-          isRequired: isRequired,
-          requiredErrorText: requiredErrorText,
-          description: description,
-          alternateRows: true,
-          columns: columns,
-          rows: rows,
-          readOnly: readOnly,
-        });
-      } else if (loaiCauHoi == TypeCauHoi.MultiSelectMatrix) {
-        els.push({
-          type: 'matrixdropdown',
-          name: name,
-          title: title,
-          isRequired: isRequired,
-          requiredErrorText: requiredErrorText,
-          description: description,
-          alternateRows: true,
-          columns: columns,
-          rows: rows,
-          choices: [
-            {
-              value: KqSurveyCheckBox.value,
-              text: KqSurveyCheckBox.text,
-            },
-          ],
-          cellType: 'checkbox',
-          columnColCount: 1,
-          readOnly: readOnly,
-        });
-      } else if (loaiCauHoi == TypeCauHoi.MultiTextMatrix) {
-        els.push({
-          type: 'matrixdropdown',
-          name: name,
-          title: title,
-          isRequired: isRequired,
-          requiredErrorText: requiredErrorText,
-          description: description,
-          alternateRows: true,
-          columns: columns,
-          rows: rows,
-          cellType: 'text',
-          columnColCount: 1,
-          readOnly: readOnly,
-        });
-      } else if (loaiCauHoi == TypeCauHoi.UploadFile) {
-        els.push({
-          type: 'file',
-          name: name,
-          title: title,
-          isRequired: isRequired,
-          requiredErrorText: requiredErrorText,
-          description: description,
-          storeDataAsText: false,
-          allowMultiple: true,
-          maxSize: maxSize,
-          showCommentArea: true,
-          commentText: 'Ghi chú',
-          readOnly: readOnly,
-        });
-      }
     });
+    let choices = new Array();
+    el.lstCot.forEach((el, i) => {
+      choices.push({
+        value: el.noidung,
+        text: `${el.noidung}`,
+      });
+    });
+    let showOtherItem = el.isOther ?? false;
+    let otherPlaceholder = showOtherItem ? 'Câu trả lời của bạn' : '';
+    let otherText = showOtherItem ? el.labelCauTraLoi : '';
+
+    let columns = new Array();
+    let isMatrixdropdown = loaiCauHoi == TypeCauHoi.SingleSelectMatrix;
+    el.lstCot.forEach((el, i) => {
+      columns.push(
+        isMatrixdropdown
+          ? {
+              value: el.maCot,
+              text: el.noidung,
+            }
+          : {
+              name: el.maCot,
+              title: el.noidung,
+            }
+      );
+    });
+    let rows = new Array();
+    el.lstHang.forEach((el, i) => {
+      rows.push({
+        value: el.maHang,
+        text: el.noidung,
+      });
+    });
+
+    let maxSize = el.kichThuocFile;
+    if (loaiCauHoi === TypeCauHoi.Radio) {
+      els.push({
+        type: 'radiogroup',
+        name: name,
+        title: title,
+        isRequired: isRequired,
+        requiredErrorText: requiredErrorText,
+        description: description,
+        choices: choicesRadio,
+        showOtherItem: showOtherItem,
+        otherPlaceholder: otherPlaceholder,
+        otherText: otherText,
+        readOnly: readOnly,
+      });
+    } else if (loaiCauHoi === TypeCauHoi.CheckBox) {
+      els.push({
+        type: 'checkbox',
+        name: name,
+        title: title,
+        isRequired: isRequired,
+        requiredErrorText: requiredErrorText,
+        description: description,
+        choices: choices,
+        showOtherItem: showOtherItem,
+        otherPlaceholder: otherPlaceholder,
+        otherText: otherText,
+        readOnly: readOnly,
+      });
+    } else if (loaiCauHoi == TypeCauHoi.Text) {
+      els.push({
+        type: 'text',
+        name: name,
+        title: title,
+        isRequired: isRequired,
+        requiredErrorText: requiredErrorText,
+        description: description,
+        readOnly: readOnly,
+      });
+    } else if (loaiCauHoi == TypeCauHoi.LongText) {
+      els.push({
+        type: 'comment',
+        name: name,
+        title: title,
+        isRequired: isRequired,
+        requiredErrorText: requiredErrorText,
+        description: description,
+        readOnly: readOnly,
+      });
+    } else if (loaiCauHoi == TypeCauHoi.SingleSelectMatrix) {
+      els.push({
+        type: 'matrix',
+        name: name,
+        title: title,
+        isRequired: isRequired,
+        requiredErrorText: requiredErrorText,
+        description: description,
+        alternateRows: true,
+        columns: columns,
+        rows: rows,
+        readOnly: readOnly,
+      });
+    } else if (loaiCauHoi == TypeCauHoi.MultiSelectMatrix) {
+      els.push({
+        type: 'matrixdropdown',
+        name: name,
+        title: title,
+        isRequired: isRequired,
+        requiredErrorText: requiredErrorText,
+        description: description,
+        alternateRows: true,
+        columns: columns,
+        rows: rows,
+        choices: [
+          {
+            value: KqSurveyCheckBox.value,
+            text: KqSurveyCheckBox.text,
+          },
+        ],
+        cellType: 'checkbox',
+        columnColCount: 1,
+        readOnly: readOnly,
+      });
+    } else if (loaiCauHoi == TypeCauHoi.MultiTextMatrix) {
+      els.push({
+        type: 'matrixdropdown',
+        name: name,
+        title: title,
+        isRequired: isRequired,
+        requiredErrorText: requiredErrorText,
+        description: description,
+        alternateRows: true,
+        columns: columns,
+        rows: rows,
+        cellType: 'text',
+        columnColCount: 1,
+        readOnly: readOnly,
+      });
+    } else if (loaiCauHoi == TypeCauHoi.UploadFile) {
+      els.push({
+        type: 'file',
+        name: name,
+        title: title,
+        isRequired: isRequired,
+        requiredErrorText: requiredErrorText,
+        description: description,
+        storeDataAsText: false,
+        allowMultiple: true,
+        maxSize: maxSize,
+        showCommentArea: true,
+        commentText: 'Ghi chú',
+        readOnly: readOnly,
+      });
+    }
+  }
+
+  static configCauHoi = (res: SurveyConfig): any[] => {
+    const els: any[] = [];
+    const readOnly = res.trangThaiKq === KqTrangThai.HoanThanh;
+    const lstPanelTitle = res.lstCauHoi
+      .map((x) => x.panelTitle)
+      .filter(this.onlyUnique);
+    if (lstPanelTitle.length > 0)
+      lstPanelTitle.forEach((panelTitle, i) => {
+        const elsPanel: any[] = [];
+        res.lstCauHoi
+          .filter((x) => x.panelTitle === panelTitle)
+          .forEach((el) => this.configCauHoiEl(el, readOnly, elsPanel));
+        els.push({
+          type: 'panel',
+          name: `panel${i}`,
+          elements: elsPanel,
+          title: panelTitle,
+        });
+      });
+    else res.lstCauHoi.forEach((el) => this.configCauHoiEl(el, readOnly, els));
     return els;
   };
 
@@ -485,11 +529,14 @@ export default class Utils {
     });
     return `?${params.join('&')}`;
   };
-
+  /** Distinct mảng */
   static onlyUnique = (value: any, index: number, array: any[]) => {
     return array.indexOf(value) === index;
   };
-
+  /**
+   * addOtherItem cho báo cáo
+   * @param args [el, dataKq, lstBaoCaoCauHoi, dataDefault]
+   */
   static addOtherItem = (...args: any[]) => {
     const [el, dataKq, lstBaoCaoCauHoi, dataDefault] = args;
     if (el && el.showOtherItem && dataKq) {
@@ -506,7 +553,11 @@ export default class Utils {
       } as CreateBaoCaoCauHoi);
     }
   };
-
+  /**
+   * addDataBaoCao lưu kết quả sau khi ấn hoàn thành
+   * @param args
+   * @returns
+   */
   static addDataBaoCao = (...args: any[]): CreateBaoCaoCauHoi[] => {
     const [configCauHoi, dataKq, status, lstBaoCaoCauHoi, generalInfo] = args;
     // if (configCauHoi && dataKq) {
@@ -609,7 +660,7 @@ export default class Utils {
 
     return lstBaoCaoCauHoi;
   };
-
+  /** Mã hóa theo key bí mật */
   static encrypt = (dataEncrypt: string): string => {
     try {
       return crypto.AES.encrypt(dataEncrypt, environment.secretKey).toString();
@@ -618,7 +669,7 @@ export default class Utils {
       return '';
     }
   };
-
+  /** Giải mã theo key bí mật */
   static decrypt = (dataDecrypt: string): string => {
     try {
       return crypto.AES.decrypt(dataDecrypt, environment.secretKey).toString(
@@ -637,7 +688,7 @@ export default class Utils {
     for (let i = 0; i < s.length; i++) bytes[i] = s.charCodeAt(i);
     return bytes;
   };
-
+  /** Tải file base64 */
   static downloadFileBase64 = (file: FileQuestion) => {
     let filename = file.name;
     let type = file.type;

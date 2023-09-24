@@ -126,3 +126,11 @@ input[type="button"].sd-btn:focus {
 .icon-gui-thong-tin {
   background-image: url("/assets/img/icons/gui-thong-tin.svg");
 }
+
+.btn.btn-primary {
+  background-color: #4e73df;
+}
+
+.btn.btn-primary:hover {
+  background-color: #4e73df;
+}

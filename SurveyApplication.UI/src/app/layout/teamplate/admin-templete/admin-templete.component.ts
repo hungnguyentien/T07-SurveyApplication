@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Validators ,FormBuilder,FormGroup} from '@angular/forms';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { LoginService } from '@app/services';
 import { MessageService } from 'primeng/api';
 import { environment } from '@environments/environment';
@@ -8,9 +8,9 @@ import { AccountService } from '@app/services/account.service';
   selector: 'app-admin-templete',
   templateUrl: './admin-templete.component.html',
   styleUrls: ['./admin-templete.component.css'],
-  providers: [MessageService]
 })
-export class AdminTempleteComponent{
+
+export class AdminTempleteComponent {
   userName: string = '';
   userId: any = '';
   FormProfile!:FormGroup;
@@ -39,21 +39,19 @@ export class AdminTempleteComponent{
         email: ['', Validators.required],
         address: ['', Validators.required],
         img:['']
-        // password: ['', Validators.required],
       }
     );
-    this.getByIdUser();
   }
   logout() {
     this.loginService.logout();
   }
-  EditHS(){
+
+  editProfile() {
     this.visible = !this.visible;
-    this.getByIdUser()
+    this.getByIdUser();
   }
 
   Save = () =>{
-    debugger
     const formData = new FormData();
     const updatedData = this.FormProfile.value;
     formData.append('name', updatedData.name);
@@ -64,7 +62,8 @@ export class AdminTempleteComponent{
     this.accountService.update(formData).subscribe((res: any) => {
       console.log(res);
     });
-  }
+    }
+
   getByIdUser(){
     this.loginService.getByIdUser(this.userId).subscribe((res:any)=>{
       this.listDatasUser = res
@@ -85,7 +84,6 @@ export class AdminTempleteComponent{
 
   // upload file images
   onFileChanged(event: Event): void {
-    debugger
     const inputElement = event.target as HTMLInputElement;
     if (inputElement.files && inputElement.files.length > 0) {
       const file = inputElement.files[0];

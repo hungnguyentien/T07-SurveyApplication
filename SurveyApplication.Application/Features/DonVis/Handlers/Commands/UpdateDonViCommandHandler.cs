@@ -25,7 +25,6 @@ public class UpdateDonViCommandHandler : BaseMasterFeatures, IRequestHandler<Upd
         var validatorResult = await validator.ValidateAsync(request.DonViDto);
         if (validatorResult.IsValid == false) throw new ValidationException(validatorResult);
         var donVi = await _surveyRepo.DonVi.GetById(request.DonViDto?.Id ?? 0);
-        request.DonViDto.MaDonVi = donVi.MaDonVi;
         _mapper.Map(request.DonViDto, donVi);
         await _surveyRepo.DonVi.Update(donVi);
         await _surveyRepo.SaveAync();

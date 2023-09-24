@@ -15,6 +15,9 @@ export interface ObjectSurvey extends Base {
   WebSite: string | null;
   SoDienThoai: string;
   MaDonVi: string | null;
+  idTinhTp: number;
+  idQuanHuyen: number;
+  idXaPhuong: number;
 }
 export interface Representative extends Base {
   SoDienThoai: string;

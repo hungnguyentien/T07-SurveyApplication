@@ -27,22 +27,23 @@ public class GetConfigCauHoiRequestHandler : BaseMasterFeatures,
         var bks = await _surveyRepo.BangKhaoSat.GetById(mailInfo.IdBangKhaoSat) ??
                   throw new ValidationException("Không tồn tại bảng khảo sát");
         var query = from a in _surveyRepo.BangKhaoSatCauHoi.GetAllQueryable()
-            join b in _surveyRepo.CauHoi.GetAllQueryable() on a.IdCauHoi equals b.Id
-            where a.IdBangKhaoSat == bks.Id && b.ActiveFlag == (int)EnumCommon.ActiveFlag.Active && !a.Deleted &&
-                  !b.Deleted
-            orderby a.Priority
-            select new CauHoiDto
-            {
-                Id = b.Id,
-                ActiveFlag = b.ActiveFlag,
-                BatBuoc = a.IsRequired,
-                IsOther = b.IsOther,
-                KichThuocFile = b.KichThuocFile,
-                LabelCauTraLoi = b.LabelCauTraLoi,
-                LoaiCauHoi = b.LoaiCauHoi,
-                MaCauHoi = b.MaCauHoi,
-                TieuDe = b.TieuDe
-            };
+                    join b in _surveyRepo.CauHoi.GetAllQueryable() on a.IdCauHoi equals b.Id
+                    where a.IdBangKhaoSat == bks.Id && b.ActiveFlag == (int)EnumCommon.ActiveFlag.Active && !a.Deleted &&
+                          !b.Deleted
+                    orderby a.Priority
+                    select new CauHoiDto
+                    {
+                        Id = b.Id,
+                        ActiveFlag = b.ActiveFlag,
+                        BatBuoc = a.IsRequired,
+                        PanelTitle = a.PanelTitle,
+                        IsOther = b.IsOther,
+                        KichThuocFile = b.KichThuocFile,
+                        LabelCauTraLoi = b.LabelCauTraLoi,
+                        LoaiCauHoi = b.LoaiCauHoi,
+                        MaCauHoi = b.MaCauHoi,
+                        TieuDe = b.TieuDe
+                    };
         var lstCauHoi = await query.ToListAsync(cancellationToken);
         var lstId = lstCauHoi.Select(x => x.Id ?? 0).ToList();
         var lstCot = await _surveyRepo.Cot.GetAllListAsync(x => lstId.Contains(x.IdCauHoi));
