@@ -3,7 +3,7 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.DTOs.DonVi.Validators
 {
-    
+
     public class DonViDtoValidator : AbstractValidator<IDonViDto>
     {
         private readonly IDonViRepository _donViRepository;
@@ -28,13 +28,9 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-         
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
-
             RuleFor(p => p.Email)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-         
+
                 .NotNull();
 
             RuleFor(p => p.SoDienThoai)
