@@ -26,8 +26,9 @@
       </button>
     </div>
     <div class="ml-3">
-      <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"(click)="confirmDeleteMultiple()"
-        *ngIf="selectedObjectSurvey && selectedObjectSurvey.length > 0" style="background-color: #ea5c5c;">
+      <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"
+        (click)="confirmDeleteMultiple()" *ngIf="selectedObjectSurvey && selectedObjectSurvey.length > 0"
+        style="background-color: #ea5c5c;">
       </button>
     </div>
   </div>
@@ -212,10 +213,11 @@
             <label for="sdt" class="col-form-label">Số điện thoại: <span style="color: red;">*</span></label>
             <input formControlName="SoDienThoai" type="text" pInputText class="form-control" id="sdt">
 
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['SoDienThoai'].valid && 
-              FormObjectSurvey.controls['SoDienThoai'].dirty">
+            <small style="color: #e24c4c;" class="ml-2"
+              *ngIf="FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')&&FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')">
               Vui lòng nhập Số điện thoại
             </small>
+
           </div>
         </div>
         <div class="row">
@@ -277,8 +279,9 @@
           <div class="form-group col-md-6">
             <label for="sdt" class="col-form-label">Số điện thoại: <span style="color: red;">*</span></label>
             <input formControlName="SoDienThoai" pInputText type="text" class="form-control" id="sdt">
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormRepresentative.controls['SoDienThoai'].valid && 
-                FormRepresentative.controls['SoDienThoai'].dirty">
+
+            <small style="color: #e24c4c;" class="ml-2"
+              *ngIf="!FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')&&FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')">
               Vui lòng nhập Số điện thoại
             </small>
           </div>

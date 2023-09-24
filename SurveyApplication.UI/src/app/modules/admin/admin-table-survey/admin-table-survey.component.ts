@@ -46,6 +46,9 @@ export class AdminTableSurveyComponent {
   dataTotalRecords!: number;
   keyWord!: string;
 
+  detaiDatas:any[]=[];
+  id!:number;
+
   confirmationHeader: string = '';
 
   showadd: boolean = false;
@@ -63,6 +66,7 @@ export class AdminTableSurveyComponent {
   serverError: string = '';
 
   visible: boolean = false;
+  visibleDetail: boolean = false;
 
   @ViewChild('dtq') tableQ!: Table;
   loadingCauHoi: boolean = true;
@@ -139,6 +143,8 @@ export class AdminTableSurveyComponent {
     this.router.navigate(['/admin/thong-ke-khao-sat', data]);
   }
 
+  
+
   confirmDeleteMultiple() {
     let ids: number[] = [];
     this.selectedTableSurvey.forEach((el) => {
@@ -182,6 +188,7 @@ export class AdminTableSurveyComponent {
 
     return null;
   }
+ 
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -209,6 +216,7 @@ export class AdminTableSurveyComponent {
       },
     });
   };
+  
 
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
@@ -226,7 +234,7 @@ export class AdminTableSurveyComponent {
       },
     });
   };
-
+ 
   loadListLazyCauHoi = (event: any) => {
     this.loadingCauHoi = true;
     let pageSize = event.rows;
@@ -270,10 +278,14 @@ export class AdminTableSurveyComponent {
       },
     });
   };
+  
+  
 
+  
   CloseModal() {
     this.visible = false;
   }
+  
 
   LoadUnitType() {
     this.unitTypeService.getAll().subscribe((data) => {
@@ -292,6 +304,7 @@ export class AdminTableSurveyComponent {
   }
 
   Add() {
+    debugger
     this.formTableSurvey.reset();
     this.showadd = true;
     this.visible = !this.visible;
@@ -382,11 +395,13 @@ export class AdminTableSurveyComponent {
   }
 
   SaveAdd() {
+    debugger
     if (this.formTableSurvey.valid) {
       const ObjTableSurvey = this.formTableSurvey.value;
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
           if (res != null) {
+            debugger
             this.messageService.add({
               severity: 'success',
               summary: 'Thành Công',

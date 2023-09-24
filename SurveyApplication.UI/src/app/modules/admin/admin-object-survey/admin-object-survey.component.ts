@@ -65,7 +65,7 @@ export class AdminObjectSurveyComponent {
       MaSoThue: new FormControl(''),
       Email: new FormControl('', Validators.required),
       WebSite: new FormControl(''),
-      SoDienThoai: new FormControl('', Validators.required),
+      SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10}$')] ),
       DiaChi: new FormControl('', Validators.required),
       
       // DiaChi: new FormGroup({
@@ -80,7 +80,7 @@ export class AdminObjectSurveyComponent {
       HoTen: new FormControl('', Validators.required),
       ChucVu: new FormControl('', Validators.required),
       Email: new FormControl('', Validators.required),
-      SoDienThoai: new FormControl('', Validators.required),
+      SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10}$')] ),
       MoTa: new FormControl(''),
     });
 
@@ -163,8 +163,10 @@ export class AdminObjectSurveyComponent {
     };
     this.objectSurveyService.getByConditionTepm<DonVi>(this.paging).subscribe({
       next: (res) => {
+        debugger
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
+     
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);
