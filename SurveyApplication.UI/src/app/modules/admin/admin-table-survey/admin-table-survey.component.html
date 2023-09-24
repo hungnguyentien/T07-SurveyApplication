@@ -140,7 +140,7 @@
                         </a>
                     </ng-container>
 
-                    <ng-container *ngIf="rowData.trangThai == 0">
+                    <ng-container *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3">
                         <a class="m-3" (click)="Delete(rowData)">
                             <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
                         </a>

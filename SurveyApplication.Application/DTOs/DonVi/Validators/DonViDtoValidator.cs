@@ -28,13 +28,10 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-         
-
             RuleFor(p => p.Email)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-         
             RuleFor(p => p.SoDienThoai)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();

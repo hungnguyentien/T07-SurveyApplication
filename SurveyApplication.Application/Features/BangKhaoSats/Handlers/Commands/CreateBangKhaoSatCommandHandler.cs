@@ -40,7 +40,7 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
         if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
             throw new FluentValidation.ValidationException("Đợt khảo sát đã kết thúc");
 
-        if (dotKhaoSat.NgayBatDau.Date <
+        if (dotKhaoSat.NgayBatDau.Date >
             request.BangKhaoSatDto.NgayBatDau.GetValueOrDefault(DateTime.MinValue).Date)
             throw new FluentValidation.ValidationException("Ngày bắt đầu không được nhỏ hơn ngày bắt đầu đợt khảo sát");
 

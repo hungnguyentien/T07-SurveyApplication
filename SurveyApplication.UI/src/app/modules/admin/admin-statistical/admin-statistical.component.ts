@@ -87,10 +87,10 @@ export class AdminStatisticalComponent {
     this.frmStatiscal.controls['idDotKhaoSat'].setValue(parseInt(this.dataTableSurvey.idDotKhaoSat));
     this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
     this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(parseInt(this.dataTableSurvey.idLoaiHinh));
-    // const ngayBatDauFormatted = this.datePipe.transform(this.dataTableSurvey.ngayBatDau, 'dd/MM/yyyy');
-    // const ngayKetThucFormatted = this.datePipe.transform(this.dataTableSurvey.ngayKetThuc, 'dd/MM/yyyy');
-    // this.frmStatiscal.controls['ngayBatDau'].setValue(ngayBatDauFormatted);
-    // this.frmStatiscal.controls['ngayKetThuc'].setValue(ngayKetThucFormatted);
+    const ngayBatDauFormatted = this.datePipe.transform(this.dataTableSurvey.ngayBatDau, 'dd/MM/yyyy');
+    const ngayKetThucFormatted = this.datePipe.transform(this.dataTableSurvey.ngayKetThuc, 'dd/MM/yyyy');
+    this.frmStatiscal.controls['ngayBatDau'].setValue(ngayBatDauFormatted);
+    this.frmStatiscal.controls['ngayKetThuc'].setValue(ngayKetThucFormatted);
     this.getVauleChar(this.frmStatiscal.value);
     // this.getBaoCaoCauHoiChiTiet(this.paging);
 
@@ -272,15 +272,16 @@ export class AdminStatisticalComponent {
   };
 
   search = () => {
+    debugger
     let params = this.frmStatiscal.value;
     if (this.frmStatiscal.value.ngayBatDau) {
       params.ngayBatDau = moment(this.frmStatiscal.value.ngayBatDau).format(
-        'MM/DD/YYYY'
+        'DD/MM/YYYY'
       );
     }
     if (this.frmStatiscal.value.ngayKetThuc) {
       params.ngayKetThuc = moment(this.frmStatiscal.value.ngayKetThuc).format(
-        'MM/DD/YYYY'
+        'DD/MM/YYYY'
       );
     }
     if (!params.idDotKhaoSat)

@@ -32,7 +32,6 @@ public class CreateDonViCommandHandler : BaseMasterFeatures, IRequestHandler<Cre
         }
 
         var donVi = _mapper.Map<DonVi>(request.DonViDto);
-        donVi.MaDonVi = Guid.NewGuid().ToString();
         donVi = await _surveyRepo.DonVi.Create(donVi);
         await _surveyRepo.SaveAync();
         response.Success = true;
