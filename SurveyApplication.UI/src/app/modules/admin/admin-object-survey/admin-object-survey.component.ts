@@ -63,9 +63,9 @@ export class AdminObjectSurveyComponent {
       IdLinhVuc: new FormControl('', Validators.required),
       MaDonVi: new FormControl('', Validators.required),
       TenDonVi: new FormControl('', Validators.required),
-      MaSoThue: new FormControl('', Validators.required),
+      MaSoThue: new FormControl(''),
       Email: new FormControl('', Validators.required),
-      WebSite: new FormControl('', Validators.required),
+      WebSite: new FormControl(''),
       SoDienThoai: new FormControl('', Validators.required),
       DiaChi: new FormControl('', Validators.required),
       

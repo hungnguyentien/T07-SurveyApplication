@@ -30,16 +30,16 @@
           </div>
           <div class="form-group form-inline col-4 mb-0 pb-0">
             <div class="col-3">
-              <label for="idLoaiHinh">Đối tượng</label>
+              <label for="idLoaiHinhDonVi">Đối tượng</label>
             </div>
             <div class="col-9">
-              <p-dropdown id="idLoaiHinh" [options]="LstLoaiHinhDv" optionLabel="tenLoaiHinh" optionValue="id"
+              <p-dropdown id="idLoaiHinhDonVi" [options]="LstLoaiHinhDv" optionLabel="tenLoaiHinh" optionValue="id"
                 [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                 emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinh">
+                placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinhDonVi">
               </p-dropdown>
-              <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmStatiscal.controls['idLoaiHinh'].valid && 
-                            frmStatiscal.controls['idLoaiHinh'].dirty">
+              <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmStatiscal.controls['idLoaiHinhDonVi'].valid && 
+                            frmStatiscal.controls['idLoaiHinhDonVi'].dirty">
                 Vui lòng chọn bảng khảo sát
               </small>
             </div>

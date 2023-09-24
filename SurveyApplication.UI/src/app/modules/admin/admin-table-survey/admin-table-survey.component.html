@@ -140,7 +140,7 @@
                         </a>
                     </ng-container>
 
-                    <ng-container *ngIf="rowData.trangThai == 0">
+                    <ng-container *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3">
                         <a class="m-3" (click)="Delete(rowData)">
                             <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
                         </a>
@@ -161,7 +161,7 @@
                     </ng-container>
 
                     <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
-                        <a class="m-3" (click)="handlerClick('admin/thong-ke-khao-sat')">
+                        <a class="m-3" (click)="detailTableSurvey(rowData)">
                             <span class="pi pi-eye " title="Xem" aria-hidden="true"></span>
                         </a>
                     </ng-container>
@@ -203,7 +203,7 @@
                     </small>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát </label>
+                    <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát: <span style="color: red">*</span> </label>
                     <p-dropdown id="idLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -216,7 +216,7 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="tenBangKhaoSat" class="col-form-label">Tên bảng: </label>
+                    <label for="tenBangKhaoSat" class="col-form-label">Tên bảng: <span style="color: red">*</span> </label>
                     <input formControlName="tenBangKhaoSat" type="text" pInputText class="form-control"
                         placeholder="Nhập tên bảng" id="tenBangKhaoSat">
 
@@ -227,7 +227,7 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát:</label>
+                    <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát: <span style="color: red">*</span></label>
                     <p-dropdown id="idDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -241,7 +241,7 @@
 
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="moTa" class="col-form-label">Mô tả: <span style="color: red;">*</span></label>
+                    <label for="moTa" class="col-form-label">Mô tả: </label>
                     <textarea name="" pInputTextarea formControlName="moTa" id="moTa" class="w-100" rows="3"
                         placeholder="Nhập mô tả"></textarea>
 

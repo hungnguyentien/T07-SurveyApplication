@@ -26,11 +26,11 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
         {
             DateTime? ngayBatDau = null;
             if (!string.IsNullOrEmpty(request.NgayBatDau))
-                ngayBatDau = DateTime.ParseExact(request.NgayBatDau, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                ngayBatDau = DateTime.ParseExact(request.NgayBatDau, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
             DateTime? ngayKetThuc = null;
             if (!string.IsNullOrEmpty(request.NgayKetThuc))
-                ngayKetThuc = DateTime.ParseExact(request.NgayKetThuc, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                ngayKetThuc = DateTime.ParseExact(request.NgayKetThuc, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
                 
             var query = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id

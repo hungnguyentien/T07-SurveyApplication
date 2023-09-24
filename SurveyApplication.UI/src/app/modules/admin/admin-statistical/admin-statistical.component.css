@@ -10,31 +10,11 @@
 .custom-button:hover {
   background-color: #4e73df;
 }
+
 ::ng-deep .p-calendar {
   height: 35px;
 }
-::ng-deep .p-datepicker-group-container {
-  width: 50vh;
-}
-::ng-deep .ng-trigger-overlayAnimation {
-  width: 30px;
-}
 
-::ng-deep .p-tabview-nav-link:hover {
-  text-decoration: none;
-}
-
-a {
-  cursor: pointer;
-}
-
-::ng-deep .pFrozen {
-  left: 0px;
-}
-
-::ng-deep .pFrozen-1 {
-  left: 60px;
-}
 
 :host {
   .pFrozen {
