@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
@@ -36,7 +37,7 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
             }
         }
 
-        var dotKhaoSat = await _surveyRepo.DotKhaoSat.GetById(request.BangKhaoSatDto.IdDotKhaoSat ?? 0);
+        var dotKhaoSat = await _surveyRepo.DotKhaoSat.GetById(request?.BangKhaoSatDto?.IdDotKhaoSat ?? 0);
         if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
             throw new FluentValidation.ValidationException("Đợt khảo sát đã kết thúc");
 
@@ -60,6 +61,18 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
         await _surveyRepo.SaveAync();
         if (request.BangKhaoSatDto?.BangKhaoSatCauHoi != null)
         {
+            if (request.BangKhaoSatDto?.BangKhaoSatCauHoi.Count == 0)
+            {
+                request.BangKhaoSatDto.BangKhaoSatCauHoiGroup.ForEach(x =>
+                {
+                    x.BangKhaoSatCauHoi.ForEach(bks =>
+                    {
+                        bks.PanelTitle = x.PanelTitle;
+                        request.BangKhaoSatDto.BangKhaoSatCauHoi.Add(bks);
+                    });
+                });
+            }
+
             var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto.BangKhaoSatCauHoi);
             lstBangKhaoSatCauHoi.ForEach(x =>
             {

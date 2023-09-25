@@ -5,11 +5,11 @@ using SurveyApplication.Domain.Common.Responses;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using Newtonsoft.Json;
-using SurveyApplication.Domain.Common;
 using SurveyApplication.Utility;
 using SurveyApplication.Application.DTOs.CauHoi;
 using Microsoft.Extensions.Options;
 using SurveyApplication.Utility.Enums;
+using SurveyApplication.Domain.Common.Configurations;
 
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
 {

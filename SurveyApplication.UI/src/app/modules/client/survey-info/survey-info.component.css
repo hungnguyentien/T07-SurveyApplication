@@ -29,4 +29,19 @@
   .custom-complete b {
     color: red;
   }
+
+  .sd-element--complex.sd-element--with-frame
+    > .sd-element__header--location-top {
+    padding: 0;
+  }
+
+  .sd-element--complex.sd-element--with-frame
+    > .sd-element__header--location-top:after {
+    bottom: -15px;
+  }
+
+  .sd-title.sd-element__title.sd-panel__title {
+    padding-top: 15px;
+    margin-left: -10px;
+  }
 }

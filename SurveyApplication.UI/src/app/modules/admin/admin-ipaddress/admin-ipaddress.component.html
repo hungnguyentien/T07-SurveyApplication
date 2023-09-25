@@ -1,0 +1,103 @@
+<div>
+    <h5>Quản lý IpAddress</h5>
+    <div class="d-flex mt-3"></div>
+    <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
+        <div class="form-group mb-2">
+            <label for="keyWord" class="sr-only">Search</label>
+            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+                [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+        </div>
+        <button type="submit" class="btn btn-primary ml-2 mb-2">
+            <i class="pi pi-search"></i>
+        </button>
+    </form>
+</div>
+
+<div class="card mt-3">
+    <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
+        [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedIpaddress" dataKey="id"
+        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+        [totalRecords]="dataTotalRecords"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+        [resizableColumns]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 60px;">
+                    STT
+                </th>
+                <th pResizableColumn>
+                    <div class="flex justify-content-between align-items-center">
+                        Ip
+                    </div>
+                </th>
+
+                <th pResizableColumn>
+                    <div class="flex justify-content-between align-items-center">
+                        Thành phố
+                    </div>
+                </th>
+                <th pResizableColumn>
+                    <div class="flex justify-content-between align-items-center">
+                        Vùng miền
+                    </div>
+                </th>
+                <th pResizableColumn>
+                    <div class="flex justify-content-between align-items-center">
+                        Quốc gia
+                    </div>
+                </th>
+                <th pResizableColumn>
+                    Local
+                </th>
+                <th pResizableColumn>
+                    Tổ chức
+                </th>
+                <th pResizableColumn>
+                    Mã bưu điện
+                </th>
+                <th pResizableColumn>
+                    Múi giờ
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+            <tr class="p-selectable-row">
+                <td>
+                    <span class="p-column-title">STT</span>
+                    {{ rowIndex + 1}}
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.ip }}</span>
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.city }}</span>
+                </td>
+
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.region }}</span>
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.country }}</span>
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.loc }}</span>
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.org }}</span>
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.postal }}</span>
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.timezone }}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="9" class="text-center">Không có bản ghi nào</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

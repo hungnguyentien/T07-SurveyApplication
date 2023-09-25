@@ -44,10 +44,10 @@ input {
 }
 .custom-large-icon {
   font-size: 20px; /* Đặt kích thước mới cho biểu tượng */
-  
 }
 .ui-button {
   border: none;
   box-shadow: none;
-  outline: none
+  outline: none;
 }
+

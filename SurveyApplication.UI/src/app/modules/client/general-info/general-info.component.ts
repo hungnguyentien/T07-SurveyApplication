@@ -30,13 +30,13 @@ export class GeneralInfoComponent {
   loading!: boolean;
 
   tinh: HanhChinhVn[] | undefined;
-  selectedTinh: string | undefined;
+  selectedTinh: number | undefined;
 
   quanHuyen: HanhChinhVn[] | undefined;
-  selectedQuanHuyen: string | undefined;
+  selectedQuanHuyen: number | undefined;
 
   phuongXa: HanhChinhVn[] | undefined;
-  selectedPhuongXa: string | undefined;
+  selectedPhuongXa: number | undefined;
 
   dataArr: any[] | undefined;
 
@@ -63,8 +63,6 @@ export class GeneralInfoComponent {
     this.submitCount = 0;
     this.submitted = false;
     this.loading = false;
-    this.quanHuyen = [];
-    this.phuongXa = [];
     this.phieuKhaoSatService.getTinh().subscribe({
       next: (res) => {
         this.tinh = res;
@@ -77,12 +75,24 @@ export class GeneralInfoComponent {
       },
     });
 
+    this.phieuKhaoSatService.getQuanHuyen().subscribe({
+      next: (res) => {
+        this.quanHuyen = res;
+      },
+    });
+
+    this.phieuKhaoSatService.getPhuongXa().subscribe({
+      next: (res) => {
+        this.phuongXa = res;
+      },
+    });
+
     this.frmGeneralInfo = this.formBuilder.group({
       DonVi: this.formBuilder.group({
         TenDonVi: ['', Validators.required],
-        Tinh: [''],
-        QuanHuyen: [''],
-        PhuongXa: [''],
+        IdTinhTp: [''],
+        IdQuanHuyen: [''],
+        IdXaPhuong: [''],
         DiaChi: ['', Validators.required],
         IdLoaiHinh: ['', Validators.required],
         IdLinhVuc: ['', Validators.required],
@@ -153,7 +163,11 @@ export class GeneralInfoComponent {
         );
         this.selectedLoaiHinhDonVi = res.donVi.idLoaiHinh;
         this.selectedLinhVuc = res.donVi.idLinhVuc;
-        this.generalInfo.trangThaiKq === 2 && this.frmGeneralInfo.disable();
+        this.selectedTinh = res.donVi.idTinhTp;
+        this.selectedQuanHuyen = res.donVi.idQuanHuyen;
+        this.selectedPhuongXa = res.donVi.idXaPhuong;
+        this.frmGeneralInfo.disable();
+        // this.generalInfo.trangThaiKq === 2 && this.frmGeneralInfo.disable();
         this.showBtnReset = this.generalInfo.trangThaiKq !== 2;
       },
       error: (e) => {
@@ -192,17 +206,17 @@ export class GeneralInfoComponent {
     if (e) {
       if (e.value) {
         this.setDiaChi();
-        this.phieuKhaoSatService.getQuanHuyen(e.value).subscribe({
-          next: (res) => {
-            this.quanHuyen = res;
-          },
-          error: (e) => {
-            this.loading = false;
-          },
-          complete: () => {
-            this.loading = false;
-          },
-        });
+        // this.phieuKhaoSatService.getQuanHuyen(e.value).subscribe({
+        //   next: (res) => {
+        //     this.quanHuyen = res;
+        //   },
+        //   error: (e) => {
+        //     this.loading = false;
+        //   },
+        //   complete: () => {
+        //     this.loading = false;
+        //   },
+        // });
       }
     }
   };
@@ -212,17 +226,17 @@ export class GeneralInfoComponent {
     if (e) {
       if (e.value) {
         this.setDiaChi();
-        this.phieuKhaoSatService.getPhuongXa(e.value).subscribe({
-          next: (res) => {
-            this.phuongXa = res;
-          },
-          error: (e) => {
-            this.loading = false;
-          },
-          complete: () => {
-            this.loading = false;
-          },
-        });
+        // this.phieuKhaoSatService.getPhuongXa(e.value).subscribe({
+        //   next: (res) => {
+        //     this.phuongXa = res;
+        //   },
+        //   error: (e) => {
+        //     this.loading = false;
+        //   },
+        //   complete: () => {
+        //     this.loading = false;
+        //   },
+        // });
       }
     }
   };
@@ -232,19 +246,18 @@ export class GeneralInfoComponent {
   };
 
   setDiaChi = () => {
-    let arr = [
-      this.tinh?.find((x) => x.code == this.selectedTinh)?.['name_with_type'],
-      this.quanHuyen?.find((x) => x.code == this.selectedQuanHuyen)?.[
-        'name_with_type'
-      ],
-      this.phuongXa?.find((x) => x.code == this.selectedPhuongXa)?.[
-        'name_with_type'
-      ],
-    ];
-
-    this.frmGeneralInfo
-      ?.get('DonVi')
-      ?.get('DiaChi')
-      ?.setValue(arr.filter((x) => x).join(' ,'));
+    // let arr = [
+    //   this.tinh?.find((x) => x.code == this.selectedTinh)?.['name_with_type'],
+    //   this.quanHuyen?.find((x) => x.code == this.selectedQuanHuyen)?.[
+    //     'name_with_type'
+    //   ],
+    //   this.phuongXa?.find((x) => x.code == this.selectedPhuongXa)?.[
+    //     'name_with_type'
+    //   ],
+    // ];
+    // this.frmGeneralInfo
+    //   ?.get('DonVi')
+    //   ?.get('DiaChi')
+    //   ?.setValue(arr.filter((x) => x).join(' ,'));
   };
 }

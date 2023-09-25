@@ -40,6 +40,7 @@
         </button>
     </form>
 </div>
+
 <div class="card mt-3">
     <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
         [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTableSurvey" dataKey="id"
@@ -135,33 +136,33 @@
                 </td>
                 <td>
                     <ng-container *ngIf="rowData.trangThai == 0">
-                        <a class="m-3" (click)="Edit(rowData)">
+                        <a class="m-2" (click)="Edit(rowData)">
                             <span class="pi pi-pencil " title="Cập nhật" aria-hidden="true"></span>
                         </a>
                     </ng-container>
 
-                    <ng-container *ngIf="rowData.trangThai == 0">
-                        <a class="m-3" (click)="Delete(rowData)">
+                    <ng-container *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3">
+                        <a class="m-2" (click)="Delete(rowData)">
                             <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
                         </a>
                     </ng-container>
 
                     <ng-container *ngIf="rowData.trangThai == 3">
-                        <a class="m-3" (click)="ToggleStatus(rowData)">
+                        <a class="m-2" (click)="ToggleStatus(rowData)">
                             <span class="pi pi-caret-right " title="Tiếp tục" style="color: rgb(32, 154, 60);"
                                 aria-hidden="true"></span>
                         </a>
                     </ng-container>
 
                     <ng-container *ngIf="rowData.trangThai == 1">
-                        <a class="m-3" (click)="ToggleStatus(rowData)">
+                        <a class="m-2" (click)="ToggleStatus(rowData)">
                             <span class="pi pi-pause " title="Dừng" style="color: rgb(212, 22, 22);"
                                 aria-hidden="true"></span>
                         </a>
                     </ng-container>
 
                     <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
-                        <a class="m-3" >
+                        <a class="m-2" (click)="detailTableSurvey(rowData)">
                             <span class="pi pi-eye " title="Xem" aria-hidden="true"></span>
                         </a>
                     </ng-container>
@@ -203,8 +204,8 @@
                     </small>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát <span
-                            style="color: red;">*</span></label>
+                    <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát: <span
+                            style="color: red">*</span> </label>
                     <p-dropdown id="idLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -217,7 +218,7 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="tenBangKhaoSat" class="col-form-label">Tên bảng:<span style="color: red;">*</span>
+                    <label for="tenBangKhaoSat" class="col-form-label">Tên bảng: <span style="color: red">*</span>
                     </label>
                     <input formControlName="tenBangKhaoSat" type="text" pInputText class="form-control"
                         placeholder="Nhập tên bảng" id="tenBangKhaoSat">
@@ -229,8 +230,8 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát:<span
-                            style="color: red;">*</span></label>
+                    <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát: <span
+                            style="color: red">*</span></label>
                     <p-dropdown id="idDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -244,15 +245,9 @@
 
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="moTa" class="col-form-label">Mô tả:</label>
+                    <label for="moTa" class="col-form-label">Mô tả: </label>
                     <textarea name="" pInputTextarea formControlName="moTa" id="moTa" class="w-100" rows="3"
                         placeholder="Nhập mô tả"></textarea>
-
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['moTa'].valid && 
-                    formTableSurvey.controls['moTa'].dirty">
-                        Vui lòng nhập mô tả
-                    </small>
-
 
                 </div>
                 <div class="form-group col-md-6">
@@ -283,42 +278,118 @@
                     <label class="col-form-label">
                         Danh sách câu hỏi <span style="color: red;">*</span>
                     </label>
-
-                    <p-button label="Thêm Group" styleClass="p-button-link"></p-button>
-
-                    <button type="button" class="btn btn-add float-end" (click)="showSialogCh()">
-                        Thêm câu hỏi
+                    <button type="button" class="btn float-end" (click)="addGroup()"
+                        style="background-color: #4e73df;color: white;">
+                        Thêm nhóm
                     </button>
-                    <p-table #viewtable [value]="lstBangKhaoSatCauHoi.controls">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th style="width: 60px;text-align: center;">STT</th>
-                                <th style="width: 8rem">Mã câu hỏi</th>
-                                <th>Tiêu đề</th>
-                                <th style="width: 7rem">Bắt buộc</th>
-                                <th style="width: 120px;text-align: center;">Chức năng</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-item let-i="rowIndex">
-                            <tr [formGroup]="item">
-                                <td class="text-center align-items-center">{{ i + 1 }}</td>
-                                <td>{{ item.get('maCauHoi')?.value }}</td>
-                                <td>{{ item.get('tieuDe')?.value }}</td>
-                                <td class="text-center">
-                                    <p-inputSwitch formControlName="isRequired"></p-inputSwitch>
-                                </td>
-                                <td>
-                                    <div class="ml-5">
+                    <div class="mt-3" *ngIf="!lstBangKhaoSatCauHoiGroup || lstBangKhaoSatCauHoiGroup.length === 0">
+                        <button type="button" class="btn btn-add float-end" (click)="showSialogCh()">
+                            Thêm câu hỏi
+                        </button>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60px;text-align: center;">STT</th>
+                                    <th style="width: 8rem">Mã câu hỏi</th>
+                                    <th>Tiêu đề</th>
+                                    <th style="width: 7rem">Bắt buộc</th>
+                                    <th style="width: 120px;text-align: center;">Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="bangKhaoSatCauHoi">
+                                <tr *ngFor="let item of lstBangKhaoSatCauHoi.controls; let i = index"
+                                    [formGroupName]="i">
+                                    <td class="text-center align-items-center">
+                                        {{ i + 1 }}
+                                        <input formControlName="id" type="hidden" />
+                                        <input formControlName="idCauHoi" type="hidden" />
+                                        <input formControlName="priority" type="hidden" />
+                                    </td>
+                                    <td>
+                                        {{item.get('maCauHoi')?.value}}
+                                    </td>
+                                    <td>
+                                        {{item.get('tieuDe')?.value}}
+                                    </td>
+                                    <td class="text-center">
+                                        <p-inputSwitch formControlName="isRequired"></p-inputSwitch>
+                                    </td>
+                                    <td class="vertical-align-middle text-center">
                                         <span class="pi pi-trash " title="Xoá" (click)="deleteItem(i)"
                                             style="color: red; cursor: pointer;" aria-hidden="true"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-
-
+                    <div formArrayName="bangKhaoSatCauHoiGroup">
+                        <ng-container
+                            *ngFor="let itemPanelTitle of lstBangKhaoSatCauHoiGroup.controls; let iPanelTitle = index"
+                            [formGroupName]="iPanelTitle">
+                            <div class="mt-3" style="border: 1px solid #e3e6f0;padding: 1rem;">
+                                <div class="form-inline">
+                                    <label class="col-form-label mb-2 mr-sm-2">
+                                        Tên group <span style="color: red;">*</span>
+                                    </label>
+                                    <input type="text" class="form-control mb-2 mr-sm-2" id="groupName"
+                                        placeholder="Tên group" style="width: calc(100% - 220px);"
+                                        formControlName="panelTitle">
+                                    <button type="button" class="btn mb-2" (click)="deleteGroup(iPanelTitle)"
+                                        style="background-color: red; color: white;">
+                                        <span class="pi pi-trash" style="color: white; cursor: pointer;"></span> Xóa
+                                        group</button>
+                                </div>
+                                <small style="color: #e24c4c; margin-left: 6.5em;"
+                                    *ngIf="!itemPanelTitle.valid && itemPanelTitle.dirty">
+                                    Vui lòng nhập tên group
+                                </small>
+                                <div class="mt-3 pl-3 pr-3">
+                                    <button type="button" class="btn btn-add float-end"
+                                        (click)="showGroupDialogCh(iPanelTitle)">
+                                        Thêm câu hỏi
+                                    </button>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;text-align: center;">STT</th>
+                                                <th style="width: 8rem">Mã câu hỏi</th>
+                                                <th>Tiêu đề</th>
+                                                <th style="width: 7rem">Bắt buộc</th>
+                                                <th style="width: 120px;text-align: center;">Chức năng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody formArrayName="bangKhaoSatCauHoi">
+                                            <tr *ngFor="let item of lstBangKhaoSatCauHoiGroupItem(iPanelTitle).controls let i = index"
+                                                [formGroupName]="i">
+                                                <td class="text-center align-items-center">
+                                                    {{ i + 1 }}
+                                                    <input formControlName="id" type="hidden" />
+                                                    <input formControlName="idCauHoi" type="hidden" />
+                                                    <input formControlName="priority" type="hidden" />
+                                                    <input formControlName="panelTitle" type="hidden" />
+                                                </td>
+                                                <td>
+                                                    {{item.get('maCauHoi')?.value}}
+                                                </td>
+                                                <td>
+                                                    {{item.get('tieuDe')?.value}}
+                                                </td>
+                                                <td class="text-center">
+                                                    <p-inputSwitch formControlName="isRequired"></p-inputSwitch>
+                                                </td>
+                                                <td class="text-center vertical-align-middle">
+                                                    <span class="pi pi-trash " title="Xoá"
+                                                        (click)="deleteGroupItem(i, iPanelTitle)"
+                                                        style="color: red; cursor: pointer;" aria-hidden="true"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
                 </div>
             </div>
         </ng-template>
@@ -417,11 +488,11 @@
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <input type="hidden" formControlName="id">
         <button pButton (click)="visibleCauHoi = false" type="button" label="Đóng"
             class="custom-button surface-600"></button>
-        <button pButton (click)="addItem()" type="submit" icon="pi pi-save" label="Xác nhận"
-            class="custom-button"></button>
+        <button pButton
+            (click)="!lstBangKhaoSatCauHoiGroup || lstBangKhaoSatCauHoiGroup.length === 0 ? addItem() : addGroupItem()"
+            type="button" icon="pi pi-save" label="Xác nhận" class="custom-button"></button>
     </ng-template>
 </p-dialog>
 
@@ -471,6 +542,3 @@
         </ng-template>
     </p-dialog>
 </form>
-
-
-

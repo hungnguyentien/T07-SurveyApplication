@@ -99,7 +99,8 @@ export class LoginService {
     sessionStorage.removeItem('currentUser');
     this.currentUserSubject.next('');
   }
-  getByIdUser<T>(id: number): Observable<T> {
+  
+  getByIdUser<T>(id: string): Observable<T> {
     return this.http.get<T>(`${environment.apiUrl}/Account/GetById/${id}`);
   }
   

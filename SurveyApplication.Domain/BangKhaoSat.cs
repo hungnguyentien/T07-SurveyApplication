@@ -5,7 +5,7 @@ namespace SurveyApplication.Domain;
 
 public class BangKhaoSat : BaseDomainEntity
 {
-    [Required] [MaxLength(250)] public string MaBangKhaoSat { get; set; }
+    [Required][MaxLength(250)] public string MaBangKhaoSat { get; set; }
 
     public int IdLoaiHinh { get; set; }
 

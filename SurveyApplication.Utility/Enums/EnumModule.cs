@@ -34,11 +34,15 @@ namespace SurveyApplication.Utility.Enums
             QlNq = 13,
             [Description("Quản lý tài khoản")]
             QlTk = 14,
-            [Description("Quản lý modulen")]
+            [Description("Quản lý module")]
             QlMd = 15,
             [Description("Quản lý người đại diện")]
             QlNdd = 16,
-            ///Max = 1̉
+            [Description("Quản lý ipaddress")]
+            QlIp = 17,
+            [Description("Quản lý sao lưu phục hồi")]
+            Qlsl = 18,
+            ///Max = 18
         }
     }
 }

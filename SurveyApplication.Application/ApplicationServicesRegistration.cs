@@ -6,6 +6,7 @@ using SurveyApplication.Application.Features.Accounts.Handlers.Queries;
 using SurveyApplication.Application.Features.Accounts.Requests.Queries;
 using SurveyApplication.Application.Services;
 using SurveyApplication.Application.Services.Interfaces;
+using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Domain.Common.Identity;
 using SurveyApplication.Infrastructure;
 using SurveyApplication.Persistence;
@@ -23,6 +24,7 @@ public static class ApplicationServicesRegistration
         services.ConfigurePersistenceServices(configuration);
         services.AddTransient<IRequestHandler<LoginRequest, AuthResponse>, LoginRequestHandler>();
         services.AddScoped<IDataDefaultService, DataDefaultService>();
+        services.Configure<BackupRestoreConfiguration>(configuration.GetSection("BackupRestoreConfiguration"));
         return services;
     }
 }

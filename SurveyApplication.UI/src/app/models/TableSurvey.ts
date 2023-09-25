@@ -1,7 +1,7 @@
 import { Base } from './Common/Base';
 
 export interface TableSurvey extends Base {
-  id:number;
+  id: number;
   maBangKhaoSat: string;
   idLoaiHinh: number;
   idDotKhaoSat: string | null;
@@ -30,6 +30,7 @@ export interface BangKhaoSatCauHoiDto extends Base {
   idCauHoi: number;
   priority: number | null;
   isRequired: boolean | null;
+  panelTitle: string;
   maCauHoi: string | null;
   tieuDe: string | null;
 }

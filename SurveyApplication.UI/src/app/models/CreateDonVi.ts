@@ -9,6 +9,9 @@ export interface CreateDonVi {
   webSite: string;
   soDienThoai: string;
   id: number;
+  idTinhTp: number;
+  idQuanHuyen: number;
+  idXaPhuong: number;
 }
 
 export interface CreateNguoiDaiDien {
@@ -33,6 +36,7 @@ export interface LoaiHinhDonVi {
 }
 
 export interface HanhChinhVn {
+  id: number;
   name: string;
   type: string;
   slug: string;
