@@ -61,6 +61,11 @@ namespace SurveyApplication.Application.Features.BackupRestore.Handlers.Commands
             res = request.ConfigJobBackup.ScheduleDayofweek == 0 ? CreateJobsDaiLy(nameJobs, myDbConnection, cmd, strartTime, startDate) : CreateJobsForWeek(request.ConfigJobBackup.ScheduleDayofweek.ToString(), nameJobs, myDbConnection, cmd, strartTime, startDate);
 
             var file = Path.Combine(path, "SetUpJob.txt");
+            if (!File.Exists(file))
+            {
+                using var sr = File.Create(file);
+            }
+
             var textFile = $"{request.ConfigJobBackup.ScheduleDayofweek}|{request.ConfigJobBackup.ScheduleHour}|{request.ConfigJobBackup.ScheduleMinute}";
             File.WriteAllText(file, textFile);
             return Task.FromResult(new BaseCommandResponse(res));
