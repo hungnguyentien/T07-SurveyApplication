@@ -31,6 +31,9 @@ export class QuestionComponent {
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
+  MaHang!: string;
+  MaCot!: string;
+  maCauHoi!: string;
 
   frmCauHoi!: FormGroup;
 
@@ -66,6 +69,9 @@ export class QuestionComponent {
     });
     this.createForm();
     Utils.translate('vi', this.translateService, this.config);
+    this.frmCauHoi.controls['maCauHoi'].valueChanges.subscribe(newMaCauHoi => {
+      this.changeMaCauHoi(newMaCauHoi);
+    });
   }
 
   createForm = () => {
@@ -213,11 +219,9 @@ export class QuestionComponent {
           next: (res) => {
             if(res.success == true){
               Utils.messageSuccess(
-                this.messageService,
-                `Xoá câu hỏi ${title} thành công!`
-                );
+                this.messageService,`Xoá câu hỏi ${title} thành công!`);
               }
-            if(res.errors!=null)
+            else
             {
               Utils.messageError(this.messageService, res.message);
             }
@@ -307,21 +311,37 @@ export class QuestionComponent {
   }
 
   addItem(isCot: boolean = true) {
+    const data = isCot ? this.maCauHoi + "_Cot" + (this.lstCot.length + 1) : this.maCauHoi + "_Hang" + (this.lstHang.length + 1);
     if (isCot) {
       const newItem = this.formBuilder.group({
         id: 0,
-        maCot: '',
+        maCot: data,
         noidung: '',
       });
       this.lstCot.push(newItem);
     } else {
       const newItem = this.formBuilder.group({
         id: 0,
-        maHang: '',
+        maHang: data,
         noidung: '',
       });
       this.lstHang.push(newItem);
     }
+  }
+
+  changeMaCauHoi(maCauHoi: string) {
+    const lstCotArray = this.lstCot.controls as Array<any>;
+    const lstHangArray = this.lstHang.controls as Array<any>;
+
+    lstCotArray.forEach((element, index) => {
+      const data = maCauHoi + "_Cot" + (index + 1);
+      element.get('maCot')?.setValue(data);
+    });
+
+    lstHangArray.forEach((element, index) => {
+      const data = maCauHoi + "_Hang" + (index + 1);
+      element.get('maHang')?.setValue(data);
+    });
   }
 
   deleteItem(index: number, isCot: boolean = true) {

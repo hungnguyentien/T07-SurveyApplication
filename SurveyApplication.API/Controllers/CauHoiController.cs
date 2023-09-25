@@ -56,39 +56,6 @@ public class CauHoiController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("GenerateMaCauTraLoi")]
-    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
-    public async Task<ActionResult<string>> GetLastRecordByMaCauTraLoi([FromBody] GenCauHoiDto ojb)
-    {
-        var record = await _mediator.Send(new GetLastRecordCauTraLoiRequest { GenCauHoiDto = ojb });
-        return Ok(new
-        {
-            MaCauTraLoi = record
-        });
-    }
-
-    [HttpPost("GenerateMaHang")]
-    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
-    public async Task<ActionResult<string>> GetLastRecordByMaHang([FromBody] GenCauHoiDto ojb)
-    {
-        var record = await _mediator.Send(new GetLastRecordHangRequest { GenCauHoiDto = ojb });
-        return Ok(new
-        {
-            MaHang = record
-        });
-    }
-
-    [HttpPost("GenerateMaCot")]
-    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
-    public async Task<ActionResult<string>> GetLastRecordByMaCot([FromBody] GenCauHoiDto ojb)
-    {
-        var record = await _mediator.Send(new GetLastRecordCotRequest { GenCauHoiDto = ojb });
-        return Ok(new
-        {
-            MaCot = record
-        });
-    }
-
     [HttpPost("Create")]
     [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Create })]
     public async Task<ActionResult> CreateCauHoi([FromBody] CreateCauHoiDto obj)

@@ -2,6 +2,7 @@
 using MediatR;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.CauHoi.Requests.Commands;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using ValidationException = FluentValidation.ValidationException;
@@ -27,7 +28,22 @@ public class DeleteCauHoiCommandHandler : BaseMasterFeatures, IRequestHandler<De
         if(await _surveyRepo.BangKhaoSatCauHoi.Exists(x => !x.Deleted && request.Ids.Contains(x.IdCauHoi)))
             throw new ValidationException("Câu hỏi đã được sử dụng");
 
-        await _surveyRepo.CauHoi.DeleteAsync(lstCauHoi);
+        var lstCot = await _surveyRepo.Cot.GetByIds(x => request.Ids.Contains(x.IdCauHoi));
+
+        var lstHang = await _surveyRepo.Hang.GetByIds(x => request.Ids.Contains(x.IdCauHoi));
+
+        foreach (var item in lstCot)
+            item.Deleted = true;
+
+        foreach (var item in lstHang)
+            item.Deleted = true;
+
+        foreach (var item in lstCauHoi)
+            item.Deleted = true;
+
+        await _surveyRepo.CauHoi.UpdateAsync(lstCauHoi);
+        await _surveyRepo.Cot.UpdateAsync(lstCot);
+        await _surveyRepo.Hang.UpdateAsync(lstHang);
         await _surveyRepo.SaveAync();
         return new BaseCommandResponse("Xóa thành công!");
     }
