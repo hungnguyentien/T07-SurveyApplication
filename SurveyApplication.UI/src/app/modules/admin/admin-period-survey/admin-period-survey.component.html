@@ -119,13 +119,15 @@
                         style="color:rgb(84, 84, 226)">Chờ khảo sát</span>
                     <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 1"
                         style="color: rgb(218, 159, 82);">Đang khảo sát</span>
-                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 2" style="color: green;">Hoàn
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 2" 
+                    style="color: green;">Hoàn
                         thành</span>
-                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 3" style="color: #e24c4c">Tạm
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 3"
+                     style="color: #e24c4c">Tạm
                         dừng</span>
                 </td>
                 <td>
-                    <a class="m-3"><span (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật"
+                    <a class="m-3"><span (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật" *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3"
                             aria-hidden="true"></span></a>
 
                     <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;"
