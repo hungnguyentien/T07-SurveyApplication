@@ -100,7 +100,7 @@
                     <span class="p-column-title">STT</span>
                     {{ rowIndex + 1}}
                 </td>
-                <td>
+                <td (click)="detailDotKhaoSat()">
                     <span class="ml-1 vertical-align-middle">{{ rowData.maDotKhaoSat }}</span>
                 </td>
                 <td>
@@ -126,11 +126,14 @@
                      style="color: #e24c4c">Tạm
                         dừng</span>
                 </td>
-                <td>
-                    <a class="m-3"><span (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật" *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3"
+                <td >
+                    <a class="m-3" *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3"><span (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật" 
                             aria-hidden="true"></span></a>
+                    <a class="m-3" *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2" >
+                        <span class="pi pi-eye " title="Xem" aria-hidden="true"></span>
+                    </a>
 
-                    <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;"
+                    <a class="m-3"*ngIf="rowData.trangThai == 0 || rowData.trangThai == 3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;"
                             aria-hidden="true"></span></a>
                 </td>
             </tr>
@@ -150,8 +153,8 @@
     <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
         [resizable]="true" [maximizable]="true">
         <ng-template pTemplate="header">
-            <h5 class="modal-title">
-                {{ showadd === true ? "Thêm mới đợt khảo sát" : "Cập nhật đợt khảo sát" }}
+            <h5 class="modal-title" >
+                {{(showadd === true ? "Thêm mới đợt khảo sát" : "Cập nhật đợt khảo sát") }}
             </h5>
         </ng-template>
         <ng-template pTemplate="body">

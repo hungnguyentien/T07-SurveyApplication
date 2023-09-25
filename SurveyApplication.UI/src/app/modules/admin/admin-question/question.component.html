@@ -174,11 +174,9 @@
           </div>
           <div class="col-md-6">
             <div class="form-group" *ngIf="isOther">
-              <label for="labelCauTraLoi" class="col-form-label">Lable câu trả lời khác:</label>
+              <label for="labelCauTraLoi" class="col-form-label">label câu trả lời khác:</label>
               <input type="text" pInputText class="form-control" formControlName="labelCauTraLoi" id="labelCauTraLoi"
-                placeholder="Nhập câu trả lời khác" />
-
-
+                placeholder="Nhập tiêu đề câu hỏi" />
             </div>
           </div>
         </div>
@@ -187,7 +185,7 @@
       <ng-container *ngIf="selectedLoaiCauHoi === '7'">
         <div class="row">
           <div class="col-md-6">
-            <label for="kichThuocFile" class="col-form-label">Số lượng file:</label>
+            <label for="kichThuocFile" class="col-form-label">Số lượng file (Tối đa)</label>
             <div>
               <p-inputNumber class="w-100" styleClass="w-100" inputStyleClass="form-control" [allowEmpty]="false"
                 formControlName="kichThuocFile" [min]="0" [ngClass]="{
@@ -204,7 +202,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="soLuongFileToiDa" class="col-form-label">Khích thước file:</label>
+              <label for="soLuongFileToiDa" class="col-form-label">Kích thước file (Tối đa)</label>
               <div>
                 <p-inputNumber class="w-100" styleClass="w-100" inputStyleClass="form-control" [allowEmpty]="false"
                   formControlName="soLuongFileToiDa" [min]="0" [ngClass]="{

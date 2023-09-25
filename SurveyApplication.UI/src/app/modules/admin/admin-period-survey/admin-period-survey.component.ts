@@ -38,7 +38,7 @@ export class AdminPeriodSurveyComponent {
   Trangthai!: any;
   DSLoaiHinh: any[] = [];
   dateRangeError = false;
-
+  checkdetail!:boolean
   oldNgayKetThuc!: string | null;
 
   constructor(
@@ -64,6 +64,12 @@ export class AdminPeriodSurveyComponent {
       { validator: this.dateRangeValidator }
     );
   }
+
+  detailDotKhaoSat(){
+    this.visible = !this.visible;
+    this.checkdetail = true
+  }
+
 
   dateRangeValidator(
     control: AbstractControl
@@ -210,37 +216,40 @@ export class AdminPeriodSurveyComponent {
     ObjPeriodSurvey['Trangthai'] = this.Trangthai;
     this.PeriodSurveyService.update(ObjPeriodSurvey).subscribe({
       next: (res: any) => {
-        if (res.success == true) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Thành Công',
-            detail: 'Cập nhật Thành Công !',
-          });
+
+        if (res.success == true){
+          Utils.messageSuccess(this.messageService, res.message);
           this.table.reset();
           this.FormPeriodSurvey.reset();
           this.visible = false;
-          console.log(res);
+        }
+        else{
+          Utils.messageError(this.messageService, res.message);
+          this.table.reset();
+          this.FormPeriodSurvey.reset();
         }
       },
     });
   }
 
   Delete(data: any) {
+    debugger
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn xoá không ' + '?',
       header: 'delete',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.PeriodSurveyService.delete(data.id).subscribe((res: any) => {
-          if (res.success == true)
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Thành Công',
-              detail: 'Xoá Thành Công !',
-            });
-          this.table.reset();
-          this.FormPeriodSurvey.reset();
-          console.log(res);
+          if (res.success == true){
+            Utils.messageSuccess(this.messageService, res.message);
+            this.table.reset();
+            this.FormPeriodSurvey.reset();
+          }
+          else{
+            Utils.messageError(this.messageService, res.message);
+            this.table.reset();
+            this.FormPeriodSurvey.reset();
+          }
         });
       },
     });
