@@ -19,7 +19,7 @@ public class GetGuiEmailListRequestHandler : BaseMasterFeatures,
 
     public async Task<List<GuiEmailDto>> Handle(GetGuiEmailListRequest request, CancellationToken cancellationToken)
     {
-        var guiEmails = await _surveyRepo.GuiEmail.GetAll();
+        var guiEmails = await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted);
         return _mapper.Map<List<GuiEmailDto>>(guiEmails);
     }
 }
