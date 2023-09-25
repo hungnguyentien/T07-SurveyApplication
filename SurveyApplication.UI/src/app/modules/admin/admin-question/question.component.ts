@@ -213,11 +213,9 @@ export class QuestionComponent {
           next: (res) => {
             if(res.success == true){
               Utils.messageSuccess(
-                this.messageService,
-                `Xoá câu hỏi ${title} thành công!`
-                );
+                this.messageService,`Xoá câu hỏi ${title} thành công!`);
               }
-            if(res.errors!=null)
+            else
             {
               Utils.messageError(this.messageService, res.message);
             }
