@@ -32,10 +32,6 @@ public class BangKhaoSatDtoValidator : AbstractValidator<IBangKhaoSatDto>
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();
 
-        RuleFor(p => p.MoTa)
-            .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
-
         RuleFor(p => p.NgayBatDau)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull()
