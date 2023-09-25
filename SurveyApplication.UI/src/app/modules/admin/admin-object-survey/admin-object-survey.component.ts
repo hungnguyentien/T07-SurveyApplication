@@ -61,6 +61,7 @@ export class AdminObjectSurveyComponent {
     this.FormObjectSurvey = new FormGroup({
       IdLoaiHinh: new FormControl('', Validators.required),
       IdLinhVuc: new FormControl(''),
+      MaDonVi: new FormControl('', Validators.required),
       TenDonVi: new FormControl('', Validators.required),
       MaSoThue: new FormControl(''),
       Email: new FormControl('', Validators.required),

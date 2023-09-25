@@ -151,14 +151,24 @@
       </div>
       <div class="modal-body">
         <h6>Thông tin đơn vị </h6>
-        <div class="form-group">
-          <label for="recipient-name" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
-          <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="recipient-name">
-        </div>
-        <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="recipient-name" class="col-form-label">Mã đơn vị: <span style="color: red;">*</span></label>
+            <input type="text" formControlName="MaDonVi" pInputText class="form-control" id="recipient-name">
+          </div>
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['MaDonVi'].valid && 
+            FormObjectSurvey.controls['MaDonVi'].dirty">
+            Vui lòng nhập mã đơn vị
+          </small>
+          <div class="form-group col-md-6">
+            <label for="recipient-name" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
+            <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="recipient-name">
+          </div>
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
             FormObjectSurvey.controls['TenDonVi'].dirty">
-          Vui lòng nhập tên đơn vị
-        </small>
+            Vui lòng nhập tên đơn vị
+          </small>
+        </div>
         <div class="row">
           <div class="form-group col-md-6">
             <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị: <span

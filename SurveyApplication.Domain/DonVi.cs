@@ -22,7 +22,7 @@ public class DonVi : BaseDomainEntity
 
     [Required] public string DiaChi { get; set; }
 
-     public string? MaSoThue { get; set; }
+    public string? MaSoThue { get; set; }
 
     [Required] public string Email { get; set; }
 
