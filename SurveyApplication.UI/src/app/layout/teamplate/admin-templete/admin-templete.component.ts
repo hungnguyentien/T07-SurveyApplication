@@ -64,8 +64,10 @@ export class AdminTempleteComponent {
     formData.append('img', updatedData.img);
     formData.append('id', this.userId);
     this.accountService.update(formData).subscribe((res) => {
-      if (res.success) Utils.messageSuccess(this.messageService, res.message);
-      else Utils.messageError(this.messageService, res.errors?.at(0) ?? '');
+      if (res.success) {
+        Utils.messageSuccess(this.messageService, res.message);
+        this.visible = false;
+      } else Utils.messageError(this.messageService, res.errors?.at(0) ?? '');
     });
   };
 

@@ -16,6 +16,7 @@ import { Table } from 'primeng/table';
 import {
   BaoCaoCauHoiChiTiet,
   BaoCaoCauHoiChiTietRequest,
+  BaoCaoCauHoiRequest,
   FileQuestion,
 } from '@app/models';
 import { KqSurveyCheckBox } from '@app/enums';
@@ -52,7 +53,7 @@ export class AdminStatisticalComponent {
   paging!: BaoCaoCauHoiChiTietRequest;
   lstTh: string[] = [];
 
-  dataTableSurvey!:any;
+  dataTableSurvey!: any;
 
   @ViewChild('dt') table!: Table; // Khi sử dụng p-table, sử dụng ViewChild để truy cập nó
   constructor(
@@ -82,43 +83,53 @@ export class AdminStatisticalComponent {
     this.loadUnitType();
     this.getVauleChar(this.frmStatiscal.value);
     //Nhận data từ bên bảng khảo sát
-    debugger
     this.dataTableSurvey = this.baoCaoCauHoiService.getSharedData();
-    this.frmStatiscal.controls['idDotKhaoSat'].setValue(parseInt(this.dataTableSurvey.idDotKhaoSat));
-    this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
-    this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(parseInt(this.dataTableSurvey.idLoaiHinh));
-    const ngayBatDauFormatted = this.datePipe.transform(this.dataTableSurvey.ngayBatDau, 'dd/MM/yyyy');
-    const ngayKetThucFormatted = this.datePipe.transform(this.dataTableSurvey.ngayKetThuc, 'dd/MM/yyyy');
-    this.frmStatiscal.controls['ngayBatDau'].setValue(ngayBatDauFormatted);
-    this.frmStatiscal.controls['ngayKetThuc'].setValue(ngayKetThucFormatted);
-    this.getVauleChar(this.frmStatiscal.value);
-    // this.getBaoCaoCauHoiChiTiet(this.paging);
+    if (this.dataTableSurvey) {
+      this.frmStatiscal.controls['idDotKhaoSat'].setValue(
+        parseInt(this.dataTableSurvey.idDotKhaoSat)
+      );
+      this.frmStatiscal.controls['idBangKhaoSat'].setValue(
+        parseInt(this.dataTableSurvey.id)
+      );
+      this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(
+        parseInt(this.dataTableSurvey.idLoaiHinh)
+      );
 
-  
-    // this.getVauleChar(this.frmStatiscal.value);
-    // this.route.params.subscribe((params:any) => {
-    //   debugger
-    //   this.frmStatiscal.patchValue({
-    //     idDotKhaoSat: parseInt(params.idDotKhaoSat) || '',
-    //     idBangKhaoSat: parseInt(params.id) || '', 
-    //     idLoaiHinh: parseInt(params.idLoaiHinh) || '',
-    //     ngayBatDau: moment(params.ngayBatDau).format('MM/DD/YYYY') || '',
-    //   ngayKetThuc: moment(params.ngayKetThuc).format('MM/DD/YYYY') || '',
-    //   });
-    //   this.getVauleChar(this.frmStatiscal.value);
-    //   this.getBaoCaoCauHoiChiTiet(this.paging);
-    // });
+      const ngayBatDauFormatted = this.datePipe.transform(
+        this.dataTableSurvey.ngayBatDau,
+        'dd/MM/yyyy'
+      );
+      const ngayKetThucFormatted = this.datePipe.transform(
+        this.dataTableSurvey.ngayKetThuc,
+        'dd/MM/yyyy'
+      );
+      this.frmStatiscal.controls['ngayBatDau'].setValue(ngayBatDauFormatted);
+      this.frmStatiscal.controls['ngayKetThuc'].setValue(ngayKetThucFormatted);
+      let params: BaoCaoCauHoiRequest = {
+        ...this.frmStatiscal.value,
+      };
+      this.getVauleChar(params);
+    }
   }
 
   loadListLazy = (event: any) => {
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
+    let frmValue = this.frmStatiscal.value;
+    let ngayBatDau = moment(this.dataTableSurvey?.ngayBatDau).format(
+      'YYYY-MM-DD'
+    );
+    let ngayKetThuc = moment(this.dataTableSurvey?.ngayKetThuc).format(
+      'YYYY-MM-DD'
+    );
     this.paging = {
-      ...this.frmStatiscal.value,
+      ...frmValue,
       pageIndex: pageIndex,
       pageSize: pageSize,
-      keyword: '',
+      keyword: this.keyWord,
+      ngayBatDau: ngayBatDau,
+      ngayKetThuc: ngayKetThuc,
     };
     this.baoCaoCauHoiService.getBaoCaoCauHoiChiTiet(this.paging).subscribe({
       next: (res) => {
@@ -146,7 +157,9 @@ export class AdminStatisticalComponent {
       next: (res) => {
         this.lstTh = [];
         this.dataChiTiet = res.data;
-        res.data[0].lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
+        res.data &&
+          res.data.length > 0 &&
+          res.data[0].lstCauHoiCauTraLoi.map((x) => this.lstTh.push(x.cauHoi));
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
@@ -175,8 +188,7 @@ export class AdminStatisticalComponent {
     XLSX.writeFile(wb, 'ThongKe.xlsx');
   }
 
-  getVauleChar = (params: any) => {
-    debugger
+  getVauleChar = (params: BaoCaoCauHoiRequest) => {
     this.baoCaoCauHoiService.getBaoCaoCauHoi(params).subscribe({
       next: (res) => {
         this.datas = res.listCauHoiTraLoi ?? [];
@@ -272,30 +284,34 @@ export class AdminStatisticalComponent {
   };
 
   search = () => {
-    debugger
-    let params = this.frmStatiscal.value;
-    if (this.frmStatiscal.value.ngayBatDau) {
-      params.ngayBatDau = moment(this.frmStatiscal.value.ngayBatDau).format(
-        'DD/MM/YYYY'
-      );
-    }
-    if (this.frmStatiscal.value.ngayKetThuc) {
-      params.ngayKetThuc = moment(this.frmStatiscal.value.ngayKetThuc).format(
-        'DD/MM/YYYY'
-      );
-    }
-    if (!params.idDotKhaoSat)
+    let frmValue = this.frmStatiscal.value;
+    let ngayBatDau = moment(frmValue.ngayBatDau, 'DD/MM/YYYY').format(
+      'YYYY-MM-DD'
+    );
+    let ngayKetThuc = moment(frmValue.ngayKetThuc, 'DD/MM/YYYY').format(
+      'YYYY-MM-DD'
+    );
+    if (!frmValue.idDotKhaoSat)
       Utils.messageError(this.messageService, `Vui lòng chọn đợt khảo sát!`);
-    else if (!params.idBangKhaoSat)
+    else if (!frmValue.idBangKhaoSat)
       Utils.messageError(this.messageService, `Vui lòng chọn bảng khảo sát!`);
     else {
+      let params: BaoCaoCauHoiRequest = {
+        ...this.frmStatiscal.value,
+      };
+      params.ngayBatDau = moment(params.ngayBatDau, 'DD/MM/YYYY').format(
+        'DD/MM/YYYY'
+      );
+      params.ngayKetThuc = moment(params.ngayKetThuc, 'DD/MM/YYYY').format(
+        'DD/MM/YYYY'
+      );
       this.getVauleChar(params);
       this.paging.keyword = this.keyWord;
-      this.paging.idBangKhaoSat = params.idBangKhaoSat;
-      this.paging.idDotKhaoSat = params.idDotKhaoSat;
-      this.paging.idLoaiHinhDonVi = params.idLoaiHinh;
-      this.paging.ngayBatDau = params.ngayBatDau;
-      this.paging.ngayKetThuc = params.ngayKetThuc;
+      this.paging.idBangKhaoSat = frmValue.idBangKhaoSat;
+      this.paging.idDotKhaoSat = frmValue.idDotKhaoSat;
+      this.paging.idLoaiHinhDonVi = frmValue.idLoaiHinh;
+      this.paging.ngayBatDau = ngayBatDau;
+      this.paging.ngayKetThuc = ngayKetThuc;
       this.getBaoCaoCauHoiChiTiet(this.paging);
     }
   };
