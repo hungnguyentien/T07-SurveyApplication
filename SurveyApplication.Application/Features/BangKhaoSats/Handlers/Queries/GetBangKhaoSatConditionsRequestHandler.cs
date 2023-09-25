@@ -21,7 +21,7 @@ public class GetBangKhaoSatConditionsRequestHandler : BaseMasterFeatures, IReque
     public async Task<BaseQuerieResponse<BangKhaoSatDto>> Handle(GetBangKhaoSatConditionsRequest request,
         CancellationToken cancellationToken)
     {
-        var query = from d in _surveyRepo.BangKhaoSat.GetAllQueryable()
+        var query = from d in _surveyRepo.BangKhaoSat.GetAllQueryable() 
                     join b in _surveyRepo.DotKhaoSat.GetAllQueryable()
                         on d.IdDotKhaoSat equals b.Id
                     join o in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
