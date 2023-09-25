@@ -30,13 +30,6 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                     on d.IdLinhVuc equals s.Id into linhVucGroup
                     from lv in linhVucGroup.DefaultIfEmpty()
 
-                        //join x in _surveyRepo.TinhTp.GetAllQueryable()
-                        //on d.IdTinhTp equals x.Id
-                        //join y in _surveyRepo.QuanHuyen.GetAllQueryable()
-                        //on d.IdQuanHuyen equals y.Id
-                        //join z in _surveyRepo.XaPhuong.GetAllQueryable()
-                        //on d.IdXaPhuong equals z.Id
-
                     where (d.MaDonVi.Contains(request.Keyword) || d.TenDonVi.Contains(request.Keyword) ||
                          d.DiaChi.Contains(request.Keyword) || b.HoTen.Contains(request.Keyword)) &&
                          d.Deleted == false
@@ -46,10 +39,6 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                         IdDonVi = d.Id,
                         IdNguoiDaiDien = b.Id,
                         IdLoaiHinh = o.Id,
-
-                        //IdTinhTp = x.Id,
-                        //IdQuanHuyen = y.Id,
-                        //IdXaPhuong= z.Id,
 
                         MaDonVi = d.MaDonVi,
                         TenDonVi = d.TenDonVi,
