@@ -51,19 +51,23 @@ namespace SurveyApplication.Application.Features.BackupRestore.Handlers.Commands
             var error = 0;
             var success = 0;
             var myDbConnection = _configuration.GetConnectionString(CustomString.ConnectionString);
-            var path = BackupRestoreConfiguration.DirBackupDb;
+            var path = $@"{BackupRestoreConfiguration.DirBackupDb}\";
             if (request.FileNames.Any())
             {
                 foreach (var item in request.FileNames)
                 {
                     if (item == "") continue;
                     var pathRes = path + item;
-                    var nameDb = item.Split('.')[0].Split('_')[1] + "_" + item.Split('.')[0].Split('_')[2];
-                    var isRestoreDb = RestoreDb(pathRes, nameDb, myDbConnection);
-                    if (isRestoreDb)
-                        ++success;
-                    else
-                        ++error;
+                    foreach (var databaseName in BackupRestoreConfiguration.DatabaseNames.Split("|"))
+                    {
+                        if (!item.Contains(databaseName)) continue;
+                        var isRestoreDb = RestoreDb(pathRes, databaseName, myDbConnection);
+                        if (isRestoreDb)
+                            ++success;
+                        else
+                            ++error;
+
+                    }
                 }
             }
 

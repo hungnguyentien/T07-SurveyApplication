@@ -1,14 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.BackupRestore;
-using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.Features.BackupRestore.Requests.Commands;
 using SurveyApplication.Application.Features.BackupRestore.Requests.Queries;
-using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
+using SurveyApplication.Utility;
 
 namespace SurveyApplication.API.Controllers
 {
@@ -52,11 +50,32 @@ namespace SurveyApplication.API.Controllers
             return result;
         }
 
-        [HttpPost("RestoreData")]
+        [HttpPost("RestoreData/{fileName}")]
         public async Task<ActionResult<BaseCommandResponse>> RestoreData(string fileName)
         {
             var result = await _mediator.Send(new RestoreDataCommand { FileNames = new[] { fileName } });
             return result;
+        }
+
+        [HttpGet("ScheduleDayofweek")]
+        public ActionResult ScheduleDayofweek()
+        {
+            var result = EnumUltils.GetDescription<EnumBackupStore.ScheduleDayofweek>().Select(x => new { text = x.Value, value = ((int)x.Key).ToString() }).ToList();
+            return Ok(result);
+        }
+
+        [HttpGet("ScheduleHour")]
+        public ActionResult ScheduleHour()
+        {
+            var result = EnumUltils.GetDescription<EnumBackupStore.ScheduleHour>().Select(x => new { text = x.Value, value = ((int)x.Key).ToString() }).ToList();
+            return Ok(result);
+        }
+
+        [HttpGet("ScheduleMinute")]
+        public ActionResult ScheduleMinute()
+        {
+            var result = EnumUltils.GetDescription<EnumBackupStore.ScheduleMinute>().Select(x => new { text = x.Value, value = ((int)x.Key).ToString() }).ToList();
+            return Ok(result);
         }
     }
 }

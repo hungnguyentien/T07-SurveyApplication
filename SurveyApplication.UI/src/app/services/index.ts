@@ -15,3 +15,4 @@ export * from './xa-phuong.service';
 export * from './quan-huyen.service';
 export * from './tinh-thanh.service';
 export * from './ipaddress.service';
+export * from './backup.service';

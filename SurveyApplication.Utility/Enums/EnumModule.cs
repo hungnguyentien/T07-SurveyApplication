@@ -40,7 +40,9 @@ namespace SurveyApplication.Utility.Enums
             QlNdd = 16,
             [Description("Quản lý ipaddress")]
             QlIp = 17,
-            ///Max = 17
+            [Description("Quản lý sao lưu phục hồi")]
+            Qlsl = 18,
+            ///Max = 18
         }
     }
 }

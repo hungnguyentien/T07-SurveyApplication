@@ -17,6 +17,7 @@ export enum CodeModule {
   QlMd = 15,
   QlNdd = 16,
   QlIp = 17,
+  Qlsl = 18,
 }
 
 export enum Permission {
