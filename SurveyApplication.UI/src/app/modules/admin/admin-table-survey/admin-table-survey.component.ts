@@ -1,5 +1,6 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
+  BangKhaoSatCauHoi,
   CauHoi,
   CreateGuiEmail,
   CreateUpdateBangKhaoSat,
@@ -23,7 +24,6 @@ import {
   CauHoiService,
   ObjectSurveyService,
   GuiEmailService,
-  BaoCaoCauHoiService,
 } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
@@ -39,13 +39,15 @@ import { Router } from '@angular/router';
 })
 export class AdminTableSurveyComponent {
   @ViewChild('dt') table!: Table;
-  @ViewChild('viewtable') viewtable!: Table;
   loading: boolean = true;
   selectedTableSurvey!: TableSurvey[];
   datas: TableSurvey[] = [];
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
+
+  detaiDatas: any[] = [];
+  id!: number;
 
   confirmationHeader: string = '';
 
@@ -64,6 +66,7 @@ export class AdminTableSurveyComponent {
   serverError: string = '';
 
   visible: boolean = false;
+  visibleDetail: boolean = false;
 
   @ViewChild('dtq') tableQ!: Table;
   loadingCauHoi: boolean = true;
@@ -75,12 +78,13 @@ export class AdminTableSurveyComponent {
   visibleCauHoi: boolean = false;
 
   frmGuiEmail!: FormGroup;
+
   visibleGuiEmail: boolean = false;
   lstDonVi!: DonVi[];
   selectedDonVi!: number[];
   lstIdDonViError: boolean = false;
 
-  // @Input() receivedData: any;
+  iPanelTitle!: number;
 
   constructor(
     private router: Router,
@@ -94,8 +98,7 @@ export class AdminTableSurveyComponent {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
-    private guiEmailService: GuiEmailService,
-    private baocaocauhoiservice:BaoCaoCauHoiService
+    private guiEmailService: GuiEmailService
   ) {}
 
   ngOnInit() {
@@ -103,13 +106,12 @@ export class AdminTableSurveyComponent {
       searchText: [''], // Khởi tạo FormControl searchText
       idDotKhaoSat: [''], // Khởi tạo FormControl idDotKhaoSat
     });
-
     this.LoadUnitType();
     this.LoadPeriodSurvey();
     this.formTableSurvey = this.FormBuilder.group(
       {
         id: [''],
-        maBangKhaoSat: ['', Validators.required],
+        maBangKhaoSat: [''],
         idLoaiHinh: ['', Validators.required],
         idDotKhaoSat: ['', Validators.required],
         tenBangKhaoSat: ['', Validators.required],
@@ -117,59 +119,10 @@ export class AdminTableSurveyComponent {
         ngayBatDau: ['', Validators.required],
         ngayKetThuc: ['', Validators.required],
         bangKhaoSatCauHoi: this.FormBuilder.array([]),
+        bangKhaoSatCauHoiGroup: this.FormBuilder.array([]),
       },
       { validator: this.dateRangeValidator }
     );
-  }
-
-  // handlerClick = (link: string) => {
-  //   this.router.navigate([link]);
-  //   const navItems = document.querySelectorAll('.nav-item');
-  //   navItems.forEach((navItem) => {
-  //     navItem.classList.remove('active');
-  //     navItem.children[0].classList.add('collapsed');
-  //     let div = navItem.children[1];
-  //     div && div.classList.remove('show');
-  //   });
-
-    
-  // };
-
-  // xem chi tiết của bảng khảo khát
-  detailTableSurvey(data:any){
-    this.baocaocauhoiservice.setSharedData(data);
-    this.router.navigate(['/admin/thong-ke-khao-sat']);
-  }
-
-  confirmDeleteMultiple() {
-    let ids: number[] = [];
-    this.selectedTableSurvey.forEach((el) => {
-      ids.push(el.id);
-    });
-
-    this.confirmationService.confirm({
-      message: `Bạn có chắc chắn muốn xoá ${ids.length} bảng khảo sát này?`,
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.TableSurveyService.deleteMultiple(ids).subscribe({
-          next: (res: any) => {
-            if (res.success == false) {
-              Utils.messageError(this.messageService, res.message);
-            } else {
-              Utils.messageSuccess(
-                this.messageService,
-                `Xoá ${ids.length} bảng khảo sát thành công!`
-              );
-            }
-          },
-          error: (e) => Utils.messageError(this.messageService, e.message),
-          complete: () => {
-            this.table.reset();
-          },
-        });
-      },
-      reject: () => {},
-    });
   }
 
   dateRangeValidator(
@@ -181,9 +134,34 @@ export class AdminTableSurveyComponent {
     if (startDate && endDate && startDate > endDate) {
       return { dateRangeError: true };
     }
-
+   
     return null;
   }
+
+  LoadUnitType() {
+    this.unitTypeService.getAll().subscribe((data) => {
+      this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
+    });
+  }
+
+  LoadPeriodSurvey() {
+    this.periodSurveyService.getAll().subscribe((data) => {
+      this.DSDotKhaoSat = data; // Lưu dữ liệu vào danh sách
+    });
+  }
+
+  handlerClick = (link: string) => {
+    this.router.navigate([link]);
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach((navItem) => {
+      navItem.classList.remove('active');
+      navItem.children[0].classList.add('collapsed');
+      let div = navItem.children[1];
+      div && div.classList.remove('show');
+    });
+  };
+
+  //#region Loadding table and search
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -203,7 +181,6 @@ export class AdminTableSurveyComponent {
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -220,7 +197,6 @@ export class AdminTableSurveyComponent {
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loading = false;
       },
       complete: () => {
@@ -241,13 +217,12 @@ export class AdminTableSurveyComponent {
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
     };
-    this.cauHoiService.getByCondition(this.paging).subscribe({
+    this.cauHoiService.getByCondition(this.pagingCauHoi).subscribe({
       next: (res) => {
         this.datasCauHoi = res.data;
         this.dataTotalRecordsCauHoi = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loadingCauHoi = false;
       },
       complete: () => {
@@ -264,7 +239,6 @@ export class AdminTableSurveyComponent {
         this.dataTotalRecordsCauHoi = res.totalFilter;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
         this.loadingCauHoi = false;
       },
       complete: () => {
@@ -273,46 +247,24 @@ export class AdminTableSurveyComponent {
     });
   };
 
-  CloseModal() {
-    this.visible = false;
-  }
+  //#endregion
 
-  LoadUnitType() {
-    this.unitTypeService.getAll().subscribe((data) => {
-      this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
-    });
-  }
-
-  LoadPeriodSurvey() {
-    this.periodSurveyService.getAll().subscribe((data) => {
-      this.DSDotKhaoSat = data; // Lưu dữ liệu vào danh sách
-    });
-  }
-
-  toggleHeader() {
-    this.showHeader = !this.showHeader; // Đảo ngược giá trị của biến showHeader
-  }
+  //#region CRUD
 
   Add() {
     this.formTableSurvey.reset();
     this.showadd = true;
     this.visible = !this.visible;
-    for (let i = this.lstBangKhaoSatCauHoi.length - 1; i >= 0; i--) {
-      const control = this.lstBangKhaoSatCauHoi.at(i).get('idCauHoi');
-      if (control !== null) {
-        const idCauHoi = control.value;
-        if (idCauHoi === null) {
-          this.lstBangKhaoSatCauHoi.removeAt(i);
-        }
-      }
-    }
+    this.lstBangKhaoSatCauHoi.clear();
+    this.lstBangKhaoSatCauHoiGroup.clear();
   }
 
   Edit(data: any) {
     this.showadd = false;
     this.visible = !this.visible;
     this.Gettrangthai = data.trangThai;
-
+    this.lstBangKhaoSatCauHoi.clear();
+    this.lstBangKhaoSatCauHoiGroup.clear();
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
       {
         next: (res) => {
@@ -333,28 +285,42 @@ export class AdminTableSurveyComponent {
           this.formTableSurvey.controls['ngayKetThuc'].setValue(
             ngayKetThuFormatted
           );
+          let bangKhaoSatCauHoiGroup: BangKhaoSatCauHoi[] = [];
           res.bangKhaoSatCauHoi?.forEach((el, i) => {
-            const idCauHoi = el.idCauHoi;
-            // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
-            const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some(
-              (control) => {
-                const idCauHoiControl = control.get('idCauHoi');
-                return idCauHoiControl
-                  ? idCauHoiControl.value === idCauHoi
-                  : false;
-              }
-            );
-            if (!idCauHoiExists) {
-              // Nếu idCauHoi chưa tồn tại, thêm mới
-              const newItem = this.FormBuilder.group({
-                id: 0,
-                idCauHoi: idCauHoi,
+            if (el.panelTitle) {
+              const newItem = {
+                id: el.id,
+                idCauHoi: el.idCauHoi,
                 priority: i,
                 isRequired: el.isRequired,
+                panelTitle: el.panelTitle,
                 maCauHoi: el.maCauHoi,
                 tieuDe: el.tieuDe,
-              });
-              this.lstBangKhaoSatCauHoi.push(newItem);
+              };
+              bangKhaoSatCauHoiGroup.push(newItem);
+            } else {
+              const idCauHoi = el.idCauHoi;
+              // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
+              const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some(
+                (control) => {
+                  const idCauHoiControl = control.get('idCauHoi');
+                  return idCauHoiControl
+                    ? idCauHoiControl.value === idCauHoi
+                    : false;
+                }
+              );
+              if (!idCauHoiExists) {
+                // Nếu idCauHoi chưa tồn tại, thêm mới
+                const newItem = this.FormBuilder.group({
+                  id: 0,
+                  idCauHoi: idCauHoi,
+                  priority: i,
+                  isRequired: el.isRequired,
+                  maCauHoi: el.maCauHoi,
+                  tieuDe: el.tieuDe,
+                });
+                this.lstBangKhaoSatCauHoi.push(newItem);
+              }
             }
           });
           // Lọc bỏ các giá trị null sau khi thêm mới
@@ -368,9 +334,37 @@ export class AdminTableSurveyComponent {
             }
           }
 
+          if (bangKhaoSatCauHoiGroup.length > 0) {
+            const groupTitle = bangKhaoSatCauHoiGroup
+              .map((x) => x.panelTitle)
+              .filter(Utils.onlyUnique);
+            groupTitle.forEach((x, i) => {
+              const newItem = this.FormBuilder.group({
+                panelTitle: [x, Validators.required],
+                bangKhaoSatCauHoi: this.FormBuilder.array<BangKhaoSatCauHoi>(
+                  []
+                ),
+              });
+              this.lstBangKhaoSatCauHoiGroup.push(newItem);
+              bangKhaoSatCauHoiGroup
+                .filter((g) => g.panelTitle == x)
+                .forEach((el) => {
+                  const newItem = this.FormBuilder.group<BangKhaoSatCauHoi>({
+                    id: 0,
+                    idCauHoi: el.idCauHoi,
+                    priority: i,
+                    isRequired: el.isRequired,
+                    panelTitle: el.panelTitle,
+                    maCauHoi: el.maCauHoi,
+                    tieuDe: el.tieuDe,
+                  });
+                  this.lstBangKhaoSatCauHoiGroupItem(i).push(newItem);
+                });
+            });
+          }
+
           console.log('Danh sách sau khi xử lý:', this.lstBangKhaoSatCauHoi);
         },
-        error: (e) => Utils.messageError(this.messageService, e.message),
       }
     );
   }
@@ -399,30 +393,32 @@ export class AdminTableSurveyComponent {
             this.visible = false;
           }
         },
-        error: (error) => {
-          // Xử lý lỗi từ máy chủ ở đây
-          if (error instanceof HttpErrorResponse) {
-            const httpError: HttpErrorResponse = error;
-            if (httpError.error) {
-              // Đây là nơi bạn có thể truy cập thông báo lỗi từ máy chủ
-              const serverErrorMessage = httpError.error;
-              console.error('Lỗi từ máy chủ:', serverErrorMessage);
-              this.serverError = serverErrorMessage;
-              // Hiển thị thông báo lỗi cho người dùng hoặc thực hiện các hành động xử lý lỗi
-              setTimeout(() => {
-                this.serverError = ''; // Xóa thông báo lỗi sau 3 giây
-              }, 3000);
-            }
+        
+        error: (e: HttpErrorResponse | any) => {
+          debugger
+          if (e instanceof HttpErrorResponse) {
+            if (e.error && Array.isArray(e.error) && e.error.length > 0) {
+              const errorMessage = e.error[0];
+              Utils.messageError(this.messageService, errorMessage);
+            } 
+          } else if (typeof e === 'object' && 'errorMessage' in e) {
+            // Trường hợp e là một đối tượng chứa errorMessage
+            const errorMessage = e.errorMessage;
+            Utils.messageError(this.messageService, errorMessage);
           } else {
-            console.error('Lỗi không xác định:', error);
-            // Xử lý lỗi không xác định (không phải lỗi từ máy chủ)
+            // Xử lý lỗi mặc định nếu kiểu dữ liệu không xác định
+            Utils.messageError(this.messageService, 'Lỗi không xác định.');
           }
         },
+        
+        
       });
     }
-  }
+  };
+  
 
   SaveEdit() {
+    
     this.visible = !this.visible;
     const objTableSurvey = this.formTableSurvey.value;
     objTableSurvey['trangThai'] = this.Gettrangthai;
@@ -524,12 +520,55 @@ export class AdminTableSurveyComponent {
     });
   }
 
+  confirmDeleteMultiple() {
+    let ids: number[] = [];
+    this.selectedTableSurvey.forEach((el) => {
+      ids.push(el.id);
+    });
+
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} bảng khảo sát này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.TableSurveyService.deleteMultiple(ids).subscribe({
+          next: (res: any) => {
+            if (res.success == false) {
+              Utils.messageError(this.messageService, res.message);
+            } else {
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} bảng khảo sát thành công!`
+              );
+            }
+          },
+          complete: () => {
+            this.table.reset();
+          },
+        });
+      },
+      reject: () => {},
+    });
+  }
+
+  CloseModal() {
+    this.visible = false;
+  }
+  /** Đảo ngược giá trị của biến showHeader */
+  toggleHeader() {
+    this.showHeader = !this.showHeader;
+  }
+
+  //#endregion
+
+  //#region Lst BangKhaoSatCauHoi không có group
+
   get lstBangKhaoSatCauHoi(): FormArray {
     return this.formTableSurvey.get('bangKhaoSatCauHoi') as FormArray;
   }
 
   showSialogCh = () => {
     this.selectedCauHoi = [];
+    this.lstBangKhaoSatCauHoiGroup.clear();
     this.visibleCauHoi = true;
   };
 
@@ -556,6 +595,78 @@ export class AdminTableSurveyComponent {
   deleteItem(index: number) {
     this.lstBangKhaoSatCauHoi.removeAt(index);
   }
+
+  //#endregion
+
+  get lstBangKhaoSatCauHoiGroup(): FormArray {
+    return this.formTableSurvey.get('bangKhaoSatCauHoiGroup') as FormArray;
+  }
+
+  addGroup = () => {
+    this.lstBangKhaoSatCauHoi.clear();
+    const newItem = this.FormBuilder.group({
+      panelTitle: ['', Validators.required],
+      bangKhaoSatCauHoi: this.FormBuilder.array<BangKhaoSatCauHoi>([]),
+    });
+    this.lstBangKhaoSatCauHoiGroup.push(newItem);
+  };
+
+  deleteGroup(index: number) {
+    this.lstBangKhaoSatCauHoiGroup.removeAt(index);
+  }
+
+  lstBangKhaoSatCauHoiGroupItem(index: number): FormArray {
+    let lstBangKhaoSatCauHoiGroupItem = this.lstBangKhaoSatCauHoiGroup
+      .at(index)
+      .get('bangKhaoSatCauHoi');
+    return lstBangKhaoSatCauHoiGroupItem as FormArray;
+  }
+
+  showGroupDialogCh = (index: number) => {
+    this.selectedCauHoi = [];
+    this.visibleCauHoi = true;
+    this.iPanelTitle = index;
+  };
+
+  addGroupItem() {
+    this.selectedCauHoi.forEach((el, i) => {
+      const newItem = this.FormBuilder.group<BangKhaoSatCauHoi>({
+        id: 0,
+        idCauHoi: el.id,
+        priority: i,
+        isRequired: false,
+        panelTitle: '',
+        maCauHoi: el.maCauHoi,
+        tieuDe: el.tieuDe,
+      });
+
+      for (
+        let index = 0;
+        index < this.lstBangKhaoSatCauHoiGroup.length;
+        index++
+      ) {
+        let itemCheck = this.lstBangKhaoSatCauHoiGroupItem(index).value.find(
+          (x: { maCauHoi: string }) => x.maCauHoi === el.maCauHoi
+        );
+        if (itemCheck) {
+          Utils.messageInfo(
+            this.messageService,
+            `Trường ${itemCheck.maCauHoi} trùng nhau`
+          );
+          return;
+        }
+      }
+
+      this.lstBangKhaoSatCauHoiGroupItem(this.iPanelTitle).push(newItem);
+    });
+    this.visibleCauHoi = false;
+  }
+
+  deleteGroupItem(index: number, iPanelTitle: number) {
+    this.lstBangKhaoSatCauHoiGroupItem(iPanelTitle).removeAt(index);
+  }
+
+  //#region Event gửi mail
 
   openGuiEmail = () => {
     this.visibleGuiEmail = true;
@@ -600,16 +711,16 @@ export class AdminTableSurveyComponent {
           Utils.messageError(this.messageService, res.errors.at(0) ?? '');
         }
       },
-      error: (e) => {
-        if (e.error && e.error.ErrorMessage) {
-          Utils.messageError(this.messageService, e.error.ErrorMessage);
-        } else {
-          Utils.messageError(this.messageService, e.message);
-        }
-      },
       complete: () => {
         this.visibleGuiEmail = false;
       },
     });
   };
+
+  //#endregion
+
+  // xem chi tiết của bảng khảo khát
+  detailTableSurvey(data: any) {
+    this.router.navigate(['/admin/thong-ke-khao-sat', data]);
+  }
 }

@@ -48,7 +48,7 @@ export class AdminPeriodSurveyComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private datePipe: DatePipe
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.LoadLoaiHinh();
@@ -139,7 +139,6 @@ export class AdminPeriodSurveyComponent {
   }
 
   Edit(data: any) {
-    
     this.showadd = false;
     this.visible = !this.visible;
     this.IdDotKhaoSat = data.id;
@@ -147,12 +146,21 @@ export class AdminPeriodSurveyComponent {
     this.Trangthai = data.trangThai;
     this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(data.maDotKhaoSat);
     this.FormPeriodSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
-    this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(data.tenDotKhaoSat);
-    const ngayBatDauFormatted = this.datePipe.transform(data.ngayBatDau, 'yyyy-MM-dd');
-    const ngayKetThucFormatted = this.datePipe.transform(data.ngayKetThuc, 'yyyy-MM-dd');
+    this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(
+      data.tenDotKhaoSat
+    );
+    const ngayBatDauFormatted = this.datePipe.transform(
+      data.ngayBatDau,
+      'yyyy-MM-dd'
+    );
+    const ngayKetThucFormatted = this.datePipe.transform(
+      data.ngayKetThuc,
+      'yyyy-MM-dd'
+    );
     this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
-    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(ngayKetThucFormatted);
-
+    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(
+      ngayKetThucFormatted
+    );
   }
 
   Save() {
@@ -190,10 +198,13 @@ export class AdminPeriodSurveyComponent {
   }
 
   SaveEdit() {
-    
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
-    ObjPeriodSurvey.NgayBatDau = moment(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY HH:mm:ss','Asia/Ho_Chi_Minh').toDate();
-    ObjPeriodSurvey.NgayKetThuc = moment(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY HH:mm:ss','Asia/Ho_Chi_Minh').toDate();
+    ObjPeriodSurvey.NgayBatDau = Utils.anyToDateServer(
+      ObjPeriodSurvey.NgayBatDau
+    );
+    ObjPeriodSurvey.NgayKetThuc = Utils.anyToDateServer(
+      ObjPeriodSurvey.NgayKetThuc
+    );
     ObjPeriodSurvey['id'] = this.IdDotKhaoSat;
     ObjPeriodSurvey['maDotKhaoSat'] = this.MaDotKhaoSat;
     ObjPeriodSurvey['Trangthai'] = this.Trangthai;
@@ -239,18 +250,16 @@ export class AdminPeriodSurveyComponent {
     this.selectedPeriodSurvey.forEach((el) => {
       ids.push(el.id);
     });
-    
+
     this.confirmationService.confirm({
       message: `Bạn có chắc chắn muốn xoá ${ids.length} đợt khảo sát này?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.PeriodSurveyService.deleteMultiple(ids).subscribe({
-          next: (res:any) => {
-            
-            if(res.success == false){
-              Utils.messageError(this.messageService, res.message)
-            }
-            else{
+          next: (res: any) => {
+            if (res.success == false) {
+              Utils.messageError(this.messageService, res.message);
+            } else {
               Utils.messageSuccess(
                 this.messageService,
                 `Xoá ${ids.length} đợt khảo sát thành công!`
@@ -263,9 +272,7 @@ export class AdminPeriodSurveyComponent {
           },
         });
       },
-      reject: () => { },
+      reject: () => {},
     });
   }
 }
-
-

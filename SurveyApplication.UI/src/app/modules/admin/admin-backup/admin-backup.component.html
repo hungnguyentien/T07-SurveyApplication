@@ -1,0 +1,137 @@
+<div>
+    <h5>Quản lý sao lưu phục hồi</h5>
+    <div class="d-flex mt-3">
+        <div>
+            <button (click)="openDialog()" pButton type="button" icon="pi pi-cog" label="Thiết lập sao lưu"
+                class="custom-button"></button>
+        </div>
+        <div class="ml-3">
+            <button (click)="backupNow()" pButton type="button" icon="pi pi-plus" label="Sao lưu ngay"
+                class="custom-button"></button>
+
+        </div>
+    </div>
+    <div class="d-flex mt-3"></div>
+    <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
+        <div class="form-group mb-2">
+            <label for="keyWord" class="sr-only">Search</label>
+            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+                [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+        </div>
+        <button type="submit" class="btn btn-primary ml-2 mb-2">
+            <i class="pi pi-search"></i>
+        </button>
+    </form>
+</div>
+
+<div class="card mt-3">
+    <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
+        [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedBackupRestore" dataKey="id"
+        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+        [totalRecords]="dataTotalRecords"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+        [resizableColumns]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 60px;">
+                    STT
+                </th>
+                <th pResizableColumn>
+                    <div class="flex justify-content-between align-items-center">
+                        Tên
+                    </div>
+                </th>
+
+                <th pResizableColumn>
+                    <div class="flex justify-content-between align-items-center">
+                        Dung lượng
+                    </div>
+                </th>
+                <th pResizableColumn>
+                    <div class="flex justify-content-between align-items-center">
+                        Thời gian BackUp
+                    </div>
+                </th>
+                <th style="width: 120px;text-align: center;">
+                    <div>
+                        Chức năng
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+            <tr class="p-selectable-row">
+                <td>
+                    <span class="p-column-title">STT</span>
+                    {{ rowIndex + 1}}
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.name }}</span>
+                </td>
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.capacity }}</span>
+                </td>
+
+                <td>
+                    <span class="vertical-align-middle">{{ rowData.timeBackup }}</span>
+                </td>
+                <td class="text-center">
+                    <a class="m-3" (click)="restoreData(rowData.name)"><span class="pi pi-refresh" title="Khôi phục"
+                            style="color: green;" aria-hidden="true"></span></a>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5" class="text-center">Không có bản ghi nào</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<form *ngIf="formBackupRestore" #form="ngForm" [formGroup]="formBackupRestore" (ngSubmit)="onSubmit()">
+    <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '30vw'}" [draggable]="false" [resizable]="true"
+        [maximizable]="true">
+        <ng-template pTemplate="header">
+            <h5 class="modal-title">
+                Thiết lập sao lưu
+            </h5>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <div class="form-group">
+                <label for="scheduleDayofweek" class="col-form-label">Ngày trong tuần:</label>
+                <p-dropdown id="scheduleDayofweek" [options]="listScheduleDayofweek"
+                    [(ngModel)]="selectedScheduleDayofweek" optionLabel="text" optionValue="value" [filter]="true"
+                    filterBy="text" emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
+                    [showClear]="false" class="form-select-custom" formControlName="scheduleDayofweek">
+                </p-dropdown>
+            </div>
+            <div class="form-group">
+                <label for="scheduleHour" class="col-form-label">Giờ:
+                </label>
+                <p-dropdown id="scheduleHour" [options]="listScheduleHour" [(ngModel)]="selectedScheduleHour"
+                    optionLabel="text" optionValue="value" [filter]="true" filterBy="text"
+                    emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả" [showClear]="false"
+                    class="form-select-custom" formControlName="scheduleHour">
+                </p-dropdown>
+            </div>
+
+            <div class="form-group">
+                <label for="scheduleMinute" class="col-form-label">Phút:
+                </label>
+                <p-dropdown id="scheduleMinute" [options]="listScheduleMinute" [(ngModel)]="selectedScheduleMinute"
+                    optionLabel="text" optionValue="value" [filter]="true" filterBy="text"
+                    emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả" [showClear]="false"
+                    class="form-select-custom" formControlName="scheduleMinute">
+                </p-dropdown>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton (click)="visible = false" type="button" label="Đóng"
+                class="custom-button surface-600"></button>
+            <button pButton [disabled]="!formBackupRestore.valid" type="submit" icon="pi pi-save" label="Lưu"
+                class="custom-button"></button>
+        </ng-template>
+    </p-dialog>
+</form>

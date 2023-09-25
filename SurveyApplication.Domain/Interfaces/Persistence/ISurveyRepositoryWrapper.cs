@@ -22,6 +22,7 @@
         IJobScheduleRepository JobSchedule { get; }
         IRoleRepository Role { get; }
         IModuleRepository Module { get; }
+        IReleaseHistoryRepository ReleaseHistory { get; }
 
         //RenderHere
         Task SaveAync();

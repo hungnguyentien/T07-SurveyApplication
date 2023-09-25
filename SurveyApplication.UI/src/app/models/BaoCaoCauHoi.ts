@@ -28,14 +28,6 @@ export interface BaoCaoCauHoiRequest {
   ngayKetThuc: string | null;
 }
 
-// export interface BaoCaoCauHoi {
-//   countDonViMoi: number;
-//   countDonViTraLoi: number;
-//   countDonViSo: number;
-//   countDonViBo: number;
-//   countDonViNganh: number;
-// }
-
 export interface DashBoardRequest {
   ngayBatDau: string | null;
   ngayKetThuc: string | null;

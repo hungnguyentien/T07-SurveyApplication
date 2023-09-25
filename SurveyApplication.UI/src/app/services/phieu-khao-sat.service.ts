@@ -44,18 +44,18 @@ export class PhieuKhaoSatService {
       .pipe(first());
   }
 
-  getQuanHuyen(idTinh: string) {
+  getQuanHuyen() {
     return this.http
       .get<HanhChinhVn[]>(
-        `${environment.apiUrl}/PhieuKhaoSat/GetQuanHuyen?idTinh=${idTinh}`
+        `${environment.apiUrl}/PhieuKhaoSat/GetQuanHuyen`
       )
       .pipe(first());
   }
 
-  getPhuongXa(idQuanHuyen: string) {
+  getPhuongXa() {
     return this.http
       .get<HanhChinhVn[]>(
-        `${environment.apiUrl}/PhieuKhaoSat/GetPhuongXa?idQuanHuyen=${idQuanHuyen}`
+        `${environment.apiUrl}/PhieuKhaoSat/GetPhuongXa`
       )
       .pipe(first());
   }

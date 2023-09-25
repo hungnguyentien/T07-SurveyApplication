@@ -36,6 +36,18 @@ public class UpdateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
         await _surveyRepo.BangKhaoSat.UpdateAsync(bangKhaoSat);
         await _surveyRepo.SaveAync();
         if (request.BangKhaoSatDto?.BangKhaoSatCauHoi == null) return Unit.Value;
+        if (request.BangKhaoSatDto?.BangKhaoSatCauHoi.Count == 0)
+        {
+            request.BangKhaoSatDto.BangKhaoSatCauHoiGroup.ForEach(x =>
+            {
+                x.BangKhaoSatCauHoi.ForEach(bks =>
+                {
+                    bks.PanelTitle = x.PanelTitle;
+                    request.BangKhaoSatDto.BangKhaoSatCauHoi.Add(bks);
+                });
+            });
+        }
+
         var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto.BangKhaoSatCauHoi);
         if (lstBangKhaoSatCauHoi == null) return Unit.Value;
         var lstRemove = await _surveyRepo.BangKhaoSatCauHoi.GetAllListAsync(x => x.IdBangKhaoSat == bangKhaoSat.Id);

@@ -113,6 +113,8 @@ import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { AdminAccountComponent } from './admin-account/admin-account.component';
 import { AdminModuleManagementComponent } from './admin-module-management/admin-module-management.component';
 import { RouterModule } from '@angular/router';
+import { AdminIpaddressComponent } from './admin-ipaddress/admin-ipaddress.component';
+import { AdminBackupComponent } from './admin-backup/admin-backup.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +133,8 @@ import { RouterModule } from '@angular/router';
     AdminRoleComponent,
     AdminAccountComponent,
     AdminModuleManagementComponent,
+    AdminIpaddressComponent,
+    AdminBackupComponent,
   ],
   imports: [
     CommonModule,

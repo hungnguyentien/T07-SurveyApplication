@@ -152,22 +152,22 @@
       <div class="modal-body">
         <h6>Thông tin đơn vị </h6>
         <div class="row">
-          <div class="form-group col-md-6">
-            <label for="recipient-name" class="col-form-label">Mã đơn vị: <span style="color: red;">*</span></label>
-            <input type="text" formControlName="MaDonVi" pInputText class="form-control" id="recipient-name">
-          </div>
-          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['MaDonVi'].valid && 
-            FormObjectSurvey.controls['MaDonVi'].dirty">
-            Vui lòng nhập mã đơn vị
-          </small>
-          <div class="form-group col-md-6">
-            <label for="recipient-name" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
-            <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="recipient-name">
-          </div>
-          <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
+          <div class="col-6 form-group">
+            <label for="TenDonVi" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
+            <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="TenDonVi">
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
             FormObjectSurvey.controls['TenDonVi'].dirty">
-            Vui lòng nhập tên đơn vị
-          </small>
+              Vui lòng nhập tên đơn vị
+            </small>
+          </div>
+          <div class="col-6 form-group">
+            <label for="MaDonVi" class="col-form-label">Mã đơn vị: <span style="color: red;">*</span></label>
+            <input type="text" formControlName="MaDonVi" pInputText class="form-control" id="MaDonVi">
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['MaDonVi'].valid && 
+            FormObjectSurvey.controls['MaDonVi'].dirty">
+              Vui lòng nhập mã đơn vị
+            </small>
+          </div>
         </div>
         <div class="row">
           <div class="form-group col-md-6">
@@ -199,12 +199,11 @@
           <div class="form-group col-md-6">
             <label for="sothue" class="col-form-label">Mã số thuế: </label>
             <input formControlName="MaSoThue" type="text" pInputText class="form-control" id="sothue">
+
           </div>
           <div class="form-group col-md-6">
             <label for="Website" class="col-form-label">Website:</label>
             <input formControlName="WebSite" type="text" pInputText class="form-control" id="Website">
-
-
           </div>
           <div class="form-group col-md-6">
             <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
@@ -226,24 +225,27 @@
           </div>
         </div>
         <div class="row">
-          <label for="loaihinhdonvi" class="col-form-label">Địa chỉ: <span style="color: red;">*</span></label>
+          <label class="col-form-label">Địa chỉ: <span style="color: red;">*</span></label>
           <div class="form-group col-md-3">
-            <select class="custom-select" id="loaihinhdonvi" (change)="onCityChange($event)">
-              <option selected value="">Chọn Tỉnh/ Thành phố</option>
-              <option *ngFor="let city of cities" [value]="city.Id">{{ city.Name }}</option>
-            </select>
+            <p-dropdown [options]="cities" [(ngModel)]="selectedTinh" optionLabel="name" optionValue="code"
+              [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
+              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+              placeholder="-- Tỉnh thành phố --" formControlName="IdTinhTp" (onChange)="onCityChange()">
+            </p-dropdown>
           </div>
           <div class="form-group col-md-3">
-            <select class="custom-select" id="loaihinhdonvi" (change)="onDistrictChange($event)">
-              <option selected value="">Chọn Quận/ huyện</option>
-              <option *ngFor="let district of districts" [value]="district.Id">{{ district.Name }}</option>
-            </select>
+            <p-dropdown [options]="districts" [(ngModel)]="selectedQuanHuyen" optionLabel="name" optionValue="code"
+              [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
+              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+              placeholder="-- Quận huyện --" formControlName="IdQuanHuyen" (onChange)="onDistrictChange()">
+            </p-dropdown>
           </div>
           <div class="form-group col-md-3">
-            <select class="custom-select" id="loaihinhdonvi">
-              <option selected value="">Chọn Phường/ Xã</option>
-              <option *ngFor="let ward of wards" [value]="ward.Id">{{ ward.Name }}</option>
-            </select>
+            <p-dropdown [options]="wards" [(ngModel)]="selectedPhuongXa" optionLabel="name" optionValue="code"
+              [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
+              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+              placeholder="-- Phường xã --" formControlName="IdXaPhuong">
+            </p-dropdown>
           </div>
           <div class="form-group col-md-3">
             <input type="text" formControlName="DiaChi" class="form-control" pInputText id="sdt"

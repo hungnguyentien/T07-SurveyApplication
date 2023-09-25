@@ -18,6 +18,8 @@ import { AdminAccountComponent } from './admin-account/admin-account.component';
 import { AuthGuard } from '@app/helpers';
 import { CodeModule } from '@app/enums';
 import { AdminModuleManagementComponent } from './admin-module-management/admin-module-management.component';
+import { AdminIpaddressComponent } from './admin-ipaddress/admin-ipaddress.component';
+import { AdminBackupComponent } from './admin-backup/admin-backup.component';
 
 const routes: Routes = [
   {
@@ -160,6 +162,24 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: {
           title: 'Quản lý module',
+        },
+      },
+      {
+        path: 'quan-ly-ipaddress',
+        component: AdminIpaddressComponent,
+        title: 'Quản lý Ipaddress',
+        canActivate: [AuthGuard],
+        data: {
+          title: 'Quản lý Ipaddress',
+        },
+      },
+      {
+        path: 'quan-ly-sao-luu-khoi-phuc',
+        component: AdminBackupComponent,
+        title: 'Quản lý sao lưu phục hồi',
+        canActivate: [AuthGuard],
+        data: {
+          title: 'Quản lý sao lưu phục hồi',
         },
       },
       {

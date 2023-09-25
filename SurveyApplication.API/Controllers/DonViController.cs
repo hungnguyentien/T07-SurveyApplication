@@ -46,8 +46,8 @@ namespace SurveyApplication.API.Controllers
         [HasPermission(new[] { (int)EnumModule.Code.QlDv }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<DonViDto>>> GetByIdDonVi(int id)
         {
-            var leaveAllocations = await _mediator.Send(new GetDonViDetailRequest { Id = id });
-            return Ok(leaveAllocations);
+            var lstDonVi = await _mediator.Send(new GetDonViDetailRequest { Id = id });
+            return Ok(lstDonVi);
         }
 
         [HttpPost("Create")]

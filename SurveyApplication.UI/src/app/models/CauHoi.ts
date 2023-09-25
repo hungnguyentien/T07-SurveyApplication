@@ -26,3 +26,18 @@ export interface CreateUpdateCauHoi {
   lstCot: Cot[]; //Câu hỏi phụ
   lstHang: Hang[]; // Câu trả lời
 }
+
+export interface BangKhaoSatCauHoi {
+  id: number | null;
+  idCauHoi: number;
+  priority: number | null;
+  isRequired: boolean | null;
+  panelTitle: string;
+  maCauHoi: string | null;
+  tieuDe: string | null;
+}
+
+export interface CauHoiGroup {
+  panelTitle: string;
+  bangKhaoSatCauHoi: BangKhaoSatCauHoi[];
+}

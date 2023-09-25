@@ -160,7 +160,6 @@ namespace SurveyApplication.Persistence.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("MoTa")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Modified")
@@ -221,6 +220,10 @@ namespace SurveyApplication.Persistence.Migrations
 
                     b.Property<int?>("ModifiedBy")
                         .HasColumnType("int");
+
+                    b.Property<string>("PanelTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
@@ -1075,6 +1078,53 @@ namespace SurveyApplication.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QuanHuyen");
+                });
+
+            modelBuilder.Entity("SurveyApplication.Domain.ReleaseHistory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("BuildNumber")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("CustomerCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Env")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("IDChannel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MigrationId")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ReleaseHistory");
                 });
 
             modelBuilder.Entity("SurveyApplication.Domain.Role", b =>

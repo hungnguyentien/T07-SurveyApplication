@@ -15,6 +15,10 @@ public class IDonViDtoValidator : AbstractValidator<IDonViDto>
         ;
 
 
+        RuleFor(p => p.MaDonVi)
+               .NotEmpty().WithMessage("{PropertyName} is required.")
+               .NotNull();
+
         RuleFor(p => p.TenDonVi)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();

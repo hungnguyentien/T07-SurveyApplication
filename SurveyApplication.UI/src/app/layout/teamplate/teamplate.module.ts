@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
+import { MessageModule } from 'primeng/message';
 
 import { TeamplateRoutingModule } from './teamplate-routing.module';
 import { TemplatePublicComponent } from './public-template/public-template.component';
@@ -24,7 +25,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ToastModule,
     DialogModule,
     FileUploadModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    MessageModule,
   ],
 })
 export class TeamplateModule {}
