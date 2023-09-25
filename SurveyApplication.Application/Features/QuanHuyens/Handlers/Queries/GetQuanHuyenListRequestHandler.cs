@@ -18,7 +18,7 @@ namespace SurveyApplication.Application.Features.QuanHuyens.Handlers.Queries
 
         public async Task<List<QuanHuyenDto>> Handle(GetQuanHuyenListRequest request, CancellationToken cancellationToken)
         {
-            var QuanHuyens = await _surveyRepo.QuanHuyen.GetAll();
+            var QuanHuyens = await _surveyRepo.QuanHuyen.GetAllListAsync(x => !x.Deleted);
             return _mapper.Map<List<QuanHuyenDto>>(QuanHuyens);
         }
     }

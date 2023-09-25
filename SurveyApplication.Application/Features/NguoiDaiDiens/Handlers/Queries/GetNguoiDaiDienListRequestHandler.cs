@@ -20,7 +20,7 @@ public class GetNguoiDaiDienListRequestHandler : BaseMasterFeatures,
     public async Task<List<NguoiDaiDienDto>> Handle(GetNguoiDaiDienListRequest request,
         CancellationToken cancellationToken)
     {
-        var NguoiDaiDiens = await _surveyRepo.NguoiDaiDien.GetAll();
+        var NguoiDaiDiens = await _surveyRepo.NguoiDaiDien.GetAllListAsync(x => !x.Deleted);
         return _mapper.Map<List<NguoiDaiDienDto>>(NguoiDaiDiens);
     }
 }

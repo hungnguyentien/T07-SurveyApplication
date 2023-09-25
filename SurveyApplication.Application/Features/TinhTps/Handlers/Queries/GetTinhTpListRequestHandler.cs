@@ -18,7 +18,7 @@ namespace SurveyApplication.Application.Features.TinhTps.Handlers.Queries
 
         public async Task<List<TinhTpDto>> Handle(GetTinhTpListRequest request, CancellationToken cancellationToken)
         {
-            var TinhTps = await _surveyRepo.TinhTp.GetAll();
+            var TinhTps = await _surveyRepo.TinhTp.GetAllListAsync(x => !x.Deleted);
             return _mapper.Map<List<TinhTpDto>>(TinhTps);
         }
     }
