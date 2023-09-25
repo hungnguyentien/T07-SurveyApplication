@@ -24,7 +24,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpGet("GetBaoCaoCauHoi")]
         [HasPermission(new[] { (int)EnumModule.Code.TkKs }, new[] { (int)EnumPermission.Type.Read })]
-        public async Task<ActionResult<BaoCaoCauHoiDto>> GetBaoCaoCauHoi([FromQuery] GetBaoCaoCauHoiRequest data)
+        public async Task<ActionResult<ThongKeBaoCaoDto>> GetBaoCaoCauHoi([FromQuery] GetBaoCaoCauHoiRequest data)
         {
             var result = await _mediator.Send(data);
             return Ok(result);

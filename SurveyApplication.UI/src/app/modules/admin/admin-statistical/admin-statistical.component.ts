@@ -19,6 +19,8 @@ import {
   FileQuestion,
 } from '@app/models';
 import { KqSurveyCheckBox } from '@app/enums';
+import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-admin-statistical',
   templateUrl: './admin-statistical.component.html',
@@ -50,6 +52,8 @@ export class AdminStatisticalComponent {
   paging!: BaoCaoCauHoiChiTietRequest;
   lstTh: string[] = [];
 
+  dataTableSurvey!:any;
+
   @ViewChild('dt') table!: Table; // Khi sử dụng p-table, sử dụng ViewChild để truy cập nó
   constructor(
     private formBuilder: FormBuilder,
@@ -59,7 +63,9 @@ export class AdminStatisticalComponent {
     private config: PrimeNGConfig,
     private translateService: TranslateService,
     private messageService: MessageService,
-    private baoCaoCauHoiService: BaoCaoCauHoiService
+    private baoCaoCauHoiService: BaoCaoCauHoiService,
+    private route: ActivatedRoute,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -67,7 +73,7 @@ export class AdminStatisticalComponent {
     this.frmStatiscal = this.formBuilder.group({
       idDotKhaoSat: [],
       idBangKhaoSat: [],
-      idLoaiHinh: [],
+      idLoaiHinhDonVi: [],
       ngayBatDau: [],
       ngayKetThuc: [],
     });
@@ -75,6 +81,33 @@ export class AdminStatisticalComponent {
     this.loadTableSurvey();
     this.loadUnitType();
     this.getVauleChar(this.frmStatiscal.value);
+    //Nhận data từ bên bảng khảo sát
+    debugger
+    this.dataTableSurvey = this.baoCaoCauHoiService.getSharedData();
+    this.frmStatiscal.controls['idDotKhaoSat'].setValue(parseInt(this.dataTableSurvey.idDotKhaoSat));
+    this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
+    this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(parseInt(this.dataTableSurvey.idLoaiHinh));
+    const ngayBatDauFormatted = this.datePipe.transform(this.dataTableSurvey.ngayBatDau, 'dd/MM/yyyy');
+    const ngayKetThucFormatted = this.datePipe.transform(this.dataTableSurvey.ngayKetThuc, 'dd/MM/yyyy');
+    this.frmStatiscal.controls['ngayBatDau'].setValue(ngayBatDauFormatted);
+    this.frmStatiscal.controls['ngayKetThuc'].setValue(ngayKetThucFormatted);
+    this.getVauleChar(this.frmStatiscal.value);
+    // this.getBaoCaoCauHoiChiTiet(this.paging);
+
+  
+    // this.getVauleChar(this.frmStatiscal.value);
+    // this.route.params.subscribe((params:any) => {
+    //   debugger
+    //   this.frmStatiscal.patchValue({
+    //     idDotKhaoSat: parseInt(params.idDotKhaoSat) || '',
+    //     idBangKhaoSat: parseInt(params.id) || '', 
+    //     idLoaiHinh: parseInt(params.idLoaiHinh) || '',
+    //     ngayBatDau: moment(params.ngayBatDau).format('MM/DD/YYYY') || '',
+    //   ngayKetThuc: moment(params.ngayKetThuc).format('MM/DD/YYYY') || '',
+    //   });
+    //   this.getVauleChar(this.frmStatiscal.value);
+    //   this.getBaoCaoCauHoiChiTiet(this.paging);
+    // });
   }
 
   loadListLazy = (event: any) => {
@@ -143,6 +176,7 @@ export class AdminStatisticalComponent {
   }
 
   getVauleChar = (params: any) => {
+    debugger
     this.baoCaoCauHoiService.getBaoCaoCauHoi(params).subscribe({
       next: (res) => {
         this.datas = res.listCauHoiTraLoi ?? [];
@@ -238,15 +272,16 @@ export class AdminStatisticalComponent {
   };
 
   search = () => {
+    debugger
     let params = this.frmStatiscal.value;
     if (this.frmStatiscal.value.ngayBatDau) {
       params.ngayBatDau = moment(this.frmStatiscal.value.ngayBatDau).format(
-        'MM/DD/YYYY'
+        'DD/MM/YYYY'
       );
     }
     if (this.frmStatiscal.value.ngayKetThuc) {
       params.ngayKetThuc = moment(this.frmStatiscal.value.ngayKetThuc).format(
-        'MM/DD/YYYY'
+        'DD/MM/YYYY'
       );
     }
     if (!params.idDotKhaoSat)

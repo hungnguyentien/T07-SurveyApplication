@@ -6,6 +6,7 @@ using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.Features.CauHoi.Requests.Commands;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility;
 using SurveyApplication.Utility.Enums;
@@ -53,6 +54,39 @@ public class CauHoiController : ControllerBase
         var result = EnumUltils.GetDescription<EnumCauHoi.Type>()
             .Select(x => new { text = x.Value, value = ((int)x.Key).ToString() });
         return Ok(result);
+    }
+
+    [HttpPost("GenerateMaCauTraLoi")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
+    public async Task<ActionResult<string>> GetLastRecordByMaCauTraLoi([FromBody] GenCauHoiDto ojb)
+    {
+        var record = await _mediator.Send(new GetLastRecordCauTraLoiRequest { GenCauHoiDto = ojb });
+        return Ok(new
+        {
+            MaCauTraLoi = record
+        });
+    }
+
+    [HttpPost("GenerateMaHang")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
+    public async Task<ActionResult<string>> GetLastRecordByMaHang([FromBody] GenCauHoiDto ojb)
+    {
+        var record = await _mediator.Send(new GetLastRecordHangRequest { GenCauHoiDto = ojb });
+        return Ok(new
+        {
+            MaHang = record
+        });
+    }
+
+    [HttpPost("GenerateMaCot")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Read })]
+    public async Task<ActionResult<string>> GetLastRecordByMaCot([FromBody] GenCauHoiDto ojb)
+    {
+        var record = await _mediator.Send(new GetLastRecordCotRequest { GenCauHoiDto = ojb });
+        return Ok(new
+        {
+            MaCot = record
+        });
     }
 
     [HttpPost("Create")]

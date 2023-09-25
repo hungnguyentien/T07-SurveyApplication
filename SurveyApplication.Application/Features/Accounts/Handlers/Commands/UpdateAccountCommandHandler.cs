@@ -46,28 +46,18 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 // Tạo tên file và lưu ảnh mới
                 var fileName = DateTime.Now.Ticks.ToString() + ".jpg";
                 account.Image = fileName;
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Imagebaiviet", fileName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
                 using (var stream = File.Create(path))
                 {
                     await request.AccountDto.Img.CopyToAsync(stream);
                 }
             }
 
-            if (request.AccountDto.EmailConfirmed == null)
-            {
-                request.AccountDto.EmailConfirmed = true;
-            }
-
-            if (request.AccountDto.LockoutEnabled == null)
-            {
-                request.AccountDto.LockoutEnabled = true;
-            }
-
             request.AccountDto.NormalizedEmail = request.AccountDto.Email.ToUpper();
             request.AccountDto.NormalizedUserName = request.AccountDto.UserName.ToUpper();
-            //request.AccountDto.EmailConfirmed = true;
+            request.AccountDto.EmailConfirmed = true;
             request.AccountDto.PasswordHash = account.PasswordHash;
-            //request.AccountDto.LockoutEnabled = true;
+            request.AccountDto.LockoutEnabled = true;
             request.AccountDto.Image = account.Image;
 
             _mapper.Map(request.AccountDto, account);

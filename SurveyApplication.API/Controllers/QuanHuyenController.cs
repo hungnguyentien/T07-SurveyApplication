@@ -52,6 +52,14 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
+        [HttpGet("GetByTinhTp/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlQh }, new[] { (int)EnumPermission.Type.Read })]
+        public async Task<ActionResult<List<QuanHuyenDto>>> GetByTinhTp(string id)
+        {
+            var leaveAllocations = await _mediator.Send(new GetQuanHuyenByTinhTpRequest { Id = id });
+            return Ok(leaveAllocations);
+        }
+
         [HttpPost("Create")]
         [HasPermission(new[] { (int)EnumModule.Code.QlQh }, new[] { (int)EnumPermission.Type.Create })]
         public async Task<ActionResult<QuanHuyenDto>> CreateQuanHuyen([FromBody] CreateQuanHuyenDto obj)

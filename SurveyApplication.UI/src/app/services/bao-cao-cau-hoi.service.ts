@@ -17,7 +17,7 @@ import { Observable, first } from 'rxjs';
 })
 export class BaoCaoCauHoiService {
   constructor(private http: HttpClient) {}
-
+  private sharedData: any;
   getBaoCaoCauHoi(params: BaoCaoCauHoiRequest) {
     let query = Utils.getParamsQuery(
       Object.keys(params),
@@ -40,5 +40,15 @@ export class BaoCaoCauHoiService {
         `${environment.apiUrl}/BaoCaoCauHoi/GetBaoCaoCauHoiChiTiet${query}`
       )
       .pipe(first());
+  }
+
+  
+
+  setSharedData(data: any) {
+    this.sharedData = data;
+  }
+
+  getSharedData() {
+    return this.sharedData;
   }
 }

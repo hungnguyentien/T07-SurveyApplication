@@ -82,6 +82,7 @@ public class MappingProfile : Profile
         CreateMap<Module, CreateModuleDto>().ReverseMap();
         CreateMap<Module, UpdateModuleDto>().ReverseMap();
 
+        CreateMap<BaoCaoCauHoi, CauHoiTraLoi>().ReverseMap();
         CreateMap<BaoCaoCauHoi, CreateBaoCaoCauHoiDto>().ReverseMap();
 
         CreateMap<ApplicationUser, UpdateAccountDto>().ReverseMap();

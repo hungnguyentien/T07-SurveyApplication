@@ -140,7 +140,7 @@
                         </a>
                     </ng-container>
 
-                    <ng-container *ngIf="rowData.trangThai == 0">
+                    <ng-container *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3">
                         <a class="m-3" (click)="Delete(rowData)">
                             <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
                         </a>
@@ -161,7 +161,7 @@
                     </ng-container>
 
                     <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
-                        <a class="m-3" >
+                        <a class="m-3" (click)="detailTableSurvey(rowData)">
                             <span class="pi pi-eye " title="Xem" aria-hidden="true"></span>
                         </a>
                     </ng-container>
@@ -203,8 +203,7 @@
                     </small>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát <span
-                            style="color: red;">*</span></label>
+                    <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát: <span style="color: red">*</span> </label>
                     <p-dropdown id="idLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -217,8 +216,7 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="tenBangKhaoSat" class="col-form-label">Tên bảng:<span style="color: red;">*</span>
-                    </label>
+                    <label for="tenBangKhaoSat" class="col-form-label">Tên bảng: <span style="color: red">*</span> </label>
                     <input formControlName="tenBangKhaoSat" type="text" pInputText class="form-control"
                         placeholder="Nhập tên bảng" id="tenBangKhaoSat">
 
@@ -229,8 +227,7 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát:<span
-                            style="color: red;">*</span></label>
+                    <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát: <span style="color: red">*</span></label>
                     <p-dropdown id="idDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
@@ -244,7 +241,7 @@
 
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="moTa" class="col-form-label">Mô tả:</label>
+                    <label for="moTa" class="col-form-label">Mô tả: </label>
                     <textarea name="" pInputTextarea formControlName="moTa" id="moTa" class="w-100" rows="3"
                         placeholder="Nhập mô tả"></textarea>
 
@@ -283,14 +280,11 @@
                     <label class="col-form-label">
                         Danh sách câu hỏi <span style="color: red;">*</span>
                     </label>
-
-                    <p-button label="Thêm Group" styleClass="p-button-link"></p-button>
-
                     <button type="button" class="btn btn-add float-end" (click)="showSialogCh()">
                         Thêm câu hỏi
                     </button>
-                    <p-table #viewtable [value]="lstBangKhaoSatCauHoi.controls">
-                        <ng-template pTemplate="header">
+                    <table #viewtable class="table table-bordered">
+                        <thead>
                             <tr>
                                 <th style="width: 60px;text-align: center;">STT</th>
                                 <th style="width: 8rem">Mã câu hỏi</th>
@@ -298,12 +292,21 @@
                                 <th style="width: 7rem">Bắt buộc</th>
                                 <th style="width: 120px;text-align: center;">Chức năng</th>
                             </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-item let-i="rowIndex">
-                            <tr [formGroup]="item">
-                                <td class="text-center align-items-center">{{ i + 1 }}</td>
-                                <td>{{ item.get('maCauHoi')?.value }}</td>
-                                <td>{{ item.get('tieuDe')?.value }}</td>
+                        </thead>
+                        <tbody formArrayName="bangKhaoSatCauHoi">
+                            <tr *ngFor="let item of lstBangKhaoSatCauHoi.controls; let i = index" [formGroupName]="i">
+                                <td class="text-center align-items-center">
+                                    {{ i + 1 }}
+                                    <input formControlName="id" type="hidden" />
+                                    <input formControlName="idCauHoi" type="hidden" />
+                                    <input formControlName="priority" type="hidden" />
+                                </td>
+                                <td>
+                                    {{item.get('maCauHoi')?.value}}
+                                </td>
+                                <td>
+                                    {{item.get('tieuDe')?.value}}
+                                </td>
                                 <td class="text-center">
                                     <p-inputSwitch formControlName="isRequired"></p-inputSwitch>
                                 </td>
@@ -314,11 +317,8 @@
                                     </div>
                                 </td>
                             </tr>
-                        </ng-template>
-                    </p-table>
-
-
-
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </ng-template>
@@ -471,6 +471,3 @@
         </ng-template>
     </p-dialog>
 </form>
-
-
-

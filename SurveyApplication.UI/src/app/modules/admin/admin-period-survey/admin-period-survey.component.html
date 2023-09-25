@@ -41,7 +41,8 @@
         styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
         [totalRecords]="dataTotalRecords" [resizableColumns]="true"
-        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+        [globalFilterFields]="['data.maDotKhaoSat', 'data.tenDotKhaoSat', 'data.tenLoaiHinh', 'data.ngayBatDau']"
         >
         <ng-template pTemplate="header">
             <tr>
@@ -51,27 +52,31 @@
                 <th style="width: 60px;text-align: center;">
                     STT
                 </th>
-                <th pResizableColumn>
+                <th pResizableColumn pSortableColumn="maDotKhaoSat">
                     <div class="flex justify-content-between align-items-center">
                         Mã đợt
+            
                     </div>
                 </th>
-                <th pResizableColumn>
+                <th pResizableColumn pSortableColumn="tenDotKhaoSat">
                     <div class="flex justify-content-between align-items-center">
                         Tên đợt
+                       
                     </div>
                 </th>
-                <th pResizableColumn>
+                <th pResizableColumn pSortableColumn="tenLoaiHinh">
                     <div class="flex justify-content-between align-items-center">
                         Loại hình đơn vị khảo sát
+                        
                     </div>
                 </th>
-                <th pResizableColumn>
+                <th pResizableColumn pSortableColumn="ngayBatDau">
                     <div class="flex justify-content-between align-items-center">
                         Thời gian
+                       
                     </div>
                 </th>
-                <th pResizableColumn>
+                <th  >
                     <div class="flex justify-content-between align-items-center">
                         Trạng thái
                     </div>
