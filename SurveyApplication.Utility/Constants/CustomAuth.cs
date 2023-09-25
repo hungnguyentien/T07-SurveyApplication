@@ -3,6 +3,7 @@
     public static class CustomAuth
     {
         public const string Uid = "uid";
+        public const string Image = "img";
     }
 
     public static class AccountAdmin

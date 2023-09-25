@@ -67,6 +67,7 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Name, user.Name ?? user.UserName),
+                new Claim(CustomAuth.Image, user.Image ?? ""),
                 new Claim(CustomAuth.Uid, user.Id)
             }
             .Union(userClaims)

@@ -30,7 +30,6 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             if (validatorResult.IsValid == false) throw new ValidationException(validatorResult);
 
             var account = await _surveyRepo.Account.FirstOrDefaultAsync(x => x.Id == request.AccountDto.Id);
-
             if (request.AccountDto.Img != null && request.AccountDto.Img.Length > 0)
             {
                 // Xóa ảnh cũ (nếu có)
@@ -44,8 +43,8 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 }
 
                 // Tạo tên file và lưu ảnh mới
-                var fileName = DateTime.Now.Ticks.ToString() + ".jpg";
-                account.Image = fileName;
+                var fileName = DateTime.Now.Ticks + ".jpg";
+                request.AccountDto.Image = fileName;
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
                 using (var stream = File.Create(path))
                 {
@@ -53,16 +52,14 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 }
             }
 
-            request.AccountDto.NormalizedEmail = request.AccountDto.Email.ToUpper();
-            request.AccountDto.NormalizedUserName = request.AccountDto.UserName.ToUpper();
-            request.AccountDto.EmailConfirmed = true;
-            request.AccountDto.PasswordHash = account.PasswordHash;
-            request.AccountDto.LockoutEnabled = true;
-            request.AccountDto.Image = account.Image;
-
-            _mapper.Map(request.AccountDto, account);
-            await _surveyRepo.Account.Update(account);
+            account.Image = request.AccountDto.Image;
+            account.Name = request.AccountDto.Name;
+            account.Email = request.AccountDto.Email;
+            account.NormalizedEmail = request.AccountDto.Email.ToUpper();
+            account.Address = request.AccountDto.Address;
+            await _surveyRepo.Account.UpdateAsync(account);
             await _surveyRepo.SaveAync();
+
             return new BaseCommandResponse("Sửa thành công!");
         }
     }
