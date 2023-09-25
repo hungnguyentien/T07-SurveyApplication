@@ -24,6 +24,7 @@ import {
   CauHoiService,
   ObjectSurveyService,
   GuiEmailService,
+  BaoCaoCauHoiService,
 } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
@@ -98,7 +99,8 @@ export class AdminTableSurveyComponent {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
-    private guiEmailService: GuiEmailService
+    private guiEmailService: GuiEmailService,
+    private baocaocauhoiservice:BaoCaoCauHoiService
   ) {}
 
   ngOnInit() {

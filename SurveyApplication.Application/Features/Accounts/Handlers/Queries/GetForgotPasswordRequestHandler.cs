@@ -2,13 +2,17 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using SurveyApplication.Application.DTOs.Account;
 using SurveyApplication.Application.Features.Accounts.Requests.Queries;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common;
+using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Infrastructure;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Domain.Models;
 using SurveyApplication.Infrastructure.Mail;
+using SurveyApplication.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
 {
-    public class GetForgotPasswordRequestHandler : BaseMasterFeatures, IRequestHandler<GetForgotPasswordRequest, ForgotPasswordDto>
+    public class GetForgotPasswordRequestHandler : BaseMasterFeatures, IRequestHandler<GetForgotPasswordRequest, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
@@ -33,17 +37,16 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
             _emailSender = emailSender;
         }
 
-        public async Task<ForgotPasswordDto> Handle(GetForgotPasswordRequest request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(GetForgotPasswordRequest request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email) ?? throw new Exception($"Tài khoản {request.Email} không tồn tại.");
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            //var callback = Url.Action(nameof(ResetPassword), "Account", new { token, email = user.Email }, Request.Scheme);
-            //var message = new Message(new string[] { user.Email }, "Reset password token", callback, null);
-
-            //var accountRepository = await _emailSender.SendEmailAsync();
-            var accountRepository = await _surveyRepo.Account.GetAsync(request.Email);
-
-            return _mapper.Map<ForgotPasswordDto>(accountRepository);
+            //var bodyEmail = $"{EmailSettings.LinkKhaoSat}{request.Email}{token}";
+            //var resultSend = await _emailSender.SendEmail(bodyEmail, user.Email);
+            return new BaseCommandResponse
+            {
+                Message = "Gửi thành công"
+            };
         }
     }
 }
