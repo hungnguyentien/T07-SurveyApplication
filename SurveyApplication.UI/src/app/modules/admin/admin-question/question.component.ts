@@ -205,7 +205,6 @@ export class QuestionComponent {
   }
 
   confirmDelete = (title: string, id: number) => {
-    debugger
     this.confirmationService.confirm({
       message: `Bạn có chắc chắn muốn xoá câu hỏi ${title} không?`,
       icon: 'pi pi-exclamation-triangle',

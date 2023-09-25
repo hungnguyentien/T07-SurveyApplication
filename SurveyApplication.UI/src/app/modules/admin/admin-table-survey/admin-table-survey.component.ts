@@ -24,6 +24,7 @@ import {
   CauHoiService,
   ObjectSurveyService,
   GuiEmailService,
+  BaoCaoCauHoiService,
 } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
@@ -98,7 +99,8 @@ export class AdminTableSurveyComponent {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
-    private guiEmailService: GuiEmailService
+    private guiEmailService: GuiEmailService,
+    private baocaocauhoiservice:BaoCaoCauHoiService
   ) {}
 
   ngOnInit() {
@@ -720,7 +722,8 @@ export class AdminTableSurveyComponent {
   //#endregion
 
   // xem chi tiết của bảng khảo khát
-  detailTableSurvey(data: any) {
-    this.router.navigate(['/admin/thong-ke-khao-sat', data]);
+  detailTableSurvey(data:any){
+    this.baocaocauhoiservice.setSharedData(data);
+    this.router.navigate(['/admin/thong-ke-khao-sat']);
   }
 }

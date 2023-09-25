@@ -136,33 +136,33 @@
                 </td>
                 <td>
                     <ng-container *ngIf="rowData.trangThai == 0">
-                        <a class="m-3" (click)="Edit(rowData)">
+                        <a class="m-2" (click)="Edit(rowData)">
                             <span class="pi pi-pencil " title="Cập nhật" aria-hidden="true"></span>
                         </a>
                     </ng-container>
 
-                    <ng-container *ngIf="rowData.trangThai == 0">
-                        <a class="m-3" (click)="Delete(rowData)">
+                    <ng-container *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3">
+                        <a class="m-2" (click)="Delete(rowData)">
                             <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
                         </a>
                     </ng-container>
 
                     <ng-container *ngIf="rowData.trangThai == 3">
-                        <a class="m-3" (click)="ToggleStatus(rowData)">
+                        <a class="m-2" (click)="ToggleStatus(rowData)">
                             <span class="pi pi-caret-right " title="Tiếp tục" style="color: rgb(32, 154, 60);"
                                 aria-hidden="true"></span>
                         </a>
                     </ng-container>
 
                     <ng-container *ngIf="rowData.trangThai == 1">
-                        <a class="m-3" (click)="ToggleStatus(rowData)">
+                        <a class="m-2" (click)="ToggleStatus(rowData)">
                             <span class="pi pi-pause " title="Dừng" style="color: rgb(212, 22, 22);"
                                 aria-hidden="true"></span>
                         </a>
                     </ng-container>
 
                     <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
-                        <a class="m-3" (click)="detailTableSurvey(rowData)">
+                        <a class="m-2" (click)="detailTableSurvey(rowData)">
                             <span class="pi pi-eye " title="Xem" aria-hidden="true"></span>
                         </a>
                     </ng-container>

@@ -4,6 +4,7 @@ import { LoginService } from '@app/services';
 import { MessageService } from 'primeng/api';
 import { environment } from '@environments/environment';
 import { AccountService } from '@app/services/account.service';
+import Utils from '@app/helpers/utils';
 @Component({
   selector: 'app-admin-templete',
   templateUrl: './admin-templete.component.html',
@@ -27,8 +28,12 @@ export class AdminTempleteComponent {
     private messageService: MessageService,
     private accountService: AccountService
   ) {
-    this.userName = loginService.getCurrentUser()?.name;
-    this.userId = loginService.getCurrentUser()?.uid;
+    const cUser = loginService.getCurrentUser();
+    this.userName = cUser?.name;
+    this.userId = cUser?.uid;
+    this.urlFist = cUser?.img
+      ? `${this.Domain}${cUser?.img}`
+      : 'http://placehold.it/180';
   }
   ngOnInit() {
     this.FormProfile = this.FormBuilder.group({
@@ -56,9 +61,13 @@ export class AdminTempleteComponent {
     formData.append('userName', updatedData.userName);
     formData.append('email', updatedData.email);
     formData.append('address', updatedData.address);
-    formData.append('img', updatedData.image);
-    this.accountService.update(formData).subscribe((res: any) => {
-      console.log(res);
+    formData.append('img', updatedData.img);
+    formData.append('id', this.userId);
+    this.accountService.update(formData).subscribe((res) => {
+      if (res.success) {
+        Utils.messageSuccess(this.messageService, res.message);
+        this.visible = false;
+      } else Utils.messageError(this.messageService, res.errors?.at(0) ?? '');
     });
   };
 
