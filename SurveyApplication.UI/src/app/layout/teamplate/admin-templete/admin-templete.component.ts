@@ -57,6 +57,7 @@ export class AdminTempleteComponent {
     formData.append('email', updatedData.email);
     formData.append('address', updatedData.address);
     formData.append('img', updatedData.image);
+    formData.append('id', this.userId);
     this.accountService.update(formData).subscribe((res: any) => {
       console.log(res);
     });

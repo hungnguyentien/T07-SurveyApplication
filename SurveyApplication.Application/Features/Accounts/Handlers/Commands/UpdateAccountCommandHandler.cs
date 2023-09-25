@@ -29,7 +29,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             var validatorResult = await validator.ValidateAsync(request.AccountDto);
             if (validatorResult.IsValid == false) throw new ValidationException(validatorResult);
 
-            var account = await _surveyRepo.Account.GetAsync(request.AccountDto?.Id ?? "");
+            var account = await _surveyRepo.Account.FirstOrDefaultAsync(x => x.Id == request.AccountDto.Id);
 
             if (request.AccountDto.Img != null && request.AccountDto.Img.Length > 0)
             {
