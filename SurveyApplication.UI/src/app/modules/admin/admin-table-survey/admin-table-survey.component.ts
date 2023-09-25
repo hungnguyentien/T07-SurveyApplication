@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   BangKhaoSatCauHoi,
   CauHoi,
@@ -24,7 +24,6 @@ import {
   CauHoiService,
   ObjectSurveyService,
   GuiEmailService,
-  BaoCaoCauHoiService,
 } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { DatePipe } from '@angular/common';
@@ -99,8 +98,7 @@ export class AdminTableSurveyComponent {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
-    private guiEmailService: GuiEmailService,
-    private baocaocauhoiservice:BaoCaoCauHoiService
+    private guiEmailService: GuiEmailService
   ) {}
 
   ngOnInit() {
@@ -113,7 +111,7 @@ export class AdminTableSurveyComponent {
     this.formTableSurvey = this.FormBuilder.group(
       {
         id: [''],
-        maBangKhaoSat: ['', Validators.required],
+        maBangKhaoSat: [''],
         idLoaiHinh: ['', Validators.required],
         idDotKhaoSat: ['', Validators.required],
         tenBangKhaoSat: ['', Validators.required],

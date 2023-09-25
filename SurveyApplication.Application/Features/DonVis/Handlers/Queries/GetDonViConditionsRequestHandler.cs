@@ -27,28 +27,18 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                     join o in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
                     on d.IdLoaiHinh equals o.Id
                     join s in _surveyRepo.LinhVucHoatDong.GetAllQueryable()
-                    on d.IdLinhVuc equals s.Id
-
-                    //join x in _surveyRepo.TinhTp.GetAllQueryable()
-                    //on d.IdTinhTp equals x.Id
-                    //join y in _surveyRepo.QuanHuyen.GetAllQueryable()
-                    //on d.IdQuanHuyen equals y.Id
-                    //join z in _surveyRepo.XaPhuong.GetAllQueryable()
-                    //on d.IdXaPhuong equals z.Id
+                    on d.IdLinhVuc equals s.Id into linhVucGroup
+                    from lv in linhVucGroup.DefaultIfEmpty()
 
                     where (d.MaDonVi.Contains(request.Keyword) || d.TenDonVi.Contains(request.Keyword) ||
                          d.DiaChi.Contains(request.Keyword) || b.HoTen.Contains(request.Keyword)) &&
                          d.Deleted == false
                     select new DonViDto
                     {
-                        IdLinhVuc = s.Id,
+                        IdLinhVuc = lv != null ? lv.Id : (int?)null,
                         IdDonVi = d.Id,
                         IdNguoiDaiDien = b.Id,
                         IdLoaiHinh = o.Id,
-
-                        //IdTinhTp = x.Id,
-                        //IdQuanHuyen = y.Id,
-                        //IdXaPhuong= z.Id,
 
                         MaDonVi = d.MaDonVi,
                         TenDonVi = d.TenDonVi,

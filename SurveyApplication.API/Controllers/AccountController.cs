@@ -63,6 +63,14 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
+        [HttpPost("ResetPassword")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Update })]
+        public async Task<ActionResult> ForgotPassword(ResetPasswordDto ojb)
+        {
+            var leaveAllocations = await _mediator.Send(new ResetPasswordRequest { ResetPasswordDto = ojb });
+            return Ok(leaveAllocations);
+        }
+
         [HttpPost("Update")]
         [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Update })]
         public async Task<ActionResult<AccountDto>> UpdateAccount([FromForm] UpdateAccountDto obj)

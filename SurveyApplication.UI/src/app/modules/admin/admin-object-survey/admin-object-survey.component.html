@@ -190,6 +190,10 @@
               emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
               placeholder="-- Chọn Lĩnh vực hoạt động --" formControlName="IdLinhVuc">
             </p-dropdown>
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['IdLinhVuc'].valid && 
+              FormObjectSurvey.controls['IdLinhVuc'].dirty">
+              Vui lòng chọn Lĩnh vực hoạt động
+            </small>
           </div>
 
           <div class="form-group col-md-6">
