@@ -38,7 +38,6 @@ export class AdminTempleteComponent {
   ngOnInit() {
     this.FormProfile = this.FormBuilder.group({
       name: ['', Validators.required],
-      userName: ['', Validators.required],
       email: ['', Validators.required],
       address: ['', Validators.required],
       img: [''],
@@ -58,7 +57,6 @@ export class AdminTempleteComponent {
     const formData = new FormData();
     const updatedData = this.FormProfile.value;
     formData.append('name', updatedData.name);
-    formData.append('userName', updatedData.userName);
     formData.append('email', updatedData.email);
     formData.append('address', updatedData.address);
     formData.append('img', updatedData.img);
@@ -112,4 +110,12 @@ export class AdminTempleteComponent {
       reader.readAsDataURL(file);
     }
   }
+
+  pageTop = () => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
 }
