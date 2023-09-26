@@ -164,7 +164,6 @@ export class AdminPeriodSurveyComponent {
     this.FormPeriodSurvey.get("MaDotKhaoSat")?.disable();
     this.modalTitle = 'Cập nhật đợt khảo sát';
     this.checkBtnDetail = false; // check ẩn hiện button 
-
     this.visible = !this.visible;
     this.IdDotKhaoSat = data.id;
     this.MaDotKhaoSat = data.maDotKhaoSat;
