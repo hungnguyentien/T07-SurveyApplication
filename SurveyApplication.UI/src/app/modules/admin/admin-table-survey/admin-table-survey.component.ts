@@ -688,16 +688,17 @@ export class AdminTableSurveyComponent {
         this.TableSurveyService.deleteMultiple(ids).subscribe({
           next: (res: any) => {
             if (res.success == false) {
-              Utils.messageError(this.messageService, res.message);
+              Utils.messageError(this.messageService, res.message);              
             } else {
               Utils.messageSuccess(
                 this.messageService,
                 `Xoá ${ids.length} bảng khảo sát thành công!`
               );
+              this.selectedTableSurvey = [];             
             }
           },
           complete: () => {
-            this.table.reset();
+            this.table.reset();     
           },
         });
       },
