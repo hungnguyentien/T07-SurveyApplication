@@ -32,6 +32,8 @@ import { FormControl } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BksTrangThai } from '@app/enums';
 import { Router } from '@angular/router';
+import { coerceStringArray } from '@angular/cdk/coercion';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -61,6 +63,7 @@ export class AdminTableSurveyComponent {
   DSDotKhaoSat: any[] = [];
   showHeader: boolean = true;
   Gettrangthai!: number;
+  GetMaBangKhaoSat!:number;
   form: FormGroup = new FormGroup({});
 
   searchText = new FormControl('');
@@ -100,8 +103,8 @@ export class AdminTableSurveyComponent {
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
     private guiEmailService: GuiEmailService,
-    private baocaocauhoiservice:BaoCaoCauHoiService
-  ) {}
+    private baocaocauhoiservice: BaoCaoCauHoiService
+  ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -136,7 +139,7 @@ export class AdminTableSurveyComponent {
     if (startDate && endDate && startDate > endDate) {
       return { dateRangeError: true };
     }
-   
+
     return null;
   }
 
@@ -257,6 +260,7 @@ export class AdminTableSurveyComponent {
     this.formTableSurvey.reset();
     this.showadd = true;
     this.visible = !this.visible;
+    this.formTableSurvey.get('maBangKhaoSat')?.enable();
     this.lstBangKhaoSatCauHoi.clear();
     this.lstBangKhaoSatCauHoiGroup.clear();
   }
@@ -264,7 +268,10 @@ export class AdminTableSurveyComponent {
   Edit(data: any) {
     this.showadd = false;
     this.visible = !this.visible;
+  
+    this.formTableSurvey.get("maBangKhaoSat")?.disable();
     this.Gettrangthai = data.trangThai;
+    this.GetMaBangKhaoSat=data.maBangKhaoSat;
     this.lstBangKhaoSatCauHoi.clear();
     this.lstBangKhaoSatCauHoiGroup.clear();
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
@@ -275,11 +282,11 @@ export class AdminTableSurveyComponent {
           Utils.setValueForm(this.formTableSurvey, k, v);
           const ngayBatDauFormatted = this.datePipe.transform(
             data.ngayBatDau,
-            'yyyy-MM-dd'
+            'dd/MM/yyyy'
           );
           const ngayKetThuFormatted = this.datePipe.transform(
             data.ngayKetThuc,
-            'yyyy-MM-dd'
+            'dd/MM/yyyy'
           );
           this.formTableSurvey.controls['ngayBatDau'].setValue(
             ngayBatDauFormatted
@@ -395,14 +402,14 @@ export class AdminTableSurveyComponent {
             this.visible = false;
           }
         },
-        
+
         error: (e: HttpErrorResponse | any) => {
           debugger
           if (e instanceof HttpErrorResponse) {
             if (e.error && Array.isArray(e.error) && e.error.length > 0) {
               const errorMessage = e.error[0];
               Utils.messageError(this.messageService, errorMessage);
-            } 
+            }
           } else if (typeof e === 'object' && 'errorMessage' in e) {
             // Trường hợp e là một đối tượng chứa errorMessage
             const errorMessage = e.errorMessage;
@@ -412,17 +419,20 @@ export class AdminTableSurveyComponent {
             Utils.messageError(this.messageService, 'Lỗi không xác định.');
           }
         },
-        
-        
+
+
       });
     }
   };
-  
+
 
   SaveEdit() {
-    
-    this.visible = !this.visible;
+   
     const objTableSurvey = this.formTableSurvey.value;
+    objTableSurvey.ngayBatDau = moment(objTableSurvey.ngayBatDau, 'DD/MM/YYYY').utcOffset(0).toDate();
+    
+    objTableSurvey.ngayKetThuc =  moment(objTableSurvey.ngayKetThuc, 'DD/MM/YYYY').utcOffset(0).toDate();
+    objTableSurvey['maBangKhaoSat']=this.GetMaBangKhaoSat;
     objTableSurvey['trangThai'] = this.Gettrangthai;
     this.TableSurveyService.update(objTableSurvey).subscribe({
       next: (res: any) => {
@@ -435,6 +445,22 @@ export class AdminTableSurveyComponent {
           this.table.reset();
           this.formTableSurvey.reset();
           this.visible = false;
+        }
+      },
+      error: (e: HttpErrorResponse | any) => {
+        debugger
+        if (e instanceof HttpErrorResponse) {
+          if (e.error && Array.isArray(e.error) && e.error.length > 0) {
+            const errorMessage = e.error[0];
+            Utils.messageError(this.messageService, errorMessage);
+          }
+        } else if (typeof e === 'object' && 'errorMessage' in e) {
+          // Trường hợp e là một đối tượng chứa errorMessage
+          const errorMessage = e.errorMessage;
+          Utils.messageError(this.messageService, errorMessage);
+        } else {
+          // Xử lý lỗi mặc định nếu kiểu dữ liệu không xác định
+          Utils.messageError(this.messageService, 'Lỗi không xác định.');
         }
       },
     });
@@ -548,7 +574,7 @@ export class AdminTableSurveyComponent {
           },
         });
       },
-      reject: () => {},
+      reject: () => { },
     });
   }
 
@@ -595,10 +621,36 @@ export class AdminTableSurveyComponent {
   }
 
   deleteItem(index: number) {
+    debugger
     this.lstBangKhaoSatCauHoi.removeAt(index);
+
+    console.log(this.lstBangKhaoSatCauHoi)
   }
 
   //#endregion
+  CheckButton() {
+
+
+    const checklst = this.lstBangKhaoSatCauHoi.length;
+    const checkGruop = this.lstBangKhaoSatCauHoiGroup.length;
+
+    if (checklst === 0) {
+
+      if (checkGruop > 0) {
+        return false
+      }
+    }
+    if (checkGruop === 0) {
+      if (checklst > 0) {
+        return false
+      }
+    }
+    if (checkGruop === 0 && checklst === 0) {
+      return true;
+    }
+    return true
+
+  }
 
   get lstBangKhaoSatCauHoiGroup(): FormArray {
     return this.formTableSurvey.get('bangKhaoSatCauHoiGroup') as FormArray;
@@ -722,7 +774,7 @@ export class AdminTableSurveyComponent {
   //#endregion
 
   // xem chi tiết của bảng khảo khát
-  detailTableSurvey(data:any){
+  detailTableSurvey(data: any) {
     this.baocaocauhoiservice.setSharedData(data);
     this.router.navigate(['/admin/thong-ke-khao-sat']);
   }

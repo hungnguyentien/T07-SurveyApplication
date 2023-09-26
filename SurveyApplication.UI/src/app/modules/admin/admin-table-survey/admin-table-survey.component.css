@@ -31,14 +31,7 @@
   display: flex; /* Sử dụng Flexbox */
   justify-content: flex-end; /* Căn cấp độ sang bên trái */
 }
-::ng-deep .p-calendar {
-  height: 40px; /* Đặt chiều cao mong muốn */
-}
-/* Tùy chỉnh chiều cao của p-dropdown */
-::ng-deep .p-dropdown {
-  max-height: 40px; /* Đặt chiều cao mong muốn */
-}
-/* Tùy chỉnh chiều cao cho tất cả các trường input có type="text" */
+
 input {
   height: 40px; /* Đặt chiều cao mong muốn */
 }
@@ -49,5 +42,9 @@ input {
   border: none;
   box-shadow: none;
   outline: none;
+}
+::ng-deep .p-calendar {
+  height: 35px;
+  width: 100%;
 }
 
