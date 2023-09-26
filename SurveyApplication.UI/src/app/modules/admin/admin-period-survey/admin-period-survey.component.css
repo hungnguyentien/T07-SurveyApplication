@@ -20,9 +20,3 @@
     height: 35px;
     width: 100%;
   }
-  ::ng-deep .p-datepicker-group-container{
-    width: 50vh;
-  }
-  ::ng-deep .ng-trigger-overlayAnimation{
-    width: 30px;
-  }

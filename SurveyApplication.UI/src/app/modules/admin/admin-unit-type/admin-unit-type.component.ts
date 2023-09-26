@@ -197,8 +197,9 @@ export class AdminUnitTypeComponent {
       },
     });
   }
+
   confirmDeleteMultiple() {
-    let ids: number[] = [];
+    var ids: number[] = [];
     this.selectedUnitType.forEach((el) => {
       ids.push(el.id);
     });
@@ -216,6 +217,7 @@ export class AdminUnitTypeComponent {
                 this.messageService,
                 `Xoá ${ids.length} loại hình đơn vị thành công!`
               );
+              this.selectedUnitType = [];
             }
           },
           error: (e) => Utils.messageError(this.messageService, e.message),
