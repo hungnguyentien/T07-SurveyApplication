@@ -19,7 +19,7 @@ public class GetDotKhaoSatListRequestHandler : BaseMasterFeatures,
 
     public async Task<List<DotKhaoSatDto>> Handle(GetDotKhaoSatListRequest request, CancellationToken cancellationToken)
     {
-        var dotKhaoSats = await _surveyRepo.DotKhaoSat.GetAll();
+        var dotKhaoSats = await _surveyRepo.DotKhaoSat.GetAllListAsync(x => !x.Deleted);
         return _mapper.Map<List<DotKhaoSatDto>>(dotKhaoSats);
     }
 }

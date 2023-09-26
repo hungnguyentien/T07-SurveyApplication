@@ -130,17 +130,17 @@ public class Startup
 
     private static void AutoMigration(IConfiguration configuration, IApplicationBuilder app)
     {
-        using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope();
-        var settings = configuration.GetSection(nameof(SurveyConfiguration)).Get<SurveyConfiguration>();
-        if (serviceScope == null) return;
-        var context = serviceScope.ServiceProvider.GetRequiredService<SurveyApplicationDbContext>();
-        var migrationId = string.Empty;
-        List<string> migrationIds = new();
-        var buildNumber = settings.BuildNumber;
-        var enviroment = settings.Env;
-        var customerCode = settings.CustomerCode;
         try
         {
+            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope();
+            var settings = configuration.GetSection(nameof(SurveyConfiguration)).Get<SurveyConfiguration>();
+            if (serviceScope == null) return;
+            var context = serviceScope.ServiceProvider.GetRequiredService<SurveyApplicationDbContext>();
+            var migrationId = string.Empty;
+            List<string> migrationIds = new();
+            var buildNumber = settings.BuildNumber;
+            var enviroment = settings.Env;
+            var customerCode = settings.CustomerCode;
             var dbAssebmly = Assembly.GetAssembly(context.GetType());
             if (dbAssebmly != null)
             {

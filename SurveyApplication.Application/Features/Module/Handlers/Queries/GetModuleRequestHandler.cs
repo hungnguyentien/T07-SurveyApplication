@@ -20,7 +20,7 @@ public class GetModuleListRequestHandler : BaseMasterFeatures,
     public async Task<List<ModuleDto>> Handle(GetModuleListRequest request,
         CancellationToken cancellationToken)
     {
-        var Modules = await _surveyRepo.Module.GetAll();
+        var Modules = await _surveyRepo.Module.GetAllListAsync(x => !x.Deleted);
         return _mapper.Map<List<ModuleDto>>(Modules);
     }
 }

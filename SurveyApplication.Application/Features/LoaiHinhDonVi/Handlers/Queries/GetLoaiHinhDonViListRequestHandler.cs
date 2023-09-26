@@ -20,7 +20,7 @@ public class GetLoaiHinhDonViListRequestHandler : BaseMasterFeatures,
     public async Task<List<LoaiHinhDonViDto>> Handle(GetLoaiHinhDonViListRequest request,
         CancellationToken cancellationToken)
     {
-        var LoaiHinhDonVis = await _surveyRepo.LoaiHinhDonVi.GetAll();
+        var LoaiHinhDonVis = await _surveyRepo.LoaiHinhDonVi.GetAllListAsync(x => !x.Deleted);
         return _mapper.Map<List<LoaiHinhDonViDto>>(LoaiHinhDonVis);
     }
 }

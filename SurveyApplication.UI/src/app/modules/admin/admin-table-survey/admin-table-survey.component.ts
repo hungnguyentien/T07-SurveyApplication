@@ -136,7 +136,7 @@ export class AdminTableSurveyComponent {
     if (startDate && endDate && startDate > endDate) {
       return { dateRangeError: true };
     }
-
+   
     return null;
   }
 
@@ -395,30 +395,32 @@ export class AdminTableSurveyComponent {
             this.visible = false;
           }
         },
-        error: (error) => {
-          // Xử lý lỗi từ máy chủ ở đây
-          if (error instanceof HttpErrorResponse) {
-            const httpError: HttpErrorResponse = error;
-            if (httpError.error) {
-              // Đây là nơi bạn có thể truy cập thông báo lỗi từ máy chủ
-              const serverErrorMessage = httpError.error;
-              console.error('Lỗi từ máy chủ:', serverErrorMessage);
-              this.serverError = serverErrorMessage;
-              // Hiển thị thông báo lỗi cho người dùng hoặc thực hiện các hành động xử lý lỗi
-              setTimeout(() => {
-                this.serverError = ''; // Xóa thông báo lỗi sau 3 giây
-              }, 3000);
-            }
+        
+        error: (e: HttpErrorResponse | any) => {
+          debugger
+          if (e instanceof HttpErrorResponse) {
+            if (e.error && Array.isArray(e.error) && e.error.length > 0) {
+              const errorMessage = e.error[0];
+              Utils.messageError(this.messageService, errorMessage);
+            } 
+          } else if (typeof e === 'object' && 'errorMessage' in e) {
+            // Trường hợp e là một đối tượng chứa errorMessage
+            const errorMessage = e.errorMessage;
+            Utils.messageError(this.messageService, errorMessage);
           } else {
-            console.error('Lỗi không xác định:', error);
-            // Xử lý lỗi không xác định (không phải lỗi từ máy chủ)
+            // Xử lý lỗi mặc định nếu kiểu dữ liệu không xác định
+            Utils.messageError(this.messageService, 'Lỗi không xác định.');
           }
         },
+        
+        
       });
     }
-  }
+  };
+  
 
   SaveEdit() {
+    
     this.visible = !this.visible;
     const objTableSurvey = this.formTableSurvey.value;
     objTableSurvey['trangThai'] = this.Gettrangthai;

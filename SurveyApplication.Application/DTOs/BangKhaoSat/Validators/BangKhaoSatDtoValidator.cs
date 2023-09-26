@@ -16,7 +16,7 @@ public class BangKhaoSatDtoValidator : AbstractValidator<IBangKhaoSatDto>
         RuleFor(p => p.MaBangKhaoSat)
             .MustAsync(async (maBangKhaoSat, token) =>
             {
-                var bangKhaoSatViExists = await _bangKhaoSatRepository.Exists(x => x.MaBangKhaoSat == maBangKhaoSat && !x.Deleted);
+                var bangKhaoSatViExists = await _bangKhaoSatRepository.Exists(x => x.MaBangKhaoSat == maBangKhaoSat);
                 return !bangKhaoSatViExists;
             }).WithMessage("Mã bảng khảo sát đã tồn tại!");
 
@@ -31,6 +31,8 @@ public class BangKhaoSatDtoValidator : AbstractValidator<IBangKhaoSatDto>
         RuleFor(p => p.TenBangKhaoSat)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();
+
+       
 
         RuleFor(p => p.NgayBatDau)
             .NotEmpty().WithMessage("{PropertyName} is required.")

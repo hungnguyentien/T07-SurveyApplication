@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.GuiEmail.Validators;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands;
 
@@ -39,6 +42,18 @@ public class CreateGuiEmailCommandHandler : BaseMasterFeatures,
         var guiEmail = _mapper.Map<Domain.GuiEmail>(request.GuiEmailDto);
         guiEmail = await _surveyRepo.GuiEmail.Create(guiEmail);
         await _surveyRepo.SaveAync();
+        var lstDotKhaoSat = await (from a in _surveyRepo.DotKhaoSat.GetAllQueryable()
+                                   join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.Id equals b.IdDotKhaoSat
+                                   where a.TrangThai == (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat && request.GuiEmailDto.LstBangKhaoSat.Contains(b.IdDotKhaoSat) && !a.Deleted && !b.Deleted
+                                   select a).ToListAsync(cancellationToken: cancellationToken);
+
+        if (lstDotKhaoSat.Any())
+        {
+            lstDotKhaoSat.ForEach(x => x.TrangThai = (int)EnumDotKhaoSat.TrangThai.DangKhaoSat);
+            await _surveyRepo.DotKhaoSat.UpdateAsync(lstDotKhaoSat);
+            await _surveyRepo.SaveAync();
+        }
+
         response.Success = true;
         response.Message = "Tạo mới thành công";
         response.Id = guiEmail.Id;

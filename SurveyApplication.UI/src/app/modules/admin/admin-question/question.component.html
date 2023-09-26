@@ -127,7 +127,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label for="maCauHoi" class="col-form-label">Mã: <span style="color: red">*</span></label>
-          <input type="text" pInputText class="form-control" id="maCauHoi" formControlName="maCauHoi" [ngClass]="{
+          <input type="text" pInputText class="form-control" id="maCauHoi" formControlName="maCauHoi" [(ngModel)]="maCauHoi" (input)="changeMaCauHoi(maCauHoi)" [ngClass]="{
             'is-invalid': submitted && f('maCauHoi').errors
           }" placeholder="VB01" />
           <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmCauHoi.controls['maCauHoi'].valid && 

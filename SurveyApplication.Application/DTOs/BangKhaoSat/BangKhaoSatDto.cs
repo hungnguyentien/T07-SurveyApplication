@@ -18,6 +18,10 @@ public class BangKhaoSatDto : BaseDto
     public string? TenLoaiHinh { get; set; }
     public int? TrangThaiEmail { get; set; }
 
+    public bool? IsRequired { get; set; }
+    public string PanelTitle { get; set; }
+    public int IdBangKhaoSat { get;set; }
+
     /// <summary>
     ///     Bảng n-n lưu thông tin câu hỏi và bảng khảo sát
     /// </summary>
