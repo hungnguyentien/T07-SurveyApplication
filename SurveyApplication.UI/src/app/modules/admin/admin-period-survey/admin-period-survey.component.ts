@@ -157,11 +157,11 @@ export class AdminPeriodSurveyComponent {
     );
     const ngayBatDauFormatted = this.datePipe.transform(
       data.ngayBatDau,
-      'yyyy-MM-dd'
+      'dd/MM/yyyy'
     );
     const ngayKetThucFormatted = this.datePipe.transform(
       data.ngayKetThuc,
-      'yyyy-MM-dd'
+      'dd/MM/yyyy'
     );
     this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
     this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(
@@ -205,12 +205,8 @@ export class AdminPeriodSurveyComponent {
 
   SaveEdit() {
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
-    ObjPeriodSurvey.NgayBatDau = Utils.anyToDateServer(
-      ObjPeriodSurvey.NgayBatDau
-    );
-    ObjPeriodSurvey.NgayKetThuc = Utils.anyToDateServer(
-      ObjPeriodSurvey.NgayKetThuc
-    );
+    ObjPeriodSurvey.NgayBatDau = moment(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY').utcOffset(0).toDate();
+    ObjPeriodSurvey.NgayKetThuc =  moment(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY').utcOffset(0).toDate();
     ObjPeriodSurvey['id'] = this.IdDotKhaoSat;
     ObjPeriodSurvey['maDotKhaoSat'] = this.MaDotKhaoSat;
     ObjPeriodSurvey['Trangthai'] = this.Trangthai;
