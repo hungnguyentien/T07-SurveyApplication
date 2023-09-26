@@ -44,11 +44,13 @@ export default class Utils {
     values: any[]
   ) => {
     keys.forEach((el, i) => {
-      Utils.getFormControl(
-        frm,
-        Utils.capitalizeFirstLetter(nettedField),
-        Utils.capitalizeFirstLetter(el)
-      )?.setValue(values[i].toString());
+      values[i] != null &&
+        values[i] != undefined &&
+        Utils.getFormControl(
+          frm,
+          Utils.capitalizeFirstLetter(nettedField),
+          Utils.capitalizeFirstLetter(el)
+        )?.setValue(values[i].toString());
     });
   };
 

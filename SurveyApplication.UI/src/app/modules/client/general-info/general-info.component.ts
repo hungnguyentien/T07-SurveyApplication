@@ -99,7 +99,7 @@ export class GeneralInfoComponent {
         MaSoThue: [''],
         WebSite: [
           '',
-          [Validators.required, Validators.pattern(lstRegExp.webSite)],
+          // [Validators.required, Validators.pattern(lstRegExp.webSite)],
         ],
         Email: ['', [Validators.required, Validators.email]],
         SoDienThoai: [

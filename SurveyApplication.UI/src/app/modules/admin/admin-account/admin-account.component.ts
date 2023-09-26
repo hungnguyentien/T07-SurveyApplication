@@ -136,6 +136,7 @@ export class AdminAccountComponent {
     if (this.frmAccount.invalid) return;
     this.account = data.value;
     this.account.lstRoleName = this.selectedRole;
+    debugger
     this.accountService.register<Register>(this.account).subscribe({
       next: (res) => {
         if (res.success) {

@@ -17,5 +17,6 @@ export interface Register {
   password: string;
   passwordConfirmed: string;
   lstRoleName: string[] | null;
+  image: string | null;
   matrixPermission: MatrixPermission[] | null;
 }

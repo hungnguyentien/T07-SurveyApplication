@@ -61,19 +61,14 @@ namespace SurveyApplication.Application.Features.BackupRestore.Handlers.Commands
                 var startDate = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
                 var strartTime = int.Parse(timeStr);
                 res = request.ConfigJobBackup.ScheduleDayofweek == 0 ? CreateJobsDaiLy(nameJobs, myDbConnection, cmd, strartTime, startDate) : CreateJobsForWeek(request.ConfigJobBackup.ScheduleDayofweek.ToString(), nameJobs, myDbConnection, cmd, strartTime, startDate);
-
                 var file = Path.Combine(path, "SetUpJob.txt");
-                if (!File.Exists(file))
-                {
-                    using var sr = File.Create(file);
-                }
-
                 var textFile = $"{request.ConfigJobBackup.ScheduleDayofweek}|{request.ConfigJobBackup.ScheduleHour}|{request.ConfigJobBackup.ScheduleMinute}";
                 File.WriteAllText(file, textFile);
             }
             catch (Exception e)
             {
                 _logger.LogError(e);
+                return Task.FromResult(new BaseCommandResponse { Success = false, Errors = new List<string> { "Thiết lập không thành công" } });
             }
 
             return Task.FromResult(new BaseCommandResponse(res));

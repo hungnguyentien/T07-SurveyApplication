@@ -29,10 +29,8 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 var fileName = DateTime.Now.Ticks.ToString() + ".jpg";
                 request.Register.Image = fileName;
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await request.Register.Img.CopyToAsync(fileStream);
-                }
+                await using var fileStream = new FileStream(filePath, FileMode.Create);
+                await request.Register.Img.CopyToAsync(fileStream, cancellationToken);
             }
 
             var user = new ApplicationUser
