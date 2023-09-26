@@ -19,8 +19,6 @@
   <ItemGroup>
     <Folder Include="TempData\" />
     <Folder Include="wwwroot\Images\" />
-    <Folder Include="wwwroot\Images\" />
-    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
   <ItemGroup>
