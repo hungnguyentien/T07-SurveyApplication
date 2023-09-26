@@ -32,6 +32,7 @@ import { FormControl } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BksTrangThai } from '@app/enums';
 import { Router } from '@angular/router';
+import { coerceStringArray } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -419,9 +420,7 @@ export class AdminTableSurveyComponent {
   };
   
 
-  SaveEdit() {
-    
-    this.visible = !this.visible;
+  SaveEdit() { 
     const objTableSurvey = this.formTableSurvey.value;
     objTableSurvey['trangThai'] = this.Gettrangthai;
     this.TableSurveyService.update(objTableSurvey).subscribe({
@@ -435,6 +434,22 @@ export class AdminTableSurveyComponent {
           this.table.reset();
           this.formTableSurvey.reset();
           this.visible = false;
+        }
+      },
+      error: (e: HttpErrorResponse | any) => {
+        debugger
+        if (e instanceof HttpErrorResponse) {
+          if (e.error && Array.isArray(e.error) && e.error.length > 0) {
+            const errorMessage = e.error[0];
+            Utils.messageError(this.messageService, errorMessage);
+          } 
+        } else if (typeof e === 'object' && 'errorMessage' in e) {
+          // Trường hợp e là một đối tượng chứa errorMessage
+          const errorMessage = e.errorMessage;
+          Utils.messageError(this.messageService, errorMessage);
+        } else {
+          // Xử lý lỗi mặc định nếu kiểu dữ liệu không xác định
+          Utils.messageError(this.messageService, 'Lỗi không xác định.');
         }
       },
     });
@@ -595,10 +610,36 @@ export class AdminTableSurveyComponent {
   }
 
   deleteItem(index: number) {
+    debugger
     this.lstBangKhaoSatCauHoi.removeAt(index);
+    
+    console.log(this.lstBangKhaoSatCauHoi)
   }
 
   //#endregion
+  CheckButton(){
+
+   
+    const checklst = this.lstBangKhaoSatCauHoi.length;
+    const checkGruop=this.lstBangKhaoSatCauHoiGroup.length;
+
+    if(checklst===0){
+
+      if(checkGruop>0){
+        return false
+      }      
+    }
+    if(checkGruop===0){
+      if(checklst>0){
+        return false
+      } 
+    }   
+    if(checkGruop===0 && checklst ===0){
+      return true;
+    }
+    return true
+   
+  }
 
   get lstBangKhaoSatCauHoiGroup(): FormArray {
     return this.formTableSurvey.get('bangKhaoSatCauHoiGroup') as FormArray;
