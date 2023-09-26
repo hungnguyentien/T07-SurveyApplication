@@ -71,10 +71,8 @@ namespace SurveyApplication.API.Controllers
         {
             var command = new UpdateBangKhaoSatCommand { BangKhaoSatDto = obj };
             await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
 

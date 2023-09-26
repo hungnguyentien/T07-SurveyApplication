@@ -21,7 +21,7 @@ public class GetLoaiHinhDonViConditionsRequestHandler : BaseMasterFeatures,
     public async Task<BaseQuerieResponse<LoaiHinhDonViDto>> Handle(GetLoaiHinhDonViConditionsRequest request,
         CancellationToken cancellationToken)
     {
-        var loaiHinhDonVis = await _surveyRepo.LoaiHinhDonVi.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => (string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenLoaiHinh) && x.TenLoaiHinh.Contains(request.Keyword)) && x.Deleted == false, "");
+        var loaiHinhDonVis = await _surveyRepo.LoaiHinhDonVi.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => (string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.TenLoaiHinh) && x.TenLoaiHinh.Contains(request.Keyword) || !string.IsNullOrEmpty(x.MaLoaiHinh) && x.MaLoaiHinh.Contains(request.Keyword)) && x.Deleted == false, "");
         var result = _mapper.Map<List<LoaiHinhDonViDto>>(loaiHinhDonVis);
         return new BaseQuerieResponse<LoaiHinhDonViDto>
         {

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
 
@@ -22,7 +23,12 @@ public class LoaiHinhDonViDtoValidator : AbstractValidator<ILoaiHinhDonViDto>
 
         RuleFor(p => p.TenLoaiHinh)
             .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
+            .NotNull()
+            .MustAsync(async (name, token) =>
+            {
+                var nameExists = await _loaiHinhDonViRepository.ExistsByName(name);
+                return !nameExists;
+            }).WithMessage("Tên loại hình đã tồn tại!");
 
         RuleFor(p => p.MoTa)
             .NotEmpty().WithMessage("{PropertyName} is required.")

@@ -14,7 +14,7 @@ namespace SurveyApplication.Persistence.Repositories
 
         public async Task<bool> ExistsByMaLinhVuc(string maLinhVuc)
         {
-            var entity = await _dbContext.LinhVucHoatDong.AsNoTracking().FirstOrDefaultAsync(x => x.MaLinhVuc == maLinhVuc);
+            var entity = await _dbContext.LinhVucHoatDong.AsNoTracking().FirstOrDefaultAsync(x => x.MaLinhVuc == maLinhVuc && !x.Deleted);
             return entity != null;
         }
     }

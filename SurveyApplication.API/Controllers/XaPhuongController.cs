@@ -71,11 +71,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<XaPhuongDto>> UpdateXaPhuong([FromBody] UpdateXaPhuongDto obj)
         {
             var command = new UpdateXaPhuongCommand { XaPhuongDto = obj };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpDelete("Delete/{id}")]
@@ -83,11 +80,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<List<XaPhuongDto>>> DeleteXaPhuong(int id)
         {
             var command = new DeleteXaPhuongCommand { Ids = new List<int> { id } };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpDelete("DeleteMultiple")]

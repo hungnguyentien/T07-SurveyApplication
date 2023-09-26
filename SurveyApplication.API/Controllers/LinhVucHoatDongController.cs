@@ -31,6 +31,16 @@ namespace SurveyApplication.API.Controllers
             return Ok(rs);
         }
 
+        [HttpGet("GenerateMaLinhVuc")]
+        public async Task<ActionResult<string>> GetLastRecordByMaLinhVuc()
+        {
+            var record = await _mediator.Send(new GetLastRecordLinhVucRequest());
+            return Ok(new
+            {
+                MaLinhVuc = record
+            });
+        }
+
         [HttpGet("GetByCondition")]
         [HasPermission(new[] { (int)EnumModule.Code.LvHd }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<BaseQuerieResponse<LinhVucHoatDongDto>>> GetByConditionLinhVucHoatDong([FromQuery] Paging paging)
@@ -61,11 +71,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<LinhVucHoatDongDto>> UpdateLinhVucHoatDong([FromBody] UpdateLinhVucHoatDongDto obj)
         {
             var command = new UpdateLinhVucHoatDongCommand { LinhVucHoatDongDto = obj };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpDelete("Delete/{id}")]

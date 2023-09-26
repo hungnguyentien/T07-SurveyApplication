@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.NguoiDaiDien.Validators;
 
@@ -37,7 +38,12 @@ public class NguoiDaiDienDtoValidator : AbstractValidator<INguoiDaiDienDto>
 
         RuleFor(p => p.Email)
             .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
+            .NotNull()
+            .MustAsync(async (email, token) =>
+            {
+                var emailExists = await _NguoiDaiDienRepository.ExistsByEmail(email);
+                return !emailExists;
+            }).WithMessage("Email người đại diện đã tồn tại!");
 
         //RuleFor(p => p.MoTa)
         //    .NotEmpty().WithMessage("{PropertyName} is required.")

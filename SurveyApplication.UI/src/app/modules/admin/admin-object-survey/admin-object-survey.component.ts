@@ -9,7 +9,7 @@ import {
 } from '@app/services';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { Table } from 'primeng/table';
-import { DonVi, HanhChinhVn, LinhVucHoatDong, Paging } from '@app/models';
+import { DonVi, HanhChinhVn, LinhVucHoatDong, Paging, DonViNguoiDaiDienResponse } from '@app/models';
 import Utils from '@app/helpers/utils';
 
 @Component({
@@ -68,7 +68,7 @@ export class AdminObjectSurveyComponent {
       MaDonVi: new FormControl('', Validators.required),
       Email: new FormControl('', Validators.required),
       WebSite: new FormControl(''),
-      SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10}$')] ),
+      SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10,11}$')] ),
       DiaChi: new FormControl('', Validators.required),
       IdTinhTp: new FormControl('', Validators.required),
       IdQuanHuyen: new FormControl('', Validators.required),
@@ -79,7 +79,7 @@ export class AdminObjectSurveyComponent {
       HoTen: new FormControl('', Validators.required),
       ChucVu: new FormControl('', Validators.required),
       Email: new FormControl('', Validators.required),
-      SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10}$')] ),
+      SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10,11}$')] ),
       MoTa: new FormControl(''),
     });
 
@@ -265,26 +265,28 @@ export class AdminObjectSurveyComponent {
       };
       this.objectSurveyService.create(obj).subscribe({
         next: (res) => {
-          if (res != null) {
-            console.log('res', res);
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Thành Công',
-              detail: 'Thêm thành Công !',
-            });
-            this.table.reset();
-            this.FormObjectSurvey.reset();
-            this.FormRepresentative.reset();
-            this.visible = false;
-          } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Lỗi',
-              detail: 'Lỗi vui Lòng kiểm tra lại !',
-            });
+          if ('response_1' in res && 'response_2' in res) {
+            const donViResponse = res as DonViNguoiDaiDienResponse;
+            if (donViResponse.response_1.success && donViResponse.response_2.success) {
+              Utils.messageSuccess(this.messageService, donViResponse.response_1.message);
+              this.table.reset();
+              this.FormObjectSurvey.reset();
+              this.FormRepresentative.reset();
+              this.visible = false;
+            } else {
+              const errorsFromResponse1 = donViResponse.response_1.errors || [];
+              const errorsFromResponse2 = donViResponse.response_2.errors || [];
+              const allErrors = [...errorsFromResponse1, ...errorsFromResponse2];
+              
+              if (allErrors.length > 0) {
+                for (const error of allErrors) {
+                  Utils.messageError(this.messageService, error);
+                }
+              }
+            }
           }
         },
-      });
+      });            
     }
   }
 

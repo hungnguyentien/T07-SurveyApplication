@@ -118,12 +118,11 @@
     <ng-template pTemplate="body">
       <div class="form-group">
         <label for="maLinhVuc" class="col-form-label">Mã lĩnh vực: <span style="color: red;">*</span></label>
-        <input type="text" formControlName="maLinhVuc" class="form-control" id="maLinhVuc"
-          placeholder="Nhập mã lĩnh vực">
-        <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormFieldOfActivity.controls['maLinhVuc'].valid && 
+        <input type="text" formControlName="maLinhVuc" class="form-control" id="maLinhVuc">
+        <!-- <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormFieldOfActivity.controls['maLinhVuc'].valid && 
             FormFieldOfActivity.controls['maLinhVuc'].dirty">
           Vui lòng nhập mã lĩnh vực
-        </small>
+        </small> -->
       </div>
 
       <div class="form-group">

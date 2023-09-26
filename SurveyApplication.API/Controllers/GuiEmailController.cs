@@ -75,11 +75,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<GuiEmailDto>> UpdateGuiEmail([FromBody] UpdateGuiEmailDto obj)
         {
             var command = new UpdateGuiEmailCommand { GuiEmailDto = obj };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpDelete("Delete/{id}")]
@@ -87,11 +84,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<List<GuiEmailDto>>> DeleteGuiEmail(int id)
         {
             var command = new DeleteGuiEmailCommand { Id = id };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpPost("CreateByDonVi")]

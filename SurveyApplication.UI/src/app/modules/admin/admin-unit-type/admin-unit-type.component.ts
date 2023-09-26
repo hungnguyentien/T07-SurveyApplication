@@ -138,21 +138,13 @@ export class AdminUnitTypeComponent {
     ObjUnitType['maLoaiHinh'] = this.MaLoaiHinh;
     this.UnitTypeService.create(ObjUnitType).subscribe({
       next: (res) => {
-        if (res != null) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Thành Công',
-            detail: 'Thêm thành Công !',
-          });
+        if (res.success) {
+          Utils.messageSuccess(this.messageService, res.message);
           this.table.reset();
           this.FormUnitType.reset();
           this.visible = false;
         } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Lỗi',
-            detail: 'Lỗi vui Lòng kiểm tra lại !',
-          });
+          Utils.messageError(this.messageService, res.errors.join(', '));
         }
       },
     });
