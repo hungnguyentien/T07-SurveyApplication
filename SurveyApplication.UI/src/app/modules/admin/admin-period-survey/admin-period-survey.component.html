@@ -100,8 +100,8 @@
                     <span class="p-column-title">STT</span>
                     {{ rowIndex + 1}}
                 </td>
-                <td (click)="detailDotKhaoSat()">
-                    <span class="ml-1 vertical-align-middle">{{ rowData.maDotKhaoSat }}</span>
+                <td (click)="detail(rowData)" class="color_Hover">
+                    <span class="ml-1 vertical-align-middle ">{{ rowData.maDotKhaoSat }}</span>
                 </td>
                 <td>
                     <span class="ml-1 vertical-align-middle">{{ rowData.tenDotKhaoSat }}</span>
@@ -154,7 +154,7 @@
         [resizable]="true" [maximizable]="true">
         <ng-template pTemplate="header">
             <h5 class="modal-title" >
-                {{(showadd === true ? "Thêm mới đợt khảo sát" : "Cập nhật đợt khảo sát") }}
+                {{modalTitle }}
             </h5>
         </ng-template>
         <ng-template pTemplate="body">
@@ -169,6 +169,7 @@
                         Vui lòng nhập mã đợt
                     </small>
                 </div>
+                
                 <div class="form-group col-md-6">
                     <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span
                             style="color: red;">*</span> </label>
@@ -228,7 +229,7 @@
         <ng-template pTemplate="footer">
             <button pButton (click)="visible = false" type="button" label="Đóng"
                 class="custom-button surface-600"></button>
-            <button pButton [disabled]="!FormPeriodSurvey.valid" type="submit" icon="pi pi-save" label="Lưu"
+            <button pButton *ngIf="!checkBtnDetail == true" [disabled]="!FormPeriodSurvey.valid" type="submit" icon="pi pi-save" label="Lưu"
                 class="custom-button"></button>
         </ng-template>
     </p-dialog>

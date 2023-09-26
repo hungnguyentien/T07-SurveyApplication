@@ -40,7 +40,9 @@ export class AdminPeriodSurveyComponent {
   dateRangeError = false;
   checkdetail!:boolean
   oldNgayKetThuc!: string | null;
-
+  checkBtnDetail:boolean = false
+  actionDetail!:any;
+  modalTitle = '';
   constructor(
     private FormBuilder: FormBuilder,
     private PeriodSurveyService: PeriodSurveyService,
@@ -65,9 +67,19 @@ export class AdminPeriodSurveyComponent {
     );
   }
 
-  detailDotKhaoSat(){
+  detail(data:any){
+    this.checkBtnDetail = true
     this.visible = !this.visible;
-    this.checkdetail = true
+    this.modalTitle = 'Chi tiết đợt khảo sát';
+    this.FormPeriodSurvey.disable();
+    this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(data.maDotKhaoSat);
+    this.FormPeriodSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
+    this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(data.tenDotKhaoSat);
+    const ngayBatDauFormatted = this.datePipe.transform(data.ngayBatDau,'dd/MM/yyyy');
+    const ngayKetThucFormatted = this.datePipe.transform( data.ngayKetThuc,'dd/MM/yyyy');
+    this.FormPeriodSurvey.controls['NgayBatDau'].setValue(ngayBatDauFormatted);
+    this.FormPeriodSurvey.controls['NgayKetThuc'].setValue(ngayKetThucFormatted );
+
   }
 
 
@@ -139,13 +151,19 @@ export class AdminPeriodSurveyComponent {
   }
 
   Add() {
-    this.showadd = true;
+    this.checkBtnDetail = false; // check ẩn hiện button 
+    this.modalTitle  = 'Thêm mới đợt khảo sát';
+    this.FormPeriodSurvey.enable();
+
     this.visible = !this.visible;
     this.FormPeriodSurvey.reset();
   }
 
   Edit(data: any) {
-    this.showadd = false;
+    this.FormPeriodSurvey.enable();
+    this.FormPeriodSurvey.get("MaDotKhaoSat")?.disable();
+    this.modalTitle = 'Cập nhật đợt khảo sát';
+    this.checkBtnDetail = false; // check ẩn hiện button 
     this.visible = !this.visible;
     this.IdDotKhaoSat = data.id;
     this.MaDotKhaoSat = data.maDotKhaoSat;
