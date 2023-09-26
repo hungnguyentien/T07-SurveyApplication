@@ -15,7 +15,13 @@ public class DonViRepository : GenericRepository<DonVi>, IDonViRepository
 
     public async Task<bool> ExistsByMaDonVi(string maDonVi)
     {
-        var entity = await _dbContext.DonVi.AsNoTracking().FirstOrDefaultAsync(x => x.MaDonVi == maDonVi);
+        var entity = await _dbContext.DonVi.AsNoTracking().FirstOrDefaultAsync(x => x.MaDonVi == maDonVi && !x.Deleted);
+        return entity != null;
+    }
+
+    public async Task<bool> ExistsByEmail(string email)
+    {
+        var entity = await _dbContext.DonVi.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email && !x.Deleted);
         return entity != null;
     }
 }

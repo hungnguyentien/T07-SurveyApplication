@@ -4,3 +4,8 @@ export interface BaseCommandResponse {
   message: string;
   errors: string[];
 }
+
+export interface DonViNguoiDaiDienResponse {
+  response_1: BaseCommandResponse;
+  response_2: BaseCommandResponse;
+}

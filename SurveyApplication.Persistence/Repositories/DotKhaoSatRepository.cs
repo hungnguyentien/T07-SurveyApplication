@@ -16,7 +16,7 @@ public class DotKhaoSatRepository : GenericRepository<DotKhaoSat>, IDotKhaoSatRe
     public async Task<bool> ExistsByMaDotKhaoSat(string MaDotKhaoSat)
     {
         var entity = await _dbContext.DotKhaoSat.AsNoTracking()
-            .FirstOrDefaultAsync(x => x.MaDotKhaoSat == MaDotKhaoSat);
+            .FirstOrDefaultAsync(x => x.MaDotKhaoSat == MaDotKhaoSat && !x.Deleted);
         return entity != null;
     }
 }

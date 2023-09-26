@@ -15,7 +15,7 @@ public class GuiEmailRepository : GenericRepository<GuiEmail>, IGuiEmailReposito
 
     public async Task<bool> ExistsByMaGuiEmail(string maGuiEmail)
     {
-        var entity = await DbContext.GuiEmail.AsNoTracking().FirstOrDefaultAsync(x => x.MaGuiEmail == maGuiEmail);
+        var entity = await DbContext.GuiEmail.AsNoTracking().FirstOrDefaultAsync(x => x.MaGuiEmail == maGuiEmail && !x.Deleted);
         return entity != null;
     }
 }
