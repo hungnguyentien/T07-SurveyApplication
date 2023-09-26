@@ -19,6 +19,7 @@ export class FieldOfActivityComponent {
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
+  MaLinhVuc!: string;
   
   submitted: boolean = false;
   first = 0;
@@ -39,7 +40,7 @@ export class FieldOfActivityComponent {
 
   createForm = () => {
     this.FormFieldOfActivity = this.FormBuilder.group({
-      maLinhVuc: ['', Validators.required],
+      maLinhVuc: [{ value: this.MaLinhVuc, disabled: true }],
       tenLinhVuc: ['', Validators.required],
       moTa: ['', Validators.required],
     });
@@ -107,13 +108,19 @@ export class FieldOfActivityComponent {
     this.visible = !this.visible;
     this.showadd = true;
     this.FormFieldOfActivity.reset();
+    this.FieldOfActivityService.generateMaLinhVuc().subscribe({
+      next: (res: any) => {
+        this.FormFieldOfActivity.controls['maLinhVuc'].setValue(res.maLinhVuc);
+        this.MaLinhVuc = res.maLinhVuc;
+      },
+    });
   }
 
   Edit(data: any) {
     this.visible = !this.visible;
     this.showadd = false;
-
     this.IdLinhVuc = data.id;
+    this.MaLinhVuc = data.maLinhVuc;
     this.FormFieldOfActivity.controls['maLinhVuc'].setValue(data.maLinhVuc);
     this.FormFieldOfActivity.controls['tenLinhVuc'].setValue(data.tenLinhVuc);
     this.FormFieldOfActivity.controls['moTa'].setValue(data.moTa);
@@ -121,23 +128,16 @@ export class FieldOfActivityComponent {
 
   SaveAdd() {
     const ObjFieldOfActivity = this.FormFieldOfActivity.value;
+    ObjFieldOfActivity['maLinhVuc'] = this.MaLinhVuc;
     this.FieldOfActivityService.create(ObjFieldOfActivity).subscribe({
       next: (res) => {
-        if (res != null) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Thành Công',
-            detail: 'Thêm thành Công !',
-          });
+        if (res.success) {
+          Utils.messageSuccess(this.messageService, res.message);
           this.table.reset();
           this.FormFieldOfActivity.reset();
           this.visible = false;
         } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Lỗi',
-            detail: 'Lỗi vui Lòng kiểm tra lại !',
-          });
+          Utils.messageError(this.messageService, res.errors.join(', '));
         }
       },
     });
@@ -146,6 +146,7 @@ export class FieldOfActivityComponent {
   SaveEdit() {
     const ObjFieldOfActivity = this.FormFieldOfActivity.value;
     ObjFieldOfActivity['id'] = this.IdLinhVuc;
+    ObjFieldOfActivity['maLinhVuc'] = this.MaLinhVuc;
     this.FieldOfActivityService.update(ObjFieldOfActivity).subscribe({
       next: (res: any) => {
         if (res.success == true) {

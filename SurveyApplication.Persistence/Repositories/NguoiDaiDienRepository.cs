@@ -16,7 +16,13 @@ public class NguoiDaiDienRepository : GenericRepository<NguoiDaiDien>, INguoiDai
     public async Task<bool> ExistsByMaNguoiDaiDien(string MaNguoiDaiDien)
     {
         var entity = await _dbContext.NguoiDaiDien.AsNoTracking()
-            .FirstOrDefaultAsync(x => x.MaNguoiDaiDien == MaNguoiDaiDien);
+            .FirstOrDefaultAsync(x => x.MaNguoiDaiDien == MaNguoiDaiDien && !x.Deleted);
+        return entity != null;
+    }
+
+    public async Task<bool> ExistsByEmail(string email)
+    {
+        var entity = await _dbContext.NguoiDaiDien.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email && !x.Deleted);
         return entity != null;
     }
 }

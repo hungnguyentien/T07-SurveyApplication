@@ -63,11 +63,8 @@ public class NguoiDaiDienController : ControllerBase
     public async Task<ActionResult<NguoiDaiDienDto>> UpdateNguoiDaiDien([FromBody] UpdateNguoiDaiDienDto obj)
     {
         var command = new UpdateNguoiDaiDienCommand { NguoiDaiDienDto = obj };
-        await _mediator.Send(command);
-        return Ok(new
-        {
-            Success = true
-        });
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
 
     [HttpDelete("Delete/{id}")]

@@ -73,11 +73,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<LoaiHinhDonViDto>> UpdateLoaiHinhDonVi([FromBody] UpdateLoaiHinhDonViDto obj)
         {
             var command = new UpdateLoaiHinhDonViCommand { LoaiHinhDonViDto = obj };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpDelete("Delete/{id}")]

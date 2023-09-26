@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
@@ -18,7 +19,19 @@ public class GetLastRecordLoaiHinhDonViRequestHandler : BaseMasterFeatures,
 
     public async Task<string> Handle(GetLastRecordLoaiHinhDonViRequest request, CancellationToken cancellationToken)
     {
-        var LoaiHinhDonVis = await _surveyRepo.LoaiHinhDonVi.GetLastRecordByMaLoaiHinh();
-        return LoaiHinhDonVis;
+        var lastEntity = await _surveyRepo.LoaiHinhDonVi.GetAllQueryable().OrderByDescending(e => e.Id).FirstOrDefaultAsync();
+
+        if (lastEntity != null)
+        {
+            var prefix = lastEntity.MaLoaiHinh.Substring(0, 2);
+            var currentNumber = int.Parse(lastEntity.MaLoaiHinh.Substring(2));
+
+            currentNumber++;
+            var newNumber = currentNumber.ToString("D3");
+
+            return prefix + newNumber;
+        }
+
+        return "LH001";
     }
 }

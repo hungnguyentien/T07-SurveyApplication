@@ -28,7 +28,7 @@ public class CreateDonViCommandHandler : BaseMasterFeatures, IRequestHandler<Cre
             response.Success = false;
             response.Message = "Tạo mới thất bại";
             response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
-            throw new ValidationException(validatorResult);
+            return response;
         }
 
         var donVi = _mapper.Map<DonVi>(request.DonViDto);

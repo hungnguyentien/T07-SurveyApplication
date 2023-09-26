@@ -31,9 +31,13 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
                 .NotNull();
 
             RuleFor(p => p.Email)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-
-                .NotNull();
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull()
+            .MustAsync(async (email, token) =>
+            {
+                var emailExists = await _donViRepository.ExistsByEmail(email);
+                return !emailExists;
+            }).WithMessage("Email đơn vị đã tồn tại!");
 
             RuleFor(p => p.SoDienThoai)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

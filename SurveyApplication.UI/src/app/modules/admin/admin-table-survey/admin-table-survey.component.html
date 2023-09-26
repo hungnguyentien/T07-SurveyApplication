@@ -147,19 +147,19 @@
                         </a>
                     </ng-container>
 
-                    <ng-container *ngIf="rowData.trangThai == 3">
+                    <!-- <ng-container *ngIf="rowData.trangThai == 3">
                         <a class="m-2" (click)="ToggleStatus(rowData)">
                             <span class="pi pi-caret-right " title="Tiếp tục" style="color: rgb(32, 154, 60);"
                                 aria-hidden="true"></span>
                         </a>
-                    </ng-container>
+                    </ng-container> -->
 
-                    <ng-container *ngIf="rowData.trangThai == 1">
+                    <!-- <ng-container *ngIf="rowData.trangThai == 1">
                         <a class="m-2" (click)="ToggleStatus(rowData)">
                             <span class="pi pi-pause " title="Dừng" style="color: rgb(212, 22, 22);"
                                 aria-hidden="true"></span>
                         </a>
-                    </ng-container>
+                    </ng-container> -->
 
                     <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
                         <a class="m-2" (click)="detailTableSurvey(rowData)">

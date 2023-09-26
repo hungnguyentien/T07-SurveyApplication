@@ -20,7 +20,7 @@ namespace SurveyApplication.Persistence.Repositories
 
         public async Task<bool> ExistsByName(string tenModule)
         {
-            var entity = await _dbContext.Module.AsNoTracking().FirstOrDefaultAsync(x => x.Name == tenModule);
+            var entity = await _dbContext.Module.AsNoTracking().FirstOrDefaultAsync(x => x.Name == tenModule && !x.Deleted);
             return entity != null;
         }
     }
