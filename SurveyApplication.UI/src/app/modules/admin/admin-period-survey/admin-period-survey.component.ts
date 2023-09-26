@@ -229,7 +229,6 @@ export class AdminPeriodSurveyComponent {
   }
 
   Delete(data: any) {
-    debugger
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn xoá không ' + '?',
       header: 'delete',
