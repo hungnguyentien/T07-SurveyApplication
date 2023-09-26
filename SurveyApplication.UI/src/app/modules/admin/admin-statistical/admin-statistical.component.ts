@@ -117,12 +117,12 @@ export class AdminStatisticalComponent {
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
     let frmValue = this.frmStatiscal.value;
-    let ngayBatDau = moment(this.dataTableSurvey?.ngayBatDau).format(
-      'YYYY-MM-DD'
-    );
-    let ngayKetThuc = moment(this.dataTableSurvey?.ngayKetThuc).format(
-      'YYYY-MM-DD'
-    );
+    let ngayBatDau = this.dataTableSurvey?.ngayBatDau
+      ? moment(this.dataTableSurvey?.ngayBatDau).format('YYYY-MM-DD')
+      : '';
+    let ngayKetThuc = this.dataTableSurvey?.ngayKetThuc
+      ? moment(this.dataTableSurvey?.ngayKetThuc).format('YYYY-MM-DD')
+      : '';
     this.paging = {
       ...frmValue,
       pageIndex: pageIndex,
@@ -285,12 +285,12 @@ export class AdminStatisticalComponent {
 
   search = () => {
     let frmValue = this.frmStatiscal.value;
-    let ngayBatDau = moment(frmValue.ngayBatDau, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD'
-    );
-    let ngayKetThuc = moment(frmValue.ngayKetThuc, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD'
-    );
+    let ngayBatDau = frmValue.ngayBatDau
+      ? moment(frmValue.ngayBatDau, 'DD/MM/YYYY').format('YYYY-MM-DD')
+      : '';
+    let ngayKetThuc = frmValue.ngayKetThuc
+      ? moment(frmValue.ngayKetThuc, 'DD/MM/YYYY').format('YYYY-MM-DD')
+      : '';
     if (!frmValue.idDotKhaoSat)
       Utils.messageError(this.messageService, `Vui lòng chọn đợt khảo sát!`);
     else if (!frmValue.idBangKhaoSat)
@@ -299,12 +299,12 @@ export class AdminStatisticalComponent {
       let params: BaoCaoCauHoiRequest = {
         ...this.frmStatiscal.value,
       };
-      params.ngayBatDau = moment(params.ngayBatDau, 'DD/MM/YYYY').format(
-        'DD/MM/YYYY'
-      );
-      params.ngayKetThuc = moment(params.ngayKetThuc, 'DD/MM/YYYY').format(
-        'DD/MM/YYYY'
-      );
+      params.ngayBatDau = params.ngayBatDau
+        ? moment(params.ngayBatDau, 'DD/MM/YYYY').format('DD/MM/YYYY')
+        : '';
+      params.ngayKetThuc = params.ngayKetThuc
+        ? moment(params.ngayKetThuc, 'DD/MM/YYYY').format('DD/MM/YYYY')
+        : '';
       this.getVauleChar(params);
       this.paging.keyword = this.keyWord;
       this.paging.idBangKhaoSat = frmValue.idBangKhaoSat;

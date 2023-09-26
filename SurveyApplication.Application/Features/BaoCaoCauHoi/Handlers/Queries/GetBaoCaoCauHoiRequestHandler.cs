@@ -91,13 +91,13 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                           Id = c.Id
                                       }).CountAsync(cancellationToken: cancellationToken);
 
-            var groupedResults = query.GroupBy(g => new { g.IdCauHoi, g.CauHoi, g.DauThoiGian }).OrderBy(o => o.Key.IdCauHoi);
+            var groupedResults = query.GroupBy(g => new { g.IdCauHoi, g.CauHoi/*, g.DauThoiGian*/ }).OrderBy(o => o.Key.IdCauHoi);
 
             var groupedDataList = await groupedResults.Select(group => new ListCauHoiTraLoi
             {
                 IdCauHoi = group.Key.IdCauHoi,
                 TenCauHoi = group.Key.CauHoi,
-                DauThoiGian = group.Key.DauThoiGian,
+                //DauThoiGian = group.Key.DauThoiGian,
                 CauHoiTraLoi = group.ToList()
             }).ToListAsync(cancellationToken: cancellationToken);
 
