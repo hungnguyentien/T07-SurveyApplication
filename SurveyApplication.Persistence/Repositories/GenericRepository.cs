@@ -323,7 +323,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task<bool> Exists(Expression<Func<T, bool>> expression)
     {
-        var entity = await GetAllQueryable().FirstOrDefaultAsync(expression);
+        var entity = await GetAllQueryable().AsNoTracking().FirstOrDefaultAsync(expression);
         return entity != null;
     }
 

@@ -64,11 +64,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<ModuleDto>> UpdateModule([FromBody] UpdateModuleDto obj)
         {
             var command = new UpdateModuleCommand { ModuleDto = obj };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
         [HttpDelete("Delete/{id}")]

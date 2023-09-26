@@ -4,5 +4,4 @@ public interface ILoaiHinhDonViRepository : IGenericRepository<LoaiHinhDonVi>
 {
     Task<bool> ExistsByMaLoaiHinh(string maloaihinh);
     Task<bool> ExistsByName(string tenLoaiHinh);
-    Task<string> GetLastRecordByMaLoaiHinh();
 }
