@@ -199,9 +199,7 @@
                         formTableSurvey.controls['maBangKhaoSat'].dirty">
                         Vui lòng nhập mã bảng
                     </small>
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="serverError">
-                        {{ serverError }}
-                    </small>
+                   
                 </div>
                 <div class="form-group col-md-6">
                     <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát: <span
@@ -235,7 +233,7 @@
                     <p-dropdown id="idDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                        placeholder="-- Chọn loại hình đơn vị --" formControlName="idDotKhaoSat">
+                        placeholder="-- Chọn đợt khảo sát --" formControlName="idDotKhaoSat">
                     </p-dropdown>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['idDotKhaoSat'].valid && 
@@ -253,8 +251,8 @@
                 <div class="form-group col-md-6">
                     <label for="ngayBatDau" class="col-form-label">Ngày bắt đầu: <span
                             style="color: red;">*</span></label>
-                    <input type="date" formControlName="ngayBatDau" class="form-control" id="ngayBatDau" pInputText
-                        placeholder="Ngày Bắt Đầu">
+                    <p-calendar formControlName="ngayBatDau" id="ngayBatDau" appendTo="body" dateFormat="dd/mm/yy"
+                        [showIcon]="true" class="input-date-custom"></p-calendar>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayBatDau'].valid && 
                         formTableSurvey.controls['ngayBatDau'].dirty">
@@ -267,8 +265,9 @@
                 <div class="form-group col-md-6">
                     <label for="ngayKetThuc" class="col-form-label">Ngày kết thúc: <span
                             style="color: red;">*</span></label>
-                    <input type="date" formControlName="ngayKetThuc" class="form-control" id="ngayKetThuc" pInputText
-                        placeholder="Ngày kết thúc">
+                    <p-calendar formControlName="ngayKetThuc" id="ngayKetThuc" appendTo="body" dateFormat="dd/mm/yy"
+                        [showIcon]="true" class="input-date-custom"></p-calendar>
+
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayKetThuc'].valid && 
                         formTableSurvey.controls['ngayKetThuc'].dirty">
                         Vui lòng nhập ngày kết thúc
@@ -405,8 +404,7 @@
                                                 <td class="text-center">
                                                     <p-inputSwitch formControlName="isRequired"></p-inputSwitch>
                                                 </td>
-                                                <td class="vertical-align-middle text-center"
-                                                   >
+                                                <td class="vertical-align-middle text-center">
                                                     <span class="pi pi-plus m-2" title="Thêm"
                                                         (click)="showGroupDialogCh(iPanelTitle)"
                                                         style="color:green; cursor: pointer;" aria-hidden="true"></span>
@@ -429,8 +427,8 @@
             <input type="hidden" formControlName="id">
             <button pButton (click)="visible = false" type="button" label="Đóng"
                 class="custom-button surface-600"></button>
-            <button pButton [disabled]="!formTableSurvey.valid || CheckButton()" type="submit" icon="pi pi-save" label="Lưu"
-                class="custom-button"></button>
+            <button pButton [disabled]="!formTableSurvey.valid || CheckButton()" type="submit" icon="pi pi-save"
+                label="Lưu" class="custom-button"></button>
         </ng-template>
     </p-dialog>
 </form>
