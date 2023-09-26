@@ -7,7 +7,7 @@ export class HighlightDirective {
   constructor(private el: ElementRef) {}
 
   @HostListener('mouseenter') onMouseEnter() {
-    this.highlight('#005b8a');
+    this.highlight('rgba(184, 222, 238, 1)');
   }
 
   @HostListener('mouseleave') onMouseLeave() {
@@ -15,6 +15,10 @@ export class HighlightDirective {
   }
 
   @HostListener('click') click() {
+    const checkActive =
+      this.el.nativeElement.classList.value.indexOf('active') >= 0;
+    const checkActiveChil =
+      this.el.nativeElement.classList.value.indexOf('collapse-item') >= 0;
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach((navItem) => {
       navItem.classList.remove('active');
@@ -22,10 +26,20 @@ export class HighlightDirective {
       let div = navItem.children[1];
       div && div.classList.remove('show');
     });
-    this.el.nativeElement.classList.add('active');
-    this.el.nativeElement.children[0].classList.remove('collapsed');
-    let div = this.el.nativeElement.children[1];
-    div && div.classList.add('show');
+
+    if (checkActiveChil) {
+      const navItemsChil = document.querySelectorAll('a.collapse-item');
+      navItemsChil.forEach((navItem) => {
+        navItem.classList.remove('active');
+      });
+    }
+
+    if (!checkActive) {
+      this.el.nativeElement.classList.add('active');
+      this.el.nativeElement.children[0].classList.remove('collapsed');
+      let div = this.el.nativeElement.children[1];
+      div && div.classList.add('show');
+    }
   }
 
   private highlight(color: string | null) {

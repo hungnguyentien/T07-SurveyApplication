@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
-using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
-using SurveyApplication.Application.Features.QuanHuyens.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 

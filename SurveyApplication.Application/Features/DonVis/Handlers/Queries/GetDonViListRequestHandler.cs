@@ -18,7 +18,7 @@ public class GetDonViListRequestHandler : BaseMasterFeatures, IRequestHandler<Ge
 
     public async Task<List<DonViDto>> Handle(GetDonViListRequest request, CancellationToken cancellationToken)
     {
-        var DonVis = await _surveyRepo.DonVi.GetAll();
+        var DonVis = await _surveyRepo.DonVi.GetAllListAsync(x => !x.Deleted);
         return _mapper.Map<List<DonViDto>>(DonVis);
     }
 }

@@ -523,10 +523,10 @@ export default class Utils {
     return params;
   };
 
-  static getParamsQuery = (keys: string[], values: string[]) => {
+  static getParamsQuery = (keys: string[], values: any[]) => {
     let params = new Array();
     keys.forEach((el, i) => {
-      values[i] && params.push(`${el}=${values[i]}`);
+      (values[i] || values[i] === 0) && params.push(`${el}=${values[i]}`);
     });
     return `?${params.join('&')}`;
   };

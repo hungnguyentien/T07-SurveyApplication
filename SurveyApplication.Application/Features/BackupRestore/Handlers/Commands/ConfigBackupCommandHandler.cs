@@ -50,40 +50,43 @@ namespace SurveyApplication.Application.Features.BackupRestore.Handlers.Commands
 
         public Task<BaseCommandResponse> Handle(ConfigBackupCommand request, CancellationToken cancellationToken)
         {
-            string res;
-            var path = $@"{BackupRestoreConfiguration.DirBackupDb}\";
-            var nameJobs = BackupRestoreConfiguration.NamejobBackupDb;
-            var cmd = CommandStep(path, BackupRestoreConfiguration.DatabaseNames.Split("|").ToList());
-            var myDbConnection = _configuration.GetConnectionString(CustomString.ConnectionString);
-            var timeStr = request.ConfigJobBackup.ScheduleHour.ToString("D2") + request.ConfigJobBackup.ScheduleMinute.ToString("D2") + "00";
-            var startDate = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
-            var strartTime = int.Parse(timeStr);
-            res = request.ConfigJobBackup.ScheduleDayofweek == 0 ? CreateJobsDaiLy(nameJobs, myDbConnection, cmd, strartTime, startDate) : CreateJobsForWeek(request.ConfigJobBackup.ScheduleDayofweek.ToString(), nameJobs, myDbConnection, cmd, strartTime, startDate);
-
-            var file = Path.Combine(path, "SetUpJob.txt");
-            if (!File.Exists(file))
+            var res = string.Empty;
+            try
             {
-                using var sr = File.Create(file);
+                var path = $@"{BackupRestoreConfiguration.DirBackupDb}\";
+                var nameJobs = BackupRestoreConfiguration.NamejobBackupDb;
+                var cmd = CommandStep(path, BackupRestoreConfiguration.DatabaseNames.Split("|").ToList());
+                var myDbConnection = _configuration.GetConnectionString(CustomString.ConnectionString);
+                var timeStr = request.ConfigJobBackup.ScheduleHour.ToString("D2") + request.ConfigJobBackup.ScheduleMinute.ToString("D2") + "00";
+                var startDate = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+                var strartTime = int.Parse(timeStr);
+                res = request.ConfigJobBackup.ScheduleDayofweek == 0 ? CreateJobsDaiLy(nameJobs, myDbConnection, cmd, strartTime, startDate) : CreateJobsForWeek(request.ConfigJobBackup.ScheduleDayofweek.ToString(), nameJobs, myDbConnection, cmd, strartTime, startDate);
+
+                var file = Path.Combine(path, "SetUpJob.txt");
+                if (!File.Exists(file))
+                {
+                    using var sr = File.Create(file);
+                }
+
+                var textFile = $"{request.ConfigJobBackup.ScheduleDayofweek}|{request.ConfigJobBackup.ScheduleHour}|{request.ConfigJobBackup.ScheduleMinute}";
+                File.WriteAllText(file, textFile);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e);
             }
 
-            var textFile = $"{request.ConfigJobBackup.ScheduleDayofweek}|{request.ConfigJobBackup.ScheduleHour}|{request.ConfigJobBackup.ScheduleMinute}";
-            File.WriteAllText(file, textFile);
             return Task.FromResult(new BaseCommandResponse(res));
         }
 
-        private string CommandStep(string path, List<string> databaseNames)
+        private static string CommandStep(string path, List<string> databaseNames)
         {
-            string cmd = " DECLARE @name VARCHAR(50) DECLARE @nameFull VARCHAR(250) DECLARE @path VARCHAR(256) DECLARE @fileName VARCHAR(256) DECLARE @fileDate VARCHAR(20) SET @path = N''" + path
+            var cmd = " DECLARE @name VARCHAR(50) DECLARE @nameFull VARCHAR(250) DECLARE @path VARCHAR(256) DECLARE @fileName VARCHAR(256) DECLARE @fileDate VARCHAR(20) SET @path = N''" + path
                 + "'' SELECT @fileDate = replace(convert(varchar, getdate(), 101), ''/'', '''') + replace(convert(varchar, getdate(), 108), '':'', '''') DECLARE db_cursor CURSOR READ_ONLY FOR " +
                 " SELECT name FROM sys.databases where name in (";
             if (databaseNames.Any())
             {
-                var dbNames = new List<string>();
-                foreach (var databaseName in databaseNames)
-                {
-                    dbNames.Add("''" + databaseName + "''");
-                }
-
+                var dbNames = databaseNames.Select(databaseName => "''" + databaseName + "''").ToList();
                 cmd += string.Join(",", dbNames);
             }
 

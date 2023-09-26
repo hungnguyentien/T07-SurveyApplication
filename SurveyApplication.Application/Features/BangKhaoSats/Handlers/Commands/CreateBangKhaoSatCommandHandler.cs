@@ -49,11 +49,12 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
             request.BangKhaoSatDto.NgayKetThuc.GetValueOrDefault(DateTime.MinValue).Date)
             throw new FluentValidation.ValidationException("Ngày kết thúc không được lớn hơn ngày kết thúc đợt khảo sát");
 
-        if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat)
-        {
-            dotKhaoSat.TrangThai = (int)EnumDotKhaoSat.TrangThai.DangKhaoSat;
-            await _surveyRepo.DotKhaoSat.UpdateAsync(dotKhaoSat);
-        }
+        //TODO Gửi mail mới update trạng thái
+        //if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat)
+        //{
+        //    dotKhaoSat.TrangThai = (int)EnumDotKhaoSat.TrangThai.DangKhaoSat;
+        //    await _surveyRepo.DotKhaoSat.UpdateAsync(dotKhaoSat);
+        //}
 
         var bangKhaoSat = _mapper.Map<BangKhaoSat>(request.BangKhaoSatDto);
         bangKhaoSat.TrangThai = (int)EnumBangKhaoSat.TrangThai.ChoKhaoSat;
@@ -63,17 +64,17 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
         {
             if (request.BangKhaoSatDto?.BangKhaoSatCauHoi.Count == 0)
             {
-                request.BangKhaoSatDto.BangKhaoSatCauHoiGroup.ForEach(x =>
-                {
-                    x.BangKhaoSatCauHoi.ForEach(bks =>
+                request.BangKhaoSatDto.BangKhaoSatCauHoiGroup?.ForEach(x =>
                     {
-                        bks.PanelTitle = x.PanelTitle;
-                        request.BangKhaoSatDto.BangKhaoSatCauHoi.Add(bks);
+                        x.BangKhaoSatCauHoi?.ForEach(bks =>
+                        {
+                            bks.PanelTitle = x.PanelTitle;
+                            request.BangKhaoSatDto.BangKhaoSatCauHoi.Add(bks);
+                        });
                     });
-                });
             }
 
-            var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto.BangKhaoSatCauHoi);
+            var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto?.BangKhaoSatCauHoi);
             lstBangKhaoSatCauHoi.ForEach(x =>
             {
                 x.IdBangKhaoSat = bangKhaoSat.Id; x.Priority =

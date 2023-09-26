@@ -9,6 +9,6 @@ import { environment } from '@environments/environment';
 })
 export class ModuleService extends BaseService<Module> {
   constructor(private http: HttpClient) {
-    super(http, `${environment.fakeApiUrl}/Module`);
+    super(http, `${environment.apiUrl}/Module`);
   }
 }

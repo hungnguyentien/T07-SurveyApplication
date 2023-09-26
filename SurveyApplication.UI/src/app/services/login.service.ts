@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 export class LoginService {
   public currentUser: Observable<string>;
   private currentUserSubject: BehaviorSubject<string>;
-  datas!:any;
 
   constructor(private http: HttpClient, private cookieService: CookieService,private router: Router) {
     this.currentUserSubject = new BehaviorSubject<string>(
@@ -25,6 +24,7 @@ export class LoginService {
   }
 
   login(model: Login) {
+    debugger
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     };
@@ -36,6 +36,7 @@ export class LoginService {
           if (req) {
             // Xóa hết cookie
             this.cookieService.delete('currentUser');
+            this.cookieService.deleteAll('currentUser')
             localStorage.setItem('isRememberMe', model.isRememberMe.toString());
             // lưu token vào Cookie
             if (model.isRememberMe) {
@@ -73,10 +74,6 @@ export class LoginService {
     return this.currentUserSubject.value;
   }
 
-  //lấy về id của user
-  getIdUser():string{
-    return this.datas
-  }
   /**
    * Get data currentUser theo token
    * @returns

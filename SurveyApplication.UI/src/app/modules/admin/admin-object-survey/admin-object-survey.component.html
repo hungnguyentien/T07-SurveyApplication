@@ -153,19 +153,19 @@
         <h6>Thông tin đơn vị </h6>
         <div class="row">
           <div class="col-6 form-group">
-            <label for="TenDonVi" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
-            <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="TenDonVi">
-            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
-            FormObjectSurvey.controls['TenDonVi'].dirty">
-              Vui lòng nhập tên đơn vị
-            </small>
-          </div>
-          <div class="col-6 form-group">
             <label for="MaDonVi" class="col-form-label">Mã đơn vị: <span style="color: red;">*</span></label>
             <input type="text" formControlName="MaDonVi" pInputText class="form-control" id="MaDonVi">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['MaDonVi'].valid && 
             FormObjectSurvey.controls['MaDonVi'].dirty">
               Vui lòng nhập mã đơn vị
+            </small>
+          </div>
+          <div class="col-6 form-group">
+            <label for="TenDonVi" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
+            <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="TenDonVi">
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
+            FormObjectSurvey.controls['TenDonVi'].dirty">
+              Vui lòng nhập tên đơn vị
             </small>
           </div>
         </div>

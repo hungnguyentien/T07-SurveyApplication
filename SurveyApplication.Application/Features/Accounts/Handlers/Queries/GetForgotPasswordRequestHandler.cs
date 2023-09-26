@@ -50,7 +50,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
             var origin = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
 
             // Tạo URL với token
-            var callbackUrl = $"{origin}/Account/ResetPassword?userId={user.Id}&token={WebUtility.UrlEncode(token)}";
+            var callbackUrl = $"{origin}/Account/ResetPassword?userId={user.Email}&token={token}";
 
             // Tạo nội dung email với đường dẫn URL
             var bodyEmail = $"Nhấn vào đường link sau để đặt lại mật khẩu của bạn: <a href='{callbackUrl}'>{callbackUrl}</a>";

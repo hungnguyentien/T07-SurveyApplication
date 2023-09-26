@@ -18,7 +18,7 @@ namespace SurveyApplication.Application.Features.XaPhuongs.Handlers.Queries
 
         public async Task<List<XaPhuongDto>> Handle(GetXaPhuongListRequest request, CancellationToken cancellationToken)
         {
-            var XaPhuongs = await _surveyRepo.XaPhuong.GetAll();
+            var XaPhuongs = await _surveyRepo.XaPhuong.GetAllListAsync(x => !x.Deleted);
             return _mapper.Map<List<XaPhuongDto>>(XaPhuongs);
         }
     }

@@ -17,7 +17,7 @@ namespace SurveyApplication.Application.Features.LinhVucHoatDong.Handlers.Querie
 
         public async Task<List<LinhVucHoatDongDto>> Handle(GetLinhVucHoatDongListRequest request, CancellationToken cancellationToken)
         {
-            var data = await _surveyRepo.LinhVucHoatDong.GetAll();
+            var data = await _surveyRepo.LinhVucHoatDong.GetAllListAsync(x => !x.Deleted);
             return _mapper.Map<List<LinhVucHoatDongDto>>(data);
         }
     }
