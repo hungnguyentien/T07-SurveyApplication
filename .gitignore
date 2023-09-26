@@ -41,4 +41,5 @@
 /SurveyApplication.Domain/bin/Debug/net6.0/SurveyApplication.Domain.deps.json
 /SurveyApplication.Persistence/bin/Debug/net6.0/SurveyApplication.Persistence.deps.json
 /SurveyApplication.API/logs
-/SurveyApplication.API/wwwroot/Images
+
+*.png
