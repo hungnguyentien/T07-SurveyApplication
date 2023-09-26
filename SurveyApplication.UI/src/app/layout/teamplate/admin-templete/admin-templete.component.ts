@@ -76,9 +76,6 @@ export class AdminTempleteComponent {
       this.Role = res.userName;
       this.Address = res.address;
       this.FormProfile.controls['name'].setValue(this.listDatasUser.name);
-      this.FormProfile.controls['userName'].setValue(
-        this.listDatasUser.userName
-      );
       this.FormProfile.controls['email'].setValue(this.listDatasUser.email);
       this.FormProfile.controls['address'].setValue(this.listDatasUser.address);
       if (this.listDatasUser.image) {
