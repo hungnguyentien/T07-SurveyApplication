@@ -29,7 +29,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                               !a.Deleted &&
                               c.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong
                         select a;
-            var t = await query.ToListAsync();
+            
             var data = from a in query
                        group new { a } by new { a.IdBangKhaoSat, a.IdDotKhaoSat, a.IdDonVi, a.IdGuiEmail } into grBc
                        select new BaoCaoCauHoiChiTietDto
