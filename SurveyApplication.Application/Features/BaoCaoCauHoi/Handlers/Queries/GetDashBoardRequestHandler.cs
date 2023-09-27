@@ -3,18 +3,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
-using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
-using SurveyApplication.Application.DTOs.GuiEmail;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Queries;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
@@ -36,7 +28,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                         select new DotKhaoSatDto
                                         {
                                             Id = a.Id
-                                        }).CountAsync();
+                                        }).CountAsync(cancellationToken: cancellationToken);
 
             var tongBangKhaoSat = await (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                          where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
@@ -45,7 +37,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                          select new BangKhaoSatDto
                                          {
                                              Id = a.Id
-                                         }).CountAsync();
+                                         }).CountAsync(cancellationToken: cancellationToken);
 
 
 
@@ -66,7 +58,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                  where !a.Deleted && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh &&
                                        (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
                                        (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc)
-                                 select new { BangKhoaSat = a, IdDonVi = b.IdDonVi };
+                                 select new { BangKhoaSat = a, b.IdDonVi };
 
             var khaoSatTheoNhom = from a in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
                                   join b in thamGiaKhaoSat on a.Id equals b.BangKhoaSat.IdLoaiHinh
