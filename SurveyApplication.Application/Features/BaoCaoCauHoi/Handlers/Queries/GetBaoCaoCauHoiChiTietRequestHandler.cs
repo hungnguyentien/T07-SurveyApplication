@@ -22,14 +22,14 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                         where a.IdDotKhaoSat == request.IdDotKhaoSat &&
                               a.IdBangKhaoSat == request.IdBangKhaoSat &&
                               (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
-                              (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
-                              (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
+                              (request.NgayBatDau == null || b.NgayBatDau.Date >= request.NgayBatDau.GetValueOrDefault(DateTime.MinValue).Date) &&
+                              (request.NgayKetThuc == null || b.NgayKetThuc.Date <= request.NgayKetThuc.GetValueOrDefault(DateTime.MaxValue).Date) &&
                               !string.IsNullOrEmpty(a.CauTraLoi) &&
                               (string.IsNullOrEmpty(request.Keyword) || a.CauHoi.Contains(request.Keyword)) &&
-                              a.Deleted == false &&
+                              !a.Deleted &&
                               c.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong
                         select a;
-
+            var t = await query.ToListAsync();
             var data = from a in query
                        group new { a } by new { a.IdBangKhaoSat, a.IdDotKhaoSat, a.IdDonVi, a.IdGuiEmail } into grBc
                        select new BaoCaoCauHoiChiTietDto
@@ -38,12 +38,12 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                            IdBangKhaoSat = grBc.Key.IdBangKhaoSat,
                            IdDotKhaoSat = grBc.Key.IdDotKhaoSat,
                            DauThoiGian = query.First(x => x.IdDonVi == grBc.Key.IdDonVi && x.IdBangKhaoSat == grBc.Key.IdBangKhaoSat && x.IdDotKhaoSat == grBc.Key.IdDotKhaoSat).DauThoiGian ?? DateTime.MinValue,
-                           LstCauHoiCauTraLoi = query.Where(x => x.IdDonVi == grBc.Key.IdDonVi && x.IdBangKhaoSat == grBc.Key.IdBangKhaoSat && x.IdDotKhaoSat == grBc.Key.IdDotKhaoSat).GroupBy(x => x.LoaiCauHoi).Select(x =>
+                           LstCauHoiCauTraLoi = query.GroupBy(x => new {x.LoaiCauHoi, x.CauHoi}).Select(x =>
                                 new CauHoiCauTraLoiChiTietDto
                                 {
                                     CauHoi = x.First().CauHoi,
                                     LoaiCauHoi = x.First().LoaiCauHoi,
-                                    CauTraLoi = x.Where(ctl => ctl.LoaiCauHoi == x.Key).GroupBy(ctl => new { ctl.CauTraLoi, ctl.MaCauTraLoi }).Select(ctl => ctl.Key.CauTraLoi).ToList(),
+                                    CauTraLoi = x.Where(ctl => ctl.LoaiCauHoi == x.Key.LoaiCauHoi && ctl.CauHoi == x.Key.CauHoi).GroupBy(ctl => new { ctl.CauTraLoi, ctl.MaCauTraLoi }).Select(ctl => ctl.Key.CauTraLoi).ToList(),
                                 }).ToList()
                        };
 

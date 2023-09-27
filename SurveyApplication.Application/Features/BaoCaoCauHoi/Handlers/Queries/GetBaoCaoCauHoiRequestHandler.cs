@@ -45,8 +45,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                         where (request.IdDotKhaoSat == 0 || a.IdDotKhaoSat == request.IdDotKhaoSat) &&
                              (request.IdBangKhaoSat == 0 || a.IdBangKhaoSat == request.IdBangKhaoSat) &&
                              (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
-                             (ngayBatDau == null || b.NgayBatDau >= ngayBatDau) &&
-                             (ngayKetThuc == null || b.NgayKetThuc <= ngayKetThuc) &&
+                             (ngayBatDau == null || b.NgayBatDau.Date >= ngayBatDau.GetValueOrDefault(DateTime.MinValue).Date) &&
+                             (ngayKetThuc == null || b.NgayKetThuc.Date <= ngayKetThuc.GetValueOrDefault(DateTime.MaxValue).Date) &&
                              a.Deleted == false
 
                         select new CauHoiTraLoi
@@ -73,8 +73,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             var donViDuocMoi = await (from a in _surveyRepo.GuiEmail.GetAllQueryable()
                                       join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
                                       where (request.IdBangKhaoSat == 0 || b.Id == request.IdBangKhaoSat) &&
-                                          (request.NgayBatDau == null || b.NgayBatDau >= ngayBatDau) &&
-                                          (request.NgayKetThuc == null || b.NgayKetThuc <= ngayKetThuc) &&
+                                            (ngayBatDau == null || b.NgayBatDau.Date >= ngayBatDau.GetValueOrDefault(DateTime.MinValue).Date) &&
+                                            (ngayKetThuc == null || b.NgayKetThuc.Date <= ngayKetThuc.GetValueOrDefault(DateTime.MaxValue).Date) &&
                                           a.Deleted == false
                                       select new GuiEmailDto
                                       {
@@ -85,15 +85,15 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                       join b in _surveyRepo.GuiEmail.GetAllQueryable() on a.IdGuiEmail equals b.Id
                                       join c in _surveyRepo.BangKhaoSat.GetAllQueryable() on b.IdBangKhaoSat equals c.Id
                                       where (request.IdBangKhaoSat == 0 || c.Id == request.IdBangKhaoSat) &&
-                                          (request.NgayBatDau == null || c.NgayBatDau >= ngayBatDau) &&
-                                          (request.NgayKetThuc == null || c.NgayKetThuc <= ngayKetThuc) &&
+                                          (request.NgayBatDau == null || c.NgayBatDau.Date >= ngayBatDau.GetValueOrDefault(DateTime.MinValue).Date) &&
+                                          (request.NgayKetThuc == null || c.NgayKetThuc.Date <= ngayKetThuc.GetValueOrDefault(DateTime.MaxValue).Date) &&
                                           c.Deleted == false
                                       select new KetQua
                                       {
                                           Id = c.Id
                                       }).CountAsync(cancellationToken: cancellationToken);
 
-            //TODO bắt buộc phải nhập đợt khảo sát vào bảng khảo sát
+            //TODO bắt buộc phải nhập đợt khảo sát và bảng khảo sát
             var queryBaoCao = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                               join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
                               join c in _surveyRepo.DotKhaoSat.GetAllQueryable() on a.IdDotKhaoSat equals c.Id
@@ -105,8 +105,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                               where a.IdDotKhaoSat == request.IdDotKhaoSat &&
                                    a.IdBangKhaoSat == request.IdBangKhaoSat &&
                                    (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
-                                   (ngayBatDau == null || b.NgayBatDau >= ngayBatDau) &&
-                                   (ngayKetThuc == null || b.NgayKetThuc <= ngayKetThuc) &&
+                                   (ngayBatDau == null || b.NgayBatDau.Date >= ngayBatDau.GetValueOrDefault(DateTime.MinValue).Date) &&
+                                   (ngayKetThuc == null || b.NgayKetThuc.Date <= ngayKetThuc.GetValueOrDefault(DateTime.MaxValue).Date) &&
                                    a.Deleted == false &&
                                    f.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong
                               select new CauHoiTraLoi
