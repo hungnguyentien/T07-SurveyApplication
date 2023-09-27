@@ -76,6 +76,8 @@ export class AdminTableSurveyComponent {
 
   visible: boolean = false;
   visibleDetail: boolean = false;
+  checkBtnDetail:boolean=false;
+  modalTitle : string='';
 
   @ViewChild('dtq') tableQ!: Table;
   loadingCauHoi: boolean = true;
@@ -264,22 +266,147 @@ export class AdminTableSurveyComponent {
 
   //#region CRUD
 
+  detail(data:any){
+    this.checkBtnDetail = true
+    this.visible = !this.visible;
+    this.modalTitle = 'Chi tiết bảng khảo sát';
+    
+    this.formTableSurvey.disable();
+    this.lstBangKhaoSatCauHoi.disable();
+    this.lstBangKhaoSatCauHoi.clear();
+    this.lstBangKhaoSatCauHoiGroup.clear();
+
+    this.lstBangKhaoSatCauHoi.disable();
+    this.lstBangKhaoSatCauHoiGroup.disable();
+    
+   
+   
+    
+    this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
+      {
+        next: (res) => {
+          let k = Object.keys(res);
+          let v = Object.values(res);
+          Utils.setValueForm(this.formTableSurvey, k, v);
+          const ngayBatDauFormatted = this.datePipe.transform(
+            data.ngayBatDau,
+            'dd/MM/yyyy'
+          );
+          const ngayKetThuFormatted = this.datePipe.transform(
+            data.ngayKetThuc,
+            'dd/MM/yyyy'
+          );
+          this.formTableSurvey.controls['ngayBatDau'].setValue(
+            ngayBatDauFormatted
+          );
+          this.formTableSurvey.controls['ngayKetThuc'].setValue(
+            ngayKetThuFormatted
+          );
+          let bangKhaoSatCauHoiGroup: BangKhaoSatCauHoi[] = [];
+          res.bangKhaoSatCauHoi?.forEach((el, i) => {
+            if (el.panelTitle) {
+              const newItem = {
+                id: el.id,
+                idCauHoi: el.idCauHoi,
+                priority: i,
+                isRequired: el.isRequired,
+                panelTitle: el.panelTitle,
+                maCauHoi: el.maCauHoi,
+                tieuDe: el.tieuDe,
+              };
+              bangKhaoSatCauHoiGroup.push(newItem);
+            } else {
+              const idCauHoi = el.idCauHoi;
+              // Kiểm tra xem idCauHoi đã tồn tại trong lstBangKhaoSatCauHoi chưa
+              const idCauHoiExists = this.lstBangKhaoSatCauHoi.controls.some(
+                (control) => {
+                  const idCauHoiControl = control.get('idCauHoi');
+                  return idCauHoiControl
+                    ? idCauHoiControl.value === idCauHoi
+                    : false;
+                }
+              );
+              if (!idCauHoiExists) {
+                // Nếu idCauHoi chưa tồn tại, thêm mới
+                const newItem = this.FormBuilder.group({
+                  id: 0,
+                  idCauHoi: idCauHoi,
+                  priority: i,
+                  isRequired: el.isRequired,
+                  maCauHoi: el.maCauHoi,
+                  tieuDe: el.tieuDe,
+                });
+                this.lstBangKhaoSatCauHoi.push(newItem);
+              }
+            }
+          });
+          // Lọc bỏ các giá trị null sau khi thêm mới
+          for (let i = this.lstBangKhaoSatCauHoi.length - 1; i >= 0; i--) {
+            const control = this.lstBangKhaoSatCauHoi.at(i).get('idCauHoi');
+            if (control !== null) {
+              const idCauHoi = control.value;
+              if (idCauHoi === null) {
+                this.lstBangKhaoSatCauHoi.removeAt(i);
+              }
+            }
+          }
+
+          if (bangKhaoSatCauHoiGroup.length > 0) {
+            const groupTitle = bangKhaoSatCauHoiGroup
+              .map((x) => x.panelTitle)
+              .filter(Utils.onlyUnique);
+            groupTitle.forEach((x, i) => {
+              const newItem = this.FormBuilder.group({
+                panelTitle: [x, Validators.required],
+                bangKhaoSatCauHoi: this.FormBuilder.array<BangKhaoSatCauHoi>(
+                  []
+                ),
+              });
+              this.lstBangKhaoSatCauHoiGroup.push(newItem);
+              bangKhaoSatCauHoiGroup
+                .filter((g) => g.panelTitle == x)
+                .forEach((el) => {
+                  const newItem = this.FormBuilder.group<BangKhaoSatCauHoi>({
+                    id: 0,
+                    idCauHoi: el.idCauHoi,
+                    priority: i,
+                    isRequired: el.isRequired,
+                    panelTitle: el.panelTitle,
+                    maCauHoi: el.maCauHoi,
+                    tieuDe: el.tieuDe,
+                  });
+                  this.lstBangKhaoSatCauHoiGroupItem(i).push(newItem);
+                });
+            });
+          }
+
+          console.log('Danh sách sau khi xử lý:', this.lstBangKhaoSatCauHoi);
+        },
+      }
+    );
+
+  }
+
   Add() {
     this.formTableSurvey.reset();
+    this.modalTitle = 'Thêm mới bảng khảo sát';
+    this.formTableSurvey.enable();
+    this.formTableSurvey.get('maBangKhaoSat')?.enable();
+    this.checkBtnDetail = false;
     this.showadd = true;
     this.visible = !this.visible;
-    this.formTableSurvey.get('maBangKhaoSat')?.enable();
     this.lstBangKhaoSatCauHoi.clear();
     this.lstBangKhaoSatCauHoiGroup.clear();
   }
-
   Edit(data: any) {
     this.showadd = false;
+    this.checkBtnDetail = false;
+    this.modalTitle = 'Cập nhật bảng khảo sát';
     this.visible = !this.visible;
-
-    this.formTableSurvey.get('maBangKhaoSat')?.disable();
     this.Gettrangthai = data.trangThai;
-    this.GetMaBangKhaoSat = data.maBangKhaoSat;
+    this.GetMaBangKhaoSat=data.maBangKhaoSat;
+    this.formTableSurvey.enable();
+    this.formTableSurvey.get('maBangKhaoSat')?.disable();
     this.lstBangKhaoSatCauHoi.clear();
     this.lstBangKhaoSatCauHoiGroup.clear();
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
@@ -571,16 +698,17 @@ export class AdminTableSurveyComponent {
         this.TableSurveyService.deleteMultiple(ids).subscribe({
           next: (res: any) => {
             if (res.success == false) {
-              Utils.messageError(this.messageService, res.message);
+              Utils.messageError(this.messageService, res.message);              
             } else {
               Utils.messageSuccess(
                 this.messageService,
                 `Xoá ${ids.length} bảng khảo sát thành công!`
               );
+              this.selectedTableSurvey = [];             
             }
           },
           complete: () => {
-            this.table.reset();
+            this.table.reset();     
           },
         });
       },
@@ -639,20 +767,24 @@ export class AdminTableSurveyComponent {
   CheckButton() {
     const checklst = this.lstBangKhaoSatCauHoi.length;
     const checkGruop = this.lstBangKhaoSatCauHoiGroup.length;
-
     if (checklst === 0) {
       if (checkGruop > 0) {
         return false;
       }
+
     }
+
     if (checkGruop === 0) {
       if (checklst > 0) {
         return false;
       }
+
     }
+
     if (checkGruop === 0 && checklst === 0) {
       return true;
     }
+
     return true;
   }
 
