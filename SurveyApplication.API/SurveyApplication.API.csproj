@@ -19,11 +19,16 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="TempData\" />
-    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SurveyApplication.Application\SurveyApplication.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Images\note.text">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

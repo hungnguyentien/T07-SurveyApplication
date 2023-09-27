@@ -237,7 +237,10 @@
                 </ng>
               </td>
               <td class="text-center">
-                {{rowData.isKhaoSat ? 'Đã khảo sát': 'Chưa khảo sát'}}
+                <div [ngSwitch]="rowData.isKhaoSat">
+                  <span *ngSwitchCase="true" style="font-weight: 600;color: rgba(36, 119, 69, 1);">Đã khảo sát</span>
+                  <span *ngSwitchDefault style="font-weight: 600;color: rgba(229, 13, 13, 1);">Chưa khảo sát</span>
+                </div>
               </td>
             </tr>
           </ng-template>

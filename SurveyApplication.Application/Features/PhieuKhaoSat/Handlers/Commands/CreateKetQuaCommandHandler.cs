@@ -73,16 +73,6 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
         if (dotKs.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
             throw new ValidationException("Đợt khảo sát này đã hoàn thành");
 
-        //var countBks =
-        //    await _surveyRepo.GuiEmail.CountAsync(x => x.IdBangKhaoSat == guiEmail.IdBangKhaoSat && !x.Deleted);
-        //var countKq = await _surveyRepo.KetQua.CountAsync(x =>
-        //    x.IdGuiEmail == guiEmail.Id && !x.Deleted && x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh);
-        //if (countBks == countKq)
-        //{
-        //    bks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
-        //    await _surveyRepo.BangKhaoSat.UpdateAsync(bks);
-        //}
-
         var ketQua = _mapper.Map<KetQua>(request.CreateKetQuaDto) ?? new KetQua();
         ketQua.IdGuiEmail = guiEmail.Id;
         if (ketQua.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh)
@@ -96,6 +86,16 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
             await _surveyRepo.KetQua.UpdateAsync(_mapper.Map(request.CreateKetQuaDto, kqDb));
 
         await _surveyRepo.SaveAync();
+
+        var countBks =
+            await _surveyRepo.GuiEmail.CountAsync(x => x.IdBangKhaoSat == guiEmail.IdBangKhaoSat && !x.Deleted && x.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong);
+        var countKq = await _surveyRepo.KetQua.CountAsync(x => x.IdGuiEmail == guiEmail.Id && !x.Deleted && x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh);
+        if (countBks > 0 && countKq > 0 && countBks == countKq)
+        {
+            bks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
+            await _surveyRepo.BangKhaoSat.UpdateAsync(bks);
+        }
+
         response.Success = true;
         response.Message = $"{(request.CreateKetQuaDto?.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh ? "Gửi thông tin" : "Lưu tạm")} thành công!";
         response.Id = ketQua.Id;

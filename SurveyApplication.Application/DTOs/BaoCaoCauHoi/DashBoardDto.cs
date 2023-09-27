@@ -12,13 +12,20 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
         public int CountDotKhaoSat { get; set; }
         public int CountBangKhaoSat { get; set; }
         public int CountThamGia { get; set; }
-        public double CountDonViBo { get; set; }
-        public double CountDonViSo { get; set; }
-        public double CountDonViNganh { get; set; }
-        public double CountDot1 { get; set; }
-        public double CountDot2 { get; set; }
-        public double CountDot3 { get; set; }
-
         public List<ListTinhTp>? ListTinhTp { get; set; }
+        public List<CountDonViByLoaiHinh> LstCountDonViByLoaiHinh { get; set; }
+        public List<CountDot> LstCountDot { get; set; }
+    }
+
+    public class CountDonViByLoaiHinh
+    {
+        public string Ten { get; set; }
+        public double Count { get; set; }
+    }
+
+    public class CountDot
+    {
+        public string Ten { get; set; }
+        public double Count { get; set; }
     }
 }

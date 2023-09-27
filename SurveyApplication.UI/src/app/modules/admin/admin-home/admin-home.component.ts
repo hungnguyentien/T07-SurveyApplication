@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import Utils from '@app/helpers/utils';
+import { DashBoard } from '@app/models';
 import { AdminHomeService } from '@app/services/admin-home.service';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as moment from 'moment';
 import 'moment-timezone'; // Import 'moment-timezone'
+import { PrimeNGConfig } from 'primeng/api';
 @Component({
   selector: 'app-admin-home',
   templateUrl: './admin-home.component.html',
@@ -18,10 +22,9 @@ export class AdminHomeComponent {
   barData: any;
   barOptions: any;
   FormAminHome!: FormGroup;
-  listDashBoard!: any;
+  listDashBoard!: DashBoard;
 
-  labelsDataChart: any;
-  realDataChart: any;
+  realDataChart!: DashBoard;
   sumBangKhoaSat!: number;
   sumDoiKhoaSat!: number;
   sumSoLuongThamGia!: number;
@@ -29,10 +32,13 @@ export class AdminHomeComponent {
   constructor(
     private router: Router,
     private FormBuilder: FormBuilder,
-    private adminHomeService: AdminHomeService
+    private adminHomeService: AdminHomeService,
+    private config: PrimeNGConfig,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
+    Utils.translate('vi', this.translateService, this.config);
     this.FormAminHome = this.FormBuilder.group({
       NgayBatDau: ['', Validators.required],
       NgayKetThuc: ['', Validators.required],
@@ -64,10 +70,12 @@ export class AdminHomeComponent {
 
   onSubmit() {
     const valuesNgay = this.FormAminHome.value;
-    const ngayBatDauMoment = moment(valuesNgay.NgayBatDau);
-    const ngayKetThucMoment = moment(valuesNgay.NgayKetThuc);
-    const ngayBatDauStr = ngayBatDauMoment.format('MM/DD/YYYY');
-    const ngayKetThucStr = ngayKetThucMoment.format('MM/DD/YYYY');
+    const ngayBatDauStr = valuesNgay.NgayBatDau
+      ? moment(valuesNgay.NgayBatDau).format('MM/DD/YYYY')
+      : '';
+    const ngayKetThucStr = valuesNgay.NgayKetThuc
+      ? moment(valuesNgay.NgayKetThuc).format('MM/DD/YYYY')
+      : '';
     this.adminHomeService
       .GetDashBoard(ngayBatDauStr, ngayKetThucStr)
       .subscribe((res) => {
@@ -82,14 +90,14 @@ export class AdminHomeComponent {
       });
   }
 
-  chart1(datas: any) {
+  chart1(datas: DashBoard) {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     this.dataNhomDoiTuong = {
-      labels: ['Bộ', 'Sở', 'Doanh Nghiệp'],
+      labels: datas.lstCountDonViByLoaiHinh.map((x) => x.ten),
       datasets: [
         {
-          data: [datas.countDonViBo, datas.countDonViSo, datas.countDonViNganh],
+          data: datas.lstCountDonViByLoaiHinh.map((x) => x.count),
           backgroundColor: [
             documentStyle.getPropertyValue('--blue-500'),
             documentStyle.getPropertyValue('--yellow-500'),
@@ -116,15 +124,15 @@ export class AdminHomeComponent {
     };
   }
 
-  chart2(datas: any) {
+  chart2(datas: DashBoard) {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     this.dataDotKhaosat = {
-      labels: ['Đợt 1', 'Đợt 2', 'Đợt 3'],
+      labels: datas.lstCountDot.map((x) => x.ten),
       datasets: [
         {
           borderWidth: 2,
-          data: [datas.countDot1, datas.countDot2, datas.countDot3],
+          data: datas.lstCountDot.map((x) => x.count),
           backgroundColor: [
             documentStyle.getPropertyValue('--orange-400'),
             documentStyle.getPropertyValue('--green-600'),

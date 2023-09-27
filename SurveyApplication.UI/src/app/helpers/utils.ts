@@ -44,11 +44,13 @@ export default class Utils {
     values: any[]
   ) => {
     keys.forEach((el, i) => {
-      Utils.getFormControl(
-        frm,
-        Utils.capitalizeFirstLetter(nettedField),
-        Utils.capitalizeFirstLetter(el)
-      )?.setValue(values[i].toString());
+      values[i] != null &&
+        values[i] != undefined &&
+        Utils.getFormControl(
+          frm,
+          Utils.capitalizeFirstLetter(nettedField),
+          Utils.capitalizeFirstLetter(el)
+        )?.setValue(values[i].toString());
     });
   };
 
@@ -181,15 +183,7 @@ export default class Utils {
       visibleIndex: 47,
       action: () => {
         //TODO quay lại trang trước
-        router &&
-          router.navigate(
-            ['/phieu/thong-tin-chung'],
-            data
-              ? {
-                  queryParams: { data: data },
-                }
-              : undefined
-          );
+        router && router.navigate([`/phieu/thong-tin-chung/${data}`]);
       },
       css: 'nav-button',
       innerCss: 'sd-btn nav-input',
@@ -348,6 +342,19 @@ export default class Utils {
           ? {
               value: el.maCot,
               text: el.noidung,
+            }
+          : loaiCauHoi == TypeCauHoi.MultiSelectMatrix
+          ? {
+              name: el.maCot,
+              showInMultipleColumns: true,
+              cellType: 'checkbox',
+              colCount: 0,
+              choices: [
+                {
+                  value: el.noidung,
+                  text: el.noidung,
+                },
+              ],
             }
           : {
               name: el.maCot,
@@ -560,8 +567,12 @@ export default class Utils {
    * @returns
    */
   static addDataBaoCao = (...args: any[]): CreateBaoCaoCauHoi[] => {
+    const configCauHoiGroup: any[] = [];
     const [configCauHoi, dataKq, status, lstBaoCaoCauHoi, generalInfo] = args;
-    // if (configCauHoi && dataKq) {
+    const isHasGroup = configCauHoi.find((x: any) => x.type === 'panel');
+    isHasGroup &&
+      configCauHoi.forEach((x: any) => configCauHoiGroup.push(x.elements));
+    // if (configCauHoi && dataKq) { // dùng để debug
     if (configCauHoi && dataKq && status == KqTrangThai.HoanThanh) {
       let dataDefault = {
         idBangKhaoSat: 0,
@@ -570,9 +581,33 @@ export default class Utils {
         idLoaiHinhDonVi: generalInfo.donVi.idLoaiHinh,
         tenDaiDienCq: generalInfo.nguoiDaiDien.hoTen,
       };
-      (configCauHoi as any[]).forEach((el) => {
-        if (el.type === 'radiogroup' || el.type === 'checkbox') {
-          (el.choices as any[]).forEach((choice, i) => {
+      ((isHasGroup ? configCauHoiGroup.flat() : configCauHoi) as any[]).forEach(
+        (el) => {
+          if (el.type === 'radiogroup' || el.type === 'checkbox') {
+            (el.choices as any[]).forEach((choice, i) => {
+              lstBaoCaoCauHoi.push({
+                ...dataDefault,
+                maCauHoi: el.name,
+                cauHoi: el.title,
+                cauHoiPhu: '',
+                maCauHoiPhu: '',
+                loaiCauHoi:
+                  el.type === 'radiogroup'
+                    ? TypeCauHoi.Radio
+                    : TypeCauHoi.CheckBox,
+                maCauTraLoi: choice.text,
+                cauTraLoi:
+                  el.type === 'radiogroup'
+                    ? dataKq[el.name] === choice.value
+                      ? dataKq[el.name]
+                      : ''
+                    : dataKq[el.name]
+                    ? dataKq[el.name][i]
+                    : '',
+              } as CreateBaoCaoCauHoi);
+            });
+            this.addOtherItem(el, dataKq, lstBaoCaoCauHoi, dataDefault);
+          } else if (el.type === 'comment' || el.type === 'text') {
             lstBaoCaoCauHoi.push({
               ...dataDefault,
               maCauHoi: el.name,
@@ -580,83 +615,63 @@ export default class Utils {
               cauHoiPhu: '',
               maCauHoiPhu: '',
               loaiCauHoi:
-                el.type === 'radiogroup'
-                  ? TypeCauHoi.Radio
-                  : TypeCauHoi.CheckBox,
-              maCauTraLoi: choice.text,
-              cauTraLoi:
-                el.type === 'radiogroup'
-                  ? dataKq[el.name] === choice.value
-                    ? dataKq[el.name]
-                    : ''
-                  : dataKq[el.name][i],
+                el.type === 'comment' ? TypeCauHoi.LongText : TypeCauHoi.Text,
+              maCauTraLoi: '',
+              cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
             } as CreateBaoCaoCauHoi);
-          });
-          this.addOtherItem(el, dataKq, lstBaoCaoCauHoi, dataDefault);
-        } else if (el.type === 'comment' || el.type === 'text') {
-          lstBaoCaoCauHoi.push({
-            ...dataDefault,
-            maCauHoi: el.name,
-            cauHoi: el.title,
-            cauHoiPhu: '',
-            maCauHoiPhu: '',
-            loaiCauHoi:
-              el.type === 'comment' ? TypeCauHoi.LongText : TypeCauHoi.Text,
-            maCauTraLoi: '',
-            cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
-          } as CreateBaoCaoCauHoi);
-        } else if (el.type === 'matrixdropdown') {
-          (el.rows as any[]).forEach((rEl) => {
-            (el.columns as any[]).forEach((cEl) => {
-              lstBaoCaoCauHoi.push({
-                ...dataDefault,
-                maCauHoi: el.name,
-                cauHoi: el.title,
-                cauHoiPhu: rEl.text,
-                maCauHoiPhu: rEl.value,
-                loaiCauHoi:
-                  el.cellType === 'checkbox'
-                    ? TypeCauHoi.MultiSelectMatrix
-                    : TypeCauHoi.MultiTextMatrix,
-                maCauTraLoi: cEl.name,
-                cauTraLoi: dataKq[el.name]?.[rEl.value]?.[cEl.name]
-                  ? JSON.stringify(dataKq[el.name][rEl.value][cEl.name])
-                  : '',
-              } as CreateBaoCaoCauHoi);
+          } else if (el.type === 'matrixdropdown') {
+            (el.rows as any[]).forEach((rEl) => {
+              (el.columns as any[]).forEach((cEl) => {
+                lstBaoCaoCauHoi.push({
+                  ...dataDefault,
+                  maCauHoi: el.name,
+                  cauHoi: el.title,
+                  cauHoiPhu: rEl.text,
+                  maCauHoiPhu: rEl.value,
+                  loaiCauHoi:
+                    el.cellType === 'checkbox'
+                      ? TypeCauHoi.MultiSelectMatrix
+                      : TypeCauHoi.MultiTextMatrix,
+                  maCauTraLoi: cEl.name,
+                  cauTraLoi: dataKq[el.name]?.[rEl.value]?.[cEl.name]
+                    ? JSON.stringify(dataKq[el.name][rEl.value][cEl.name])
+                    : '',
+                } as CreateBaoCaoCauHoi);
+              });
             });
-          });
-        } else if (el.type === 'matrix') {
-          (el.rows as any[]).forEach((rEl) => {
-            (el.columns as any[]).forEach((cEl) => {
-              lstBaoCaoCauHoi.push({
-                ...dataDefault,
-                maCauHoi: el.name,
-                cauHoi: el.title,
-                cauHoiPhu: rEl.title,
-                maCauHoiPhu: rEl.value,
-                loaiCauHoi: TypeCauHoi.SingleSelectMatrix,
-                maCauTraLoi: cEl.name,
-                cauTraLoi: dataKq[el.name]?.[rEl.value]
-                  ? cEl.value == dataKq[el.name][rEl.value]
-                    ? cEl.text
-                    : ''
-                  : '',
-              } as CreateBaoCaoCauHoi);
+          } else if (el.type === 'matrix') {
+            (el.rows as any[]).forEach((rEl) => {
+              (el.columns as any[]).forEach((cEl) => {
+                lstBaoCaoCauHoi.push({
+                  ...dataDefault,
+                  maCauHoi: el.name,
+                  cauHoi: el.title,
+                  cauHoiPhu: rEl.title,
+                  maCauHoiPhu: rEl.value,
+                  loaiCauHoi: TypeCauHoi.SingleSelectMatrix,
+                  maCauTraLoi: cEl.name,
+                  cauTraLoi: dataKq[el.name]?.[rEl.value]
+                    ? cEl.value == dataKq[el.name][rEl.value]
+                      ? cEl.text
+                      : ''
+                    : '',
+                } as CreateBaoCaoCauHoi);
+              });
             });
-          });
-        } else if (el.type === 'file') {
-          lstBaoCaoCauHoi.push({
-            ...dataDefault,
-            maCauHoi: el.name,
-            cauHoi: el.title,
-            cauHoiPhu: '',
-            maCauHoiPhu: '',
-            loaiCauHoi: TypeCauHoi.UploadFile,
-            maCauTraLoi: '',
-            cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
-          } as CreateBaoCaoCauHoi);
+          } else if (el.type === 'file') {
+            lstBaoCaoCauHoi.push({
+              ...dataDefault,
+              maCauHoi: el.name,
+              cauHoi: el.title,
+              cauHoiPhu: '',
+              maCauHoiPhu: '',
+              loaiCauHoi: TypeCauHoi.UploadFile,
+              maCauTraLoi: '',
+              cauTraLoi: dataKq[el.name] ? JSON.stringify(dataKq[el.name]) : '',
+            } as CreateBaoCaoCauHoi);
+          }
         }
-      });
+      );
     }
 
     return lstBaoCaoCauHoi;

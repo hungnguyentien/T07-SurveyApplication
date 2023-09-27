@@ -14,7 +14,7 @@ export const jsonDataFake = {
       {
         name: 'page1',
         elements: [],
-        title: 'I. Thông tin sử dụng mã số mã vạch của đơn vị',
+        title: '',
       },
     ],
     showQuestionNumbers: 'off',

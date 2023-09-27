@@ -36,9 +36,11 @@ export class HighlightDirective {
 
     if (!checkActive) {
       this.el.nativeElement.classList.add('active');
-      this.el.nativeElement.children[0].classList.remove('collapsed');
-      let div = this.el.nativeElement.children[1];
-      div && div.classList.add('show');
+      if (this.el.nativeElement.children.length > 0) {
+        this.el.nativeElement.children[0].classList.remove('collapsed');
+        let div = this.el.nativeElement.children[1];
+        div && div.classList.add('show');
+      }
     }
   }
 

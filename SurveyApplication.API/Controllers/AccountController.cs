@@ -33,7 +33,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpPost("register")]
         [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Create })]
-        public async Task<ActionResult<BaseCommandResponse>> Register([FromForm] RegisterDto request)
+        public async Task<ActionResult<BaseCommandResponse>> Register(RegisterDto request)
         {
             return Ok(await _mediator.Send(new RegisterCommand{Register = request} ));
         }

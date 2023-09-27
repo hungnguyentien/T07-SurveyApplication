@@ -4,6 +4,7 @@ using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 {
@@ -17,6 +18,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
         {
             var query = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
+                        join c in _surveyRepo.GuiEmail.GetAllQueryable() on a.IdGuiEmail equals c.Id
                         where a.IdDotKhaoSat == request.IdDotKhaoSat &&
                               a.IdBangKhaoSat == request.IdBangKhaoSat &&
                               (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
@@ -24,7 +26,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                               (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
                               !string.IsNullOrEmpty(a.CauTraLoi) &&
                               (string.IsNullOrEmpty(request.Keyword) || a.CauHoi.Contains(request.Keyword)) &&
-                              a.Deleted == false
+                              a.Deleted == false &&
+                              c.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong
                         select a;
 
             var data = from a in query

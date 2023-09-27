@@ -23,7 +23,7 @@
       <button pButton type="submit" icon="pi pi-search" label="Tìm Kiếm" class="btn btn-primary custom-button ml-3"
         style="padding: 9.25px 20px;">
       </button>
-      <button pButton type="button" icon="pi pi-refresh" label="Reset" (click)="reset()"
+      <button pButton type="button" icon="pi pi-refresh" label="Cài lại" (click)="reset()"
         class="btn btn-primary custom-button ml-3" style="padding: 9.25px 20px;">
       </button>
     </div>
@@ -62,8 +62,8 @@
         <div class="flex justify-content-center pb-2">
           <p-chart type="doughnut" [data]="dataNhomDoiTuong" [options]="optionNhomDoiTuong"></p-chart>
           <div>
-            <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
-              thêm</a>
+            <!-- <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
+              thêm</a> -->
           </div>
         </div>
       </div>
@@ -72,8 +72,8 @@
         <div class="flex justify-content-center pb-2">
           <p-chart type="doughnut" [data]="dataDotKhaosat" [options]="optionDotKhaosat"></p-chart>
           <div>
-            <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
-              thêm</a>
+            <!-- <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
+              thêm</a> -->
           </div>
         </div>
       </div>
@@ -83,9 +83,12 @@
   <div class="card mt-3">
     <div class="row">
       <div class="col-md-12">
-        <h6 class="flex mt-4 mb-4 ml-4">Số đơn vị tham gia khảo sát theo Tỉnh/Thành phố <span class="ml-4">
-            <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
-              thêm</a></span></h6>
+        <h6 class="flex mt-4 mb-4 ml-4">Số đơn vị tham gia khảo sát theo Tỉnh/Thành phố
+          <span class="ml-4">
+            <!-- <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
+              thêm</a> -->
+          </span>
+        </h6>
         <div class="card p-3" style="border: 0;">
           <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
         </div>

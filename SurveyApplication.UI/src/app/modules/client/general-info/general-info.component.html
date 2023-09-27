@@ -122,12 +122,12 @@
                         submitCount > 0 && f('DonVi', 'WebSite').errors
                     }" />
                   <div *ngIf="submitCount > 0 && f('DonVi', 'WebSite').errors" class="invalid-feedback">
-                    <small *ngIf="f('DonVi', 'WebSite').errors?.['required']">
+                    <!-- <small *ngIf="f('DonVi', 'WebSite').errors?.['required']">
                       Vui lòng nhập website
                     </small>
                     <small *ngIf="f('DonVi', 'WebSite').errors?.['pattern']">
                       Website không đúng định dạng
-                    </small>
+                    </small> -->
                   </div>
                 </div>
               </div>
@@ -265,10 +265,10 @@
     </div>
 
     <div class="d-flex justify-content-end align-items-center">
-      <button type="button" class="btn btn-khai-lai mr-3" (click)="resetForm()" [hidden]="!showBtnReset">
+      <!-- <button type="button" class="btn btn-khai-lai mr-3" (click)="resetForm()" [hidden]="!showBtnReset">
         <i class="icons icon-khai-lai-tu-dau"></i>
         Khai lại từ đầu
-      </button>
+      </button> -->
       <button type="submit" class="btn btn-tiep-theo">
         Tiếp theo
         <i class="icons icon-tiep-theo"></i>

@@ -11,6 +11,10 @@
     .p-dropdown-label {
       padding: 6px 12px;
     }
+
+    &.p-disabled {
+      background-color: #e9ecef;
+    }
   }
 
   .p-multiselect {
@@ -228,3 +232,34 @@
   transition: background-color 0.2s linear;
 }
 /*Scroll*/
+
+.text-ellipsis {
+  max-width: 1180px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+span.sd-checkbox__decorator.sd-item__decorator,
+.sd-item--checked .sd-item__decorator {
+  background-color: unset !important;
+  border: 1px solid black !important;
+}
+
+span.sd-checkbox__decorator.sd-item__decorator:focus,
+.sd-item--checked .sd-item__decorator:focus {
+  background-color: unset !important;
+  border: 1px solid black !important;
+}
+
+.sd-checkbox--checked .sd-checkbox__svg use {
+  fill: black !important;
+}
+
+.sd-radio--checked .sd-radio__decorator:after {
+  background-color: black !important;
+}
+
+.sd-item--disabled.sd-item--disabled .sd-item__decorator,
+.sd-item__decorator {
+  opacity: 0.3;
+}

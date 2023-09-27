@@ -202,6 +202,7 @@
                         placeholder="Ngày Bắt Đầu"> -->
                     <p-calendar formControlName="NgayBatDau" id="NgayBatDau" appendTo="body" 
                          dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"></p-calendar>
+                         
                     <small style="color: #e24c4c;" class="ml-2"
                         *ngIf="!FormPeriodSurvey.get('NgayBatDau')?.valid && FormPeriodSurvey.get('NgayBatDau')?.dirty">
                         Vui lòng nhập Ngày bắt đầu

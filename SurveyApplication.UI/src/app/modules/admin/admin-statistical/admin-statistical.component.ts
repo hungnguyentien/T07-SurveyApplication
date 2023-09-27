@@ -17,6 +17,7 @@ import {
   BaoCaoCauHoiChiTiet,
   BaoCaoCauHoiChiTietRequest,
   BaoCaoCauHoiRequest,
+  DoiTuongThamGiaKs,
   FileQuestion,
 } from '@app/models';
 import { KqSurveyCheckBox } from '@app/enums';
@@ -65,7 +66,6 @@ export class AdminStatisticalComponent {
     private translateService: TranslateService,
     private messageService: MessageService,
     private baoCaoCauHoiService: BaoCaoCauHoiService,
-    private route: ActivatedRoute,
     private datePipe: DatePipe
   ) {}
 
@@ -117,12 +117,12 @@ export class AdminStatisticalComponent {
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
     let frmValue = this.frmStatiscal.value;
-    let ngayBatDau = moment(this.dataTableSurvey?.ngayBatDau).format(
-      'YYYY-MM-DD'
-    );
-    let ngayKetThuc = moment(this.dataTableSurvey?.ngayKetThuc).format(
-      'YYYY-MM-DD'
-    );
+    let ngayBatDau = this.dataTableSurvey?.ngayBatDau
+      ? moment(this.dataTableSurvey?.ngayBatDau).format('YYYY-MM-DD')
+      : '';
+    let ngayKetThuc = this.dataTableSurvey?.ngayKetThuc
+      ? moment(this.dataTableSurvey?.ngayKetThuc).format('YYYY-MM-DD')
+      : '';
     this.paging = {
       ...frmValue,
       pageIndex: pageIndex,
@@ -194,13 +194,13 @@ export class AdminStatisticalComponent {
         this.datas = res.listCauHoiTraLoi ?? [];
         this.setChar(
           [res.countDonViMoi, res.countDonViTraLoi],
-          [res.countDonViSo, res.countDonViBo, res.countDonViNganh]
+          res.lstDoiTuongThamGiaKs
         );
       },
     });
   };
 
-  setChar = (doughnutData: number[], barData: number[]) => {
+  setChar = (doughnutData: number[], barData: DoiTuongThamGiaKs[]) => {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     this.doughnutData = {
@@ -236,13 +236,13 @@ export class AdminStatisticalComponent {
     );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
     this.barData = {
-      labels: ['Sở', 'Bộ', 'Ngành'],
+      labels: barData.map((x) => x.ten),
       datasets: [
         {
           label: 'Đối tượng',
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           borderColor: documentStyle.getPropertyValue('--blue-500'),
-          data: barData,
+          data: barData.map((x) => x.soLuong),
           borderWidth: 1,
         },
       ],
@@ -285,12 +285,12 @@ export class AdminStatisticalComponent {
 
   search = () => {
     let frmValue = this.frmStatiscal.value;
-    let ngayBatDau = moment(frmValue.ngayBatDau, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD'
-    );
-    let ngayKetThuc = moment(frmValue.ngayKetThuc, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD'
-    );
+    let ngayBatDau = frmValue.ngayBatDau
+      ? moment(frmValue.ngayBatDau, 'DD/MM/YYYY').format('YYYY-MM-DD')
+      : '';
+    let ngayKetThuc = frmValue.ngayKetThuc
+      ? moment(frmValue.ngayKetThuc, 'DD/MM/YYYY').format('YYYY-MM-DD')
+      : '';
     if (!frmValue.idDotKhaoSat)
       Utils.messageError(this.messageService, `Vui lòng chọn đợt khảo sát!`);
     else if (!frmValue.idBangKhaoSat)
@@ -299,12 +299,12 @@ export class AdminStatisticalComponent {
       let params: BaoCaoCauHoiRequest = {
         ...this.frmStatiscal.value,
       };
-      params.ngayBatDau = moment(params.ngayBatDau, 'DD/MM/YYYY').format(
-        'DD/MM/YYYY'
-      );
-      params.ngayKetThuc = moment(params.ngayKetThuc, 'DD/MM/YYYY').format(
-        'DD/MM/YYYY'
-      );
+      params.ngayBatDau = params.ngayBatDau
+        ? moment(params.ngayBatDau, 'DD/MM/YYYY').format('DD/MM/YYYY')
+        : '';
+      params.ngayKetThuc = params.ngayKetThuc
+        ? moment(params.ngayKetThuc, 'DD/MM/YYYY').format('DD/MM/YYYY')
+        : '';
       this.getVauleChar(params);
       this.paging.keyword = this.keyWord;
       this.paging.idBangKhaoSat = frmValue.idBangKhaoSat;
@@ -338,17 +338,7 @@ export class AdminStatisticalComponent {
     });
   }
 
-  getDataKqBangMotLuaChon = (data: string) => {
-    return data && JSON.parse(data) == KqSurveyCheckBox.value
-      ? KqSurveyCheckBox.text
-      : '';
-  };
-
   getDataKqFile = (data: string): any[] => {
-    return data && JSON.parse(data) ? JSON.parse(data) : [];
-  };
-
-  getDataKqFile2 = (data: string): any[] => {
     return data && JSON.parse(data) ? JSON.parse(data) : [];
   };
 

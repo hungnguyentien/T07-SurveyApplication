@@ -68,7 +68,7 @@
             <button pButton type="submit" icon="pi pi-search" label="Tìm kiếm"
               class="btn btn-primary custom-button mr-2" style="padding: 9.25px 20px;">
             </button>
-            <button pButton type="button" icon="pi pi-refresh" label="Reset" (click)="reset()"
+            <button pButton type="button" icon="pi pi-refresh" label="Cài lại" (click)="reset()"
               class="btn btn-primary custom-button" style="padding: 9.25px 20px;">
             </button>
           </div>
@@ -138,11 +138,6 @@
               <tr class="table-row">
                 <td>
                   <div [ngSwitch]="rowData.loaiCauHoi">
-                    <div *ngSwitchCase="5">
-                      <ng-container *ngFor="let item of rowData.cauHoiTraLoi; trackBy:trackByFn">
-                        <div>{{getDataKqBangMotLuaChon(item.cauTraLoi)}}</div>
-                      </ng-container>
-                    </div>
                     <div *ngSwitchCase="7">
                       <ng-container *ngFor="let item of rowData.cauHoiTraLoi; trackBy:trackByFn">
                         <ng-container *ngFor="let item of getDataKqFile(item.cauTraLoi); trackBy:trackByFn">
@@ -186,11 +181,11 @@
               style="background-color: green;" (click)="exportToExcel()">
             </button>
           </div>
-          <div class="ml-3">
+          <!-- <div class="ml-3">
             <button pButton type="button" icon="pi pi-file-export" label="Xuất PDF" class="custom-button"
               style="background-color: #eab308;">
             </button>
-          </div>
+          </div> -->
           <div class="ml-3">
             <form (ngSubmit)="onSubmitSearch()" class="form-inline">
               <div class="form-group mb-2">
@@ -236,11 +231,8 @@
                 </td>
                 <td *ngFor="let item of rowData.lstCauHoiCauTraLoi; trackBy:trackByFn">
                   <div [ngSwitch]="item.loaiCauHoi">
-                    <div *ngSwitchCase="5">
-                      <p *ngFor="let item of item.cauTraLoi; trackBy:trackByFn">{{getDataKqBangMotLuaChon(item)}}</p>
-                    </div>
                     <div *ngSwitchCase="7">
-                      <ng-container *ngFor="let item of getDataKqFile2(item.cauTraLoi); trackBy:trackByFn">
+                      <ng-container *ngFor="let item of getDataKqFile(item.cauTraLoi); trackBy:trackByFn">
                         <a (click)="downloadFileBase64(item)" download title="{{item.name}}">
                           {{item.name}}
                         </a>

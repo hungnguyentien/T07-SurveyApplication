@@ -222,6 +222,7 @@ export class AdminPeriodSurveyComponent {
   }
 
   SaveEdit() {
+    
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
     ObjPeriodSurvey.NgayBatDau = moment(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY').utcOffset(0).toDate();
     ObjPeriodSurvey.NgayKetThuc =  moment(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY').utcOffset(0).toDate();
