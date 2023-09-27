@@ -15,11 +15,16 @@
   height: 35px;
 }
 
-
 :host {
   .pFrozen {
     position: sticky;
     z-index: 10;
     background-color: white;
   }
+}
+
+.text-ellipsis {
+  max-width: 300px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

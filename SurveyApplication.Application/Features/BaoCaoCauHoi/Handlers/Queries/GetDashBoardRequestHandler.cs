@@ -20,10 +20,12 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
         }
         public async Task<DashBoardDto> Handle(GetDashBoardRequest request, CancellationToken cancellationToken)
         {
+            var ngayBatDau = request.NgayBatDau.GetValueOrDefault(DateTime.MaxValue).Date;
+            var ngayuKetThuc = request.NgayKetThuc.GetValueOrDefault(DateTime.MinValue).Date;
             var tongDotKhaoSat = await (from a in _surveyRepo.DotKhaoSat.GetAllQueryable()
                                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.Id equals b.IdDotKhaoSat
-                                        where (request.NgayBatDau == null || b.NgayBatDau >= request.NgayBatDau) &&
-                                            (request.NgayKetThuc == null || b.NgayKetThuc <= request.NgayKetThuc) &&
+                                        where (request.NgayBatDau == null || b.NgayBatDau.Date >= ngayBatDau) &&
+                                            (request.NgayKetThuc == null || b.NgayKetThuc.Date <= ngayuKetThuc) &&
                                             a.Deleted == false
                                         select new DotKhaoSatDto
                                         {
@@ -31,8 +33,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                         }).CountAsync(cancellationToken: cancellationToken);
 
             var tongBangKhaoSat = await (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
-                                         where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
-                                             (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
+                                         where (request.NgayBatDau == null || a.NgayBatDau.Date >= ngayBatDau) &&
+                                             (request.NgayKetThuc == null || a.NgayKetThuc.Date <= ngayuKetThuc) &&
                                              a.Deleted == false
                                          select new BangKhaoSatDto
                                          {
@@ -44,9 +46,10 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             var tongThamGiaKhaoSat = await (from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                             join b in _surveyRepo.GuiEmail.GetAllQueryable() on a.Id equals b.IdBangKhaoSat
                                             join c in _surveyRepo.KetQua.GetAllQueryable() on b.Id equals c.IdGuiEmail
-                                            where (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
-                                             (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc) &&
-                                             c.Deleted == false && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh
+                                            where (request.NgayBatDau == null || a.NgayBatDau.Date >= ngayBatDau) &&
+                                             (request.NgayKetThuc == null || a.NgayKetThuc.Date <= ngayuKetThuc) &&
+                                             c.Deleted == false && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh && 
+                                             b.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong
                                             select new KetQua
                                             {
                                                 Id = c.Id
@@ -55,11 +58,13 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             var thamGiaKhaoSat = from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                  join b in _surveyRepo.GuiEmail.GetAllQueryable() on a.Id equals b.IdBangKhaoSat
                                  join c in _surveyRepo.KetQua.GetAllQueryable() on b.Id equals c.IdGuiEmail
-                                 where !a.Deleted && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh &&
-                                       (request.NgayBatDau == null || a.NgayBatDau >= request.NgayBatDau) &&
-                                       (request.NgayKetThuc == null || a.NgayKetThuc <= request.NgayKetThuc)
+                                 where !a.Deleted && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh && 
+                                       b.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong &&
+                                       (request.NgayBatDau == null || a.NgayBatDau.Date >= ngayBatDau) &&
+                                       (request.NgayKetThuc == null || a.NgayKetThuc.Date <= ngayuKetThuc)
                                  select new { BangKhoaSat = a, b.IdDonVi };
 
+            var t = await thamGiaKhaoSat.GroupBy(x => x.BangKhoaSat.Id).Select(x => new { BangKhoaSat = x.Key}).ToListAsync(cancellationToken: cancellationToken);
             var khaoSatTheoNhom = from a in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
                                   join b in thamGiaKhaoSat on a.Id equals b.BangKhoaSat.IdLoaiHinh
                                   where !a.Deleted

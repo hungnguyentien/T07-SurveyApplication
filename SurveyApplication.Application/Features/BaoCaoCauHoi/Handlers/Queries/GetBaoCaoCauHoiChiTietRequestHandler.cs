@@ -38,12 +38,12 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                            IdBangKhaoSat = grBc.Key.IdBangKhaoSat,
                            IdDotKhaoSat = grBc.Key.IdDotKhaoSat,
                            DauThoiGian = query.First(x => x.IdDonVi == grBc.Key.IdDonVi && x.IdBangKhaoSat == grBc.Key.IdBangKhaoSat && x.IdDotKhaoSat == grBc.Key.IdDotKhaoSat).DauThoiGian ?? DateTime.MinValue,
-                           LstCauHoiCauTraLoi = query.GroupBy(x => new {x.LoaiCauHoi, x.CauHoi}).Select(x =>
+                           LstCauHoiCauTraLoi = query.Where(x => x.IdDonVi == grBc.Key.IdDonVi && x.IdBangKhaoSat == grBc.Key.IdBangKhaoSat && x.IdDotKhaoSat == grBc.Key.IdDotKhaoSat).GroupBy(x => new {x.LoaiCauHoi, x.CauHoi}).Select(x =>
                                 new CauHoiCauTraLoiChiTietDto
                                 {
                                     CauHoi = x.First().CauHoi,
                                     LoaiCauHoi = x.First().LoaiCauHoi,
-                                    CauTraLoi = x.Where(ctl => ctl.LoaiCauHoi == x.Key.LoaiCauHoi && ctl.CauHoi == x.Key.CauHoi).GroupBy(ctl => new { ctl.CauTraLoi, ctl.MaCauTraLoi }).Select(ctl => ctl.Key.CauTraLoi).ToList(),
+                                    CauTraLoi = x.Where(ctl => !string.IsNullOrEmpty(ctl.CauTraLoi) && ctl.LoaiCauHoi == x.Key.LoaiCauHoi && ctl.CauHoi == x.Key.CauHoi).GroupBy(ctl => new { ctl.CauTraLoi }).Select(ctl => ctl.Key.CauTraLoi).ToList(),
                                 }).ToList()
                        };
 
