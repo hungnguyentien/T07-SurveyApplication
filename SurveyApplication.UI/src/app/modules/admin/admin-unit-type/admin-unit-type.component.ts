@@ -25,6 +25,10 @@ export class AdminUnitTypeComponent {
   dataTotalRecords!: number;
   keyWord!: string;
 
+  checkBtnDetail:boolean = false
+  actionDetail!:any;
+  modalTitle = '';
+
   submitted: boolean = false;
 
   first = 0;
@@ -110,7 +114,20 @@ export class AdminUnitTypeComponent {
     if (this.showadd !== null) this.showadd ? this.SaveAdd() : this.SaveEdit();
   };
 
+  detail(data:any){
+    this.checkBtnDetail = true
+    this.visible = !this.visible;
+    this.modalTitle = 'Chi tiết loại hình';
+    this.FormUnitType.disable();
+    this.FormUnitType.controls['MaLoaiHinh'].setValue(data.maLoaiHinh);
+    this.FormUnitType.controls['TenLoaiHinh'].setValue(data.tenLoaiHinh);
+    this.FormUnitType.controls['MoTa'].setValue(data.moTa);
+  }
+
   Add() {
+    this.checkBtnDetail = false;
+    this.modalTitle  = 'Thêm mới loại hình';
+    this.FormUnitType.enable();
     this.visible = !this.visible;
     this.showadd = true;
     this.FormUnitType.reset();
@@ -124,8 +141,12 @@ export class AdminUnitTypeComponent {
   }
 
   Edit(data: any) {
-    this.visible = !this.visible;
+    this.FormUnitType.enable();
+    this.FormUnitType.get("MaLoaiHinh")?.disable();
+    this.modalTitle = 'Cập nhật loại hình';
+    this.checkBtnDetail = false;
     this.showadd = false;
+    this.visible = !this.visible;
     this.IdLoaiHinh = data.id;
     this.MaLoaiHinh = data.maLoaiHinh;
     this.FormUnitType.controls['MaLoaiHinh'].setValue(data.maLoaiHinh);

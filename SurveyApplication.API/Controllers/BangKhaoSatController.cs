@@ -47,7 +47,7 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
-        [HttpGet("GetByDotKhaoSat/{id}")]
+        [HttpGet("GetByDotKhaoSat")]
         [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<BangKhaoSatDto>>> GetByDotKhaoSat(int id)
         {

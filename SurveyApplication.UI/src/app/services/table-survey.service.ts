@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TableSurvey } from '@app/models';
 import { environment } from '@environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, first } from 'rxjs';
 import { BaseService } from './base.service';
 
 @Injectable({
@@ -11,6 +11,14 @@ import { BaseService } from './base.service';
 export class TableSurveyService extends BaseService<TableSurvey> {
   constructor(private http: HttpClient) {
     super(http, `${environment.apiUrl}/BangKhaoSat`);
+  }
+
+  getBangKhaoSatByDotKhaoSat(idDotKhaoSat: number) {
+    return this.http
+      .get<TableSurvey[]>(
+        `${environment.apiUrl}/BangKhaoSat/GetByDotKhaoSat?id=${idDotKhaoSat}`
+      )
+      .pipe(first());
   }
   
   // SearchTableSurvey(pageIndex: number, pageSize: number, keyword: string) {

@@ -9,10 +9,10 @@
               <label for="idDotKhaoSat">Đợt khảo sát <span style="color: red;">*</span></label>
             </div>
             <div class="col-9">
-              <p-dropdown id="idDotKhaoSat" [options]="LstDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
+              <p-dropdown id="idDotKhaoSat" [options]="LstDotKhaoSat" [(ngModel)]="selectedDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
                 [filter]="true" filterBy="tenDotKhaoSat" emptyMessage="Không có kết quả nào"
                 emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                placeholder="-- Chọn đợt khảo sát --" formControlName="idDotKhaoSat">
+                placeholder="-- Chọn đợt khảo sát --" formControlName="idDotKhaoSat" (onChange)="loadTableSurvey()">
               </p-dropdown>
             </div>
           </div>

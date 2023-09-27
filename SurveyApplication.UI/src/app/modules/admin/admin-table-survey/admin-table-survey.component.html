@@ -18,7 +18,7 @@
                 class="custom-button"></button>
         </div>
         <div class="ml-3">
-            <button *ngIf="selectedTableSurvey && selectedTableSurvey.length > 0&& selectedTableSurvey.length != null" pButton type="button"
+            <button *ngIf="selectedTableSurvey && selectedTableSurvey.length > 0 && selectedTableSurvey.length != null" pButton type="button"
                 (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
                 style="background-color: #ea5c5c;"></button>
         </div>
@@ -216,10 +216,10 @@
                 <div class="form-group col-md-6">
                     <label for="idLoaiHinh" class="col-form-label">Loại hình đơn vị khảo sát: <span
                             style="color: red">*</span> </label>
-                    <p-dropdown id="idLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
+                    <p-dropdown id="idLoaiHinh" [options]="DSLoaiHinh" [(ngModel)]="selectedLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                        placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinh">
+                        placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinh" (onChange)="LoadPeriodSurvey()">
                     </p-dropdown>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['idLoaiHinh'].valid && 

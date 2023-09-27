@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
@@ -39,6 +40,10 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                         IdDonVi = d.Id,
                         IdNguoiDaiDien = b.Id,
                         IdLoaiHinh = o.Id,
+
+                        IdTinhTp = d.IdTinhTp,
+                        IdQuanHuyen = d.IdQuanHuyen,
+                        IdXaPhuong = d.IdXaPhuong,
 
                         MaDonVi = d.MaDonVi,
                         TenDonVi = d.TenDonVi,
