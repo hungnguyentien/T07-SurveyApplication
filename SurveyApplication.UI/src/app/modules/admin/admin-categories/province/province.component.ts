@@ -28,6 +28,8 @@ export class ProvinceComponent {
   showadd!: boolean;
   FormTinhThanh!: FormGroup;
   visible: boolean = false;
+  checkBtnDetail: boolean = false;
+  modalTitle: string="";
   constructor(
     private FormBuilder : FormBuilder,
     private TinhThanhService: TinhThanhService,
@@ -104,16 +106,31 @@ export class ProvinceComponent {
     this.submitted = true;
     if (this.showadd !== null) this.showadd ? this.SaveAdd() : this.SaveEdit();
   };
+  detail(data:any){
+    this.checkBtnDetail = true
+    this.visible = !this.visible;
+    this.modalTitle = 'Chi tiết  tỉnh thành';
+    this.FormTinhThanh.disable();
+    this.getId = data.id
+    this.FormTinhThanh.controls['code'].setValue(data.code);
+    this.FormTinhThanh.controls['name'].setValue(data.name);
+    this.FormTinhThanh.controls['type'].setValue(data.type);
 
+  }
   Add() {
     this.visible = !this.visible;
     this.showadd = true;
+    this.FormTinhThanh.reset();
+    this.modalTitle = 'Thêm mới tỉnh thành';
+    this.FormTinhThanh.enable();
     
   }
 
   Edit(data: any) {
     this.visible = !this.visible;
     this.showadd = false;
+    this.modalTitle = 'Cập nhật tỉnh thành';
+    this.FormTinhThanh.enable();
     this.getId = data.id
     this.FormTinhThanh.controls['code'].setValue(data.code);
     this.FormTinhThanh.controls['name'].setValue(data.name);
@@ -207,6 +224,7 @@ export class ProvinceComponent {
                 this.messageService,
                 `Xoá ${ids.length} Tỉnh Thành thành công!`
               );
+              this.selectedTinhThanh = []; 
             }
           },
           error: (e) => Utils.messageError(this.messageService, e.message),

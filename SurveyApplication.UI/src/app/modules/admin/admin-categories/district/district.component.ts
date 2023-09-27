@@ -65,7 +65,8 @@ export class DistrictComponent {
     this.paging = {
       pageIndex: pageIndex,
       pageSize: pageSize,
-      keyword: '',
+      keyword: this.keyWord,
+      
       orderBy: event.sortField
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
