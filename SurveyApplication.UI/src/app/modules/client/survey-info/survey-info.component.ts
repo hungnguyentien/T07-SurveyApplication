@@ -40,7 +40,7 @@ export class SurveyInfoComponent {
     if (!ipClient) {
       try {
         ipClient = JSON.stringify(
-          await (await fetch(environment.apiIp)).json()
+          await (await fetch(environment.apiIp, {mode: 'no-cors'})).json()
         );
         localStorage.setItem('grand_client', Utils.encrypt(ipClient));
       } catch (e) {

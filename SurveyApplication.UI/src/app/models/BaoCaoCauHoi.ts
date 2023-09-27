@@ -56,13 +56,22 @@ export interface BaoCaoCauHoi extends Base {
   dauThoiGian: string | null;
   countDonViMoi: number;
   countDonViTraLoi: number;
-  countDonViSo: number;
-  countDonViBo: number;
-  countDonViNganh: number;
   diaChi: string | null;
   soLuotChon: number | null;
   tyLe: number | null;
   listCauHoiTraLoi: ListCauHoiTraLoi[] | null;
+}
+
+export interface ThongKeBaoCao {
+  countDonViMoi: number;
+  countDonViTraLoi: number;
+  listCauHoiTraLoi: ListCauHoiTraLoi[] | null;
+  lstDoiTuongThamGiaKs: DoiTuongThamGiaKs[];
+}
+
+export interface DoiTuongThamGiaKs {
+  ten: string;
+  soLuong: number;
 }
 
 export interface ListCauHoiTraLoi {
@@ -108,4 +117,36 @@ export interface FileQuestion {
   content: string;
   name: string;
   type: string;
+}
+
+export interface DashBoard {
+  countDotKhaoSat: number;
+  countBangKhaoSat: number;
+  countThamGia: number;
+  listTinhTp: ListTinhTp[] | null;
+  lstCountDonViByLoaiHinh: CountDonViByLoaiHinh[];
+  lstCountDot: CountDot[];
+}
+
+export interface CountDonViByLoaiHinh {
+  ten: string;
+  count: number;
+}
+
+export interface CountDot {
+  ten: string;
+  count: number;
+}
+
+export interface ListTinhTp {
+  idTinhTp: number | null;
+  countTinhTp: number | null;
+  tenTinhTp: string | null;
+  listDonVi: DonViTinhTp[] | null;
+}
+
+export interface DonViTinhTp {
+  id: number | null;
+  idTinhTp: number | null;
+  tinhTp: string | null;
 }

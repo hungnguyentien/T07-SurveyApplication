@@ -6,12 +6,20 @@ namespace SurveyApplication.Application.DTOs.BaoCaoCauHoi
     {
         public int CountDonViMoi { get; set; }
         public int CountDonViTraLoi { get; set; }
-        public int CountDonViSo { get; set; }
-        public int CountDonViBo { get; set; }
-        public int CountDonViNganh { get; set; }
+
+        //public int CountDonViSo { get; set; }
+        //public int CountDonViBo { get; set; }
+        //public int CountDonViNganh { get; set; }
 
         public List<ListCauHoiTraLoi>? ListCauHoiTraLoi { get; set; }
+        public List<DoiTuongThamGiaKs> LstDoiTuongThamGiaKs { get; set; }
 
+    }
+
+    public class DoiTuongThamGiaKs
+    {
+        public string Ten { get; set; }
+        public int SoLuong { get; set; }
     }
 
     public class BaoCaoCauHoiDto : BaseDto

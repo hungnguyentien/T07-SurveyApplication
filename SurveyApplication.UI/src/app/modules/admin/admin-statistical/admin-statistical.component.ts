@@ -17,6 +17,7 @@ import {
   BaoCaoCauHoiChiTiet,
   BaoCaoCauHoiChiTietRequest,
   BaoCaoCauHoiRequest,
+  DoiTuongThamGiaKs,
   FileQuestion,
 } from '@app/models';
 import { KqSurveyCheckBox } from '@app/enums';
@@ -65,7 +66,6 @@ export class AdminStatisticalComponent {
     private translateService: TranslateService,
     private messageService: MessageService,
     private baoCaoCauHoiService: BaoCaoCauHoiService,
-    private route: ActivatedRoute,
     private datePipe: DatePipe
   ) {}
 
@@ -194,13 +194,13 @@ export class AdminStatisticalComponent {
         this.datas = res.listCauHoiTraLoi ?? [];
         this.setChar(
           [res.countDonViMoi, res.countDonViTraLoi],
-          [res.countDonViSo, res.countDonViBo, res.countDonViNganh]
+          res.lstDoiTuongThamGiaKs
         );
       },
     });
   };
 
-  setChar = (doughnutData: number[], barData: number[]) => {
+  setChar = (doughnutData: number[], barData: DoiTuongThamGiaKs[]) => {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     this.doughnutData = {
@@ -236,13 +236,13 @@ export class AdminStatisticalComponent {
     );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
     this.barData = {
-      labels: ['Sở', 'Bộ', 'Ngành'],
+      labels: barData.map((x) => x.ten),
       datasets: [
         {
           label: 'Đối tượng',
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           borderColor: documentStyle.getPropertyValue('--blue-500'),
-          data: barData,
+          data: barData.map((x) => x.soLuong),
           borderWidth: 1,
         },
       ],
@@ -338,17 +338,7 @@ export class AdminStatisticalComponent {
     });
   }
 
-  getDataKqBangMotLuaChon = (data: string) => {
-    return data && JSON.parse(data) == KqSurveyCheckBox.value
-      ? KqSurveyCheckBox.text
-      : '';
-  };
-
   getDataKqFile = (data: string): any[] => {
-    return data && JSON.parse(data) ? JSON.parse(data) : [];
-  };
-
-  getDataKqFile2 = (data: string): any[] => {
     return data && JSON.parse(data) ? JSON.parse(data) : [];
   };
 

@@ -34,8 +34,9 @@ public class GetThongTinChungRequestHandler : BaseMasterFeatures,
         var bangKs = await _surveyRepo.BangKhaoSat.GetById(guiEmail.IdBangKhaoSat);
         switch (bangKs.TrangThai)
         {
-            case (int)EnumBangKhaoSat.TrangThai.HoanThanh:
-                throw new ValidationException("Bảng khảo sát này đã hoàn thành");
+            //TODO bảng khảo sát đã hoàn thành thì vẫn xem đc
+            //case (int)EnumBangKhaoSat.TrangThai.HoanThanh:
+            //    throw new ValidationException("Bảng khảo sát này đã hoàn thành");
             case (int)EnumBangKhaoSat.TrangThai.TamDung:
                 throw new ValidationException("Bảng khảo sát này đang tạm dừng");
         }

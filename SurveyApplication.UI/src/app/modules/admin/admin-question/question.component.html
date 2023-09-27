@@ -55,20 +55,20 @@
           <div class="flex justify-content-between align-items-center">
             Mã
             <p-sortIcon field="maCauHoi"></p-sortIcon>
-            <p-columnFilter type="text" field="maCauHoi" display="menu" class="ml-auto"></p-columnFilter>
+            <!-- <p-columnFilter type="text" field="maCauHoi" display="menu" class="ml-auto"></p-columnFilter> -->
           </div>
         </th>
         <th pResizableColumn pSortableColumn="tieuDe">
           <div class="flex justify-content-between align-items-center">
             Tiêu đề
             <p-sortIcon field="tieuDe"></p-sortIcon>
-            <p-columnFilter type="text" field="data.tieuDe" display="menu" class="ml-auto"></p-columnFilter>
+            <!-- <p-columnFilter type="text" field="data.tieuDe" display="menu" class="ml-auto"></p-columnFilter> -->
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Loại câu hỏi
-            <p-columnFilter type="text" field="data.loaiCauHoiText" display="menu" class="ml-auto"></p-columnFilter>
+            <!-- <p-columnFilter type="text" field="data.loaiCauHoiText" display="menu" class="ml-auto"></p-columnFilter> -->
           </div>
         </th>
         <th style="width: 120px;text-align: center;">
@@ -88,7 +88,7 @@
           <span class="vertical-align-middle">{{ data.maCauHoi }}</span>
         </td>
         <td>
-          <span class="vertical-align-middle">{{ data.tieuDe }}</span>
+          <div class="vertical-align-middle text-ellipsis">{{ data.tieuDe }}</div>
         </td>
         <td>
           <span class="vertical-align-middle">
@@ -127,7 +127,8 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label for="maCauHoi" class="col-form-label">Mã: <span style="color: red">*</span></label>
-          <input type="text" pInputText class="form-control" id="maCauHoi" formControlName="maCauHoi" [(ngModel)]="maCauHoi" (input)="changeMaCauHoi(maCauHoi)" [ngClass]="{
+          <input type="text" pInputText class="form-control" id="maCauHoi" formControlName="maCauHoi"
+            [(ngModel)]="maCauHoi" (input)="changeMaCauHoi(maCauHoi)" [ngClass]="{
             'is-invalid': submitted && f('maCauHoi').errors
           }" placeholder="VB01" />
           <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmCauHoi.controls['maCauHoi'].valid && 
@@ -241,7 +242,8 @@
         <label class="col-form-label">
           {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'Đáp án' : 'Cột' }}:
         </label>
-        <button type="button"class="btn btn-add float-end custom-button mb-3" (click)="addItem()"> <i class="pi pi-plus mr-2"></i>
+        <button type="button" class="btn btn-add float-end custom-button mb-3" (click)="addItem()"> <i
+            class="pi pi-plus mr-2"></i>
           Thêm {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'đáp án' : 'cột' }}
         </button>
         <table class="table table-bordered">
@@ -286,7 +288,8 @@
         selectedLoaiCauHoi === '4'
       ">
         <label class="col-form-label">Hàng:</label>
-        <button type="button" class="btn btn-add float-end custom-button mb-3" (click)="addItem(false)"><i class="pi pi-plus mr-1"></i> 
+        <button type="button" class="btn btn-add float-end custom-button mb-3" (click)="addItem(false)"><i
+            class="pi pi-plus mr-1"></i>
           Thêm hàng
         </button>
         <table class="table table-bordered">

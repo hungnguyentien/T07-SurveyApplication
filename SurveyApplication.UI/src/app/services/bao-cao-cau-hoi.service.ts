@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import {
-  BaoCaoCauHoi,
   BaoCaoCauHoiChiTiet,
   BaoCaoCauHoiChiTietRequest,
   BaoCaoCauHoiRequest,
   BaseQuerieResponse,
+  ThongKeBaoCao,
 } from '@app/models';
 import { environment } from '@environments/environment';
 import Utils from '@app/helpers/utils';
@@ -23,7 +23,7 @@ export class BaoCaoCauHoiService {
       Object.keys(params),
       Object.values(params)
     );
-    return this.http.get<BaoCaoCauHoi>(
+    return this.http.get<ThongKeBaoCao>(
       `${environment.apiUrl}/BaoCaoCauHoi/GetBaoCaoCauHoi${query}`
     );
   }

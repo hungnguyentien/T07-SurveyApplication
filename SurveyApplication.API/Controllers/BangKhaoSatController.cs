@@ -70,9 +70,7 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<BangKhaoSatDto>> UpdateBangKhaoSat([FromBody] UpdateBangKhaoSatDto obj)
         {
             var command = new UpdateBangKhaoSatCommand { BangKhaoSatDto = obj };
-            await _mediator.Send(command);
-            var response = await _mediator.Send(command);
-            return Ok(response);
+            return Ok( await _mediator.Send(command));
         }
 
 

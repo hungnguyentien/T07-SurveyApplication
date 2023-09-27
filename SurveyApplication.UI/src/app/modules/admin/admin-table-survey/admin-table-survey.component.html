@@ -136,16 +136,22 @@
                 </td>
                 <td>
                     <ng-container *ngIf="rowData.trangThai == 0">
+                        <a class="m-2" (click)="detailTableSurvey(rowData)" style="pointer-events: none;opacity: 0.6;">
+                            <span class="pi pi-eye " title="Xem" aria-hidden="true"></span>
+                        </a>
                         <a class="m-2" (click)="Edit(rowData)">
                             <span class="pi pi-pencil " title="Cập nhật" aria-hidden="true"></span>
                         </a>
-                    </ng-container>
-
-                    <ng-container *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3">
                         <a class="m-2" (click)="Delete(rowData)">
                             <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
                         </a>
                     </ng-container>
+
+                    <!-- <ng-container *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3">
+                        <a class="m-2" (click)="Delete(rowData)">
+                            <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
+                        </a>
+                    </ng-container> -->
 
                     <!-- <ng-container *ngIf="rowData.trangThai == 3">
                         <a class="m-2" (click)="ToggleStatus(rowData)">
@@ -164,6 +170,12 @@
                     <ng-container *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2 || rowData.trangThai == 3">
                         <a class="m-2" (click)="detailTableSurvey(rowData)">
                             <span class="pi pi-eye " title="Xem" aria-hidden="true"></span>
+                        </a>
+                        <a class="m-2" (click)="Edit(rowData)" style="pointer-events: none;opacity: 0.6;">
+                            <span class="pi pi-pencil " title="Cập nhật" aria-hidden="true"></span>
+                        </a>
+                        <a class="m-2" (click)="Delete(rowData)" style="pointer-events: none;opacity: 0.6;">
+                            <span class="pi pi-trash " title="Xoá" style="color: red;" aria-hidden="true"></span>
                         </a>
                     </ng-container>
                 </td>

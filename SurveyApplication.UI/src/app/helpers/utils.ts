@@ -183,15 +183,7 @@ export default class Utils {
       visibleIndex: 47,
       action: () => {
         //TODO quay lại trang trước
-        router &&
-          router.navigate(
-            ['/phieu/thong-tin-chung'],
-            data
-              ? {
-                  queryParams: { data: data },
-                }
-              : undefined
-          );
+        router && router.navigate([`/phieu/thong-tin-chung/${data}`]);
       },
       css: 'nav-button',
       innerCss: 'sd-btn nav-input',
@@ -350,6 +342,19 @@ export default class Utils {
           ? {
               value: el.maCot,
               text: el.noidung,
+            }
+          : loaiCauHoi == TypeCauHoi.MultiSelectMatrix
+          ? {
+              name: el.maCot,
+              showInMultipleColumns: true,
+              cellType: 'checkbox',
+              colCount: 0,
+              choices: [
+                {
+                  value: el.noidung,
+                  text: el.noidung,
+                },
+              ],
             }
           : {
               name: el.maCot,
@@ -596,7 +601,9 @@ export default class Utils {
                     ? dataKq[el.name] === choice.value
                       ? dataKq[el.name]
                       : ''
-                    : dataKq[el.name][i],
+                    : dataKq[el.name]
+                    ? dataKq[el.name][i]
+                    : '',
               } as CreateBaoCaoCauHoi);
             });
             this.addOtherItem(el, dataKq, lstBaoCaoCauHoi, dataDefault);

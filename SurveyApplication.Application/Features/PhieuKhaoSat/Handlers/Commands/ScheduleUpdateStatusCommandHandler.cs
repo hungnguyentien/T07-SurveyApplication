@@ -46,24 +46,24 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 
             #region Update Bảng khảo sát
 
-            var lstUpdateBks = new List<BangKhaoSat>();
-            var hoanThanhKs = await _surveyRepo.BangKhaoSat.GetAllListAsync(x => !x.Deleted && x.TrangThai != (int)EnumBangKhaoSat.TrangThai.HoanThanh);
-            foreach (var ks in hoanThanhKs)
-            {
-                var guiEmails = await _surveyRepo.GuiEmail.GetAllQueryable().Where(x => x.IdBangKhaoSat == ks.Id && !x.Deleted && x.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong).Select(x => x.Id).ToListAsync(cancellationToken: cancellationToken);
-                var countByKq = await _surveyRepo.KetQua.CountAsync(x => x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh && !x.Deleted && guiEmails.Contains(x.IdGuiEmail));
-                if (guiEmails.Count > 0 && countByKq > 0 && guiEmails.Count == countByKq)
-                {
-                    ks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
-                    lstUpdateBks.Add(ks);
-                }
-            }
+            //var lstUpdateBks = new List<BangKhaoSat>();
+            //var hoanThanhKs = await _surveyRepo.BangKhaoSat.GetAllListAsync(x => !x.Deleted && x.TrangThai != (int)EnumBangKhaoSat.TrangThai.HoanThanh);
+            //foreach (var ks in hoanThanhKs)
+            //{
+            //    var guiEmails = await _surveyRepo.GuiEmail.GetAllQueryable().Where(x => x.IdBangKhaoSat == ks.Id && !x.Deleted && x.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong).Select(x => x.Id).ToListAsync(cancellationToken: cancellationToken);
+            //    var countByKq = await _surveyRepo.KetQua.CountAsync(x => x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh && !x.Deleted && guiEmails.Contains(x.IdGuiEmail));
+            //    if (guiEmails.Count > 0 && countByKq > 0 && guiEmails.Count == countByKq)
+            //    {
+            //        ks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
+            //        lstUpdateBks.Add(ks);
+            //    }
+            //}
 
-            if (lstUpdateBks.Any())
-            {
-                await _surveyRepo.BangKhaoSat.UpdateAsync(lstUpdateBks);
-                await _surveyRepo.SaveAync();
-            }
+            //if (lstUpdateBks.Any())
+            //{
+            //    await _surveyRepo.BangKhaoSat.UpdateAsync(lstUpdateBks);
+            //    await _surveyRepo.SaveAync();
+            //}
 
             #endregion
 

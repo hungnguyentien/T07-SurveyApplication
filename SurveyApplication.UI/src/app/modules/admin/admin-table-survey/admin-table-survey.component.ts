@@ -15,7 +15,11 @@ import {
   FormArray,
   AbstractControl,
 } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {
+  ConfirmationService,
+  MessageService,
+  PrimeNGConfig,
+} from 'primeng/api';
 import { Table } from 'primeng/table';
 import {
   UnitTypeService,
@@ -34,6 +38,7 @@ import { BksTrangThai } from '@app/enums';
 import { Router } from '@angular/router';
 import { coerceStringArray } from '@angular/cdk/coercion';
 import * as moment from 'moment';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-table-survey',
@@ -63,7 +68,7 @@ export class AdminTableSurveyComponent {
   DSDotKhaoSat: any[] = [];
   showHeader: boolean = true;
   Gettrangthai!: number;
-  GetMaBangKhaoSat!:number;
+  GetMaBangKhaoSat!: number;
   form: FormGroup = new FormGroup({});
 
   searchText = new FormControl('');
@@ -103,10 +108,13 @@ export class AdminTableSurveyComponent {
     private fb: FormBuilder,
     private objectSurveyService: ObjectSurveyService,
     private guiEmailService: GuiEmailService,
-    private baocaocauhoiservice: BaoCaoCauHoiService
-  ) { }
+    private baocaocauhoiservice: BaoCaoCauHoiService,
+    private config: PrimeNGConfig,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit() {
+    Utils.translate('vi', this.translateService, this.config);
     this.form = this.fb.group({
       searchText: [''], // Khởi tạo FormControl searchText
       idDotKhaoSat: [''], // Khởi tạo FormControl idDotKhaoSat
@@ -268,10 +276,10 @@ export class AdminTableSurveyComponent {
   Edit(data: any) {
     this.showadd = false;
     this.visible = !this.visible;
-  
-    this.formTableSurvey.get("maBangKhaoSat")?.disable();
+
+    this.formTableSurvey.get('maBangKhaoSat')?.disable();
     this.Gettrangthai = data.trangThai;
-    this.GetMaBangKhaoSat=data.maBangKhaoSat;
+    this.GetMaBangKhaoSat = data.maBangKhaoSat;
     this.lstBangKhaoSatCauHoi.clear();
     this.lstBangKhaoSatCauHoiGroup.clear();
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
@@ -404,7 +412,7 @@ export class AdminTableSurveyComponent {
         },
 
         error: (e: HttpErrorResponse | any) => {
-          debugger
+          debugger;
           if (e instanceof HttpErrorResponse) {
             if (e.error && Array.isArray(e.error) && e.error.length > 0) {
               const errorMessage = e.error[0];
@@ -419,24 +427,27 @@ export class AdminTableSurveyComponent {
             Utils.messageError(this.messageService, 'Lỗi không xác định.');
           }
         },
-
-
       });
     }
-  };
-
+  }
 
   SaveEdit() {
-   
     const objTableSurvey = this.formTableSurvey.value;
-    objTableSurvey.ngayBatDau = moment(objTableSurvey.ngayBatDau, 'DD/MM/YYYY').utcOffset(0).toDate();
-    
-    objTableSurvey.ngayKetThuc =  moment(objTableSurvey.ngayKetThuc, 'DD/MM/YYYY').utcOffset(0).toDate();
-    objTableSurvey['maBangKhaoSat']=this.GetMaBangKhaoSat;
+    objTableSurvey.ngayBatDau = moment(objTableSurvey.ngayBatDau, 'DD/MM/YYYY')
+      .utcOffset(0)
+      .toDate();
+
+    objTableSurvey.ngayKetThuc = moment(
+      objTableSurvey.ngayKetThuc,
+      'DD/MM/YYYY'
+    )
+      .utcOffset(0)
+      .toDate();
+    objTableSurvey['maBangKhaoSat'] = this.GetMaBangKhaoSat;
     objTableSurvey['trangThai'] = this.Gettrangthai;
     this.TableSurveyService.update(objTableSurvey).subscribe({
       next: (res: any) => {
-        if (res.success) {
+        if (res) {
           this.messageService.add({
             severity: 'success',
             summary: 'Thành Công',
@@ -448,7 +459,6 @@ export class AdminTableSurveyComponent {
         }
       },
       error: (e: HttpErrorResponse | any) => {
-        debugger
         if (e instanceof HttpErrorResponse) {
           if (e.error && Array.isArray(e.error) && e.error.length > 0) {
             const errorMessage = e.error[0];
@@ -574,7 +584,7 @@ export class AdminTableSurveyComponent {
           },
         });
       },
-      reject: () => { },
+      reject: () => {},
     });
   }
 
@@ -621,35 +631,29 @@ export class AdminTableSurveyComponent {
   }
 
   deleteItem(index: number) {
-    debugger
     this.lstBangKhaoSatCauHoi.removeAt(index);
-
-    console.log(this.lstBangKhaoSatCauHoi)
+    console.log(this.lstBangKhaoSatCauHoi);
   }
 
   //#endregion
   CheckButton() {
-
-
     const checklst = this.lstBangKhaoSatCauHoi.length;
     const checkGruop = this.lstBangKhaoSatCauHoiGroup.length;
 
     if (checklst === 0) {
-
       if (checkGruop > 0) {
-        return false
+        return false;
       }
     }
     if (checkGruop === 0) {
       if (checklst > 0) {
-        return false
+        return false;
       }
     }
     if (checkGruop === 0 && checklst === 0) {
       return true;
     }
-    return true
-
+    return true;
   }
 
   get lstBangKhaoSatCauHoiGroup(): FormArray {
