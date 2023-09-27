@@ -211,9 +211,11 @@ export class AdminObjectSurveyComponent {
     this.FormRepresentative.reset();
     this.showadd = true;
     this.visible = !this.visible;
+    this.FormObjectSurvey.get('MaDonVi')?.enable();
   }
 
   Edit(data: any) {
+    this.FormObjectSurvey.get("MaDonVi")?.disable();
     this.showadd = false;
     this.visible = !this.visible;
     this.Madonvi = data.maDonVi;

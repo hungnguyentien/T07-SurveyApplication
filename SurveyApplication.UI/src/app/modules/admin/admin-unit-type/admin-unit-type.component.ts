@@ -46,7 +46,7 @@ export class AdminUnitTypeComponent {
 
   createForm = () => {
     this.FormUnitType = this.FormBuilder.group({
-      MaLoaiHinh: [{ value: this.MaLoaiHinh, disabled: true }],
+      MaLoaiHinh: [ { value: this.MaLoaiHinh, disabled: true }],
       TenLoaiHinh: ['', Validators.required],
       MoTa: ['', Validators.required],
     });
