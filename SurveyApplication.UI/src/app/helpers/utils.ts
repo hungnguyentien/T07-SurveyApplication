@@ -729,4 +729,9 @@ export default class Utils {
       return '';
     }
   }
+
+  /** format any sang datetime server + 1 */
+  static plusDate(dateStr: any, format: string = 'DD/MM/YYYY') {
+    return moment(dateStr, format).add(1, 'days').toDate()
+  }
 }

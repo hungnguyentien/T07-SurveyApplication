@@ -31,6 +31,9 @@ export class WardsComponent {
   listDataHuyen : any = [];
   IdXaPhuong: any;
 
+  checkBtnDetail:boolean = false
+  actionDetail!:any;
+  modalTitle = '';
   constructor(
     private FormBuilder : FormBuilder,
     private XaPhuongService: XaPhuongService,
@@ -58,6 +61,18 @@ export class WardsComponent {
       this.listDataHuyen = res
     })
   }
+
+  detail(data:any){
+    this.checkBtnDetail = true
+    this.visible = !this.visible;
+    this.modalTitle = 'Chi tiết Xã/Phường';
+    this.FormXaPhuong.disable();
+    this.FormXaPhuong.controls['parentCode'].setValue(data.codeQuanHuyen);
+    this.FormXaPhuong.controls['name'].setValue(data.name);
+    this.FormXaPhuong.controls['type'].setValue(data.type);
+    this.FormXaPhuong.controls['code'].setValue(data.code);
+  }
+
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -118,12 +133,21 @@ export class WardsComponent {
   };
 
   Add() {
+    this.checkBtnDetail = false; // check ẩn hiện button 
+    this.modalTitle  = 'Thêm mới Xã/Phường';
+    this.FormXaPhuong.enable();
+
     this.visible = !this.visible;
     this.showadd = true;
-    
+    this.FormXaPhuong.reset();
   }
 
   Edit(data: any) {
+    this.FormXaPhuong.enable();
+    this.FormXaPhuong.get("code")?.disable();
+    this.modalTitle = 'Cập nhật Xã/Phường';
+    this.checkBtnDetail = false; // check ẩn hiện button 
+
     this.visible = !this.visible;
     this.showadd = false;
     this.IdXaPhuong = data.id;
