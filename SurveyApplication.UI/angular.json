@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "//10.0.70.17/Publish/T07-SurveyApplication/SurveyWeb",
+            "outputPath": "D:/Publish/SurveyWeb",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
