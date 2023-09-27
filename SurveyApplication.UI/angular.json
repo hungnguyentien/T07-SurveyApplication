@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "D:/Publish/SurveyWeb",
+            "outputPath": "//10.0.70.17/Publish/T07-SurveyApplication/SurveyWeb",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -22,6 +22,7 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
+              "src/web.config",
               "src/assets"
             ],
             "styles": [
