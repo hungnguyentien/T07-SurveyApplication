@@ -40,6 +40,7 @@ export class AdminPeriodSurveyComponent {
   dateRangeError = false;
   checkdetail!:boolean
   oldNgayKetThuc!: string | null;
+  
   checkBtnDetail:boolean = false
   actionDetail!:any;
   modalTitle = '';
@@ -151,10 +152,11 @@ export class AdminPeriodSurveyComponent {
   }
 
   Add() {
+    debugger
     this.checkBtnDetail = false; // check ẩn hiện button 
     this.modalTitle  = 'Thêm mới đợt khảo sát';
     this.FormPeriodSurvey.enable();
-
+    this.showadd = true//check save
     this.visible = !this.visible;
     this.FormPeriodSurvey.reset();
   }
@@ -165,6 +167,7 @@ export class AdminPeriodSurveyComponent {
     this.modalTitle = 'Cập nhật đợt khảo sát';
     this.checkBtnDetail = false; // check ẩn hiện button 
     this.visible = !this.visible;
+    this.showadd = false//check save
     this.IdDotKhaoSat = data.id;
     this.MaDotKhaoSat = data.maDotKhaoSat;
     this.Trangthai = data.trangThai;
@@ -188,9 +191,9 @@ export class AdminPeriodSurveyComponent {
   }
 
   Save() {
-    if (this.showadd) {
+    if (this.showadd == true) {
       this.SaveAdd();
-    } else {
+    } else if(this.showadd == false) {
       this.SaveEdit();
     }
   }
@@ -198,6 +201,8 @@ export class AdminPeriodSurveyComponent {
   SaveAdd() {
     if (this.FormPeriodSurvey.valid) {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
+      ObjPeriodSurvey.NgayBatDau = Utils.plusDate(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY');
+      ObjPeriodSurvey.NgayKetThuc = Utils.plusDate(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY');
       this.PeriodSurveyService.create(ObjPeriodSurvey).subscribe({
         next: (res) => {
           if (res != null) {
@@ -222,10 +227,10 @@ export class AdminPeriodSurveyComponent {
   }
 
   SaveEdit() {
-    
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
-    ObjPeriodSurvey.NgayBatDau = moment(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY').utcOffset(0).toDate();
-    ObjPeriodSurvey.NgayKetThuc =  moment(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY').utcOffset(0).toDate();
+    ObjPeriodSurvey.NgayBatDau = Utils.plusDate(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY');
+    ObjPeriodSurvey.NgayKetThuc = Utils.plusDate(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY');
+
     ObjPeriodSurvey['id'] = this.IdDotKhaoSat;
     ObjPeriodSurvey['maDotKhaoSat'] = this.MaDotKhaoSat;
     ObjPeriodSurvey['Trangthai'] = this.Trangthai;

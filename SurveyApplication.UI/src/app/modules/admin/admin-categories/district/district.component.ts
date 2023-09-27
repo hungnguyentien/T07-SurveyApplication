@@ -29,6 +29,10 @@ export class DistrictComponent {
 
   visible: boolean = false;
   IdQuanHuyen: any;
+
+  checkBtnDetail:boolean = false
+  actionDetail!:any;
+  modalTitle = '';
   constructor(
     private FormBuilder : FormBuilder,
     private QuanHuyenService: QuanHuyenService,
@@ -50,6 +54,18 @@ export class DistrictComponent {
       code: ['', Validators.required],
     });
   };
+
+  detail(data:any){
+    this.checkBtnDetail = true
+    this.visible = !this.visible;
+    this.modalTitle = 'Chi tiết Quận/Huyện';
+    this.FormQuanHuyen.disable();
+    this.FormQuanHuyen.controls['parentCode'].setValue(data.parent_code);
+    this.FormQuanHuyen.controls['name'].setValue(data.name);
+    this.FormQuanHuyen.controls['type'].setValue(data.type);
+    this.FormQuanHuyen.controls['code'].setValue(data.code);
+
+  }
 
 
   GetAllTinh(){
@@ -118,12 +134,22 @@ export class DistrictComponent {
   };
 
   Add() {
+    this.checkBtnDetail = false; // check ẩn hiện button 
+    this.modalTitle  = 'Thêm mới Quận/Huyện';
+    this.FormQuanHuyen.enable();
+
     this.visible = !this.visible;
     this.showadd = true;
+    this.FormQuanHuyen.reset();
     
   }
 
   Edit(data: any) {
+    this.FormQuanHuyen.enable();
+    this.FormQuanHuyen.get("code")?.disable();
+    this.modalTitle = 'Cập nhật Quận/Huyện';
+    this.checkBtnDetail = false; // check ẩn hiện button 
+
     this.visible = !this.visible;
     this.showadd = false;
     this.IdQuanHuyen = data.id;
