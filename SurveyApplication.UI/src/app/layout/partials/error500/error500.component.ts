@@ -20,6 +20,6 @@ export class Error500Component {
     this.message =
       this.activatedRoute.snapshot.queryParamMap.get('message') ?? '';
     this.titleService.setTitle(this.message);
-    Utils.messageError(this.messageService, this.message);
+    Utils.messageInfo(this.messageService, this.message);
   }
 }

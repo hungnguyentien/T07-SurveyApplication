@@ -14,7 +14,6 @@ export const jsonDataFake = {
       {
         name: 'page1',
         elements: [],
-        title: '',
       },
     ],
     showQuestionNumbers: 'off',

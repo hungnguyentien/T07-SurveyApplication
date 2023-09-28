@@ -307,10 +307,15 @@ export default class Utils {
    * @param readOnly
    * @param els
    */
-  static configCauHoiEl(el: CauHoiConfig, readOnly: boolean, els: any[]) {
+  static configCauHoiEl(
+    el: CauHoiConfig,
+    readOnly: boolean,
+    els: any[],
+    index: number
+  ) {
     let loaiCauHoi = el.loaiCauHoi;
     let name = el.maCauHoi;
-    let title = `${el.tieuDe}`;
+    let title = `${index + 1}. ${el.tieuDe}`;
     let isRequired = el.batBuoc ?? false;
     let requiredErrorText = isRequired
       ? 'Vui lòng nhập câu trả lời của bạn!'
@@ -479,6 +484,7 @@ export default class Utils {
         storeDataAsText: false,
         allowMultiple: true,
         maxSize: maxSize,
+        maxFile: 1,
         showCommentArea: true,
         commentText: 'Ghi chú',
         readOnly: readOnly,
@@ -491,21 +497,24 @@ export default class Utils {
     const readOnly = res.trangThaiKq === KqTrangThai.HoanThanh;
     const lstPanelTitle = res.lstCauHoi
       .map((x) => x.panelTitle)
-      .filter(this.onlyUnique);
+      .filter((x) => x && this.onlyUnique);
     if (lstPanelTitle.length > 0)
       lstPanelTitle.forEach((panelTitle, i) => {
         const elsPanel: any[] = [];
         res.lstCauHoi
           .filter((x) => x.panelTitle === panelTitle)
-          .forEach((el) => this.configCauHoiEl(el, readOnly, elsPanel));
+          .forEach((el, i) => this.configCauHoiEl(el, readOnly, elsPanel, i));
         els.push({
           type: 'panel',
           name: `panel${i}`,
           elements: elsPanel,
-          title: panelTitle,
+          title: `${this.romanize(i + 1)}. ${panelTitle}`,
         });
       });
-    else res.lstCauHoi.forEach((el) => this.configCauHoiEl(el, readOnly, els));
+    else
+      res.lstCauHoi.forEach((el, i) =>
+        this.configCauHoiEl(el, readOnly, els, i)
+      );
     return els;
   };
 
@@ -722,9 +731,9 @@ export default class Utils {
   };
   /** format any sang datetime server + 1 */
   static anyToDateServer(dateStr: any, format: string = 'DD/MM/YYYY') {
-    try{
+    try {
       return moment(dateStr.format(format)).days(1);
-    }catch(e){
+    } catch (e) {
       console.error(e);
       return '';
     }
@@ -732,6 +741,46 @@ export default class Utils {
 
   /** format any sang datetime server + 1 */
   static plusDate(dateStr: any, format: string = 'DD/MM/YYYY') {
-    return moment(dateStr, format).add(1, 'days').toDate()
+    return moment(dateStr, format).add(1, 'days').toDate();
   }
+  /** Convert số sang số la mã */
+  static romanize = (num: number) => {
+    let digits = String(+num).split(''),
+      key = [
+        '',
+        'C',
+        'CC',
+        'CCC',
+        'CD',
+        'D',
+        'DC',
+        'DCC',
+        'DCCC',
+        'CM',
+        '',
+        'X',
+        'XX',
+        'XXX',
+        'XL',
+        'L',
+        'LX',
+        'LXX',
+        'LXXX',
+        'XC',
+        '',
+        'I',
+        'II',
+        'III',
+        'IV',
+        'V',
+        'VI',
+        'VII',
+        'VIII',
+        'IX',
+      ],
+      roman = '',
+      i = 3;
+    while (i--) roman = (key[+(digits?.pop() ?? 0) + i * 10] || '') + roman;
+    return Array(+digits.join('') + 1).join('M') + roman;
+  };
 }
