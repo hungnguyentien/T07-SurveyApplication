@@ -67,6 +67,7 @@ export class AdminTableSurveyComponent {
   formTableSurvey!: FormGroup;
   MaLoaiHinh!: string;
   IdLoaiHinh!: string;
+  MaBangKhaoSat!: string;
 
   DSLoaiHinh: any[] = [];
   DSDotKhaoSat: any[] = [];
@@ -131,7 +132,7 @@ export class AdminTableSurveyComponent {
     this.formTableSurvey = this.FormBuilder.group(
       {
         id: [''],
-        maBangKhaoSat: [''],
+        maBangKhaoSat: [{ value: this.MaBangKhaoSat, disabled: true }],
         idLoaiHinh: ['', Validators.required],
         idDotKhaoSat: ['', Validators.required],
         tenBangKhaoSat: ['', Validators.required],
@@ -419,7 +420,13 @@ export class AdminTableSurveyComponent {
     this.formTableSurvey.reset();
     this.modalTitle = 'Thêm mới bảng khảo sát';
     this.formTableSurvey.enable();
-    this.formTableSurvey.get('maBangKhaoSat')?.enable();
+    this.formTableSurvey.get('maBangKhaoSat')?.disable();
+    this.TableSurveyService.generateMaBangKhaoSat().subscribe({
+      next: (res: any) => {
+        this.formTableSurvey.controls['maBangKhaoSat'].setValue(res.maBangKhaoSat);
+        this.MaBangKhaoSat = res.maBangKhaoSat;
+      },
+    });
     this.checkBtnDetail = false;
     this.showadd = true;
     this.visible = !this.visible;

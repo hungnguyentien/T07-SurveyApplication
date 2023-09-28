@@ -57,7 +57,7 @@ export class AdminPeriodSurveyComponent {
     this.LoadLoaiHinh();
     this.FormPeriodSurvey = this.FormBuilder.group(
       {
-        MaDotKhaoSat: ['', Validators.required],
+        MaDotKhaoSat: [{ value: this.MaDotKhaoSat, disabled: true }],
         IdLoaiHinh: ['', Validators.required],
         TenDotKhaoSat: ['', Validators.required],
         NgayBatDau: ['', Validators.required],
@@ -174,6 +174,14 @@ export class AdminPeriodSurveyComponent {
     this.showadd = true//check save
     this.visible = !this.visible;
     this.FormPeriodSurvey.reset();
+    debugger
+    this.FormPeriodSurvey.get('MaDotKhaoSat')?.disable();
+    this.PeriodSurveyService.generateMaDotKhaoSat().subscribe({
+      next: (res: any) => {
+        this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(res.maDotKhaoSat);
+        this.MaDotKhaoSat = res.maDotKhaoSat;
+      },
+    });
   }
 
   Edit(data: any) {

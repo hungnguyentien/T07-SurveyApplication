@@ -20,4 +20,9 @@ export class PeriodSurveyService extends BaseService<PeriodSurvey> {
       )
       .pipe(first());
   }
+
+  generateMaDotKhaoSat() {
+    const url = `${environment.apiUrl}/DotKhaoSat/GenerateMaDotKhaoSat`;
+    return this.http.get(url);
+  }
 }

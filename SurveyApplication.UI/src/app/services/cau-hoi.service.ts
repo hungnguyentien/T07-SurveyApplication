@@ -18,4 +18,9 @@ export class CauHoiService extends BaseService<CauHoi> {
       `${environment.apiUrl}/CauHoi/GetLoaiCauHoi`
     );
   }
+
+  generateMaCauHoi() {
+    const url = `${environment.apiUrl}/CauHoi/GenerateMaCauHoi`;
+    return this.http.get(url);
+  }
 }

@@ -20,6 +20,11 @@ export class TableSurveyService extends BaseService<TableSurvey> {
       )
       .pipe(first());
   }
+
+  generateMaBangKhaoSat() {
+    const url = `${environment.apiUrl}/BangKhaoSat/GenerateMaBangKhaoSat`;
+    return this.http.get(url);
+  }
   
   // SearchTableSurvey(pageIndex: number, pageSize: number, keyword: string) {
   //   const url = `${environment.apiUrl}/BangKhaoSat/GetBangKhaoSatByCondition`;
