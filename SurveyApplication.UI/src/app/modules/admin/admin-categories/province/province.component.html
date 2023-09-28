@@ -130,8 +130,8 @@
 
 
       <div class="form-group">
-        <label for="name" class="col-form-label">Tên: <span style="color: red;">*</span></label>
-        <textarea class="form-control" formControlName="name" id="name" pInputText placeholder="Nhập tên" [ngClass]="{
+        <label for="MoTa" class="col-form-label">Tên: <span style="color: red;">*</span></label>
+        <textarea class="form-control" formControlName="name" id="MoTa" pInputText placeholder="Nhập tên" [ngClass]="{
             'is-invalid': submitted && f('name').errors
           }"></textarea>
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['name'].valid && 

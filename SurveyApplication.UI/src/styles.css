@@ -138,3 +138,29 @@ input[type="button"].sd-btn:focus {
 .color_Hover{
   color: #0d6efd;
 }
+
+input:disabled { 
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important; 
+  background-color: inherit !important;
+}
+::ng-deep .p-disabled {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important; 
+  background-color: inherit !important;
+
+}
+::ng-deep input{
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important; 
+}
+
+#MoTa{
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important; 
+  background-color: white !important;
+}

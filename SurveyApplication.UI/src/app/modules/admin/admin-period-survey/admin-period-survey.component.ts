@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { Paging, PeriodSurvey } from '@app/models';
+import { Paging, PeriodSurvey, TableSurvey } from '@app/models';
 
 import {
   FormGroup,
@@ -35,6 +35,7 @@ export class AdminPeriodSurveyComponent {
   dataTotalRecords!: number;
   keyWord!: string;
   visible: boolean = false;
+  visibleDetail: boolean = false;
 
   showadd!: boolean;
   FormPeriodSurvey!: FormGroup;
@@ -45,6 +46,7 @@ export class AdminPeriodSurveyComponent {
   dateRangeError = false;
   checkdetail!:boolean
   oldNgayKetThuc!: string | null;
+  datasDetail: TableSurvey[] = [];
   
   checkBtnDetail:boolean = false
   actionDetail!:any;
@@ -74,15 +76,19 @@ export class AdminPeriodSurveyComponent {
     );
   }
   
-  filter(){
-    
+  getDetailBangKhaoSat(data:number){
+    debugger
+    this.visibleDetail = !this.visibleDetail;
+    this.PeriodSurveyService.getDotKhaoSatByDotKhaoSat(data).subscribe((res:any)=>{
+      this.datasDetail = res;
+    })
   }
 
   detail(data:any){
     this.checkBtnDetail = true
     this.visible = !this.visible;
     this.modalTitle = 'Chi tiết đợt khảo sát';
-    this.FormPeriodSurvey.disable();
+    this.FormPeriodSurvey?.disable();
     this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(data.maDotKhaoSat);
     this.FormPeriodSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
     this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(data.tenDotKhaoSat);
