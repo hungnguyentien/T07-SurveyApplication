@@ -100,6 +100,7 @@ export class AdminTableSurveyComponent {
   visibleGuiEmail: boolean = false;
   lstDonVi!: DonVi[];
   selectedDonVi!: number[];
+  selectedLoaiHinh!: number;
   lstIdDonViError: boolean = false;
 
   iPanelTitle!: number;
@@ -162,13 +163,14 @@ export class AdminTableSurveyComponent {
 
   LoadUnitType() {
     this.unitTypeService.getAll().subscribe((data) => {
-      this.DSLoaiHinh = data; // Lưu dữ liệu vào danh sách
+      this.DSLoaiHinh = data;
     });
   }
 
   LoadPeriodSurvey() {
-    this.periodSurveyService.getAll().subscribe((data) => {
-      this.DSDotKhaoSat = data; // Lưu dữ liệu vào danh sách
+    const code = this.selectedLoaiHinh;
+    this.periodSurveyService.getDotKhaoSatByLoaiHinh(code ?? 0).subscribe((data) => {
+      this.DSDotKhaoSat = data;
     });
   }
 

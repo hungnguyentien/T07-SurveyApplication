@@ -722,6 +722,16 @@ export default class Utils {
   };
   /** format any sang datetime server + 1 */
   static anyToDateServer(dateStr: any, format: string = 'DD/MM/YYYY') {
-    return moment(dateStr.format(format)).days(1);
+    try{
+      return moment(dateStr.format(format)).days(1);
+    }catch(e){
+      console.error(e);
+      return '';
+    }
+  }
+
+  /** format any sang datetime server + 1 */
+  static plusDate(dateStr: any, format: string = 'DD/MM/YYYY') {
+    return moment(dateStr, format).add(1, 'days').toDate()
   }
 }

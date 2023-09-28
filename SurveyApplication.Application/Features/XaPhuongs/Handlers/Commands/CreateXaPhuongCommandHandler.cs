@@ -29,7 +29,7 @@ namespace SurveyApplication.Application.Features.XaPhuongs.Handlers.Commands
                 response.Success = false;
                 response.Message = "Tạo mới thất bại";
                 response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
-                throw new ValidationException(validatorResult);
+                return response;
             }
 
             var XaPhuong = _mapper.Map<XaPhuong>(request.XaPhuongDto);

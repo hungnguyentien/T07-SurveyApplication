@@ -116,6 +116,24 @@ export class QuestionComponent {
     });
   };
 
+  searchOnChange(value: string) {
+    debugger
+    this.paging.keyword = this.keyWord;
+    this.cauHoiService.getByCondition(this.paging).subscribe({
+      next: (res) => {
+        this.lstQuestion = res.data;
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
     this.cauHoiService.getByCondition(this.paging).subscribe({

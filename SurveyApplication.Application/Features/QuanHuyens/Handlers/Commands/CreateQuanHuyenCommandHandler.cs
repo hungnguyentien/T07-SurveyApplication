@@ -29,7 +29,7 @@ namespace SurveyApplication.Application.Features.QuanHuyens.Handlers.Commands
                 response.Success = false;
                 response.Message = "Tạo mới thất bại";
                 response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
-                throw new ValidationException(validatorResult);
+                return response;
             }
 
             var QuanHuyen = _mapper.Map<QuanHuyen>(request.QuanHuyenDto);

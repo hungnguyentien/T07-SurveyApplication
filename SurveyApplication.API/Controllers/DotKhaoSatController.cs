@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
+using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
+using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
@@ -46,6 +48,14 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult<List<DotKhaoSatDto>>> GetByBangKhaoSat(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatDetailRequest { Id = id });
+            return Ok(leaveAllocations);
+        }
+
+        [HttpGet("GetByLoaiHinh")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
+        public async Task<ActionResult<List<DotKhaoSatDto>>> GetByDotKhaoSat(int id)
+        {
+            var leaveAllocations = await _mediator.Send(new GetDotKhaoSatByLoaiHinhRequest { Id = id });
             return Ok(leaveAllocations);
         }
 

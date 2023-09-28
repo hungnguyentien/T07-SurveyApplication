@@ -26,7 +26,7 @@
     <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
         <div class="form-group mb-2">
             <label for="keyWord" class="sr-only">Search</label>
-            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"(ngModelChange)="searchOnChange($event)"
                 [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
         </div>
         <button type="submit" class="btn btn-primary ml-2 mb-2">
@@ -165,7 +165,7 @@
                     <input type="text" formControlName="MaDotKhaoSat" class="form-control" id="recipient-name"
                         pInputText placeholder="Nhập mã đợt khảo sát">
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['MaDotKhaoSat'].valid && 
-                         FormPeriodSurvey.controls['MaDotKhaoSat'].dirty">
+                         FormPeriodSurvey.controls['MaDotKhaoSat'].dirty&&!checkBtnDetail == true">
                         Vui lòng nhập mã đợt
                     </small>
                 </div>
@@ -173,13 +173,13 @@
                 <div class="form-group col-md-6">
                     <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span
                             style="color: red;">*</span> </label>
-                    <p-dropdown id="loaicauhoi" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
+                    <p-dropdown  id="loaicauhoi" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id" appendTo="body"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
                         placeholder="-- Chọn loại hình đơn vị --" formControlName="IdLoaiHinh">
                     </p-dropdown>
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['IdLoaiHinh'].valid && 
-                         FormPeriodSurvey.controls['IdLoaiHinh'].dirty">
+                         FormPeriodSurvey.controls['IdLoaiHinh'].dirty&&!checkBtnDetail == true">
                         Vui lòng chọn Loại hình đơn vị
                     </small>
 
@@ -190,7 +190,7 @@
                 <input type="text" formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText
                     placeholder="Nhập tên đợt khảo sát">
                 <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['TenDotKhaoSat'].valid && 
-                        FormPeriodSurvey.controls['TenDotKhaoSat'].dirty">
+                        FormPeriodSurvey.controls['TenDotKhaoSat'].dirty&&!checkBtnDetail == true">
                     Vui lòng nhập Tên đợt
                 </small>
             </div>
@@ -204,7 +204,7 @@
                          dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"></p-calendar>
                          
                     <small style="color: #e24c4c;" class="ml-2"
-                        *ngIf="!FormPeriodSurvey.get('NgayBatDau')?.valid && FormPeriodSurvey.get('NgayBatDau')?.dirty">
+                        *ngIf="!FormPeriodSurvey.get('NgayBatDau')?.valid && FormPeriodSurvey.get('NgayBatDau')?.dirty &&!checkBtnDetail == true">
                         Vui lòng nhập Ngày bắt đầu
                     </small>
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="FormPeriodSurvey.hasError('dateRangeError')">
@@ -219,7 +219,7 @@
                     <p-calendar formControlName="NgayKetThuc" id="NgayKetThuc" appendTo="body" 
                          dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"></p-calendar>
                     <small style="color: #e24c4c;" class="ml-2"
-                        *ngIf="!FormPeriodSurvey.get('NgayKetThuc')?.valid && FormPeriodSurvey.get('NgayKetThuc')?.dirty">
+                        *ngIf="!FormPeriodSurvey.get('NgayKetThuc')?.valid && FormPeriodSurvey.get('NgayKetThuc')?.dirty &&!checkBtnDetail == true">
                         Vui lòng nhập Ngày kết thúc
                     </small>
                 </div>

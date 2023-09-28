@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "build:prod": "ng build --configuration production",
+    "build:prod": "ng build --configuration production --output-path=//10.0.70.17/Publish/T07-SurveyApplication/SurveyWeb",
     "test": "ng test"
   },
   "private": true,
@@ -60,7 +60,6 @@
     "@angular-devkit/build-angular": "^16.2.0",
     "@angular/cli": "~16.2.0",
     "@angular/compiler-cli": "^16.2.0",
-    "@types/ckeditor__ckeditor5-build-classic": "^37.0.0",
     "@types/crypto-js": "^4.1.2",
     "@types/jasmine": "~4.3.0",
     "@types/node": "^20.6.0",

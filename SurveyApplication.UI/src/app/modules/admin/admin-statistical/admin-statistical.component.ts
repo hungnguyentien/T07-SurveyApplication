@@ -40,8 +40,8 @@ export class AdminStatisticalComponent {
   barData: any;
   barOptions: any;
 
-  selectedDotKhaoSat: number = 1;
-  selectedBangKhaoSat: number = 1;
+  selectedDotKhaoSat!: number;
+  selectedBangKhaoSat!: number;
 
   datas: any;
 
@@ -322,19 +322,20 @@ export class AdminStatisticalComponent {
 
   loadPeriodSurvey() {
     this.periodSurveyService.getAll().subscribe((data) => {
-      this.LstDotKhaoSat = data; // Lưu dữ liệu vào danh sách
+      this.LstDotKhaoSat = data;
     });
   }
 
   loadTableSurvey() {
-    this.tableSurveyService.getAll().subscribe((data) => {
-      this.LstBangKhaoSat = data; // Lưu dữ liệu vào danh sách
+    const code = this.selectedDotKhaoSat;
+    this.tableSurveyService.getBangKhaoSatByDotKhaoSat(code ?? 0).subscribe((data) => {
+      this.LstBangKhaoSat = data;
     });
   }
 
   loadUnitType() {
     this.unitTypeService.getAll().subscribe((data) => {
-      this.LstLoaiHinhDv = data; // Lưu dữ liệu vào danh sách
+      this.LstLoaiHinhDv = data;
     });
   }
 

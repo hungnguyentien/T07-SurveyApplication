@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
         public async Task<List<BangKhaoSatDto>> Handle(GetBangKhaoSatByDotKhaoSatRequest request,
             CancellationToken cancellationToken)
         {
-            var bangKhaoSats = await _surveyRepo.BangKhaoSat.GetAllListAsync(x => x.IdDotKhaoSat == request.Id);
+            var bangKhaoSats = request.Id == null || request.Id < 1 ? await _surveyRepo.BangKhaoSat.GetAllListAsync() : await _surveyRepo.BangKhaoSat.GetAllListAsync(x => x.IdDotKhaoSat == request.Id);
             return _mapper.Map<List<BangKhaoSatDto>>(bangKhaoSats);
         }
     }

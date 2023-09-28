@@ -27,7 +27,7 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Queries
             var data = from a in _surveyRepo.GuiEmail.GetAllQueryable().AsNoTracking()
                        join b in _surveyRepo.DonVi.GetAllQueryable().AsNoTracking() on a.IdDonVi equals b.Id
                        join c in _surveyRepo.NguoiDaiDien.GetAllQueryable().AsNoTracking() on b.Id equals c.IdDonVi
-                       join d in _surveyRepo.KetQua.GetAllQueryable().AsNoTracking() on b.Id equals d.IdGuiEmail into joinTable
+                       join d in _surveyRepo.KetQua.GetAllQueryable().AsNoTracking() on a.Id equals d.IdGuiEmail into joinTable
                        from joinD in joinTable.DefaultIfEmpty()
                        where !a.Deleted && a.IdBangKhaoSat == request.IdBanhgKhaoSat
                                         && (request.TrangThaiGuiEmail == null || a.TrangThai == request.TrangThaiGuiEmail)

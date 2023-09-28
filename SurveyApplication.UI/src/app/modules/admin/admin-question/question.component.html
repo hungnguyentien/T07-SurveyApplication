@@ -29,7 +29,7 @@
   <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
-      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord" (ngModelChange)="searchOnChange($event)"
         [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
