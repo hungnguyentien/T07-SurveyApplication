@@ -17,7 +17,7 @@
       <button (click)=" Add()" pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"></button>
     </div>
     <div class="ml-3">
-      <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
+      <button pButton type="button" *ngIf="selectedUnitType && selectedUnitType.length > 0 && selectedUnitType.length != null"(click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
         class="custom-button" style="background-color: #ea5c5c;"></button>
     </div>
   </div>

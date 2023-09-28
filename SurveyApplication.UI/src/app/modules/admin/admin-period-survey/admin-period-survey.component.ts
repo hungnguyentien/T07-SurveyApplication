@@ -43,6 +43,9 @@ export class AdminPeriodSurveyComponent {
   
   checkBtnDetail:boolean = false
   actionDetail!:any;
+  minDate!:Date;
+  
+
   modalTitle = '';
   constructor(
     private FormBuilder: FormBuilder,
@@ -66,6 +69,8 @@ export class AdminPeriodSurveyComponent {
       },
       { validator: this.dateRangeValidator }
     );
+    this.minDate = new Date(1900, 0, 1);
+   
   }
 
   detail(data:any){
