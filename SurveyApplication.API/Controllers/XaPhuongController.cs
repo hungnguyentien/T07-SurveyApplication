@@ -49,7 +49,7 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
-        [HttpGet("GetByQuanHuyen/{id}")]
+        [HttpGet("GetByQuanHuyen")]
         [HasPermission(new[] { (int)EnumModule.Code.QlPx }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<QuanHuyenDto>>> GetByQuanHuyen(string id)
         {

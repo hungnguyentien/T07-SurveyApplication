@@ -101,7 +101,7 @@
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>
-        <td>
+        <td (click)="detail(rowData)" class="color_Hover">
           <span class="ml-1 vertical-align-middle">{{ rowData.maDonVi }}</span>
         </td>
         <td>
@@ -143,8 +143,7 @@
   class="card flex justify-content-center">
   <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '77vw' }" [draggable]="false" [resizable]="false">
     <p-header>
-      <h5 class="modal-title" id="exampleModalLabel" *ngIf="showadd">Thêm mới đơn vị</h5>
-      <h5 class="modal-title" id="exampleModalLabel" *ngIf="!showadd">Cập nhật đơn vị</h5>
+      <h5 class="modal-title">{{ modalTitle }}</h5>
     </p-header>
     <div class="modal-content">
       <div class="modal-header">
@@ -156,7 +155,7 @@
             <label for="MaDonVi" class="col-form-label">Mã đơn vị: <span style="color: red;">*</span></label>
             <input type="text" formControlName="MaDonVi" pInputText class="form-control" id="MaDonVi">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['MaDonVi'].valid && 
-            FormObjectSurvey.controls['MaDonVi'].dirty">
+            FormObjectSurvey.controls['MaDonVi'].dirty && !checkBtnDetail">
               Vui lòng nhập mã đơn vị
             </small>
           </div>
@@ -164,7 +163,7 @@
             <label for="TenDonVi" class="col-form-label">Tên đơn vị: <span style="color: red;">*</span></label>
             <input type="text" formControlName="TenDonVi" pInputText class="form-control" id="TenDonVi">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['TenDonVi'].valid && 
-            FormObjectSurvey.controls['TenDonVi'].dirty">
+            FormObjectSurvey.controls['TenDonVi'].dirty && !checkBtnDetail">
               Vui lòng nhập tên đơn vị
             </small>
           </div>
@@ -179,7 +178,7 @@
               placeholder="-- Chọn loại hình đơn vị --" formControlName="IdLoaiHinh">
             </p-dropdown>
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['IdLoaiHinh'].valid && 
-              FormObjectSurvey.controls['IdLoaiHinh'].dirty">
+              FormObjectSurvey.controls['IdLoaiHinh'].dirty && !checkBtnDetail">
               Vui lòng chọn loại hình
             </small>
           </div>
@@ -191,7 +190,7 @@
               placeholder="-- Chọn Lĩnh vực hoạt động --" formControlName="IdLinhVuc">
             </p-dropdown>
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['IdLinhVuc'].valid && 
-              FormObjectSurvey.controls['IdLinhVuc'].dirty">
+              FormObjectSurvey.controls['IdLinhVuc'].dirty && !checkBtnDetail">
               Vui lòng chọn Lĩnh vực hoạt động
             </small>
           </div>
@@ -209,7 +208,7 @@
             <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
             <input formControlName="Email" type="text" pInputText class="form-control" id="Email">
             <small style="color: #e24c4c;" class="ml-2"
-              *ngIf="!FormObjectSurvey.controls['Email'].valid && FormObjectSurvey.controls['Email'].dirty">
+              *ngIf="!FormObjectSurvey.controls['Email'].valid && FormObjectSurvey.controls['Email'].dirty && !checkBtnDetail">
               Vui lòng nhập email
             </small>
           </div>
@@ -218,7 +217,7 @@
             <input formControlName="SoDienThoai" type="text" pInputText class="form-control" id="sdt">
 
             <small style="color: #e24c4c;" class="ml-2"
-              *ngIf="FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')&&FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')">
+              *ngIf="FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && !checkBtnDetail">
               Vui lòng nhập Số điện thoại
             </small>
 
@@ -251,7 +250,7 @@
             <input type="text" formControlName="DiaChi" class="form-control" pInputText id="sdt"
               placeholder="Nhập địa chỉ chi tiết">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['DiaChi'].valid && 
-                FormObjectSurvey.controls['DiaChi'].dirty">
+                FormObjectSurvey.controls['DiaChi'].dirty && !checkBtnDetail">
               Vui lòng nhập Địa chỉ
             </small>
           </div>
@@ -263,7 +262,7 @@
             <label for="HoTen" class="col-form-label">Họ tên: <span style="color: red;">*</span></label>
             <input formControlName="HoTen" type="text" pInputText class="form-control" id="HoTen">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormRepresentative.controls['HoTen'].valid && 
-              FormRepresentative.controls['HoTen'].dirty">
+              FormRepresentative.controls['HoTen'].dirty && !checkBtnDetail">
               Vui lòng nhập Họ tên
             </small>
           </div>
@@ -271,7 +270,7 @@
             <label for="chucvu" class="col-form-label">Chức vụ: <span style="color: red;">*</span></label>
             <input formControlName="ChucVu" type="text" pInputText class="form-control" id="chucvu">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormRepresentative.controls['ChucVu'].valid && 
-              FormRepresentative.controls['ChucVu'].dirty">
+              FormRepresentative.controls['ChucVu'].dirty && !checkBtnDetail">
               Vui lòng nhập Chức vụ
             </small>
           </div>
@@ -279,7 +278,7 @@
             <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
             <input formControlName="Email" type="text" pInputText class="form-control" id="Email">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormRepresentative.controls['Email'].valid && 
-              FormRepresentative.controls['Email'].dirty">
+              FormRepresentative.controls['Email'].dirty && !checkBtnDetail">
               Vui lòng nhập Email
             </small>
           </div>
@@ -288,7 +287,7 @@
             <input formControlName="SoDienThoai" pInputText type="text" class="form-control" id="sdt">
 
             <small style="color: #e24c4c;" class="ml-2"
-              *ngIf="!FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')&&FormObjectSurvey.controls['SoDienThoai'].hasError('pattern')">
+              *ngIf="!FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && !checkBtnDetail">
               Vui lòng nhập Số điện thoại
             </small>
           </div>
@@ -301,7 +300,7 @@
     </div>
     <p-footer>
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
-      <button pButton [disabled]="!FormObjectSurvey.valid && !FormRepresentative.valid" type="submit" icon="pi pi-save"
+      <button pButton *ngIf="!checkBtnDetail" [disabled]="!FormObjectSurvey.valid && !FormRepresentative.valid" type="submit" icon="pi pi-save"
         label="Lưu" class="custom-button"></button>
     </p-footer>
   </p-dialog>

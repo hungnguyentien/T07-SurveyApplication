@@ -47,7 +47,7 @@ namespace SurveyApplication.API.Controllers
             return Ok(leaveAllocations);
         }
 
-        [HttpGet("GetByTinhTp/{id}")]
+        [HttpGet("GetByTinhTp")]
         [HasPermission(new[] { (int)EnumModule.Code.QlQh }, new[] { (int)EnumPermission.Type.Read })]
         public async Task<ActionResult<List<QuanHuyenDto>>> GetByTinhTp(string id)
         {

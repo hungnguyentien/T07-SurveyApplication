@@ -6,6 +6,8 @@ import {
   ObjectSurveyService,
   PhieuKhaoSatService,
   UnitTypeService,
+  XaPhuongService,
+  QuanHuyenService
 } from '@app/services';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { Table } from 'primeng/table';
@@ -25,6 +27,10 @@ export class AdminObjectSurveyComponent {
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
+
+  checkBtnDetail:boolean = false
+  actionDetail!:any;
+  modalTitle = '';
 
   showadd!: boolean;
   FormObjectSurvey!: FormGroup;
@@ -55,7 +61,9 @@ export class AdminObjectSurveyComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private linhVucHoatDongService: LinhVucHoatDongService,
-    private phieuKhaoSatService: PhieuKhaoSatService
+    private phieuKhaoSatService: PhieuKhaoSatService,
+    private xaPhuongService: XaPhuongService,
+    private quanHuyenService: QuanHuyenService,
   ) {}
   ngOnInit() {
     this.GetAllFieldOfActivity();
@@ -98,9 +106,9 @@ export class AdminObjectSurveyComponent {
       .getPhuongXa()
       .subscribe((data) => (this.wards = data));
 
-    this.phieuKhaoSatService
-      .getTinh()
-      .subscribe((data) => (this.cities = data));
+    // this.phieuKhaoSatService
+    //   .getTinh()
+    //   .subscribe((data) => (this.cities = data));
 
     this.linhVucHoatDongService.getAll().subscribe({
       next: (res) => {
@@ -120,20 +128,17 @@ export class AdminObjectSurveyComponent {
   onCityChange(): void {
     const code = this.selectedTinh;
     this.wards = [];
-    this.phieuKhaoSatService
-      .getQuanHuyen()
-      .subscribe(
-        (data) => (this.districts = data.filter((x) => x.parent_code === code))
-      );
+    this.quanHuyenService.getQuanHuyenByTinhTp(code ?? '').subscribe((res) => {
+          this.districts = res;
+      });
   }
 
   onDistrictChange(): void {
     const code = this.selectedQuanHuyen;
-    this.phieuKhaoSatService
-      .getPhuongXa()
-      .subscribe(
-        (data) => (this.wards = data.filter((x) => x.parent_code === code))
-      );
+    this.xaPhuongService
+      .getPhuongXaByQuanHuyen(code ?? '').subscribe((res) => {
+        this.wards = res;
+    });
   }
 
   GetUnitType() {
@@ -171,7 +176,7 @@ export class AdminObjectSurveyComponent {
     this.paging = {
       pageIndex: pageIndex,
       pageSize: pageSize,
-      keyword: '',
+      keyword: this.keyWord,
       orderBy: event.sortField
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
@@ -209,16 +214,58 @@ export class AdminObjectSurveyComponent {
     });
   };
 
+  detail(data:any){
+    this.checkBtnDetail = true
+    this.visible = !this.visible;
+    this.modalTitle = 'Chi tiết đơn vị';
+    this.FormObjectSurvey.disable();
+
+    this.selectedTinh = this.cities.find(
+      (x) => x.id === data.idTinhTp
+    )?.code;
+    this.selectedQuanHuyen = this.districts.find(
+      (x) => x.id === data.idQuanHuyen
+    )?.code;
+    this.selectedPhuongXa = this.wards.find(
+      (x) => x.id === data.idXaPhuong
+    )?.code;
+
+    this.FormObjectSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
+    this.FormObjectSurvey.controls['IdLinhVuc'].setValue(data.idLinhVuc);
+    this.FormObjectSurvey.controls['TenDonVi'].setValue(data.tenDonVi);
+    this.FormObjectSurvey.controls['MaSoThue'].setValue(data.maSoThue);
+    this.FormObjectSurvey.controls['MaDonVi'].setValue(data.maDonVi);
+    this.FormObjectSurvey.controls['Email'].setValue(data.emailDonVi);
+    this.FormObjectSurvey.controls['WebSite'].setValue(data.webSite);
+    this.FormObjectSurvey.controls['SoDienThoai'].setValue(data.soDienThoaiDonVi);
+    this.FormObjectSurvey.controls['DiaChi'].setValue(data.diaChi);
+    this.FormObjectSurvey.controls['IdTinhTp'].setValue(this.selectedTinh);
+    this.FormObjectSurvey.controls['IdQuanHuyen'].setValue(this.selectedQuanHuyen);
+    this.FormObjectSurvey.controls['IdXaPhuong'].setValue(this.selectedPhuongXa);
+
+    this.FormRepresentative.controls['HoTen'].setValue(data.hoTen);
+    this.FormRepresentative.controls['ChucVu'].setValue(data.chucVu);
+    this.FormRepresentative.controls['Email'].setValue(data.emailNguoiDaiDien);
+    this.FormRepresentative.controls['SoDienThoai'].setValue(data.soDienThoaiNguoiDaiDien);
+    this.FormRepresentative.controls['MoTa'].setValue(data.moTa);
+  }
+
   Add() {
+    this.checkBtnDetail = false;
+    this.modalTitle  = 'Thêm mới đơn vị';
+    this.FormObjectSurvey.enable();
     this.FormObjectSurvey.reset();
     this.FormRepresentative.reset();
-    this.showadd = true;
     this.visible = !this.visible;
+    this.showadd = true;
     this.FormObjectSurvey.get('MaDonVi')?.enable();
   }
 
   Edit(data: any) {
+    this.FormObjectSurvey.enable();
     this.FormObjectSurvey.get("MaDonVi")?.disable();
+    this.modalTitle = 'Cập nhật đơn vị';
+    this.checkBtnDetail = false;
     this.showadd = false;
     this.visible = !this.visible;
     this.Madonvi = data.maDonVi;
@@ -247,6 +294,10 @@ export class AdminObjectSurveyComponent {
         this.selectedPhuongXa = this.wards.find(
           (x) => x.id === res.donViDto.idXaPhuong
         )?.code;
+
+        this.FormObjectSurvey.controls['IdTinhTp'].setValue(this.selectedTinh);
+        this.FormObjectSurvey.controls['IdQuanHuyen'].setValue(this.selectedQuanHuyen);
+        this.FormObjectSurvey.controls['IdXaPhuong'].setValue(this.selectedPhuongXa);
       },
     });
   }
@@ -266,6 +317,7 @@ export class AdminObjectSurveyComponent {
         donViDto: this.FormObjectSurvey.value,
         nguoiDaiDienDto: this.FormRepresentative.value,
       };
+      debugger
       this.objectSurveyService.create(obj).subscribe({
         next: (res) => {
           if ('response_1' in res && 'response_2' in res) {
@@ -375,6 +427,7 @@ export class AdminObjectSurveyComponent {
                 this.messageService,
                 `Xoá ${ids.length} đơn vị thành công!`
               );
+              this.selectedObjectSurvey = [];
             }
           },
           error: (e) => Utils.messageError(this.messageService, e.message),

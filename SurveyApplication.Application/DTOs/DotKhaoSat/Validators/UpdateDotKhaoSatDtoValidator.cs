@@ -12,6 +12,6 @@ public class UpdateDotKhaoSatDtoValidator : AbstractValidator<UpdateDotKhaoSatDt
         _dotKhaoSatRepository = dotKhaoSatRepository;
         Include(new IDotKhaoSatDtoValidator(_dotKhaoSatRepository));
 
-        RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
+        //RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
     }
 }
