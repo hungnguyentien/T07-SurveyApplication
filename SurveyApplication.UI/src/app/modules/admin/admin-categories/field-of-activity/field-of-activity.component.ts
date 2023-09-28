@@ -26,6 +26,8 @@ export class FieldOfActivityComponent {
   showadd!: boolean;
   FormFieldOfActivity!: FormGroup;
   visible: boolean = false;
+  checkBtnDetail: boolean = false;
+  modalTitle:string ="";
   IdLinhVuc: any;
   constructor(
     private FormBuilder : FormBuilder,
@@ -53,7 +55,7 @@ export class FieldOfActivityComponent {
     this.paging = {
       pageIndex: pageIndex,
       pageSize: pageSize,
-      keyword: '',
+      keyword: this.keyWord,
       orderBy: event.sortField
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
@@ -104,10 +106,28 @@ export class FieldOfActivityComponent {
     if (this.showadd !== null) this.showadd ? this.SaveAdd() : this.SaveEdit();
   };
 
+  detail(data:any){
+    this.checkBtnDetail = true;
+    this.visible = !this.visible;
+    this.modalTitle = 'Chi tiết lĩnh vực hoạt động';
+    this.FormFieldOfActivity.disable();
+    this.IdLinhVuc = data.id;
+    this.MaLinhVuc = data.maLinhVuc;
+    this.FormFieldOfActivity.controls['maLinhVuc'].setValue(data.maLinhVuc);
+    this.FormFieldOfActivity.controls['tenLinhVuc'].setValue(data.tenLinhVuc);
+    this.FormFieldOfActivity.controls['moTa'].setValue(data.moTa);
+
+  }
   Add() {
+    debugger
     this.visible = !this.visible;
     this.showadd = true;
+    this.checkBtnDetail = false;
+    this.modalTitle = 'Thêm lĩnh vực hoạt động';
+    this.FormFieldOfActivity.enable();
+   
     this.FormFieldOfActivity.reset();
+    this.FormFieldOfActivity.get('maLinhVuc')?.disable();
     this.FieldOfActivityService.generateMaLinhVuc().subscribe({
       next: (res: any) => {
         this.FormFieldOfActivity.controls['maLinhVuc'].setValue(res.maLinhVuc);
@@ -119,6 +139,9 @@ export class FieldOfActivityComponent {
   Edit(data: any) {
     this.visible = !this.visible;
     this.showadd = false;
+    this.checkBtnDetail = false;
+    this.modalTitle = 'Cập nhật lĩnh vực hoạt động';
+    this.FormFieldOfActivity.enable();
     this.IdLinhVuc = data.id;
     this.MaLinhVuc = data.maLinhVuc;
     this.FormFieldOfActivity.controls['maLinhVuc'].setValue(data.maLinhVuc);
@@ -202,6 +225,7 @@ export class FieldOfActivityComponent {
                 this.messageService,
                 `Xoá ${ids.length} lĩnh vực thành công!`
               );
+              this.selectedFieldOfActivity = []; 
             }
           },
           error: (e) => Utils.messageError(this.messageService, e.message),

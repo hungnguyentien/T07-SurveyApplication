@@ -80,7 +80,7 @@
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>
-        <td>
+        <td class="color_Hover"  (click)="detail(rowData)">
           <span class="ml-1 vertical-align-middle">{{ rowData.maLinhVuc }}</span>
         </td>
         <td>
@@ -112,7 +112,7 @@
     [maximizable]="true">
     <ng-template pTemplate="header">
       <h5 class="modal-title">
-        {{ showadd === true ? "Thêm mới lĩnh vực" : "Cập nhật lĩnh vực" }}
+        {{ modalTitle}}
       </h5>
     </ng-template>
     <ng-template pTemplate="body">
@@ -120,7 +120,7 @@
         <label for="maLinhVuc" class="col-form-label">Mã lĩnh vực: <span style="color: red;">*</span></label>
         <input type="text" formControlName="maLinhVuc" class="form-control" id="maLinhVuc">
         <!-- <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormFieldOfActivity.controls['maLinhVuc'].valid && 
-            FormFieldOfActivity.controls['maLinhVuc'].dirty">
+            FormFieldOfActivity.controls['maLinhVuc'].dirty && !checkBtnDetail == true">
           Vui lòng nhập mã lĩnh vực
         </small> -->
       </div>
@@ -132,7 +132,7 @@
               'is-invalid': submitted && f('tenLinhVuc').errors
             }">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormFieldOfActivity.controls['tenLinhVuc'].valid && 
-            FormFieldOfActivity.controls['tenLinhVuc'].dirty">
+            FormFieldOfActivity.controls['tenLinhVuc'].dirty && !checkBtnDetail == true">
           Vui lòng nhập tên lĩnh vực
         </small>
       </div>
@@ -143,14 +143,14 @@
             'is-invalid': submitted && f('moTa').errors
           }"></textarea>
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormFieldOfActivity.controls['moTa'].valid && 
-            FormFieldOfActivity.controls['moTa'].dirty">
+            FormFieldOfActivity.controls['moTa'].dirty && !checkBtnDetail == true">
           Vui lòng nhập Mô tả
         </small>
       </div>
     </ng-template>
     <ng-template pTemplate="footer">
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
-      <button pButton [disabled]="!FormFieldOfActivity.valid" type="submit" icon="pi pi-save" label="Lưu"
+      <button pButton *ngIf="!checkBtnDetail == true" [disabled]="!FormFieldOfActivity.valid" type="submit" icon="pi pi-save" label="Lưu"
         class="custom-button"></button>
     </ng-template>
   </p-dialog>

@@ -18,7 +18,7 @@ namespace SurveyApplication.Application.DTOs.LinhVucHoatDong.Validators
                 {
                     var LinhVucHoatDongViExists = await _LinhVucHoatDongRepository.ExistsByMaLinhVuc(maLoaiHinh);
                     return !LinhVucHoatDongViExists;
-                }).WithMessage("Mã loại hình đơn vị đã tồn tại!");
+                }).WithMessage("Mã lĩnh vực đã hoạt động tồn tại!");
 
             RuleFor(p => p.TenLinhVuc)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

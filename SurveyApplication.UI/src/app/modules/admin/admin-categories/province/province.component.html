@@ -83,7 +83,7 @@
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>
-        <td>
+        <td (click)="detail(rowData)"class="color_Hover">
           <span class="ml-1 vertical-align-middle">{{ rowData.code }}</span>
         </td>
         <td>
@@ -123,7 +123,7 @@
         <label for="code" class="col-form-label">Mã : <span style="color: red;">*</span></label>
         <input type="text" formControlName="code" class="form-control" id="code" placeholder="Nhập mã " required="">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['code'].valid && 
-            FormTinhThanh.controls['code'].dirty">
+            FormTinhThanh.controls['code'].dirty && !checkBtnDetail == true">
           Vui lòng nhập mã
         </small>
       </div>
@@ -135,7 +135,7 @@
             'is-invalid': submitted && f('name').errors
           }"></textarea>
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['name'].valid && 
-            FormTinhThanh.controls['name'].dirty">
+            FormTinhThanh.controls['name'].dirty && !checkBtnDetail == true">
           Vui lòng nhập Tên
         </small>
         <div class="form-group">
@@ -145,7 +145,7 @@
                 'is-invalid': submitted && f('type').errors
               }">
           <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['type'].valid && 
-              FormTinhThanh.controls['type'].dirty">
+              FormTinhThanh.controls['type'].dirty && !checkBtnDetail == true">
             Vui lòng nhập kiểu
           </small>
         </div>
@@ -153,7 +153,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
-      <button pButton [disabled]="!FormTinhThanh.valid" type="submit" icon="pi pi-save" label="Lưu"
+      <button pButton *ngIf="!checkBtnDetail==true" [disabled]="!FormTinhThanh.valid" type="submit" icon="pi pi-save" label="Lưu"
         class="custom-button"></button>
     </ng-template>
   </p-dialog>

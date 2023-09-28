@@ -195,7 +195,7 @@
         [maximizable]="true">
         <ng-template pTemplate="header">
             <h5 class="modal-title">
-                {{ showadd === true ? "Thêm mới bảng khảo sát" : "Cập nhật bảng khảo sát" }}
+                {{ modalTitle }}
             </h5>
         </ng-template>
 
@@ -207,8 +207,8 @@
                     <input formControlName="maBangKhaoSat" type="text" pInputText class="form-control"
                         placeholder="Nhập mã bảng" id="maBangKhaoSat" required>
 
-                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['maBangKhaoSat'].valid && 
-                        formTableSurvey.controls['maBangKhaoSat'].dirty">
+                    <small  style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['maBangKhaoSat'].valid && 
+                        formTableSurvey.controls['maBangKhaoSat'].dirty && !checkBtnDetail == true ">
                         Vui lòng nhập mã bảng
                     </small>
                    
@@ -219,11 +219,11 @@
                     <p-dropdown id="idLoaiHinh" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                        placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinh">
+                        placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinh" appendTo="body">
                     </p-dropdown>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['idLoaiHinh'].valid && 
-                        formTableSurvey.controls['idLoaiHinh'].dirty">
+                        formTableSurvey.controls['idLoaiHinh'].dirty && !checkBtnDetail == true">
                         Vui lòng chọn loại hình đơn vị khảo sát
                     </small>
                 </div>
@@ -235,7 +235,7 @@
 
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['tenBangKhaoSat'].valid && 
-                    formTableSurvey.controls['tenBangKhaoSat'].dirty">
+                    formTableSurvey.controls['tenBangKhaoSat'].dirty && !checkBtnDetail == true">
                         Vui lòng nhập tên bảng
                     </small>
                 </div>
@@ -245,11 +245,11 @@
                     <p-dropdown id="idDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
                         [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                        placeholder="-- Chọn đợt khảo sát --" formControlName="idDotKhaoSat">
+                        placeholder="-- Chọn đợt khảo sát --" formControlName="idDotKhaoSat" appendTo="body">
                     </p-dropdown>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['idDotKhaoSat'].valid && 
-                    formTableSurvey.controls['idDotKhaoSat'].dirty">
+                    formTableSurvey.controls['idDotKhaoSat'].dirty && !checkBtnDetail == true">
                         Vui lòng chọn đợt khảo sát
                     </small>
 
@@ -267,7 +267,7 @@
                         [showIcon]="true" class="input-date-custom"></p-calendar>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayBatDau'].valid && 
-                        formTableSurvey.controls['ngayBatDau'].dirty">
+                        formTableSurvey.controls['ngayBatDau'].dirty && !checkBtnDetail == true">
                         Vui lòng nhập ngày bắt đầu
                     </small>
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="formTableSurvey.hasError('dateRangeError')">
@@ -281,7 +281,7 @@
                         [showIcon]="true" class="input-date-custom"></p-calendar>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayKetThuc'].valid && 
-                        formTableSurvey.controls['ngayKetThuc'].dirty">
+                        formTableSurvey.controls['ngayKetThuc'].dirty && !checkBtnDetail == true">
                         Vui lòng nhập ngày kết thúc
                     </small>
                 </div>
@@ -367,7 +367,7 @@
                                         group</button>
                                 </div>
                                 <small style="color: #e24c4c; margin-left: 6.5em;"
-                                    *ngIf="!itemPanelTitle.valid && itemPanelTitle.dirty">
+                                    *ngIf="!itemPanelTitle.valid && itemPanelTitle.dirty && !checkBtnDetail == true">
                                     Vui lòng nhập tên group
                                 </small>
                                 <div class="mt-3 pl-3 pr-3">
@@ -440,7 +440,7 @@
             <button pButton (click)="visible = false" type="button" label="Đóng"
                 class="custom-button surface-600"></button>
             <button pButton [disabled]="!formTableSurvey.valid || CheckButton()" type="submit" icon="pi pi-save"
-                label="Lưu" class="custom-button"></button>
+                label="Lưu" class="custom-button"*ngIf="!checkBtnDetail == true"></button>
         </ng-template>
     </p-dialog>
 </form>
@@ -562,14 +562,14 @@
                     <label for="tieuDe" class="col-form-label">Nhập tiêu đề <span style="color: red;">*</span></label>
                     <input formControlName="tieuDe" type="text" pInputText class="form-control" id="tieuDe">
                     <small class="invalid-feedback"
-                        *ngIf="!frmGuiEmail.controls['tieuDe'].valid && frmGuiEmail.controls['tieuDe'].dirty">
+                        *ngIf="!frmGuiEmail.controls['tieuDe'].valid && frmGuiEmail.controls['tieuDe'].dirty && !checkBtnDetail == true">
                         Vui lòng nhập tiêu đề
                     </small>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="noidung" class="col-form-label">Nhập nội dung <span style="color: red;">*</span></label>
                     <p-editor formControlName="noidung" [style]="{ height: '100px' }" id="noidung"></p-editor>
-                    <small *ngIf="!frmGuiEmail.controls['noidung'].valid && frmGuiEmail.controls['noidung'].dirty"
+                    <small *ngIf="!frmGuiEmail.controls['noidung'].valid && frmGuiEmail.controls['noidung'].dirty && !checkBtnDetail == true"
                         class="invalid-feedback">
                         Vui lòng nhập tiêu đề
                     </small>
