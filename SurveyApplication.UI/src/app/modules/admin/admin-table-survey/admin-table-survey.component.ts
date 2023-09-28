@@ -59,6 +59,9 @@ export class AdminTableSurveyComponent {
   detaiDatas: any[] = [];
   id!: number;
 
+  filterData: any = {};
+
+
   originalDatas: TableSurvey[] = [];
 
   confirmationHeader: string = '';
@@ -293,6 +296,16 @@ export class AdminTableSurveyComponent {
       },
     });
   };
+
+  applyFilters() {
+    debugger
+    this.datas = this.datas.filter(data => {
+        const maBangKhaoSat = data.maBangKhaoSat.toLowerCase();
+        const filterValue = this.filterData.maBangKhaoSat.toLowerCase();
+        return maBangKhaoSat.includes(filterValue);
+    });
+}
+
 
   //#endregion
 
