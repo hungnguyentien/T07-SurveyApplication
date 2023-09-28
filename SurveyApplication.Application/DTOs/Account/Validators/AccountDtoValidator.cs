@@ -18,7 +18,12 @@ namespace SurveyApplication.Application.DTOs.Account.Validators
                     return !bangKhaoSatViExists;
                 }).WithMessage("Email người dùng đã tồn tại!");
 
-            RuleFor(user => user.UserName).NotEmpty().WithMessage("Tên người dùng không được trống.");
+            RuleFor(user => user.UserName).NotEmpty().WithMessage("Tên người dùng không được trống.")
+                .MustAsync(async (userName, token) =>
+                {
+                    var bangKhaoSatViExists = await _accountRepository.Exists(x => x.UserName == userName);
+                    return !bangKhaoSatViExists;
+                }).WithMessage("UserName đã tồn tại!");
 
             RuleFor(user => user.Email).NotEmpty().EmailAddress().WithMessage("Địa chỉ email không hợp lệ.");
         }

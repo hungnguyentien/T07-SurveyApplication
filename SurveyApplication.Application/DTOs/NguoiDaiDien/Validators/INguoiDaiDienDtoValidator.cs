@@ -25,9 +25,14 @@ public class INguoiDaiDienDtoValidator : AbstractValidator<INguoiDaiDienDto>
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();
 
-        RuleFor(p => p.Email)
+        RuleFor(p => new { p.Email, p.Id })
             .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
+            .NotNull()
+            .MustAsync(async (model, token) =>
+            {
+                var emailExists = await _NguoiDaiDienRepository.Exists(x => x.Email == model.Email && x.Id != model.Id);
+                return !emailExists;
+            }).WithMessage("Email người đại diện đã tồn tại!");
 
         //RuleFor(p => p.MoTa)
         //    .NotEmpty().WithMessage("{PropertyName} is required.")

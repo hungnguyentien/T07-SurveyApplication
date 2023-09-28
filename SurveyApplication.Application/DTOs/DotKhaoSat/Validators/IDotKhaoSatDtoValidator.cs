@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.DotKhaoSat.Validators;
 
@@ -13,9 +14,14 @@ public class IDotKhaoSatDtoValidator : AbstractValidator<IDotKhaoSatDto>
 
         RuleFor(p => p.IdLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
 
-        RuleFor(p => p.TenDotKhaoSat)
+        RuleFor(p => new { p.TenDotKhaoSat, p.MaDotKhaoSat })
             .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
+            .NotNull()
+            .MustAsync(async (model, token) =>
+            {
+                var nameExists = await _dotKhaoSatRepository.Exists(x => x.TenDotKhaoSat == model.MaDotKhaoSat && x.MaDotKhaoSat != model.MaDotKhaoSat);
+                return !nameExists;
+            }).WithMessage("Tên đợt khảo sát đã tồn tại!");
 
         RuleFor(p => p.NgayBatDau)
             .NotEmpty().WithMessage("{PropertyName} is required.")

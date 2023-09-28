@@ -6,6 +6,7 @@ using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 
@@ -29,6 +30,16 @@ namespace SurveyApplication.API.Controllers
         {
             var lstBangKhaoSat = await _mediator.Send(new GetBangKhaoSatListRequest());
             return Ok(lstBangKhaoSat);
+        }
+
+        [HttpGet("GenerateMaBangKhaoSat")]
+        public async Task<ActionResult<string>> GetLastRecordByMaBangKhaoSat()
+        {
+            var record = await _mediator.Send(new GetLastRecordBangKhaoSatRequest());
+            return Ok(new
+            {
+                MaBangKhaoSat = record
+            });
         }
 
         [HttpGet("GetByCondition")]

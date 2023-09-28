@@ -11,8 +11,9 @@ import {
 } from '@app/services';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { Table } from 'primeng/table';
-import { DonVi, HanhChinhVn, LinhVucHoatDong, Paging, DonViNguoiDaiDienResponse } from '@app/models';
+import { DonVi, HanhChinhVn, LinhVucHoatDong, Paging, DonViNguoiDaiDienResponse, QuanHuyen } from '@app/models';
 import Utils from '@app/helpers/utils';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-admin-object-survey',
@@ -211,21 +212,20 @@ export class AdminObjectSurveyComponent {
     });
   };
 
-  detail(data:any){
+  async detail(data:any){
     this.checkBtnDetail = true
     this.visible = !this.visible;
     this.modalTitle = 'Chi tiết đơn vị';
     this.FormObjectSurvey.disable();
+    this.FormRepresentative.disable();
 
-    this.selectedTinh = this.cities.find(
-      (x) => x.id === data.idTinhTp
-    )?.code;
-    this.selectedQuanHuyen = this.districts.find(
-      (x) => x.id === data.idQuanHuyen
-    )?.code;
-    this.selectedPhuongXa = this.wards.find(
-      (x) => x.id === data.idXaPhuong
-    )?.code;
+    this.selectedTinh = this.cities.find((x) => x.id === data.idTinhTp)?.code;
+      
+    const quanHuyenData = await lastValueFrom(this.quanHuyenService.getById<HanhChinhVn>(data.idQuanHuyen));
+    this.selectedQuanHuyen = quanHuyenData?.code;
+
+    const phuongXaData = await lastValueFrom(this.xaPhuongService.getById<HanhChinhVn>(data.idXaPhuong));
+    this.selectedPhuongXa = phuongXaData?.code;
 
     this.FormObjectSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
     this.FormObjectSurvey.controls['IdLinhVuc'].setValue(data.idLinhVuc);
@@ -236,9 +236,9 @@ export class AdminObjectSurveyComponent {
     this.FormObjectSurvey.controls['WebSite'].setValue(data.webSite);
     this.FormObjectSurvey.controls['SoDienThoai'].setValue(data.soDienThoaiDonVi);
     this.FormObjectSurvey.controls['DiaChi'].setValue(data.diaChi);
-    this.FormObjectSurvey.controls['IdTinhTp'].setValue(this.selectedTinh);
     this.FormObjectSurvey.controls['IdQuanHuyen'].setValue(this.selectedQuanHuyen);
     this.FormObjectSurvey.controls['IdXaPhuong'].setValue(this.selectedPhuongXa);
+    this.FormObjectSurvey.controls['IdTinhTp'].setValue(this.selectedTinh);
 
     this.FormRepresentative.controls['HoTen'].setValue(data.hoTen);
     this.FormRepresentative.controls['ChucVu'].setValue(data.chucVu);

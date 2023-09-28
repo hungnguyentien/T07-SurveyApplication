@@ -51,6 +51,11 @@
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
+            Mã
+          </div>
+        </th>
+        <th pResizableColumn>
+          <div class="flex justify-content-between align-items-center">
             Tỉnh
           </div>
         </th>
@@ -79,6 +84,9 @@
         <td class="text-center align-items-center">
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle">{{ rowData.code }}</span>
         </td>
         <td>
           <span class="ml-1 vertical-align-middle">{{ rowData.nameTinhTp }}</span>

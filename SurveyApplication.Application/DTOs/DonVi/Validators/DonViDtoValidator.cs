@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.DonVi.Validators
 {
@@ -24,7 +25,12 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
 
             RuleFor(p => p.TenDonVi)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+                .NotNull()
+                .MustAsync(async (name, token) =>
+                {
+                    var nameExists = await _donViRepository.Exists(x => x.TenDonVi == name);
+                    return !nameExists;
+                }).WithMessage("Tên đơn vị đã tồn tại!");
 
             RuleFor(p => p.DiaChi)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

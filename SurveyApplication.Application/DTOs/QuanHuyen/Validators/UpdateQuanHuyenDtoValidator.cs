@@ -12,7 +12,7 @@ namespace SurveyApplication.Application.DTOs.QuanHuyen.Validators
             _QuanHuyenRepository = QuanHuyenRepository;
             Include(new IQuanHuyenDtoValidator(_QuanHuyenRepository));
 
-            RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
+            //RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
         }
     }
 }

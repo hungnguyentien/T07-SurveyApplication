@@ -24,7 +24,12 @@ public class DotKhaoSatDtoValidator : AbstractValidator<IDotKhaoSatDto>
 
         RuleFor(p => p.TenDotKhaoSat)
             .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
+            .NotNull()
+            .MustAsync(async (name, token) =>
+            {
+                var nameExists = await _dotKhaoSatRepository.Exists(x => x.TenDotKhaoSat == name);
+                return !nameExists;
+            }).WithMessage("Tên đợt khảo sát đã tồn tại!");
 
         RuleFor(p => p.NgayBatDau)
             .NotEmpty().WithMessage("{PropertyName} is required.")

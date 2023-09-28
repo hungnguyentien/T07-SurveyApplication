@@ -24,7 +24,12 @@ namespace SurveyApplication.Application.DTOs.QuanHuyen.Validators
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+                .NotNull()
+                .MustAsync(async (name, token) =>
+                {
+                    var nameExists = await _quanHuyenRepository.Exists(x => x.Name == name);
+                    return !nameExists;
+                }).WithMessage("Tên quận huyện đã tồn tại!");
 
             RuleFor(p => p.Type)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

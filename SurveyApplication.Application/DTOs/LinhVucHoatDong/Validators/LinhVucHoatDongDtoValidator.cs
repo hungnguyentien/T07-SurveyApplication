@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.LinhVucHoatDong.Validators
 {
@@ -18,11 +19,16 @@ namespace SurveyApplication.Application.DTOs.LinhVucHoatDong.Validators
                 {
                     var LinhVucHoatDongViExists = await _LinhVucHoatDongRepository.ExistsByMaLinhVuc(maLoaiHinh);
                     return !LinhVucHoatDongViExists;
-                }).WithMessage("Mã loại hình đơn vị đã tồn tại!");
+                }).WithMessage("Mã lĩnh vực đơn vị đã tồn tại!");
 
             RuleFor(p => p.TenLinhVuc)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+                .NotNull()
+                .MustAsync(async (name, token) =>
+                {
+                    var nameExists = await _LinhVucHoatDongRepository.Exists(x => x.TenLinhVuc == name);
+                    return !nameExists;
+                }).WithMessage("Tên lĩnh vực đã tồn tại!");
 
             RuleFor(p => p.MoTa)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

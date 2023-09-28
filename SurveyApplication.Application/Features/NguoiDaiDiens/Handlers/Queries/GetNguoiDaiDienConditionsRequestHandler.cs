@@ -20,7 +20,7 @@ namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Queries
 
         public async Task<BaseQuerieResponse<NguoiDaiDienDto>> Handle(GetNguoiDaiDienConditionsRequest request, CancellationToken cancellationToken)
         {
-            var NguoiDaiDiens = await _surveyRepo.NguoiDaiDien.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => (string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.HoTen) && x.HoTen.Contains(request.Keyword)) && x.Deleted == false, "");
+            var NguoiDaiDiens = await _surveyRepo.NguoiDaiDien.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => (string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.MaNguoiDaiDien) && x.MaNguoiDaiDien.Contains(request.Keyword) || !string.IsNullOrEmpty(x.HoTen) && x.HoTen.Contains(request.Keyword)) && x.Deleted == false, "");
             var result = _mapper.Map<List<NguoiDaiDienDto>>(NguoiDaiDiens);
             return new BaseQuerieResponse<NguoiDaiDienDto>
             {
