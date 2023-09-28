@@ -8,6 +8,7 @@ using SurveyApplication.Application.DTOs.DotKhaoSat;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 
@@ -27,15 +28,25 @@ namespace SurveyApplication.API.Controllers
 
         [HttpGet("GetAll")]
         [HasPermission(new[] { (int)EnumModule.Code.QlDks, (int)EnumModule.Code.TkKs }, new[] { (int)EnumPermission.Type.Read })]
-        public async Task<ActionResult<List<DotKhaoSatDto>>> GetAllBangKhaoSat()
+        public async Task<ActionResult<List<DotKhaoSatDto>>> GetAllDotKhaoSat()
         {
             var lstDks = await _mediator.Send(new GetDotKhaoSatListRequest());
             return Ok(lstDks);
         }
 
+        [HttpGet("GenerateMaDotKhaoSat")]
+        public async Task<ActionResult<string>> GetLastRecordByMaDotKhaoSat()
+        {
+            var record = await _mediator.Send(new GetLastRecordDotKhaoSatRequest());
+            return Ok(new
+            {
+                MaDotKhaoSat = record
+            });
+        }
+
         [HttpGet("GetByCondition")]
         [HasPermission(new[] { (int)EnumModule.Code.QlDks }, new[] { (int)EnumPermission.Type.Read })]
-        public async Task<ActionResult<BaseQuerieResponse<DotKhaoSatDto>>> GetBangKhaoSatByCondition(
+        public async Task<ActionResult<BaseQuerieResponse<DotKhaoSatDto>>> GetDotKhaoSatByCondition(
             [FromQuery] Paging paging)
         {
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatConditionsRequest
@@ -45,7 +56,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpGet("GetById/{id}")]
         [HasPermission(new[] { (int)EnumModule.Code.QlDks }, new[] { (int)EnumPermission.Type.Read })]
-        public async Task<ActionResult<List<DotKhaoSatDto>>> GetByBangKhaoSat(int id)
+        public async Task<ActionResult<List<DotKhaoSatDto>>> GetByDotKhaoSat(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatDetailRequest { Id = id });
             return Ok(leaveAllocations);
@@ -53,7 +64,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpGet("GetByLoaiHinh")]
         [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
-        public async Task<ActionResult<List<DotKhaoSatDto>>> GetByDotKhaoSat(int id)
+        public async Task<ActionResult<List<DotKhaoSatDto>>> GetDotKhaoSatByLoaiHinh(int id)
         {
             var leaveAllocations = await _mediator.Send(new GetDotKhaoSatByLoaiHinhRequest { Id = id });
             return Ok(leaveAllocations);
@@ -61,7 +72,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpPost("Create")]
         [HasPermission(new[] { (int)EnumModule.Code.QlDks }, new[] { (int)EnumPermission.Type.Create })]
-        public async Task<ActionResult<DotKhaoSatDto>> CreateBangKhaoSat([FromBody] CreateDotKhaoSatDto obj)
+        public async Task<ActionResult<DotKhaoSatDto>> CreateDotKhaoSat([FromBody] CreateDotKhaoSatDto obj)
         {
             obj.TrangThai = 1;
             var command = new CreateDotKhaoSatCommand { DotKhaoSatDto = obj };
@@ -71,7 +82,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpPost("Update")]
         [HasPermission(new[] { (int)EnumModule.Code.QlDks }, new[] { (int)EnumPermission.Type.Update })]
-        public async Task<ActionResult<DotKhaoSatDto>> UpdateBangKhaoSat([FromBody] UpdateDotKhaoSatDto obj)
+        public async Task<ActionResult<DotKhaoSatDto>> UpdateDotKhaoSat([FromBody] UpdateDotKhaoSatDto obj)
         {
             var command = new UpdateDotKhaoSatCommand { DotKhaoSatDto = obj };
             var response = await _mediator.Send(command);

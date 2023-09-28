@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
 
@@ -19,9 +20,14 @@ public class IBangKhaoSatDtoValidator : AbstractValidator<IBangKhaoSatDto>
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();
 
-        RuleFor(p => p.TenBangKhaoSat)
+        RuleFor(p => new { p.TenBangKhaoSat, p.MaBangKhaoSat })
             .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
+            .NotNull()
+            .MustAsync(async (model, token) =>
+            {
+                var nameExists = await _bangKhaoSatRepository.Exists(x => x.TenBangKhaoSat == model.TenBangKhaoSat && x.MaBangKhaoSat != model.MaBangKhaoSat);
+                return !nameExists;
+            }).WithMessage("Tên lĩnh vực đã tồn tại!");
 
         RuleFor(p => p.NgayBatDau)
             .NotEmpty().WithMessage("{PropertyName} is required.")

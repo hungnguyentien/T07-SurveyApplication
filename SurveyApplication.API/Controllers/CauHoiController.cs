@@ -56,6 +56,16 @@ public class CauHoiController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("GenerateMaCauHoi")]
+    public async Task<ActionResult<string>> GetLastRecordByMaCauHoi()
+    {
+        var record = await _mediator.Send(new GetLastRecordCauHoiRequest());
+        return Ok(new
+        {
+            MaCauHoi = record
+        });
+    }
+
     [HttpPost("Create")]
     [HasPermission(new[] { (int)EnumModule.Code.QlCh }, new[] { (int)EnumPermission.Type.Create })]
     public async Task<ActionResult> CreateCauHoi([FromBody] CreateCauHoiDto obj)

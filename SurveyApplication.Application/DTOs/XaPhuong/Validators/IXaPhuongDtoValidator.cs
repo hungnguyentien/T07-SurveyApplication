@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.XaPhuong.Validators
 {
@@ -11,9 +12,14 @@ namespace SurveyApplication.Application.DTOs.XaPhuong.Validators
         {
             _XaPhuongRepository = XaPhuongRepository;
 
-            RuleFor(p => p.Name)
+            RuleFor(p => new { p.Name, p.Code })
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+                .NotNull()
+                .MustAsync(async (model, token) =>
+                {
+                    var nameExists = await _XaPhuongRepository.Exists(x => x.Name == model.Name && x.Code != model.Code);
+                    return !nameExists;
+                }).WithMessage("Tên xã phường đã tồn tại!");
 
             RuleFor(p => p.Type)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

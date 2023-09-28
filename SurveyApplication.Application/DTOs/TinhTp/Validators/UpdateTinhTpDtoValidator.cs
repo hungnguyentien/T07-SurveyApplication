@@ -12,7 +12,7 @@ namespace SurveyApplication.Application.DTOs.TinhTp.Validators
             _TinhTpRepository = TinhTpRepository;
             Include(new ITinhTpDtoValidator(_TinhTpRepository));
 
-            RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
+            //RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
         }
     }
 }

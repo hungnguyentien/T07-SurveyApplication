@@ -119,7 +119,6 @@ export class FieldOfActivityComponent {
 
   }
   Add() {
-    debugger
     this.visible = !this.visible;
     this.showadd = true;
     this.checkBtnDetail = false;

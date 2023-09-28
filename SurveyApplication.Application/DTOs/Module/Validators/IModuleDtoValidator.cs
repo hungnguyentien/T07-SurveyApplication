@@ -11,6 +11,16 @@ public class IModuleDtoValidator : AbstractValidator<IModuleDto>
     {
         _moduleRepository = moduleRepository;
 
+        RuleFor(p => p.Name)
+            .NotNull().NotEmpty().WithMessage("Tên Module không được để trống");
+
+        RuleFor(p => new { p.Name, p.CodeModule })
+            .MustAsync(async (model, token) =>
+            {
+                var ModuleViExists = await _moduleRepository.Exists(x => x.Name == model.Name && x.CodeModule != model.CodeModule);
+                return !ModuleViExists;
+            }).WithMessage("Tên Module đã tồn tại!");
+
         RuleFor(p => p.RouterLink)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();

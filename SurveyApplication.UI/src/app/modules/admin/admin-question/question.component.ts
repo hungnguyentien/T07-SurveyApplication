@@ -82,7 +82,7 @@ export class QuestionComponent {
     this.frmCauHoi = this.formBuilder.group(
       {
         id: new FormControl<number>(0),
-        maCauHoi: ['', Validators.required],
+        maCauHoi: [{ value: this.maCauHoi, disabled: true }],
         loaiCauHoi: ['', Validators.required],
         tieuDe: [''],
         isOther: new FormControl<boolean>(true),
@@ -202,6 +202,15 @@ export class QuestionComponent {
     this.isCreate = true;
     this.visible = true;
     this.submitted = false;
+
+    this.frmCauHoi.get('maCauHoi')?.disable();
+    this.cauHoiService.generateMaCauHoi().subscribe({
+      next: (res: any) => {
+        this.frmCauHoi.controls['maCauHoi'].setValue(res.maCauHoi);
+        this.maCauHoi = res.maCauHoi;
+      },
+    });
+
     this.createForm();
     this.selectedLoaiCauHoi = '0';
   };

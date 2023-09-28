@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.TinhTp.Validators
 {
@@ -23,7 +24,12 @@ namespace SurveyApplication.Application.DTOs.TinhTp.Validators
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
+                .NotNull()
+                .MustAsync(async (name, token) =>
+                {
+                    var nameExists = await _TinhTpRepository.Exists(x => x.Name == name);
+                    return !nameExists;
+                }).WithMessage("Tên tỉnh thành phố đã tồn tại!");
 
             RuleFor(p => p.Type)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

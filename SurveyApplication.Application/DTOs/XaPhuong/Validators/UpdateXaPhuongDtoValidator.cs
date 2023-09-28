@@ -12,7 +12,7 @@ namespace SurveyApplication.Application.DTOs.XaPhuong.Validators
             _XaPhuongRepository = XaPhuongRepository;
             Include(new IXaPhuongDtoValidator(_XaPhuongRepository));
 
-            RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
+            //RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
         }
     }
 }
