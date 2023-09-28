@@ -11,7 +11,7 @@
 </p-confirmDialog>
 
 <div>
-  <h5>Quản lý Xã/Phường</h5>
+  <h5>Danh sách Xã/Phường</h5>
   <div class="d-flex mt-3">
     <div>
       <button (click)=" Add()" data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus"
@@ -26,7 +26,7 @@
   <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
-      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord" (ngModelChange)="onSubmitSearch()"
         [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
@@ -52,22 +52,22 @@
 
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
-            Tỉnh
-          </div>
-        </th>
-        <th pResizableColumn>
-          <div class="flex justify-content-between align-items-center">
-            Quận/Huyện
-          </div>
-        </th>
-        <th pResizableColumn>
-          <div class="flex justify-content-between align-items-center">
             Tên Xã/Phường
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
-            Loại
+            Tên Quận/Huyện
+          </div>
+        </th>
+        <th pResizableColumn>
+          <div class="flex justify-content-between align-items-center">
+            Tên Tỉnh/Thành Phố
+          </div>
+        </th>
+        <th pResizableColumn>
+          <div class="flex justify-content-between align-items-center">
+            Kiểu/Loại Xã/Phường
           </div>
         </th>
 
@@ -90,15 +90,14 @@
         </td>
 
         <td (click)="detail(rowData)" class="color_Hover">
-          <span class="ml-1 vertical-align-middle">{{ rowData.nameTinhTp }}</span>
+          <span class="ml-1 vertical-align-middle">{{ rowData.name }}</span>
         </td>
         <td>
           <span class="ml-1 vertical-align-middle">{{ rowData.nameQuanHuyen }}</span>
         </td>
-        <td>
-          <span class="ml-1 vertical-align-middle">{{ rowData.name }}</span>
+        <td >
+          <span class="ml-1 vertical-align-middle">{{ rowData.nameTinhTp }}</span>
         </td>
-
         <td>
           <span class="ml-1 vertical-align-middle">{{ rowData.type }}</span>
         </td>

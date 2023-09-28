@@ -15,13 +15,18 @@ import { Table } from 'primeng/table';
 import Utils from '@app/helpers/utils';
 import * as moment from 'moment';
 import 'moment-timezone'; // Import 'moment-timezone'
-
+import { FilterMetadata } from "primeng/api";
 @Component({
   selector: 'app-admin-period-survey',
   templateUrl: './admin-period-survey.component.html',
   styleUrls: ['./admin-period-survey.component.css'],
 })
 export class AdminPeriodSurveyComponent {
+  readonly filters: { [key in keyof PeriodSurvey]: FilterMetadata[] } = {
+    MaDotKhaoSat: [{ value: '', matchMode: 'contains', operator: 'and' }],
+    id: []
+  };
+
   @ViewChild('dt') table!: Table;
   loading: boolean = true;
   selectedPeriodSurvey!: PeriodSurvey[];
@@ -52,8 +57,9 @@ export class AdminPeriodSurveyComponent {
     private confirmationService: ConfirmationService,
     private datePipe: DatePipe
   ) {}
-
+ 
   ngOnInit() {
+    
     this.LoadLoaiHinh();
     this.FormPeriodSurvey = this.FormBuilder.group(
       {
@@ -66,6 +72,10 @@ export class AdminPeriodSurveyComponent {
       },
       { validator: this.dateRangeValidator }
     );
+  }
+  
+  filter(){
+    
   }
 
   detail(data:any){

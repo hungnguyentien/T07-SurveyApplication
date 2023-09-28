@@ -11,7 +11,7 @@
 </p-confirmDialog>
 
 <div>
-  <h5>Quản lý tỉnh thành</h5>
+  <h5>Danh sách Tỉnh/Thành Phố</h5>
   <div class="d-flex mt-3">
     <div>
       <button (click)=" Add()" data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus"
@@ -26,7 +26,7 @@
   <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
-      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"(ngModelChange)="onSubmitSearch()"
         [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
@@ -51,18 +51,18 @@
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
-            Mã
+            Mã Tỉnh/Thành Phố
           </div>
         </th>
 
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
-            Tên
+            Tên Tỉnh/Thành Phố
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
-            Kiểu
+            Kiểu/Loại Tỉnh/Thành Phố
           </div>
         </th>
 
