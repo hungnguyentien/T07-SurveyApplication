@@ -50,12 +50,16 @@ export class AdminTableSurveyComponent {
   loading: boolean = true;
   selectedTableSurvey!: TableSurvey[];
   datas: TableSurvey[] = [];
+
+  datasFilter: TableSurvey[] = [];
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
 
   detaiDatas: any[] = [];
   id!: number;
+
+  originalDatas: TableSurvey[] = [];
 
   confirmationHeader: string = '';
 
@@ -178,6 +182,34 @@ export class AdminTableSurveyComponent {
     });
   };
 
+  // onFilter(event: any) {
+  //   debugger
+  //   // Lọc dữ liệu từ dữ liệu gốc (originalDatas) dựa trên bộ lọc
+  //   const filteredData = this.datas.filter((item: TableSurvey) => {
+  //     if (event.field === 'maBangKhaoSat') {
+  //       return (item.maBangKhaoSat?.toString() || '').toLowerCase().includes(event.filterValue.toLowerCase());
+  //     } else if (event.field === 'Tên bảng khảo sát') {
+  //       return (item.tenBangKhaoSat?.toString() || '').toLowerCase().includes(event.filterValue.toLowerCase());
+  //     } else if (event.field === 'tenDotKhaoSat') {
+  //       return (item.tenDotKhaoSat?.toString() || '').toLowerCase().includes(event.filterValue.toLowerCase());
+  //     } else if (event.field === 'tenLoaiHinh') {
+  //       return (item.tenLoaiHinh?.toString() || '').toLowerCase().includes(event.filterValue.toLowerCase());
+  //     }  else if (event.field === 'trangThai') {
+  //       return (item.trangThai?.toString() || '').toLowerCase().includes(event.filterValue.toLowerCase());
+  //     }
+  //     // Xử lý cho các cột khác
+  //     return true; // Trả về true nếu không có điều kiện nào khớp
+  //   });
+  
+  //   // Gán dữ liệu đã lọc vào datas để cập nhật DataTable
+  //   this.originalDatas = filteredData;
+  // }
+  
+  
+  
+  
+  
+
   //#region Loadding table and search
 
   loadListLazy = (event: any) => {
@@ -187,7 +219,7 @@ export class AdminTableSurveyComponent {
     this.paging = {
       pageIndex: pageIndex,
       pageSize: pageSize,
-      keyword: '',
+      keyword: this.keyWord,
       orderBy: event.sortField
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
@@ -209,8 +241,8 @@ export class AdminTableSurveyComponent {
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
     this.TableSurveyService.getByCondition(this.paging).subscribe({
-      next: (res) => {
-        this.datas = res.data;
+      next: (res) => {        
+        this.datas =res.data;
         this.dataTotalRecords = res.totalFilter;
       },
       error: (e) => {
@@ -271,19 +303,13 @@ export class AdminTableSurveyComponent {
   detail(data:any){
     this.checkBtnDetail = true
     this.visible = !this.visible;
-    this.modalTitle = 'Chi tiết bảng khảo sát';
-    
+    this.modalTitle = 'Chi tiết bảng khảo sát';   
     this.formTableSurvey.disable();
     this.lstBangKhaoSatCauHoi.disable();
     this.lstBangKhaoSatCauHoi.clear();
     this.lstBangKhaoSatCauHoiGroup.clear();
-
     this.lstBangKhaoSatCauHoi.disable();
     this.lstBangKhaoSatCauHoiGroup.disable();
-    
-   
-   
-    
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
       {
         next: (res) => {

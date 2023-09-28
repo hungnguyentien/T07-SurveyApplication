@@ -49,11 +49,7 @@
         <th style="width: 60px;text-align: center;">
           STT
         </th>
-        <th pResizableColumn>
-          <div class="flex justify-content-between align-items-center">
-            Mã
-          </div>
-        </th>
+
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
             Tỉnh
@@ -92,10 +88,8 @@
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>
-        <td>
-          <span class="ml-1 vertical-align-middle">{{ rowData.code }}</span>
-        </td>
-        <td>
+
+        <td (click)="detail(rowData)" class="color_Hover">
           <span class="ml-1 vertical-align-middle">{{ rowData.nameTinhTp }}</span>
         </td>
         <td>
@@ -130,7 +124,7 @@
     [maximizable]="true">
     <ng-template pTemplate="header">
       <h5 class="modal-title">
-        {{ showadd === true ? "Thêm mới Xã/Phường" : "Cập nhật loại Xã/Phường" }}
+        {{ modalTitle }}
       </h5>
     </ng-template>
     <ng-template pTemplate="body">
@@ -138,19 +132,19 @@
         <label for="code" class="col-form-label">Mã Xã/Phường: <span style="color: red;">*</span></label>
         <input type="text" formControlName="code" class="form-control" id="code" placeholder="Nhập mã Xã/Phường">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['code'].valid && 
-            FormXaPhuong.controls['code'].dirty">
+            FormXaPhuong.controls['code'].dirty&&!checkBtnDetail == true">
           Vui lòng nhập Mã Xã/Phường
         </small>
       </div>
       <div class="form-group">
         <label for="loaihinhdonvi" class="col-form-label">Quận/Huyện: <span style="color: red;">*</span> </label>
-        <p-dropdown id="loaicauhoi" [options]="listDataHuyen" optionLabel="name" optionValue="code" [filter]="true"
+        <p-dropdown id="loaicauhoi" [options]="listDataHuyen" optionLabel="name" optionValue="code" [filter]="true"appendTo="body"
           filterBy="name" emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
           [showClear]="true" class="form-select-custom" placeholder="-- Chọn Quận/Huyện --"
           formControlName="parentCode">
         </p-dropdown>
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['parentCode'].valid && 
-            FormXaPhuong.controls['parentCode'].dirty">
+            FormXaPhuong.controls['parentCode'].dirty&&!checkBtnDetail == true">
           Vui lòng chọn Quận/Huyện
         </small>
 
@@ -162,7 +156,7 @@
               'is-invalid': submitted && f('name').errors
             }">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['name'].valid && 
-            FormXaPhuong.controls['name'].dirty">
+            FormXaPhuong.controls['name'].dirty&&!checkBtnDetail == true">
           Vui lòng nhập tên Xã/Phường
         </small>
       </div>
@@ -174,14 +168,14 @@
                 'is-invalid': submitted && f('type').errors
               }">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['type'].valid && 
-              FormXaPhuong.controls['type'].dirty">
+              FormXaPhuong.controls['type'].dirty&&!checkBtnDetail == true">
           Vui lòng nhập Loại Xã/Phường
         </small>
       </div>
     </ng-template>
     <ng-template pTemplate="footer">
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
-      <button pButton [disabled]="!FormXaPhuong.valid" type="submit" icon="pi pi-save" label="Lưu"
+      <button pButton *ngIf="!checkBtnDetail == true" [disabled]="!FormXaPhuong.valid" type="submit" icon="pi pi-save" label="Lưu"
         class="custom-button"></button>
     </ng-template>
   </p-dialog>

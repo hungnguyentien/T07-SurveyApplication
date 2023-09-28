@@ -229,21 +229,21 @@
             <p-dropdown [options]="cities" [(ngModel)]="selectedTinh" optionLabel="name" optionValue="code"
               [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
               emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Tỉnh thành phố --" formControlName="IdTinhTp" (onChange)="onCityChange()">
+              placeholder="-- Tỉnh thành phố --" formControlName="CodeTinhTp" (onChange)="onCityChange()">
             </p-dropdown>
           </div>
           <div class="form-group col-md-3">
             <p-dropdown [options]="districts" [(ngModel)]="selectedQuanHuyen" optionLabel="name" optionValue="code"
               [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
               emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Quận huyện --" formControlName="IdQuanHuyen" (onChange)="onDistrictChange()">
+              placeholder="-- Quận huyện --" formControlName="CodeQuanHuyen" (onChange)="onDistrictChange()">
             </p-dropdown>
           </div>
           <div class="form-group col-md-3">
             <p-dropdown [options]="wards" [(ngModel)]="selectedPhuongXa" optionLabel="name" optionValue="code"
               [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
               emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Phường xã --" formControlName="IdXaPhuong">
+              placeholder="-- Phường xã --" formControlName="CodeXaPhuong">
             </p-dropdown>
           </div>
           <div class="form-group col-md-3">

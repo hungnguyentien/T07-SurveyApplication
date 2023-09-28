@@ -20,17 +20,33 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             var hoanThanhDks = await _surveyRepo.DotKhaoSat.GetAllListAsync(x => !x.Deleted && x.NgayKetThuc.Date.AddDays(1) <= DateTime.Now.Date && x.TrangThai != (int)EnumDotKhaoSat.TrangThai.HoanThanh);
             if (hoanThanhDks.Any())
             {
-                hoanThanhDks.ForAll(x => x.TrangThai = (int)EnumDotKhaoSat.TrangThai.HoanThanh);
-                await _surveyRepo.DotKhaoSat.UpdateAsync(hoanThanhDks);
-                await _surveyRepo.SaveAync();
+                //TODO check đợt khảo sát có bảng sảo sát mới update
+                var hasBks = await _surveyRepo.BangKhaoSat.GetAllQueryable()
+                    .Where(x => !x.Deleted && hoanThanhDks.Select(dks => dks.Id).Contains(x.IdDotKhaoSat)).Select(x => x.IdDotKhaoSat)
+                    .ToListAsync(cancellationToken: cancellationToken);
+                var lstDksUpdate = hoanThanhDks.Where(x => hasBks.Contains(x.Id)).ToList();
+                if (lstDksUpdate.Any())
+                {
+                    lstDksUpdate.ForAll(x => x.TrangThai = (int)EnumDotKhaoSat.TrangThai.HoanThanh);
+                    await _surveyRepo.DotKhaoSat.UpdateAsync(lstDksUpdate);
+                    await _surveyRepo.SaveAync();
+                }
+
             }
 
             var hoanThanhBks = await _surveyRepo.BangKhaoSat.GetAllListAsync(x => !x.Deleted && x.NgayKetThuc.Date.AddDays(1) <= DateTime.Now.Date && x.TrangThai != (int)EnumBangKhaoSat.TrangThai.HoanThanh);
             if (hoanThanhBks.Any())
             {
-                hoanThanhBks.ForAll(x => x.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh);
-                await _surveyRepo.BangKhaoSat.UpdateAsync(hoanThanhBks);
-                await _surveyRepo.SaveAync();
+                var hasEmail = await _surveyRepo.GuiEmail.GetAllQueryable()
+                    .Where(x => !x.Deleted && hoanThanhBks.Select(bks => bks.Id).Contains(x.IdBangKhaoSat)).Select(x => x.IdBangKhaoSat)
+                    .ToListAsync(cancellationToken: cancellationToken);
+                var lstBksUpdate = hoanThanhBks.Where(x => hasEmail.Contains(x.Id)).ToList();
+                if (lstBksUpdate.Any())
+                {
+                    lstBksUpdate.ForAll(x => x.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh);
+                    await _surveyRepo.BangKhaoSat.UpdateAsync(lstBksUpdate);
+                    await _surveyRepo.SaveAync();
+                }
             }
 
             var dangKhaoSatDks = await (from a in _surveyRepo.DotKhaoSat.GetAllQueryable()

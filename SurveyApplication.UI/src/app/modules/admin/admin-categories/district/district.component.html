@@ -27,7 +27,7 @@
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
       <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
-        [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+        [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá "  />
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
       <i class="pi pi-search"></i>
@@ -48,11 +48,6 @@
         </th>
         <th style="width: 60px;text-align: center;">
           STT
-        </th>
-        <th pResizableColumn>
-          <div class="flex justify-content-between align-items-center">
-            Mã
-          </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
@@ -85,10 +80,7 @@
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>
-        <td>
-          <span class="ml-1 vertical-align-middle">{{ rowData.code }}</span>
-        </td>
-        <td>
+        <td (click)="detail(rowData)" class="color_Hover">
           <span class="ml-1 vertical-align-middle">{{ rowData.nameTinhTp }}</span>
         </td>
 
@@ -122,7 +114,7 @@
     [maximizable]="true">
     <ng-template pTemplate="header">
       <h5 class="modal-title">
-        {{ showadd === true ? "Thêm mới Quận/Huyện" : "Cập nhật Quận/Huyện" }}
+        {{ modalTitle }}
       </h5>
     </ng-template>
     <ng-template pTemplate="body">
@@ -130,19 +122,19 @@
         <label for="code" class="col-form-label">Mã Quận/Huyện: <span style="color: red;">*</span></label>
         <input type="text" formControlName="code" class="form-control" id="code" placeholder="Nhập mã Quận/Huyện">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormQuanHuyen.controls['code'].valid && 
-            FormQuanHuyen.controls['code'].dirty">
+            FormQuanHuyen.controls['code'].dirty&&!checkBtnDetail == true">
           Vui lòng nhập Mã Quận/Huyện
         </small>
       </div>
       <div class="form-group">
         <label for="loaihinhdonvi" class="col-form-label">Tỉnh Thành: <span style="color: red;">*</span> </label>
-        <p-dropdown id="loaicauhoi" [options]="listDataTinh" optionLabel="name" optionValue="code" [filter]="true"
+        <p-dropdown id="loaicauhoi" [options]="listDataTinh" optionLabel="name" optionValue="code" [filter]="true"appendTo="body"
           filterBy="name" emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
           [showClear]="true" class="form-select-custom" placeholder="-- Chọn Tỉnh Thành --"
           formControlName="parentCode">
         </p-dropdown>
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormQuanHuyen.controls['parentCode'].valid && 
-            FormQuanHuyen.controls['parentCode'].dirty">
+            FormQuanHuyen.controls['parentCode'].dirty&&!checkBtnDetail == true">
           Vui lòng chọn Tỉnh Thành
         </small>
 
@@ -154,7 +146,7 @@
               'is-invalid': submitted && f('name').errors
             }">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormQuanHuyen.controls['name'].valid && 
-            FormQuanHuyen.controls['name'].dirty">
+            FormQuanHuyen.controls['name'].dirty&&!checkBtnDetail == true">
           Vui lòng nhập tên Quận/Huyện
         </small>
       </div>
@@ -166,14 +158,14 @@
                 'is-invalid': submitted && f('type').errors
               }">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormQuanHuyen.controls['type'].valid && 
-              FormQuanHuyen.controls['type'].dirty">
+              FormQuanHuyen.controls['type'].dirty &&!checkBtnDetail == true">
           Vui lòng nhập Loại Quận/Huyện
         </small>
       </div>
     </ng-template>
     <ng-template pTemplate="footer">
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
-      <button pButton [disabled]="!FormQuanHuyen.valid" type="submit" icon="pi pi-save" label="Lưu"
+      <button pButton  *ngIf="!checkBtnDetail == true"  [disabled]="!FormQuanHuyen.valid" type="submit" icon="pi pi-save" label="Lưu"
         class="custom-button"></button>
     </ng-template>
   </p-dialog>

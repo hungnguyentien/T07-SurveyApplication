@@ -48,7 +48,6 @@ namespace SurveyApplication.Application.Features.BackupRestore.Handlers.Queries
             try
             {
                 var path = $"{BackupRestoreConfiguration.DirBackupDb}\\";
-                _logger.LogError(path);
                 var files = Directory.GetFiles(path, "*.bak");
                 for (var i = 0; i < files.ToList().Count; i++)
                 {

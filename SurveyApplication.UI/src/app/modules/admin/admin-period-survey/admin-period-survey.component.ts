@@ -40,6 +40,7 @@ export class AdminPeriodSurveyComponent {
   dateRangeError = false;
   checkdetail!:boolean
   oldNgayKetThuc!: string | null;
+  
   checkBtnDetail:boolean = false
   actionDetail!:any;
   modalTitle = '';
@@ -95,6 +96,22 @@ export class AdminPeriodSurveyComponent {
     return null;
   }
 
+  searchOnChange(value: string) {
+    this.paging.keyword = this.keyWord;
+    this.PeriodSurveyService.getByCondition(this.paging).subscribe({
+      next: (res) => {
+        this.datas = res.data;
+        this.dataTotalRecords = res.totalFilter;
+      },
+      error: (e) => {
+        Utils.messageError(this.messageService, e.message);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
   loadListLazy = (event: any) => {
     this.loading = true;
     let pageSize = event.rows;
@@ -154,7 +171,7 @@ export class AdminPeriodSurveyComponent {
     this.checkBtnDetail = false; // check ẩn hiện button 
     this.modalTitle  = 'Thêm mới đợt khảo sát';
     this.FormPeriodSurvey.enable();
-
+    this.showadd = true//check save
     this.visible = !this.visible;
     this.FormPeriodSurvey.reset();
   }
@@ -165,6 +182,7 @@ export class AdminPeriodSurveyComponent {
     this.modalTitle = 'Cập nhật đợt khảo sát';
     this.checkBtnDetail = false; // check ẩn hiện button 
     this.visible = !this.visible;
+    this.showadd = false//check save
     this.IdDotKhaoSat = data.id;
     this.MaDotKhaoSat = data.maDotKhaoSat;
     this.Trangthai = data.trangThai;
@@ -188,9 +206,9 @@ export class AdminPeriodSurveyComponent {
   }
 
   Save() {
-    if (this.showadd) {
+    if (this.showadd == true) {
       this.SaveAdd();
-    } else {
+    } else if(this.showadd == false) {
       this.SaveEdit();
     }
   }
@@ -198,34 +216,32 @@ export class AdminPeriodSurveyComponent {
   SaveAdd() {
     if (this.FormPeriodSurvey.valid) {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
+      ObjPeriodSurvey.NgayBatDau = Utils.plusDate(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY');
+      ObjPeriodSurvey.NgayKetThuc = Utils.plusDate(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY');
       this.PeriodSurveyService.create(ObjPeriodSurvey).subscribe({
-        next: (res) => {
-          if (res != null) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Thành Công',
-              detail: 'Thêm thành Công !',
-            });
+        next: (res:any) => {
+          if (res.success == true) {
+            Utils.messageSuccess(this.messageService, res.message);
             this.table.reset();
             this.FormPeriodSurvey.reset();
             this.visible = false;
-          } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Lỗi',
-              detail: 'Lỗi vui Lòng kiểm tra lại !',
-            });
+          } 
+          else {
+            Utils.messageError(this.messageService, res.message);
           }
         },
+        error: (e) => {
+          Utils.messageError(this.messageService, e.message)
+        }
       });
     }
   }
 
   SaveEdit() {
-    
     const ObjPeriodSurvey = this.FormPeriodSurvey.value;
-    ObjPeriodSurvey.NgayBatDau = moment(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY').utcOffset(0).toDate();
-    ObjPeriodSurvey.NgayKetThuc =  moment(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY').utcOffset(0).toDate();
+    ObjPeriodSurvey.NgayBatDau = Utils.plusDate(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY');
+    ObjPeriodSurvey.NgayKetThuc = Utils.plusDate(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY');
+
     ObjPeriodSurvey['id'] = this.IdDotKhaoSat;
     ObjPeriodSurvey['maDotKhaoSat'] = this.MaDotKhaoSat;
     ObjPeriodSurvey['Trangthai'] = this.Trangthai;

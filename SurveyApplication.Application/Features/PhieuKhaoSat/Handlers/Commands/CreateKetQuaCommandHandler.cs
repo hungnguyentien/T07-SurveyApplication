@@ -94,6 +94,7 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
         {
             bks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
             await _surveyRepo.BangKhaoSat.UpdateAsync(bks);
+            await _surveyRepo.SaveAync();
         }
 
         response.Success = true;
