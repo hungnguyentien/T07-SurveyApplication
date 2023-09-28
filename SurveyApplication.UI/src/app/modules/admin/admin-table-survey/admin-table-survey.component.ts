@@ -299,14 +299,14 @@ export class AdminTableSurveyComponent {
     });
   };
 
-  applyFilters() {
-    debugger
-    this.datas = this.datas.filter(data => {
-        const maBangKhaoSat = data.maBangKhaoSat.toLowerCase();
-        const filterValue = this.filterData.maBangKhaoSat.toLowerCase();
-        return maBangKhaoSat.includes(filterValue);
-    });
-}
+//   applyFilters() {
+//     debugger
+//     this.datas = this.datas.filter(data => {
+//         const maBangKhaoSat = data.maBangKhaoSat.toLowerCase();
+//         const filterValue = this.filterData.maBangKhaoSat.toLowerCase();
+//         return maBangKhaoSat.includes(filterValue);
+//     });
+// }
 
 
   //#endregion
@@ -565,6 +565,8 @@ export class AdminTableSurveyComponent {
   SaveAdd() {
     if (this.formTableSurvey.valid) {
       const ObjTableSurvey = this.formTableSurvey.value;
+      ObjTableSurvey.ngayBatDau = Utils.plusDate(ObjTableSurvey.ngayBatDau, 'DD/MM/YYYY');
+      ObjTableSurvey.ngayKetThuc = Utils.plusDate(ObjTableSurvey.ngayKetThuc, 'DD/MM/YYYY');
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
           if (res != null) {
@@ -600,17 +602,9 @@ export class AdminTableSurveyComponent {
   }
 
   SaveEdit() {
-    const objTableSurvey = this.formTableSurvey.value;
-    objTableSurvey.ngayBatDau = moment(objTableSurvey.ngayBatDau, 'DD/MM/YYYY')
-      .utcOffset(0)
-      .toDate();
-
-    objTableSurvey.ngayKetThuc = moment(
-      objTableSurvey.ngayKetThuc,
-      'DD/MM/YYYY'
-    )
-      .utcOffset(0)
-      .toDate();
+    const objTableSurvey = this.formTableSurvey.value;   
+    objTableSurvey.ngayBatDau = Utils.plusDate(objTableSurvey.ngayBatDau, 'DD/MM/YYYY');
+    objTableSurvey.ngayKetThuc = Utils.plusDate(objTableSurvey.ngayKetThuc, 'DD/MM/YYYY');   
     objTableSurvey['maBangKhaoSat'] = this.GetMaBangKhaoSat;
     objTableSurvey['trangThai'] = this.Gettrangthai;
     this.TableSurveyService.update(objTableSurvey).subscribe({

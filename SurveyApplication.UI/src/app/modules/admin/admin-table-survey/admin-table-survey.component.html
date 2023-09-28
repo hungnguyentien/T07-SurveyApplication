@@ -47,8 +47,7 @@
         styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
         [totalRecords]="dataTotalRecords" [resizableColumns]="true"
-        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
-        (filter)="applyFilters()">
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0" >
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 40px;">
