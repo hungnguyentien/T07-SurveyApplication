@@ -36,7 +36,6 @@ import { FormControl } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BksTrangThai } from '@app/enums';
 import { Router } from '@angular/router';
-import { coerceStringArray } from '@angular/cdk/coercion';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 

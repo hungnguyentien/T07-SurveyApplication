@@ -20,8 +20,6 @@ import {
   DoiTuongThamGiaKs,
   FileQuestion,
 } from '@app/models';
-import { KqSurveyCheckBox } from '@app/enums';
-import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-admin-statistical',

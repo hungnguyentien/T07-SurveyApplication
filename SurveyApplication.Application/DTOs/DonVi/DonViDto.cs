@@ -37,5 +37,7 @@ namespace SurveyApplication.Application.DTOs.DonVi
         public string? MoTa { get; set; }
         public string? EmailNguoiDaiDien { get; set; }
         public string? SoDienThoaiNguoiDaiDien { get; set; }
+
+        public List<string> LstDiaChi { get; set; }
     }
 }

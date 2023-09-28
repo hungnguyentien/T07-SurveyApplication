@@ -6,6 +6,7 @@ using SurveyApplication.Application.Features.DonVis.Requests.Queries;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using System.Linq;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries;
 
@@ -31,12 +32,24 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                     on d.IdLinhVuc equals s.Id into linhVucGroup
                     from lv in linhVucGroup.DefaultIfEmpty()
 
+                    join tinh in _surveyRepo.TinhTp.GetAllQueryable()
+                        on d.IdTinhTp equals tinh.Id into tinhGroup
+                    from tinhTp in tinhGroup.DefaultIfEmpty()
+
+                    join quan in _surveyRepo.QuanHuyen.GetAllQueryable()
+                        on d.IdQuanHuyen equals quan.Id into quanGroup
+                    from quanHuyen in quanGroup.DefaultIfEmpty()
+
+                    join xa in _surveyRepo.XaPhuong.GetAllQueryable()
+                        on d.IdXaPhuong equals xa.Id into xaGroup
+                    from xaPhuong in xaGroup.DefaultIfEmpty()
+
                     where (d.MaDonVi.Contains(request.Keyword) || d.TenDonVi.Contains(request.Keyword) ||
                          d.DiaChi.Contains(request.Keyword) || b.HoTen.Contains(request.Keyword)) &&
                          d.Deleted == false
                     select new DonViDto
                     {
-                        IdLinhVuc = lv != null ? lv.Id : (int?)null,
+                        IdLinhVuc = lv != null ? lv.Id : null,
                         IdDonVi = d.Id,
                         IdNguoiDaiDien = b.Id,
                         IdLoaiHinh = o.Id,
@@ -47,7 +60,7 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
 
                         MaDonVi = d.MaDonVi,
                         TenDonVi = d.TenDonVi,
-                        DiaChi = d.DiaChi,
+                        LstDiaChi = new List<string> { tinhTp != null ? tinhTp.Name : "", quanHuyen != null ? quanHuyen.Name : "", xaPhuong != null ? xaPhuong.Name : "", d.DiaChi },
                         MaSoThue = d.MaSoThue,
                         EmailDonVi = d.Email,
                         WebSite = d.WebSite,
@@ -62,11 +75,10 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                         MoTa = b.MoTa,
                         Id = d.Id
                     };
-        var totalCount = await query.LongCountAsync();
-        var pageCount = (int)Math.Ceiling(totalCount / (double)request.PageSize);
 
-        var pageResults = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
-
+        var totalCount = await query.LongCountAsync(cancellationToken: cancellationToken);
+        var pageResults = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).ToListAsync(cancellationToken: cancellationToken);
+        pageResults.ForEach(x => x.DiaChi = GetDiaChi(x.LstDiaChi));
         return new BaseQuerieResponse<DonViDto>
         {
             PageIndex = request.PageIndex,
@@ -75,6 +87,11 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
             TotalFilter = totalCount,
             Data = pageResults
         };
+    }
+
+    private static string GetDiaChi(IEnumerable<string> lstDiaChi)
+    {
+        return string.Join(", ", lstDiaChi.Where(x => !string.IsNullOrEmpty(x)));
     }
 }
 

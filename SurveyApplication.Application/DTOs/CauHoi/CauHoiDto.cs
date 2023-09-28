@@ -36,6 +36,11 @@ public class CauHoiDto : BaseDto
     public int KichThuocFile { get; set; }
 
     /// <summary>
+    ///     maxSize
+    /// </summary>
+    public int SoLuongFileToiDa { get; set; }
+
+    /// <summary>
     ///     isRequired
     /// </summary>
     public string Noidung { get; set; }

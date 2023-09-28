@@ -9,6 +9,7 @@ import { Paging, CauHoi, CreateUpdateCauHoi, Select } from '@app/models';
 import Utils from '@app/helpers/utils';
 import { CauHoiService } from '@app/services';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
@@ -17,6 +18,7 @@ import {
 } from '@angular/forms';
 import { PrimeNGConfig } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { TypeCauHoi } from '@app/enums';
 
 @Component({
   selector: 'app-question',
@@ -69,26 +71,61 @@ export class QuestionComponent {
     });
     this.createForm();
     Utils.translate('vi', this.translateService, this.config);
-    this.frmCauHoi.controls['maCauHoi'].valueChanges.subscribe(newMaCauHoi => {
-      this.changeMaCauHoi(newMaCauHoi);
-    });
+    this.frmCauHoi.controls['maCauHoi'].valueChanges.subscribe(
+      (newMaCauHoi) => {
+        this.changeMaCauHoi(newMaCauHoi);
+      }
+    );
   }
 
   createForm = () => {
-    this.frmCauHoi = this.formBuilder.group({
-      id: new FormControl<number>(0),
-      maCauHoi: ['', Validators.required],
-      loaiCauHoi: ['', Validators.required],
-      tieuDe: [''],
-      isOther: new FormControl<boolean>(true),
-      labelCauTraLoi: [''],
-      noidung: [''],
-      kichThuocFile: new FormControl<number>(0),
-      soLuongFileToiDa: new FormControl<number>(0),
-      lstCot: this.formBuilder.array([]),
-      lstHang: this.formBuilder.array([]),
-    });
+    this.frmCauHoi = this.formBuilder.group(
+      {
+        id: new FormControl<number>(0),
+        maCauHoi: ['', Validators.required],
+        loaiCauHoi: ['', Validators.required],
+        tieuDe: [''],
+        isOther: new FormControl<boolean>(true),
+        labelCauTraLoi: [''],
+        noidung: [''],
+        kichThuocFile: [0],
+        soLuongFileToiDa: [0],
+        lstCot: this.formBuilder.array([]),
+        lstHang: this.formBuilder.array([]),
+      },
+      { validator: [this.soLuongFileValidator, this.kichThuocFileValidator] }
+    );
   };
+
+  soLuongFileValidator(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
+    const loaiCauHoi = control.get('loaiCauHoi')?.value;
+    const soLuongFileToiDa = control.get('soLuongFileToiDa')?.value;
+    if (
+      loaiCauHoi == TypeCauHoi.UploadFile &&
+      (soLuongFileToiDa == 0 || soLuongFileToiDa > 10)
+    ) {
+      return { soLuongFileError: true };
+    }
+
+    return null;
+  }
+
+  kichThuocFileValidator(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
+    const loaiCauHoi = control.get('loaiCauHoi')?.value;
+    const kichThuocFileToiDa = control.get('kichThuocFile')?.value;
+    if (
+      loaiCauHoi == TypeCauHoi.UploadFile &&
+      (kichThuocFileToiDa == 0 || kichThuocFileToiDa > 100 || kichThuocFileToiDa < 10)
+    ) {
+      return { kichThuocFileError: true };
+    }
+
+    return null;
+  }
 
   loadListLazy = (event: any) => {
     this.loading = true;
@@ -117,7 +154,6 @@ export class QuestionComponent {
   };
 
   searchOnChange(value: string) {
-    debugger
     this.paging.keyword = this.keyWord;
     this.cauHoiService.getByCondition(this.paging).subscribe({
       next: (res) => {
@@ -132,7 +168,6 @@ export class QuestionComponent {
       },
     });
   }
-
 
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
@@ -178,8 +213,8 @@ export class QuestionComponent {
     this.createForm();
     this.cauHoiService.getById<CreateUpdateCauHoi>(id).subscribe({
       next: (res) => {
-        let k = Object.keys(res);
-        let v = Object.values(res);
+        let k = Object.keys(res).filter((x) => x != 'loaiCauHoi');
+        let v = Object.values(res).filter((x) => x != res['loaiCauHoi']);
         Utils.setValueForm(this.frmCauHoi, k, v);
         this.selectedLoaiCauHoi = res.loaiCauHoi.toString();
         this.isOther = res.isOther ?? false;
@@ -235,12 +270,12 @@ export class QuestionComponent {
       accept: () => {
         this.cauHoiService.delete(id).subscribe({
           next: (res) => {
-            if(res.success == true){
+            if (res.success == true) {
               Utils.messageSuccess(
-                this.messageService,`Xoá câu hỏi ${title} thành công!`);
-              }
-            else
-            {
+                this.messageService,
+                `Xoá câu hỏi ${title} thành công!`
+              );
+            } else {
               Utils.messageError(this.messageService, res.message);
             }
           },
@@ -316,8 +351,8 @@ export class QuestionComponent {
     this.f('maCauHoi')?.setValue('');
     this.f('tieuDe')?.setValue('');
     this.f('noidung')?.setValue('');
-    this.f('kichThuocFile')?.setValue('');
-    this.f('soLuongFileToiDa')?.setValue('');
+    this.f('kichThuocFile')?.setValue('10');
+    this.f('soLuongFileToiDa')?.setValue('1');
   };
 
   get lstCot(): FormArray {
@@ -329,7 +364,9 @@ export class QuestionComponent {
   }
 
   addItem(isCot: boolean = true) {
-    const data = isCot ? this.maCauHoi + "_Cot" + (this.lstCot.length + 1) : this.maCauHoi + "_Hang" + (this.lstHang.length + 1);
+    const data = isCot
+      ? this.maCauHoi + '_Cot' + (this.lstCot.length + 1)
+      : this.maCauHoi + '_Hang' + (this.lstHang.length + 1);
     if (isCot) {
       const newItem = this.formBuilder.group({
         id: 0,
@@ -352,12 +389,12 @@ export class QuestionComponent {
     const lstHangArray = this.lstHang.controls as Array<any>;
 
     lstCotArray.forEach((element, index) => {
-      const data = maCauHoi + "_Cot" + (index + 1);
+      const data = maCauHoi + '_Cot' + (index + 1);
       element.get('maCot')?.setValue(data);
     });
 
     lstHangArray.forEach((element, index) => {
-      const data = maCauHoi + "_Hang" + (index + 1);
+      const data = maCauHoi + '_Hang' + (index + 1);
       element.get('maHang')?.setValue(data);
     });
   }
