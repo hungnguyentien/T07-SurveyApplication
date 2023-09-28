@@ -20,4 +20,12 @@ export class PeriodSurveyService extends BaseService<PeriodSurvey> {
       )
       .pipe(first());
   }
+
+  getDotKhaoSatByDotKhaoSat(id: number) {
+    return this.http
+      .get<PeriodSurvey[]>(
+        `${environment.apiUrl}/BangKhaoSat/GetByDotKhaoSat?id=${id}`
+      )
+      .pipe(first());
+  }
 }

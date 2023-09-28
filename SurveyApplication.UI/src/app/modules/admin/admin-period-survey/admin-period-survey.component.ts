@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { Paging, PeriodSurvey } from '@app/models';
+import { Paging, PeriodSurvey, TableSurvey } from '@app/models';
 
 import {
   FormGroup,
@@ -15,13 +15,18 @@ import { Table } from 'primeng/table';
 import Utils from '@app/helpers/utils';
 import * as moment from 'moment';
 import 'moment-timezone'; // Import 'moment-timezone'
-
+import { FilterMetadata } from "primeng/api";
 @Component({
   selector: 'app-admin-period-survey',
   templateUrl: './admin-period-survey.component.html',
   styleUrls: ['./admin-period-survey.component.css'],
 })
 export class AdminPeriodSurveyComponent {
+  readonly filters: { [key in keyof PeriodSurvey]: FilterMetadata[] } = {
+    MaDotKhaoSat: [{ value: '', matchMode: 'contains', operator: 'and' }],
+    id: []
+  };
+
   @ViewChild('dt') table!: Table;
   loading: boolean = true;
   selectedPeriodSurvey!: PeriodSurvey[];
@@ -30,6 +35,7 @@ export class AdminPeriodSurveyComponent {
   dataTotalRecords!: number;
   keyWord!: string;
   visible: boolean = false;
+  visibleDetail: boolean = false;
 
   showadd!: boolean;
   FormPeriodSurvey!: FormGroup;
@@ -40,6 +46,7 @@ export class AdminPeriodSurveyComponent {
   dateRangeError = false;
   checkdetail!:boolean
   oldNgayKetThuc!: string | null;
+  datasDetail: TableSurvey[] = [];
   
   checkBtnDetail:boolean = false
   actionDetail!:any;
@@ -55,8 +62,9 @@ export class AdminPeriodSurveyComponent {
     private confirmationService: ConfirmationService,
     private datePipe: DatePipe
   ) {}
-
+ 
   ngOnInit() {
+    
     this.LoadLoaiHinh();
     this.FormPeriodSurvey = this.FormBuilder.group(
       {
@@ -72,12 +80,20 @@ export class AdminPeriodSurveyComponent {
     this.minDate = new Date(1900, 0, 1);
    
   }
+  
+  getDetailBangKhaoSat(data:number){
+    debugger
+    this.visibleDetail = !this.visibleDetail;
+    this.PeriodSurveyService.getDotKhaoSatByDotKhaoSat(data).subscribe((res:any)=>{
+      this.datasDetail = res;
+    })
+  }
 
   detail(data:any){
     this.checkBtnDetail = true
     this.visible = !this.visible;
     this.modalTitle = 'Chi tiết đợt khảo sát';
-    this.FormPeriodSurvey.disable();
+    this.FormPeriodSurvey?.disable();
     this.FormPeriodSurvey.controls['MaDotKhaoSat'].setValue(data.maDotKhaoSat);
     this.FormPeriodSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
     this.FormPeriodSurvey.controls['TenDotKhaoSat'].setValue(data.tenDotKhaoSat);

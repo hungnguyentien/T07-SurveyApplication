@@ -48,3 +48,10 @@ input {
   width: 100%;
 }
 
+::ng-deep .p-disabled {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important; 
+  background-color: inherit !important;
+
+}
