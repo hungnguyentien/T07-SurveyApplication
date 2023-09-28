@@ -48,7 +48,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                                             join c in _surveyRepo.KetQua.GetAllQueryable() on b.Id equals c.IdGuiEmail
                                             where (request.NgayBatDau == null || a.NgayBatDau.Date >= ngayBatDau) &&
                                              (request.NgayKetThuc == null || a.NgayKetThuc.Date <= ngayuKetThuc) &&
-                                             c.Deleted == false && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh && 
+                                             c.Deleted == false && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh &&
                                              b.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong
                                             select new KetQua
                                             {
@@ -58,13 +58,12 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             var thamGiaKhaoSat = from a in _surveyRepo.BangKhaoSat.GetAllQueryable()
                                  join b in _surveyRepo.GuiEmail.GetAllQueryable() on a.Id equals b.IdBangKhaoSat
                                  join c in _surveyRepo.KetQua.GetAllQueryable() on b.Id equals c.IdGuiEmail
-                                 where !a.Deleted && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh && 
+                                 where !a.Deleted && c.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh &&
                                        b.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong &&
                                        (request.NgayBatDau == null || a.NgayBatDau.Date >= ngayBatDau) &&
                                        (request.NgayKetThuc == null || a.NgayKetThuc.Date <= ngayuKetThuc)
                                  select new { BangKhoaSat = a, b.IdDonVi };
 
-            var t = await thamGiaKhaoSat.GroupBy(x => x.BangKhoaSat.Id).Select(x => new { BangKhoaSat = x.Key}).ToListAsync(cancellationToken: cancellationToken);
             var khaoSatTheoNhom = from a in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
                                   join b in thamGiaKhaoSat on a.Id equals b.BangKhoaSat.IdLoaiHinh
                                   where !a.Deleted
@@ -120,7 +119,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                 LstCountDot = await khaoSatTheoDot.GroupBy(x => x.IdDotKhaoSat).Select(n => new CountDot
                 {
                     Ten = n.First().TenDotKhaoSat,
-                    Count = khaoSatTheoDot.Select(x => x.IdBangKhaoSat).Count()
+                    Count = khaoSatTheoDot.Count(x => x.IdDotKhaoSat == n.Key)
                 }).Take(5).OrderByDescending(x => x.Count).ToListAsync(cancellationToken: cancellationToken)
             };
         }
