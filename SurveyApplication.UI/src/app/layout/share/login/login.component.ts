@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Login } from '@app/models';
 import { LoginService } from '@app/services';
@@ -16,7 +17,12 @@ export class LoginComponent {
     isRememberMe: true,
   };
 
-  constructor(private router: Router, private loginService: LoginService) {
+  constructor(
+    private router: Router,
+    private loginService: LoginService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Đăng nhập');
     if (this.loginService.currentUserValue()) {
       this.router.navigate(['admin/dashboard']);
     }
