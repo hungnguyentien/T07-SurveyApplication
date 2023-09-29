@@ -497,7 +497,8 @@ export default class Utils {
     const readOnly = res.trangThaiKq === KqTrangThai.HoanThanh;
     const lstPanelTitle = res.lstCauHoi
       .map((x) => x.panelTitle)
-      .filter((x) => x && this.onlyUnique);
+      .filter((x) => x)
+      .filter(this.onlyUnique);
     if (lstPanelTitle.length > 0)
       lstPanelTitle.forEach((panelTitle, i) => {
         const elsPanel: any[] = [];

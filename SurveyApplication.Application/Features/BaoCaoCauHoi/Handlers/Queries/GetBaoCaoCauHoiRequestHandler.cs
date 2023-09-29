@@ -142,7 +142,8 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
 
             foreach (var item in groupedDataList.Where(item => item.CauHoiTraLoi != null))
             {
-                item.CauHoiTraLoi = item.CauHoiTraLoi.Where(x => !string.IsNullOrEmpty(x.CauTraLoi)).ToList();
+                //TODO bỏ câu trả lời rỗng và câu trả lời khác (other)
+                item.CauHoiTraLoi = item.CauHoiTraLoi.Where(x => !string.IsNullOrEmpty(x.CauTraLoi) && x.CauTraLoi != "other").ToList();
                 if (item.LoaiCauHoi != (int)EnumCauHoi.Type.MultiSelectMatrix)
                 {
                     // Loại bỏ các bản ghi trùng lặp trong danh sách CauHoiTraLoi

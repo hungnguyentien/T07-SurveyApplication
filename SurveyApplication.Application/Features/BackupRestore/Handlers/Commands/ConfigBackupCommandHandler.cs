@@ -50,18 +50,18 @@ namespace SurveyApplication.Application.Features.BackupRestore.Handlers.Commands
 
         public Task<BaseCommandResponse> Handle(ConfigBackupCommand request, CancellationToken cancellationToken)
         {
-            var res = string.Empty;
+            string res;
             try
             {
-                var path = $@"{BackupRestoreConfiguration.DirBackupDb}\";
+                var path = $@"{BackupRestoreConfiguration.DirBackupServer}\";
                 var nameJobs = BackupRestoreConfiguration.NamejobBackupDb;
                 var cmd = CommandStep(path, BackupRestoreConfiguration.DatabaseNames.Split("|").ToList());
                 var myDbConnection = _configuration.GetConnectionString(CustomString.ConnectionString);
                 var timeStr = request.ConfigJobBackup.ScheduleHour.ToString("D2") + request.ConfigJobBackup.ScheduleMinute.ToString("D2") + "00";
                 var startDate = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
-                var strartTime = int.Parse(timeStr);
-                res = request.ConfigJobBackup.ScheduleDayofweek == 0 ? CreateJobsDaiLy(nameJobs, myDbConnection, cmd, strartTime, startDate) : CreateJobsForWeek(request.ConfigJobBackup.ScheduleDayofweek.ToString(), nameJobs, myDbConnection, cmd, strartTime, startDate);
-                var file = Path.Combine(path, "SetUpJob.txt");
+                var startTime = int.Parse(timeStr);
+                res = request.ConfigJobBackup.ScheduleDayofweek == 0 ? CreateJobsDaiLy(nameJobs, myDbConnection, cmd, startTime, startDate) : CreateJobsForWeek(request.ConfigJobBackup.ScheduleDayofweek.ToString(), nameJobs, myDbConnection, cmd, startTime, startDate);
+                var file = Path.Combine(BackupRestoreConfiguration.DirBackupDb, "SetUpJob.txt");
                 var textFile = $"{request.ConfigJobBackup.ScheduleDayofweek}|{request.ConfigJobBackup.ScheduleHour}|{request.ConfigJobBackup.ScheduleMinute}";
                 File.WriteAllText(file, textFile);
             }

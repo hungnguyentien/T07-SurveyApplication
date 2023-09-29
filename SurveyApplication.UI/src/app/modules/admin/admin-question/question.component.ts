@@ -82,7 +82,7 @@ export class QuestionComponent {
     this.frmCauHoi = this.formBuilder.group(
       {
         id: new FormControl<number>(0),
-        maCauHoi: [{ value: this.maCauHoi, disabled: true }],
+        maCauHoi: [{ value: this.maCauHoi, disabled: false }],
         loaiCauHoi: ['', Validators.required],
         tieuDe: [''],
         isOther: new FormControl<boolean>(true),
@@ -119,7 +119,9 @@ export class QuestionComponent {
     const kichThuocFileToiDa = control.get('kichThuocFile')?.value;
     if (
       loaiCauHoi == TypeCauHoi.UploadFile &&
-      (kichThuocFileToiDa == 0 || kichThuocFileToiDa > 100 || kichThuocFileToiDa < 10)
+      (kichThuocFileToiDa == 0 ||
+        kichThuocFileToiDa > 100 ||
+        kichThuocFileToiDa < 10)
     ) {
       return { kichThuocFileError: true };
     }
@@ -202,7 +204,6 @@ export class QuestionComponent {
     this.isCreate = true;
     this.visible = true;
     this.submitted = false;
-
     this.frmCauHoi.get('maCauHoi')?.disable();
     this.cauHoiService.generateMaCauHoi().subscribe({
       next: (res: any) => {
@@ -308,6 +309,12 @@ export class QuestionComponent {
       : 0;
     this.question.batBuoc = false;
     this.question.priority = 0;
+    let msgValidateHangCot = this.validateHangCot(this.question);
+    if (msgValidateHangCot) {
+      Utils.messageError(this.messageService, msgValidateHangCot);
+      return;
+    }
+
     this.cauHoiService.create<CreateUpdateCauHoi>(this.question).subscribe({
       next: (res) => {
         if (res.success) {
@@ -333,6 +340,12 @@ export class QuestionComponent {
       : 0;
     this.question.batBuoc = false;
     this.question.priority = 0;
+    let msgValidateHangCot = this.validateHangCot(this.question);
+    if (msgValidateHangCot) {
+      Utils.messageError(this.messageService, msgValidateHangCot);
+      return;
+    }
+
     this.cauHoiService.update<CreateUpdateCauHoi>(this.question).subscribe({
       next: (res) => {
         if (res.success) {
@@ -344,6 +357,19 @@ export class QuestionComponent {
         }
       },
     });
+  };
+
+  validateHangCot = (data: CreateUpdateCauHoi): string => {
+    if (
+      (data.loaiCauHoi == TypeCauHoi.SingleSelectMatrix ||
+        data.loaiCauHoi == TypeCauHoi.MultiSelectMatrix ||
+        data.loaiCauHoi == TypeCauHoi.MultiTextMatrix) &&
+      (data.lstCot.length === 0 || data.lstHang.length === 0)
+    ) {
+      return 'Vui lòng thêm hàng và cột';
+    }
+
+    return '';
   };
 
   handlerChange = (e: any) => {
