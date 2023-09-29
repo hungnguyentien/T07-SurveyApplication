@@ -7,13 +7,21 @@ import {
   PhieuKhaoSatService,
   UnitTypeService,
   XaPhuongService,
-  QuanHuyenService
+  QuanHuyenService,
 } from '@app/services';
 import { CreateUnitAndRep } from '@app/models/CreateUnitAndRep';
 import { Table } from 'primeng/table';
-import { DonVi, HanhChinhVn, LinhVucHoatDong, Paging, DonViNguoiDaiDienResponse, QuanHuyen } from '@app/models';
+import {
+  DonVi,
+  HanhChinhVn,
+  LinhVucHoatDong,
+  Paging,
+  DonViNguoiDaiDienResponse,
+  QuanHuyen,
+} from '@app/models';
 import Utils from '@app/helpers/utils';
 import { lastValueFrom } from 'rxjs';
+import { lstRegExp } from '@app/helpers/index';
 
 @Component({
   selector: 'app-admin-object-survey',
@@ -29,8 +37,8 @@ export class AdminObjectSurveyComponent {
   dataTotalRecords!: number;
   keyWord!: string;
 
-  checkBtnDetail:boolean = false
-  actionDetail!:any;
+  checkBtnDetail: boolean = false;
+  actionDetail!: any;
   modalTitle = '';
 
   showadd!: boolean;
@@ -64,7 +72,7 @@ export class AdminObjectSurveyComponent {
     private linhVucHoatDongService: LinhVucHoatDongService,
     private phieuKhaoSatService: PhieuKhaoSatService,
     private xaPhuongService: XaPhuongService,
-    private quanHuyenService: QuanHuyenService,
+    private quanHuyenService: QuanHuyenService
   ) {}
   ngOnInit() {
     this.GetAllFieldOfActivity();
@@ -75,9 +83,12 @@ export class AdminObjectSurveyComponent {
       TenDonVi: new FormControl('', Validators.required),
       MaSoThue: new FormControl(''),
       MaDonVi: new FormControl('', Validators.required),
-      Email: new FormControl('', Validators.required),
+      Email: new FormControl('', [Validators.required, Validators.email]),
       WebSite: new FormControl(''),
-      SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10,11}$')] ),
+      SoDienThoai: new FormControl('', [
+        Validators.required,
+        Validators.pattern(lstRegExp.soDienThoai),
+      ]),
       DiaChi: new FormControl('', Validators.required),
       IdTinhTp: new FormControl('', Validators.required),
       IdQuanHuyen: new FormControl('', Validators.required),
@@ -90,8 +101,11 @@ export class AdminObjectSurveyComponent {
     this.FormRepresentative = new FormGroup({
       HoTen: new FormControl('', Validators.required),
       ChucVu: new FormControl('', Validators.required),
-      Email: new FormControl('', Validators.required),
-      SoDienThoai: new FormControl('',[Validators.required, Validators.pattern('^[0-9]{10,11}$')] ),
+      Email: new FormControl('', [Validators.required, Validators.email]),
+      SoDienThoai: new FormControl('', [
+        Validators.required,
+        Validators.pattern(lstRegExp.soDienThoai),
+      ]),
       MoTa: new FormControl(''),
     });
 
@@ -130,15 +144,14 @@ export class AdminObjectSurveyComponent {
     const code = this.selectedTinh;
     this.wards = [];
     this.quanHuyenService.getQuanHuyenByTinhTp(code ?? '').subscribe((res) => {
-          this.districts = res;
-      });
+      this.districts = res;
+    });
   }
 
   onDistrictChange(): void {
     const code = this.selectedQuanHuyen;
-    this.xaPhuongService
-      .getPhuongXaByQuanHuyen(code ?? '').subscribe((res) => {
-        this.wards = res;
+    this.xaPhuongService.getPhuongXaByQuanHuyen(code ?? '').subscribe((res) => {
+      this.wards = res;
     });
   }
 
@@ -186,7 +199,6 @@ export class AdminObjectSurveyComponent {
       next: (res) => {
         this.datas = res.data;
         this.dataTotalRecords = res.totalFilter;
-     
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);
@@ -215,19 +227,23 @@ export class AdminObjectSurveyComponent {
     });
   };
 
-  async detail(data:any){
-    this.checkBtnDetail = true
+  async detail(data: any) {
+    this.checkBtnDetail = true;
     this.visible = !this.visible;
     this.modalTitle = 'Chi tiết đơn vị';
     this.FormObjectSurvey.disable();
     this.FormRepresentative.disable();
 
     this.selectedTinh = this.cities.find((x) => x.id === data.idTinhTp)?.code;
-      
-    const quanHuyenData = await lastValueFrom(this.quanHuyenService.getById<HanhChinhVn>(data.idQuanHuyen));
+
+    const quanHuyenData = await lastValueFrom(
+      this.quanHuyenService.getById<HanhChinhVn>(data.idQuanHuyen)
+    );
     this.selectedQuanHuyen = quanHuyenData?.code;
 
-    const phuongXaData = await lastValueFrom(this.xaPhuongService.getById<HanhChinhVn>(data.idXaPhuong));
+    const phuongXaData = await lastValueFrom(
+      this.xaPhuongService.getById<HanhChinhVn>(data.idXaPhuong)
+    );
     this.selectedPhuongXa = phuongXaData?.code;
 
     this.FormObjectSurvey.controls['IdLoaiHinh'].setValue(data.idLoaiHinh);
@@ -237,22 +253,30 @@ export class AdminObjectSurveyComponent {
     this.FormObjectSurvey.controls['MaDonVi'].setValue(data.maDonVi);
     this.FormObjectSurvey.controls['Email'].setValue(data.emailDonVi);
     this.FormObjectSurvey.controls['WebSite'].setValue(data.webSite);
-    this.FormObjectSurvey.controls['SoDienThoai'].setValue(data.soDienThoaiDonVi);
+    this.FormObjectSurvey.controls['SoDienThoai'].setValue(
+      data.soDienThoaiDonVi
+    );
     this.FormObjectSurvey.controls['DiaChi'].setValue(data.diaChi);
-    this.FormObjectSurvey.controls['IdQuanHuyen'].setValue(this.selectedQuanHuyen);
-    this.FormObjectSurvey.controls['IdXaPhuong'].setValue(this.selectedPhuongXa);
+    this.FormObjectSurvey.controls['IdQuanHuyen'].setValue(
+      this.selectedQuanHuyen
+    );
+    this.FormObjectSurvey.controls['IdXaPhuong'].setValue(
+      this.selectedPhuongXa
+    );
     this.FormObjectSurvey.controls['IdTinhTp'].setValue(this.selectedTinh);
 
     this.FormRepresentative.controls['HoTen'].setValue(data.hoTen);
     this.FormRepresentative.controls['ChucVu'].setValue(data.chucVu);
     this.FormRepresentative.controls['Email'].setValue(data.emailNguoiDaiDien);
-    this.FormRepresentative.controls['SoDienThoai'].setValue(data.soDienThoaiNguoiDaiDien);
+    this.FormRepresentative.controls['SoDienThoai'].setValue(
+      data.soDienThoaiNguoiDaiDien
+    );
     this.FormRepresentative.controls['MoTa'].setValue(data.moTa);
   }
 
   Add() {
     this.checkBtnDetail = false;
-    this.modalTitle  = 'Thêm mới đơn vị';
+    this.modalTitle = 'Thêm mới đơn vị';
     this.FormObjectSurvey.enable();
     this.FormObjectSurvey.reset();
     this.FormRepresentative.reset();
@@ -263,7 +287,7 @@ export class AdminObjectSurveyComponent {
 
   Edit(data: any) {
     this.FormObjectSurvey.enable();
-    this.FormObjectSurvey.get("MaDonVi")?.disable();
+    this.FormObjectSurvey.get('MaDonVi')?.disable();
     this.modalTitle = 'Cập nhật đơn vị';
     this.checkBtnDetail = false;
     this.showadd = false;
@@ -296,8 +320,12 @@ export class AdminObjectSurveyComponent {
         )?.code;
 
         this.FormObjectSurvey.controls['IdTinhTp'].setValue(this.selectedTinh);
-        this.FormObjectSurvey.controls['IdQuanHuyen'].setValue(this.selectedQuanHuyen);
-        this.FormObjectSurvey.controls['IdXaPhuong'].setValue(this.selectedPhuongXa);
+        this.FormObjectSurvey.controls['IdQuanHuyen'].setValue(
+          this.selectedQuanHuyen
+        );
+        this.FormObjectSurvey.controls['IdXaPhuong'].setValue(
+          this.selectedPhuongXa
+        );
       },
     });
   }
@@ -317,13 +345,19 @@ export class AdminObjectSurveyComponent {
         donViDto: this.FormObjectSurvey.value,
         nguoiDaiDienDto: this.FormRepresentative.value,
       };
-      debugger
+      debugger;
       this.objectSurveyService.create(obj).subscribe({
         next: (res) => {
           if ('response_1' in res && 'response_2' in res) {
             const donViResponse = res as DonViNguoiDaiDienResponse;
-            if (donViResponse.response_1.success && donViResponse.response_2.success) {
-              Utils.messageSuccess(this.messageService, donViResponse.response_1.message);
+            if (
+              donViResponse.response_1.success &&
+              donViResponse.response_2.success
+            ) {
+              Utils.messageSuccess(
+                this.messageService,
+                donViResponse.response_1.message
+              );
               this.table.reset();
               this.FormObjectSurvey.reset();
               this.FormRepresentative.reset();
@@ -331,8 +365,11 @@ export class AdminObjectSurveyComponent {
             } else {
               const errorsFromResponse1 = donViResponse.response_1.errors || [];
               const errorsFromResponse2 = donViResponse.response_2.errors || [];
-              const allErrors = [...errorsFromResponse1, ...errorsFromResponse2];
-              
+              const allErrors = [
+                ...errorsFromResponse1,
+                ...errorsFromResponse2,
+              ];
+
               if (allErrors.length > 0) {
                 for (const error of allErrors) {
                   Utils.messageError(this.messageService, error);
@@ -341,7 +378,7 @@ export class AdminObjectSurveyComponent {
             }
           }
         },
-      });            
+      });
     }
   }
 
