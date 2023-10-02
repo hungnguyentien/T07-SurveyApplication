@@ -2,10 +2,11 @@
   background-color: #4e73df;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 7px;
   font-size: 13px;
   cursor: pointer;
   border-radius: 4px;
+  font-weight: bold;
 }
 .custom-button:hover {
   background-color: #4e73df;
@@ -34,3 +35,9 @@
   color: red;
 }
 
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+}

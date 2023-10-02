@@ -327,7 +327,7 @@ export class AdminStatisticalComponent {
   loadTableSurvey() {
     const code = this.selectedDotKhaoSat;
     this.tableSurveyService.getBangKhaoSatByDotKhaoSat(code ?? 0).subscribe((data) => {
-      this.LstBangKhaoSat = data;
+      this.LstBangKhaoSat = data.data;
     });
   }
 

@@ -24,12 +24,12 @@ namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Queries
 
         public async Task<string> Handle(GetLastRecordDotKhaoSatRequest request, CancellationToken cancellationToken)
         {
-            var lastEntity = await _surveyRepo.LoaiHinhDonVi.GetAllQueryable().OrderByDescending(e => e.Id).FirstOrDefaultAsync();
+            var lastEntity = await _surveyRepo.DotKhaoSat.GetAllQueryable().OrderByDescending(e => e.Id).FirstOrDefaultAsync();
 
             if (lastEntity != null)
             {
-                var prefix = lastEntity.MaLoaiHinh.Substring(0, 3);
-                var currentNumber = int.Parse(lastEntity.MaLoaiHinh.Substring(3));
+                var prefix = lastEntity.MaDotKhaoSat.Substring(0, 3);
+                var currentNumber = int.Parse(lastEntity.MaDotKhaoSat.Substring(3));
 
                 currentNumber++;
                 var newNumber = currentNumber.ToString("D3");
