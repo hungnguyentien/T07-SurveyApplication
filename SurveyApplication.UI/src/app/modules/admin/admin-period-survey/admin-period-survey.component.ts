@@ -256,9 +256,6 @@ export class AdminPeriodSurveyComponent {
           else {
             Utils.messageError(this.messageService, res.message);
           }
-        },
-        error: (e) => {
-          Utils.messageError(this.messageService, e.message)
         }
       });
     }
