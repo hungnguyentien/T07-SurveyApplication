@@ -7,6 +7,7 @@ using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
+using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 
@@ -60,9 +61,9 @@ namespace SurveyApplication.API.Controllers
 
         [HttpGet("GetByDotKhaoSat")]
         [HasPermission(new[] { (int)EnumModule.Code.QlKs }, new[] { (int)EnumPermission.Type.Read })]
-        public async Task<ActionResult<List<BangKhaoSatDto>>> GetByDotKhaoSat(int id)
+        public async Task<ActionResult<BaseQuerieResponse<BangKhaoSatDto>>> GetByDotKhaoSat([FromQuery] Paging paging)
         {
-            var leaveAllocations = await _mediator.Send(new GetBangKhaoSatByDotKhaoSatRequest { Id = id });
+            var leaveAllocations = await _mediator.Send(new GetBangKhaoSatByDotKhaoSatRequest { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
             return Ok(leaveAllocations);
         }
 

@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TableSurvey } from '@app/models';
+import { BaseQuerieResponse, Paging, TableSurvey } from '@app/models';
 import { environment } from '@environments/environment';
 import { Observable, first } from 'rxjs';
 import { BaseService } from './base.service';
+import Utils from '@app/helpers/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -13,13 +14,15 @@ export class TableSurveyService extends BaseService<TableSurvey> {
     super(http, `${environment.apiUrl}/BangKhaoSat`);
   }
 
-  getBangKhaoSatByDotKhaoSat(idDotKhaoSat: number) {
-    return this.http
-      .get<TableSurvey[]>(
-        `${environment.apiUrl}/BangKhaoSat/GetByDotKhaoSat?id=${idDotKhaoSat}`
-      )
+  getBangKhaoSatByDotKhaoSat(code: number): Observable<BaseQuerieResponse<TableSurvey>> {
+    // Sử dụng code ở đây để truy vấn dữ liệu
+    const params = new HttpParams().set('code', code.toString()); // Chuyển số nguyên thành chuỗi
+  
+    return this._http
+      .get<BaseQuerieResponse<TableSurvey>>(`${this.actionUrl}/GetByDotKhaoSat`, { params })
       .pipe(first());
   }
+  
 
   generateMaBangKhaoSat() {
     const url = `${environment.apiUrl}/BangKhaoSat/GenerateMaBangKhaoSat`;

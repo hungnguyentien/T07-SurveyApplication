@@ -21,24 +21,17 @@ namespace SurveyApplication.Application.Features.TinhTps.Handlers.Commands
         {
             var response = new BaseCommandResponse();
 
-            foreach (var item in request.Ids)
+            if (await _surveyRepo.DonVi.Exists(x => !x.Deleted && request.Ids.Contains(x.IdTinhTp)))
             {
-                var tinhTp = await _surveyRepo.TinhTp.SingleOrDefaultAsync(x => x.Id == item);
-
-                var quanHuyen = await _surveyRepo.QuanHuyen.GetAllListAsync(x => x.ParentCode == tinhTp.Code);
-
-                if (quanHuyen.Count() != 0)
-                {
-                    response.Success = false;
-                    response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
-                    return response;
-                }
+                response.Success = false;
+                response.Message = "Đang có bản ghi liên quan, không thể xóa được!";
+                return response;
             }
 
             var lstTinhTp = await _surveyRepo.TinhTp.GetByIds(x => request.Ids.Contains(x.Id));
 
             if (lstTinhTp == null || lstTinhTp.Count == 0)
-                throw new NotFoundException(nameof(TinhTp), request.Ids);
+                throw new NotFoundException(nameof(TinhTps), request.Ids);
 
             foreach (var item in lstTinhTp)
                 item.Deleted = true;

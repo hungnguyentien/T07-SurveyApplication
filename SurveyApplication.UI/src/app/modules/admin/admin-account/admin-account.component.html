@@ -112,7 +112,7 @@
 
 
 <form *ngIf="frmAccount" #accountForm="ngForm" [formGroup]="frmAccount" (ngSubmit)="onSubmit(accountForm)">
-    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw', height: '90vh' }" [draggable]="false"
         [resizable]="true" [maximizable]="true">
         <ng-template pTemplate="header">
             <h5 class="modal-title">
