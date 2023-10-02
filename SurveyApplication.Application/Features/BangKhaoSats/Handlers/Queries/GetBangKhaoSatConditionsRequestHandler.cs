@@ -29,7 +29,9 @@ public class GetBangKhaoSatConditionsRequestHandler : BaseMasterFeatures, IReque
 
                     //join s in _surveyRepo.GuiEmail.GetAllQueryable()
                     //on d.Id equals s.IdBangKhaoSat
-                    where b.MaDotKhaoSat.Contains(request.Keyword) && d.Deleted == false
+                    where (d.MaBangKhaoSat.Contains(request.Keyword) || d.TenBangKhaoSat.Contains(request.Keyword) ||
+                            b.TenDotKhaoSat.Contains(request.Keyword) || o.TenLoaiHinh.Contains(request.Keyword)) &&
+                            d.Deleted == false
                     select new BangKhaoSatDto
                     {
                         Id = d.Id,
