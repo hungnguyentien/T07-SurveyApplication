@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import Utils from '@app/helpers/utils';
 import { BackupRestore, Paging, Select } from '@app/models';
 import { BackupService } from '@app/services';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 @Component({
@@ -30,10 +30,12 @@ export class AdminBackupComponent {
   selectedScheduleHour: string = '0';
   selectedScheduleMinute: string = '0';
 
+  titleConfirm :string =""
   constructor(
     private formBuilder: FormBuilder,
     private backupService: BackupService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit() {
@@ -102,29 +104,46 @@ export class AdminBackupComponent {
   };
 
   backupNow = () => {
-    this.backupService.backupNow().subscribe({
-      next: (res) => {
-        if (res.success) {
-          Utils.messageSuccess(this.messageService, res.message);
-          setTimeout(() => {
-            this.table.reset();
-          }, 3000);
-        } else {
-          Utils.messageError(this.messageService, res.errors?.at(0) ?? '');
-        }
+    this.titleConfirm ="Xác nhận sao lưu ngay"
+    this.confirmationService.confirm({
+      message: 'Bạn có chắc chắn sao lưu không ' + '?',
+      header: 'delete',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.backupService.backupNow().subscribe({
+          next: (res) => {
+            if (res.success) {
+              Utils.messageSuccess(this.messageService, res.message);
+              setTimeout(() => {
+                this.table.reset();
+              }, 3000);
+            } else {
+              Utils.messageError(this.messageService, res.errors?.at(0) ?? '');
+            }
+          },
+        });
       },
     });
   };
 
   restoreData = (fileName: string) => {
-    this.backupService.restoreData(fileName).subscribe({
-      next: (res) => {
-        if (res.success) {
-          Utils.messageSuccess(this.messageService, res.message);
-          this.visible = false;
-        } else Utils.messageError(this.messageService, res.errors?.at(0) ?? '');
+    this.titleConfirm ="Xác nhận khôi phục dữ liệu"
+    this.confirmationService.confirm({
+      message: 'Bạn có chắc chắn khôi phục không ' + '?',
+      header: 'delete',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.backupService.restoreData(fileName).subscribe({
+          next: (res) => {
+            if (res.success) {
+              Utils.messageSuccess(this.messageService, res.message);
+              this.visible = false;
+            } else Utils.messageError(this.messageService, res.errors?.at(0) ?? '');
+          },
+        });
       },
     });
+    
   };
 
   openDialog = () => {
