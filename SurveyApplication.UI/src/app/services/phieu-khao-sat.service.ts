@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first } from 'rxjs';
 
@@ -46,17 +46,13 @@ export class PhieuKhaoSatService {
 
   getQuanHuyen() {
     return this.http
-      .get<HanhChinhVn[]>(
-        `${environment.apiUrl}/PhieuKhaoSat/GetQuanHuyen`
-      )
+      .get<HanhChinhVn[]>(`${environment.apiUrl}/PhieuKhaoSat/GetQuanHuyen`)
       .pipe(first());
   }
 
   getPhuongXa() {
     return this.http
-      .get<HanhChinhVn[]>(
-        `${environment.apiUrl}/PhieuKhaoSat/GetPhuongXa`
-      )
+      .get<HanhChinhVn[]>(`${environment.apiUrl}/PhieuKhaoSat/GetPhuongXa`)
       .pipe(first());
   }
 
@@ -86,5 +82,16 @@ export class PhieuKhaoSatService {
         `${environment.apiUrl}/PhieuKhaoSat/GetAllLinhVucHoatDong`
       )
       .pipe(first());
+  }
+
+  uploadFiles(files: File[]) {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('files', file);
+    });
+    return this.http.post<string[]>(
+      `${environment.apiUrl}/PhieuKhaoSat/UploadFiles`,
+      formData
+    );
   }
 }

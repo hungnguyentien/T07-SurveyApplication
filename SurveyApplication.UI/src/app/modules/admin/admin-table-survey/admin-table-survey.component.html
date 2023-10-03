@@ -262,7 +262,7 @@
                     <label for="ngayBatDau" class="col-form-label">Ngày bắt đầu: <span
                             style="color: red;">*</span></label>
                     <p-calendar formControlName="ngayBatDau" id="ngayBatDau" appendTo="body" dateFormat="dd/mm/yy"
-                        [showIcon]="true" class="input-date-custom" [minDate]="minDate"></p-calendar>
+                        [showIcon]="true" class="input-date-custom" [minDate]="checkDate()"></p-calendar>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayBatDau'].valid && 
                         formTableSurvey.controls['ngayBatDau'].dirty && !checkBtnDetail == true">

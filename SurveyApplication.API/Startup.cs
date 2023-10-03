@@ -52,7 +52,18 @@ public class Startup
 
         app.UseAuthentication();
 
-        app.UseSwagger();
+        app.UseSwagger(c =>
+        {
+            c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+            {
+                swaggerDoc.ExternalDocs = new OpenApiExternalDocs
+                {
+                    Description = "Survey Management Api",
+                    Url = new Uri($"{httpReq.Scheme}://{httpReq.Host.Value}")
+                };
+                //swaggerDoc.Servers = new List<OpenApiServer>() { new() { Url = "/api2" } };
+            });
+        });
 
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SurveyManagement.Api v1"));
 
@@ -118,6 +129,9 @@ public class Startup
                     Email = "toannck32@wrun.vn"
                 }
             });
+
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
     }
 

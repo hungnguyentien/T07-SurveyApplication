@@ -117,6 +117,7 @@ export interface FileQuestion {
   content: string;
   name: string;
   type: string;
+  path: string;
 }
 
 export interface DashBoard {
