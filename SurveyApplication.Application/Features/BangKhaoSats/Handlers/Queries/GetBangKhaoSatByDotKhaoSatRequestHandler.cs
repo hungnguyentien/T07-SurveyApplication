@@ -37,9 +37,7 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
 
                         //join s in _surveyRepo.GuiEmail.GetAllQueryable()
                         //on d.Id equals s.IdBangKhaoSat
-                        where (d.MaBangKhaoSat.Contains(request.Keyword) || d.TenBangKhaoSat.Contains(request.Keyword) ||
-                            b.TenDotKhaoSat.Contains(request.Keyword) || o.TenLoaiHinh.Contains(request.Keyword)) &&
-                            d.Deleted == false
+                        where b.MaDotKhaoSat.Contains(request.Keyword) && d.Deleted == false
                         select new BangKhaoSatDto
                         {
                             Id = d.Id,
