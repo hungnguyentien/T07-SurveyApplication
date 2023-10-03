@@ -319,14 +319,14 @@ export class AdminStatisticalComponent {
   };
 
   loadPeriodSurvey() {
-    this.periodSurveyService.getAll().subscribe((data) => {
+    this.periodSurveyService.getAll().subscribe((data:any) => {
       this.LstDotKhaoSat = data;
     });
   }
 
   loadTableSurvey() {
     const code = this.selectedDotKhaoSat;
-    this.tableSurveyService.getBangKhaoSatByDotKhaoSat(code ?? 0).subscribe((data) => {
+    this.periodSurveyService.getDotKhaoSatByDotKhaoSat(code).subscribe((data:any) => {
       this.LstBangKhaoSat = data.data;
     });
   }

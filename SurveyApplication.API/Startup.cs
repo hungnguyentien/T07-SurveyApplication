@@ -129,6 +129,9 @@ public class Startup
                     Email = "toannck32@wrun.vn"
                 }
             });
+
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
     }
 

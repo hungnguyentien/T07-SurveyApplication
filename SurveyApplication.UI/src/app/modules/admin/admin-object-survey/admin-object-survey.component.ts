@@ -345,7 +345,6 @@ export class AdminObjectSurveyComponent {
         donViDto: this.FormObjectSurvey.value,
         nguoiDaiDienDto: this.FormRepresentative.value,
       };
-      debugger;
       this.objectSurveyService.create(obj).subscribe({
         next: (res) => {
           if ('response_1' in res && 'response_2' in res) {
@@ -371,14 +370,15 @@ export class AdminObjectSurveyComponent {
               ];
 
               if (allErrors.length > 0) {
-                for (const error of allErrors) {
-                  Utils.messageError(this.messageService, error);
-                }
+                Utils.messageError(this.messageService, allErrors[0]);
               }
             }
           }
         },
       });
+    } else {
+      console.table(this.FormObjectSurvey.controls);
+      console.table(this.FormRepresentative.controls);
     }
   }
 

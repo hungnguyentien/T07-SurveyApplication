@@ -34,10 +34,3 @@
 .btn_delete > a > i {
   color: red;
 }
-
-.text-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 500px;
-}

@@ -19,6 +19,7 @@ using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Utility;
+using Vanara;
 
 namespace SurveyApplication.API.Controllers;
 
@@ -131,5 +132,30 @@ public class PhieuKhaoSatController : ControllerBase
     {
         var response = await _mediator.Send(new ScheduleUpdateStatusCommand());
         return Ok(response);
+    }
+
+    /// <summary>
+    /// Lấy chuỗi mã hóa gửi mail
+    /// </summary>
+    /// <param name="idGuiMail"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [ValidSecretKey]
+    [HttpGet("GetKeyGuiMail")]
+    public ActionResult GetKeyGuiMail(int idGuiMail)
+    {
+        var thongTinChung = new EmailThongTinChungDto
+        {
+            IdGuiEmail = idGuiMail
+        };
+        var result = $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
+        return Ok(result);
+    }
+
+    [HttpPost("UploadFiles")]
+    public ActionResult UploadFiles(List<IFormFile> files)
+    {
+        var result = new List<string>{"D:\\Stg"};
+        return Ok(result);
     }
 }

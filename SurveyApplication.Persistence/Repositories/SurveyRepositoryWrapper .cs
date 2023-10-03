@@ -86,6 +86,9 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IReleaseHistoryRepository _releaseHistoryRepository;
     public IReleaseHistoryRepository ReleaseHistory => _releaseHistoryRepository ??= new ReleaseHistoryRepository(_repoContext);
 
+    public IStgFileRepository _stgFileRepository;
+    public IStgFileRepository StgFile => _stgFileRepository ??= new StgFileRepository(_repoContext);
+
     #endregion
 
     //RenderHere
