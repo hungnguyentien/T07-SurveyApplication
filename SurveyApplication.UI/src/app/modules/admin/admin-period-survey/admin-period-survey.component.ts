@@ -51,6 +51,7 @@ export class AdminPeriodSurveyComponent {
   checkBtnDetail:boolean = false
   actionDetail!:any;
   minDate!:Date;
+  minDate2!:Date;
   
 
   modalTitle = '';
@@ -77,12 +78,18 @@ export class AdminPeriodSurveyComponent {
       },
       { validator: this.dateRangeValidator }
     );
-    this.minDate = new Date(1900, 0, 1);
+    this.minDate = new Date();
+    this.minDate2 = new Date(1900, 0, 1);
    
+  }
+  checkdate():Date{
+    let currentDate = new Date();
+    this.modalTitle  == 'Thêm mới đợt khảo sát'? currentDate =this.minDate:currentDate=this.minDate2
+    return currentDate
   }
   
   getDetailBangKhaoSat(data:number){
-    debugger
+  
     this.visibleDetail = !this.visibleDetail;
     this.PeriodSurveyService.getDotKhaoSatByDotKhaoSat(data).subscribe((res:any)=>{
       this.datasDetail = res;
@@ -193,7 +200,7 @@ export class AdminPeriodSurveyComponent {
     this.modalTitle  = 'Thêm mới đợt khảo sát';
     this.FormPeriodSurvey.enable();
     this.showadd = true//check save
-    this.visible = !this.visible;
+    this.visible = !this.visible ;
     this.FormPeriodSurvey.reset();
     debugger
     this.FormPeriodSurvey.get('MaDotKhaoSat')?.disable();
@@ -210,7 +217,7 @@ export class AdminPeriodSurveyComponent {
     this.FormPeriodSurvey.get("MaDotKhaoSat")?.disable();
     this.modalTitle = 'Cập nhật đợt khảo sát';
     this.checkBtnDetail = false; // check ẩn hiện button 
-    this.visible = !this.visible;
+    this.visible = !this.visible ;
     this.showadd = false//check save
     this.IdDotKhaoSat = data.id;
     this.MaDotKhaoSat = data.maDotKhaoSat;

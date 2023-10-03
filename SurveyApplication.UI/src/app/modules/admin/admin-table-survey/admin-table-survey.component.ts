@@ -105,6 +105,7 @@ export class AdminTableSurveyComponent {
 
   iPanelTitle!: number;
   minDate!:Date;
+  minDate2!:Date;
   reon!:boolean;
 
   constructor(
@@ -149,7 +150,13 @@ export class AdminTableSurveyComponent {
       },
       { validator: this.dateRangeValidator }
     );
-    this.minDate = new Date(1900, 0, 1);
+    this.minDate = new Date();
+    this.minDate2 = new Date(1900, 0, 1);
+  }
+  checkDate():Date{
+    let currentDate = new Date();
+    this.modalTitle  == 'Thêm mới bảng khảo sát'? currentDate =this.minDate:currentDate=this.minDate2
+    return currentDate
   }
 
   dateRangeValidator(
@@ -164,6 +171,7 @@ export class AdminTableSurveyComponent {
 
     return null;
   }
+  
 
   LoadUnitType() {
     this.unitTypeService.getAll().subscribe((data) => {
