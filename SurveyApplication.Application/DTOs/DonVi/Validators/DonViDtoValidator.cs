@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.DonVi.Validators
 {
@@ -17,8 +16,8 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
             RuleFor(p => p.MaDonVi)
                 .MustAsync(async (maDonVi, token) =>
                 {
-                    var DonViViExists = await _donViRepository.ExistsByMaDonVi(maDonVi);
-                    return !DonViViExists;
+                    var donViViExists = maDonVi != null && await _donViRepository.ExistsByMaDonVi(maDonVi);
+                    return !donViViExists;
                 }).WithMessage("Mã đơn vị đã tồn tại!");
 
             RuleFor(p => p.IdLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");

@@ -35,7 +35,7 @@
   <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
-      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"(ngModelChange)="onSubmitSearch()"
+      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord" (ngModelChange)="onSubmitSearch()"
         [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
@@ -208,8 +208,12 @@
             <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
             <input formControlName="Email" type="text" pInputText class="form-control" id="Email">
             <small style="color: #e24c4c;" class="ml-2"
-              *ngIf="!FormObjectSurvey.controls['Email'].valid && FormObjectSurvey.controls['Email'].dirty && !checkBtnDetail">
+              *ngIf="!FormObjectSurvey.controls['Email'].valid && FormObjectSurvey.controls['Email']?.errors?.['required'] && FormObjectSurvey.controls['Email'].dirty && !checkBtnDetail">
               Vui lòng nhập email
+            </small>
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['Email'].valid && FormObjectSurvey.controls['Email'].dirty &&
+               FormObjectSurvey.controls['Email']?.errors?.['email'] && !checkBtnDetail">
+               Email không đúng định dạng
             </small>
           </div>
           <div class="form-group col-md-6">
@@ -278,8 +282,14 @@
             <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
             <input formControlName="Email" type="text" pInputText class="form-control" id="Email">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormRepresentative.controls['Email'].valid && 
+            FormObjectSurvey.controls['Email']?.errors?.['required'] &&
               FormRepresentative.controls['Email'].dirty && !checkBtnDetail">
               Vui lòng nhập Email
+            </small>
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormRepresentative.controls['Email'].valid && 
+            FormObjectSurvey.controls['Email']?.errors?.['email'] &&
+              FormRepresentative.controls['Email'].dirty && !checkBtnDetail">
+              Email không đúng định dạng
             </small>
           </div>
           <div class="form-group col-md-6">
@@ -300,8 +310,8 @@
     </div>
     <p-footer>
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
-      <button pButton *ngIf="!checkBtnDetail" [disabled]="!FormObjectSurvey.valid && !FormRepresentative.valid" type="submit" icon="pi pi-save"
-        label="Lưu" class="custom-button"></button>
+      <button pButton *ngIf="!checkBtnDetail" [disabled]="!FormObjectSurvey.valid && !FormRepresentative.valid"
+        type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
     </p-footer>
   </p-dialog>
 </form>

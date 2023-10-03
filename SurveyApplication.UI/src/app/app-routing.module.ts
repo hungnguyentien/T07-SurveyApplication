@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'Login', pathMatch: 'full' },
+  { path: '', redirectTo: 'Login', pathMatch: 'full', title: 'Đăng nhập' },
   {
     path: '',
     data: {
@@ -18,7 +18,7 @@ const routes: Routes = [
       },
     ],
   },
-  
+
   {
     path: '**',
     redirectTo: 'Login',
