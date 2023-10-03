@@ -318,6 +318,11 @@
       }
     }
   }
+
+  &-description {
+    font-size: 12px;
+    font-style: italic;
+  }
 }
 
 .custom-complete b {
@@ -361,6 +366,6 @@ button {
   }
 }
 
-.p-dropdown-items{
+.p-dropdown-items {
   padding: 0;
 }

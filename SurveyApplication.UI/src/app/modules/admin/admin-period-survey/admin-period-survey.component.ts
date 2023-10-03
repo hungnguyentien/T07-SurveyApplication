@@ -89,10 +89,9 @@ export class AdminPeriodSurveyComponent {
   }
   
   getDetailBangKhaoSat(data:number){
-    debugger
     this.visibleDetail = !this.visibleDetail;
-    this.PeriodSurveyService.getDotKhaoSatByDotKhaoSat(data).subscribe((res:any)=>{
-      this.datasDetail = res;
+    this.PeriodSurveyService.getDotKhaoSatByDotKhaoSat(data).subscribe((res)=>{
+      this.datasDetail = res.data;
     })
   }
 

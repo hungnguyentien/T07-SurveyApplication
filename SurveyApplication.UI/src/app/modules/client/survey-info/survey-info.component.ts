@@ -108,7 +108,9 @@ export class SurveyInfoComponent {
         },
         `${this.generalInfo.data}`,
         surveyData,
-        trangThai
+        trangThai,
+        this.messageService,
+        this.phieuKhaoSatService
       );
     };
 

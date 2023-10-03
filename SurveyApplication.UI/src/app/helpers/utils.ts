@@ -16,8 +16,10 @@ import { themeJson } from './theme';
 import { environment } from '@environments/environment';
 import * as crypto from 'crypto-js';
 import * as moment from 'moment';
+import { PhieuKhaoSatService } from '@app/services';
 
 export default class Utils {
+  static messageService: MessageService;
   static translate = (
     lang: string,
     service: TranslateService,
@@ -127,9 +129,11 @@ export default class Utils {
     subscribe: Function | undefined,
     data: string = '',
     surveyData: string = '',
-    trangThai: number = 0
+    trangThai: number = 0,
+    messageService: MessageService | undefined = undefined,
+    phieuKhaoSatService: PhieuKhaoSatService | undefined = undefined
   ) => {
-    let status = 2;
+    let status = KqTrangThai.HoanThanh;
     const survey = new Model(configJson);
     surveyData && survey.setDataCore(JSON.parse(surveyData));
     // You can delete the line below if you do not use a customized theme
@@ -215,7 +219,7 @@ export default class Utils {
         visibleIndex: 49,
         action: () => {
           // Lưu tạm khảo sát
-          status = 0;
+          status = KqTrangThai.LuuNhap;
           survey.completeLastPage();
         },
         css: 'nav-button',
@@ -240,33 +244,56 @@ export default class Utils {
       options.callback('success');
     });
 
-    survey.onUploadFiles.add((survey, options) => {
-      let content = new Array();
-      options.files.forEach((file) => {
-        let fileReader = new FileReader();
-        fileReader.onload = function (e) {
-          content = content.concat([
-            {
-              name: file.name,
-              type: file.type,
-              content: fileReader.result,
-              file: file,
-            },
-          ]);
-          if (content.length === options.files.length) {
-            options.callback(
-              'success',
-              content.map(function (fileContent) {
-                return {
-                  file: fileContent.file,
-                  content: fileContent.content,
-                };
-              })
-            );
-          }
-        };
-        fileReader.readAsDataURL(file);
-      });
+    survey.onUploadFiles.add((survey, options: any) => {
+      const maxFile = options.question.jsonObj.maxFile;
+      if (options.question.prevPreviewLength >= maxFile) {
+        messageService &&
+          this.messageError(messageService, 'Số lượng tệp đã tối đa');
+        options.callback('error');
+        // options.files.clear();
+      } else if (options.files.length > maxFile) {
+        messageService &&
+          this.messageError(
+            messageService,
+            'Bạn đã chọn quá số lượng tệp cho phép vui lòng chọn lại'
+          );
+        options.callback('error');
+        // options.files.clear();
+      } else {
+        let content = new Array();
+        phieuKhaoSatService?.uploadFiles(options.files).subscribe({
+          next: (res) => {
+            options.files.forEach((file: any) => {
+              let fileReader = new FileReader();
+              fileReader.onload = function (e) {
+                // debugger
+                content = content.concat([
+                  {
+                    name: file.name,
+                    type: file.type,
+                    content: fileReader.result,
+                    path: '',
+                    file: file,
+                  } as FileQuestion,
+                ]);
+                if (content.length === options.files.length) {
+                  options.callback(
+                    'success',
+                    content.map(function (fileContent) {
+                      return {
+                        file: fileContent.file,
+                        // content: fileContent.content,
+                        path: fileContent.path,
+                      };
+                    })
+                  );
+                }
+              };
+              fileReader.readAsDataURL(file);
+            });
+          },
+        });
+      }
     });
 
     survey.onComplete.add((sender, options) => {
@@ -321,7 +348,7 @@ export default class Utils {
     let requiredErrorText = isRequired
       ? 'Vui lòng nhập câu trả lời của bạn!'
       : '';
-    let description = el.noidung;
+    let description = el.noidung?.replace(/<\/?[^>]+(>|$)/g, ''); //Remove html tag from string
     let choicesRadio = new Array();
     el.lstCot.forEach((el, i) => {
       choicesRadio.push({
@@ -484,8 +511,8 @@ export default class Utils {
         description: description,
         storeDataAsText: false,
         allowMultiple: true,
-        maxSize: maxSize * 1024,
-        maxFile: 1,
+        maxSize: maxSize * 1024 * 1024,
+        maxFile: el.soLuongFileToiDa,
         showCommentArea: true,
         commentText: 'Ghi chú',
         readOnly: readOnly,

@@ -22,6 +22,7 @@ export interface CauHoiConfig {
   lstCot: Cot[];
   lstHang: Hang[];
   noidung: string;
+  soLuongFileToiDa: number;
 }
 
 export interface SurveyConfig {

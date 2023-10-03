@@ -211,7 +211,7 @@
             <label for="kichThuocFile" class="col-form-label">Kích thước file (Tối đa)</label>
             <div>
               <p-inputNumber class="w-100" styleClass="w-100" inputStyleClass="form-control" [allowEmpty]="false"
-                formControlName="kichThuocFile" [min]="10" [max]="100" suffix=" KB" [ngClass]="{
+                formControlName="kichThuocFile" [min]="10" [max]="100" suffix=" MB" [ngClass]="{
                 'is-invalid':
                   cauHoiForm.submitted && f('kichThuocFile').errors
               }" id="kichThuocFile" placeholder="Số lượng file">
