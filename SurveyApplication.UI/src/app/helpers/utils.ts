@@ -282,7 +282,7 @@ export default class Utils {
                     content.map(function (fileContent) {
                       return {
                         file: fileContent.file,
-                        // content: fileContent.content,
+                        content: fileContent.content,
                         path: fileContent.path,
                       };
                     })
