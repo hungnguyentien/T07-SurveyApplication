@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using SurveyApplication.Domain.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using SurveyApplication.Utility.Constants;
 
 namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
 {
@@ -52,8 +53,9 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 foreach (var roleName in request.Register.LstRoleName ?? new List<string>())
                     await _userManager.AddToRoleAsync(user, roleName);
 
-                if (request.Register.MatrixPermission == null) return new BaseCommandResponse("Tạo mới tài khoản thành công!");
-                foreach (var claimModule in request.Register.MatrixPermission)
+                if (request.Register.MatrixPermissionRole == null) return new BaseCommandResponse("Tạo quyền thất bại!");
+
+                foreach (var claimModule in request.Register.MatrixPermissionRole)
                 {
                     await _userManager.AddClaimAsync(user,
                         new Claim(claimModule.Module.ToString(),
@@ -61,7 +63,12 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                             JsonClaimValueTypes.JsonArray));
                 }
 
-                return new BaseCommandResponse("Tạo mới thành công!");
+                //foreach (var claimUser in request.Register.MatrixPermissionUser)
+                //{
+                //    await _userManager.AddClaimAsync(claimUser, new Claim(claimUser.Module.ToString(), JsonExtensions.SerializeToJson(claimUser.LstPermission.Select(x => x.Value)), JsonClaimValueTypes.JsonArray));
+                //}
+
+                return new BaseCommandResponse("Tạo tài khoản thành công!");
             }
 
             throw new Exception($"{result.Errors}");

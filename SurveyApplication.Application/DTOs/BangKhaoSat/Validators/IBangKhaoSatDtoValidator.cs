@@ -27,7 +27,7 @@ public class IBangKhaoSatDtoValidator : AbstractValidator<IBangKhaoSatDto>
             {
                 var nameExists = await _bangKhaoSatRepository.Exists(x => x.TenBangKhaoSat == model.TenBangKhaoSat && x.MaBangKhaoSat != model.MaBangKhaoSat);
                 return !nameExists;
-            }).WithMessage("Tên lĩnh vực đã tồn tại!");
+            }).WithMessage("Tên bảng khảo sát đã tồn tại!");
 
         RuleFor(p => p.NgayBatDau)
             .NotEmpty().WithMessage("{PropertyName} is required.")
