@@ -82,6 +82,7 @@ export class AdminPeriodSurveyComponent {
   }
   
   getDetailBangKhaoSat(data:number){
+    debugger
     this.visibleDetail = !this.visibleDetail;
     this.PeriodSurveyService.getDotKhaoSatByDotKhaoSat(data).subscribe((res:any)=>{
       this.datasDetail = res.data;
@@ -112,7 +113,6 @@ export class AdminPeriodSurveyComponent {
     if (startDate && endDate && startDate > endDate) {
       return { dateRangeError: true };
     }
-
     return null;
   }
 
@@ -194,7 +194,6 @@ export class AdminPeriodSurveyComponent {
     this.showadd = true//check save
     this.visible = !this.visible;
     this.FormPeriodSurvey.reset();
-    debugger
     this.FormPeriodSurvey.get('MaDotKhaoSat')?.disable();
     this.PeriodSurveyService.generateMaDotKhaoSat().subscribe({
       next: (res: any) => {
@@ -244,6 +243,7 @@ export class AdminPeriodSurveyComponent {
   SaveAdd() {
     if (this.FormPeriodSurvey.valid) {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
+      ObjPeriodSurvey['MaDotKhaoSat'] = this.MaDotKhaoSat;
       ObjPeriodSurvey.NgayBatDau = Utils.plusDate(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY');
       ObjPeriodSurvey.NgayKetThuc = Utils.plusDate(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY');
       this.PeriodSurveyService.create(ObjPeriodSurvey).subscribe({

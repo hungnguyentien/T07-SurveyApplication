@@ -217,7 +217,7 @@
                     <!-- <input type="date" formControlName="NgayKetThuc" class="form-control" id="recipient-name"
                         placeholder="Ngày kết thúc"> -->
                     <p-calendar formControlName="NgayKetThuc" id="NgayKetThuc" appendTo="body" 
-                         dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"  [minDate]="FormPeriodSurvey.get('NgayBatDau')?.value" ></p-calendar>
+                         dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"  [minDate]="FormPeriodSurvey.get('NgayKetThuc')?.value" ></p-calendar>
                     <small style="color: #e24c4c;" class="ml-2"
                         *ngIf="!FormPeriodSurvey.get('NgayKetThuc')?.valid && FormPeriodSurvey.get('NgayKetThuc')?.dirty &&!checkBtnDetail == true">
                         Vui lòng nhập Ngày kết thúc

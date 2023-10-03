@@ -13,13 +13,18 @@
                   </div>
                   <form class="user" (ngSubmit)="login()">
                     <div class="form-group">
-                      <input type="text" [(ngModel)]="model.UserName" name="userName"
+                      <!-- <input type="text" [(ngModel)]="model.UserName" name="userName"
                         class="form-control form-control-user" id="userName" aria-describedby="emailHelp"
-                        placeholder="Nhập tên đăng nhập...">
+                        placeholder="Nhập tên đăng nhập..."> -->
+                        <input type="text" pInputText class="form-control" id="email" [(ngModel)]="model.UserName"name="userName"id="userName"
+                        placeholder="Nhập tên đăng nhập..."
+                        />
                     </div>
                     <div class="form-group">
-                      <input type="password" [(ngModel)]="model.Password" name="password"
-                        class="form-control form-control-user" id="password" placeholder="Nhập mật khẩu">
+                      <!-- <input type="password" [(ngModel)]="model.Password" name="password"
+                        class="form-control form-control-user" id="password" placeholder="Nhập mật khẩu"> -->
+                        <p-password id="password" [(ngModel)]="model.Password" name="password" placeholder="Nhập mật khẩu"
+                         [toggleMask]="true" [feedback]="false"></p-password>
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
