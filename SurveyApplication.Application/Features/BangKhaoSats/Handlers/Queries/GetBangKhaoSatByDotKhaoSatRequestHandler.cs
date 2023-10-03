@@ -26,18 +26,14 @@ namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Queries
         public async Task<BaseQuerieResponse<BangKhaoSatDto>> Handle(GetBangKhaoSatByDotKhaoSatRequest request,
             CancellationToken cancellationToken)
         {
-            //var bangKhaoSats = request.Id == null || request.Id < 1 ? await _surveyRepo.BangKhaoSat.GetAllListAsync() : await _surveyRepo.BangKhaoSat.GetAllListAsync(x => x.IdDotKhaoSat == request.Id);
-            //return _mapper.Map<BaseQuerieResponse<BangKhaoSatDto>>(bangKhaoSats);
-
+            int.TryParse(request.Keyword, out var keywordAsInt);
             var query = from d in _surveyRepo.BangKhaoSat.GetAllQueryable()
                         join b in _surveyRepo.DotKhaoSat.GetAllQueryable()
                             on d.IdDotKhaoSat equals b.Id
                         join o in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
                             on d.IdLoaiHinh equals o.Id
 
-                        //join s in _surveyRepo.GuiEmail.GetAllQueryable()
-                        //on d.Id equals s.IdBangKhaoSat
-                        where b.MaDotKhaoSat.Contains(request.Keyword) && d.Deleted == false
+                        where (d.IdDotKhaoSat.Equals(keywordAsInt) || request.Keyword == "") && d.Deleted == false
                         select new BangKhaoSatDto
                         {
                             Id = d.Id,
