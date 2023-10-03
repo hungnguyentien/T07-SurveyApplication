@@ -14,7 +14,7 @@ import {
   Role,
 } from '@app/models';
 import { RoleService } from '@app/services';
-import { MessageService, TreeNode } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 @Component({
@@ -34,8 +34,10 @@ export class AdminRoleComponent {
   frmRole!: FormGroup;
   role!: CreateUpdateRole;
   isCreate?: boolean;
+  checkBtnDetail?:boolean;
   visible: boolean = false;
   submitted: boolean = false;
+  modaltitle:string='';
 
   treeData: TreeNode[] = [];
   selectedTreeData!: TreeNode<any> | TreeNode<any>[] | null;
@@ -43,7 +45,8 @@ export class AdminRoleComponent {
   constructor(
     private roleService: RoleService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit() {
@@ -109,11 +112,12 @@ export class AdminRoleComponent {
   };
 
   onSubmit = (data: any) => {
-    if (this.isCreate !== null) this.createSubmit(data);
-    // this.isCreate ? this.createSubmit(data) : this.updateSubmit(data);
+    if (this.isCreate == true) this.createSubmit(data);
+    this.isCreate ? this.createSubmit(data) : this.updateSubmit(data);
   };
 
   createSubmit = (data: any) => {
+   debugger
     this.submitted = true;
     if (this.frmRole.invalid) return;
     this.role = data.value;
@@ -151,7 +155,10 @@ export class AdminRoleComponent {
   };
 
   createDialog = () => {
+    
     this.isCreate = true;
+    this.checkBtnDetail = false;
+    this.modaltitle='Thêm mới nhóm quyền'
     this.visible = true;
     this.submitted = false;
     this.createForm();
@@ -180,7 +187,10 @@ export class AdminRoleComponent {
   };
 
   detailDialog = (id: string) => {
-    this.isCreate = false;
+  
+    this.checkBtnDetail = true;
+    this.isCreate = !this.isCreate;
+    this.modaltitle='Chi tiết nhóm quyền'
     this.visible = true;
     this.submitted = false;
     this.createForm();
@@ -209,6 +219,7 @@ export class AdminRoleComponent {
             });
           });
         });
+       
       },
     });
     this.roleService.getMatrixPermission().subscribe({
@@ -237,5 +248,173 @@ export class AdminRoleComponent {
     });
   };
 
-  confirmDeleteMultiple = () => {};
+ 
+  editDialog(id: string) {
+    this.checkBtnDetail = false;
+    this.isCreate = false;
+    this.modaltitle = 'Cập nhật nhóm quyền';
+    this.visible = true;
+    this.submitted = false;
+    this.createForm();
+    // Lấy thông tin vai trò dựa trên 'id'.
+    this.roleService.getPermissionById(id).subscribe({
+      next: (res) => {
+        let k = Object.keys(res);
+        let v = Object.values(res);
+        Utils.setValueForm(this.frmRole, k, v);
+        let selectedTreeData = this.selectedTreeData as TreeNode[];
+        selectedTreeData.length = 0; // Xóa tất cả dữ liệu cũ trước khi thêm dữ liệu mới.
+        res.matrixPermission.forEach((el) => {
+          let data: TreeNode = {
+            key: `${el.module.toString()}_${el.nameModule}`,
+            label: el.nameModule,
+            data: el.module,
+            children: el.lstPermission.map((x) => ({
+              key: `${el.module.toString()}_${el.nameModule}_${x.value.toString()}_${x.name}`,
+              label: x.name,
+              data: x.value,
+              parent: {} as TreeNode, 
+              selectable: true, // Cho phép tích sửa tại đây
+            })),
+            selectable: true, // Cho phép tích sửa tại đây
+          };
+          selectedTreeData.push(data);
+        });
+      },
+      error: (error: any) => {      
+        Utils.messageError(this.messageService, 'Có lỗi xảy ra khi lấy thông tin vai trò.');
+      },
+    });
+    this.roleService.getMatrixPermission().subscribe({
+      next: (res) => {
+        res.forEach((el) => {
+          let data: TreeNode = {
+            key: `${el.module.toString()}_${el.nameModule}`,
+            label: el.nameModule,
+            data: el.module,
+            children: el.lstPermission.map((x) => ({
+              key: `${el.module.toString()}_${el.nameModule}_${x.value.toString()}_${x.name}`,
+              label: x.name,
+              data: x.value,
+              parent: {} as TreeNode, // Set parent as an empty TreeNode
+              selectable: true, // Cho phép tích sửa tại đây
+            })),
+            selectable: true, // Cho phép tích sửa tại đây
+          };
+          this.treeData.push(data);
+        });
+      },
+    });
+  }
+
+  
+  updateSubmit = (data: any) => {
+    debugger
+    this.submitted = true;
+    if (this.frmRole.invalid) return;
+    this.role = data.value;
+    let lstModule: MatrixPermission[] = [];
+    let selectedTree = this.selectedTreeData as any[];
+    
+    // Tạo một hàm đệ quy để lấy cả mục con
+    const collectPermissions = (parentKey: string): LstPermission[] => {
+      return selectedTree
+        .filter((x) => x.key.startsWith(parentKey)) // Lọc theo tiền tố key
+        .map((p) => ({
+          name: p.label,
+          value: p.data,
+        }) as LstPermission)
+        .concat(
+          selectedTree
+            .filter((x) => x.parent && x.parent.key === parentKey)
+            .map((el) => collectPermissions(el.key))
+            .reduce((acc, curr) => acc.concat(curr), [])
+        );
+    };
+  
+    selectedTree
+      .filter((x) => !x.parent)
+      .forEach((el) => {
+        lstModule.push({
+          module: el.data,
+          nameModule: el.label,
+          lstPermission: collectPermissions(el.key), // Gọi hàm đệ quy để lấy cả mục con
+        } as MatrixPermission);
+      });
+  
+    this.role.matrixPermission = lstModule;
+  
+    this.roleService.update<CreateUpdateRole>(this.role).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.table.reset();
+          Utils.messageSuccess(this.messageService, res.message);
+          this.visible = false;
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
+      },
+    });
+  };
+  
+  
+  
+  Delete(data:any){
+    this.confirmationService.confirm({
+      message: 'Bạn có chắc chắn muốn xoá không ' + '?',
+      header: 'delete',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.roleService.delete(data.id).subscribe((res: any) => {
+          if (res.success == true){
+            Utils.messageSuccess(this.messageService, res.message);
+            this.table.reset();
+            this.frmRole.reset();
+          }
+          else{
+            Utils.messageError(this.messageService, res.message);
+            this.table.reset();
+            this.frmRole.reset();
+          }
+        });
+      },
+    });
+  }
+
+  confirmDeleteMultiple() {
+    let ids: string[] = [];
+    this.selectedRole.forEach((el) => {
+      ids.push(el.id);
+    });
+
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} đợt khảo sát này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.roleService.deletePermissionMultiple(ids).subscribe({
+          next: (res: any) => {
+            if (res.success == false) {
+              Utils.messageError(this.messageService, res.message);
+            } else {
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} đợt khảo sát thành công!`
+              );
+              this.selectedRole=[];
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
+      },
+      reject: () => {},
+    });
+  };
+
+  
+  
+  
+
 }
