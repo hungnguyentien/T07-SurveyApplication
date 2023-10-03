@@ -117,46 +117,29 @@ export class AdminRoleComponent {
   };
 
   createSubmit = (data: any) => {
+    debugger;
     this.submitted = true;
     if (this.frmRole.invalid) return;
     this.role = data.value;
     let lstModule: MatrixPermission[] = [];
     let selectedTree = this.selectedTreeData as any[];
-    // Tạo một đối tượng tạm thời để lưu trữ các mục cha và các mục con tương ứng
-    const tempData: { [key: string]: any } = {};
-    // Bước 1: Xử lý và gom các mục con vào các mục cha tương ứng
-    selectedTree.forEach((item) => {
-      if (!item.parent) {
-        // Nếu không có parent, thì đây là mục cha
-        tempData[item.key] = {
-          module: item.data,
-          nameModule: item.label,
-          lstPermission: [],
-        };
-      } else {
-        // Nếu có parent, thì đây là mục con
-        const parentKey = item.parent.key;
-        if (!tempData[parentKey]) {
-          // Nếu chưa có đối tượng cho mục cha, tạo một đối tượng tạm thời cho nó
-          tempData[parentKey] = {
-            module: item.parent.data,
-            nameModule: item.parent.label,
-            lstPermission: [],
-          };
-        }
-        // Thêm mục con vào mục cha tương ứng
-        tempData[parentKey].lstPermission.push({
-          name: item.label,
-          value: item.data,
-        });
-      }
+    selectedTree
+    .filter((x) => !x.parent)
+    .forEach((el) => {
+      lstModule.push({
+        module: el.data,
+        nameModule: el.label,
+        lstPermission: selectedTree
+          .filter((x) => x.parent && x.parent === el.key)
+          .map(
+            (p) =>
+              Object({
+                name: p.label,
+                value: p.data,
+              }) as LstPermission
+          ),
+      } as MatrixPermission);
     });
-    // Bước 2: Chuyển các đối tượng từ tempData thành mảng lstModule
-    for (const key in tempData) {
-      if (tempData.hasOwnProperty(key)) {
-        lstModule.push(tempData[key]);
-      }
-    }
     this.role.matrixPermission = lstModule;
     this.roleService.create<CreateUpdateRole>(this.role).subscribe({
       next: (res) => {
@@ -170,6 +153,7 @@ export class AdminRoleComponent {
       },
     });
   };
+  
 
 
   createDialog = () => {
@@ -321,46 +305,29 @@ export class AdminRoleComponent {
 
 
   updateSubmit = (data: any) => {
+    debugger
     this.submitted = true;
     if (this.frmRole.invalid) return;
     this.role = data.value;
     let lstModule: MatrixPermission[] = [];
     let selectedTree = this.selectedTreeData as any[];
-    // Tạo một đối tượng tạm thời để lưu trữ các mục cha và các mục con tương ứng
-    const tempData: { [key: string]: any } = {};
-    // Bước 1: Xử lý và gom các mục con vào các mục cha tương ứng
-    selectedTree.forEach((item) => {
-      if (!item.parent) {
-        // Nếu không có parent, thì đây là mục cha
-        tempData[item.key] = {
-          module: item.data,
-          nameModule: item.label,
-          lstPermission: [],
-        };
-      } else {
-        // Nếu có parent, thì đây là mục con
-        const parentKey = item.parent.key;
-        if (!tempData[parentKey]) {
-          // Nếu chưa có đối tượng cho mục cha, tạo một đối tượng tạm thời cho nó
-          tempData[parentKey] = {
-            module: item.parent.data,
-            nameModule: item.parent.label,
-            lstPermission: [],
-          };
-        }
-        // Thêm mục con vào mục cha tương ứng
-        tempData[parentKey].lstPermission.push({
-          name: item.label,
-          value: item.data,
-        });
-      }
+    selectedTree
+    .filter((x) => !x.parent)
+    .forEach((el) => {
+      lstModule.push({
+        module: el.data,
+        nameModule: el.label,
+        lstPermission: selectedTree
+          .filter((x) => x.parent && x.parent === el.key)
+          .map(
+            (p) =>
+              Object({
+                name: p.label,
+                value: p.data,
+              }) as LstPermission
+          ),
+      } as MatrixPermission);
     });
-    // Bước 2: Chuyển các đối tượng từ tempData thành mảng lstModule
-    for (const key in tempData) {
-      if (tempData.hasOwnProperty(key)) {
-        lstModule.push(tempData[key]);
-      }
-    }
     this.role.matrixPermission = lstModule;
     this.roleService.update<CreateUpdateRole>(this.role).subscribe({
       next: (res) => {
