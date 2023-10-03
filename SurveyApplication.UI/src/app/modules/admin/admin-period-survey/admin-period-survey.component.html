@@ -247,11 +247,8 @@
     <ng-template pTemplate="body">
         <p-table ngClass="cust-tbl" [value]="datasDetail" [lazy]="true" 
         [scrollable]="true" scrollHeight="calc(100vh - 396px)" dataKey="id"
-        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
-        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
-        [totalRecords]="dataTotalRecords" [resizableColumns]="true"
-        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
-        >
+        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true"
+        [showCurrentPageReport]="true">
         <ng-template pTemplate="header">
             <tr>
                 
