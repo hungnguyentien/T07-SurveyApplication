@@ -24,7 +24,7 @@ export class PeriodSurveyService extends BaseService<PeriodSurvey> {
   getDotKhaoSatByDotKhaoSat(id: number) {
     return this.http
       .get<PeriodSurvey[]>(
-        `${environment.apiUrl}/BangKhaoSat/GetByDotKhaoSat?id=${id}`
+        `${environment.apiUrl}/BangKhaoSat/GetByDotKhaoSat?Keyword=${id}`
       )
       .pipe(first());
   }
