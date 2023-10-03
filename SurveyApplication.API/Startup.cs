@@ -61,6 +61,7 @@ public class Startup
                     Description = "Survey Management Api",
                     Url = new Uri($"{httpReq.Scheme}://{httpReq.Host.Value}")
                 };
+                //swaggerDoc.Servers = new List<OpenApiServer>() { new() { Url = "/api2" } };
             });
         });
 
