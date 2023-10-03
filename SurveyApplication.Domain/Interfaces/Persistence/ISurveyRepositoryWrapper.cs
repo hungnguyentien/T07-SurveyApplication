@@ -23,6 +23,7 @@
         IRoleRepository Role { get; }
         IModuleRepository Module { get; }
         IReleaseHistoryRepository ReleaseHistory { get; }
+        IStgFileRepository StgFile { get; }
 
         //RenderHere
         Task SaveAync();
