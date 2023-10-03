@@ -1,3 +1,17 @@
+<p-confirmDialog #cd [style]="{ width: '30vw' }">
+    <ng-template pTemplate="header">
+        <h4 >{{titleConfirm}}</h4>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" class="custom-small-button surface-600" label="Đóng"
+            (click)="cd.reject()">
+        </button>
+        <button type="button" pButton  icon="pi pi-save" class="custom-small-button"
+            label="Lưu" (click)="cd.accept()">
+        </button>
+    </ng-template>
+</p-confirmDialog>
+
 <div>
     <h5>Quản lý sao lưu phục hồi</h5>
     <div class="d-flex mt-3">

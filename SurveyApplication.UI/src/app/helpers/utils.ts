@@ -138,11 +138,12 @@ export default class Utils {
     // Set label for btn Complete
     survey.completeText = 'Gửi thông tin';
     survey.onErrorCustomText.add((sender, options) => {
-      if (options.name === 'exceedsize')
+      if (options.name === 'exceedsize') {
         options.text = options.text.replaceAll(
           'The file size should not exceed',
           'Kích thước tệp không được vượt quá'
         );
+      }
     });
 
     survey.onAfterRenderSurvey.add((sender, options) => {
@@ -483,7 +484,7 @@ export default class Utils {
         description: description,
         storeDataAsText: false,
         allowMultiple: true,
-        maxSize: maxSize,
+        maxSize: maxSize * 1024,
         maxFile: 1,
         showCommentArea: true,
         commentText: 'Ghi chú',

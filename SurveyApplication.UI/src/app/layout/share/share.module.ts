@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { HighlightDirective } from './highlight.directive';
 import { HighlightGuiEmailDirective } from './highlight-gui-email.directive';
+import { PasswordModule } from 'primeng/password';
 @NgModule({
   declarations: [LoginComponent, HighlightDirective, HighlightGuiEmailDirective],
   imports: [
@@ -16,6 +17,7 @@ import { HighlightGuiEmailDirective } from './highlight-gui-email.directive';
     HttpClientModule,
     ReactiveFormsModule,
     ToastModule,
+    PasswordModule
   ],
   exports: [HighlightDirective, HighlightGuiEmailDirective],
 })

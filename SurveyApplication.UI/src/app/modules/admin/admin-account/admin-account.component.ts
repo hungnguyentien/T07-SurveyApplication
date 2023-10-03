@@ -43,7 +43,7 @@ export class AdminAccountComponent {
     private roleService: RoleService,
     private accountService: AccountService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.frmAccount = this.formBuilder.group(
@@ -128,9 +128,22 @@ export class AdminAccountComponent {
 
   onSubmit = (data: any) => {
     if (this.isCreate !== null) this.createSubmit(data);
-    // this.isCreate ? this.createSubmit(data) : this.updateSubmit(data);
+    this.isCreate ? this.createSubmit(data) : this.updateSubmit(data);
   };
+  updateDialog(data:any){
+    debugger
+    this.isCreate = false;
+    this.visible = true;
+    this.frmAccount.controls['userName'].setValue(data.userName);
+    this.frmAccount.controls['email'].setValue(data.email);
+    this.frmAccount.controls['password'].setValue(data.password);
+    this.frmAccount.controls['name'].setValue(data.name);
+    this.frmAccount.controls['address'].setValue(data.address);
+  }
 
+  updateSubmit =(data:any)=>{
+
+  }
   createSubmit = (data: any) => {
     this.submitted = true;
     if (this.frmAccount.invalid) return;
@@ -156,5 +169,5 @@ export class AdminAccountComponent {
     this.submitted = false;
   };
 
-  confirmDeleteMultiple = () => {};
+  confirmDeleteMultiple = () => { };
 }
