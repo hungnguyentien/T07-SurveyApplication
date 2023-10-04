@@ -19,6 +19,8 @@ namespace SurveyApplication.Domain
 
         public int FileType { get; set; } // // Avatar, văn bản, âm thanh, hình ảnh, video,...
 
+        public string ContentType { get; set; }
+
         public decimal Size { get; set; }
 
         public int Status { get; set; } = (int)EnumCommon.ActiveFlag.Active;
