@@ -318,6 +318,11 @@
       }
     }
   }
+
+  &-description {
+    font-size: 12px;
+    font-style: italic;
+  }
 }
 
 .custom-complete b {
@@ -327,9 +332,13 @@
 .input-date-custom {
   button {
     &[type="button"] {
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
-      background-color: #4e73df;
+      &.p-datepicker-trigger {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        background-color: #4e73df;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     }
   }
 }
@@ -355,4 +364,8 @@ button {
   &.p-paginator-element {
     border-radius: 50%;
   }
+}
+
+.p-dropdown-items {
+  padding: 0;
 }

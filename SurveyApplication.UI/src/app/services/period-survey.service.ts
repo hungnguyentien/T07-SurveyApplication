@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { PeriodSurvey } from '@app/models';
+import { BaseQuerieResponse, PeriodSurvey, TableSurvey } from '@app/models';
 import { BaseService } from './base.service';
 import { first } from 'rxjs';
 
@@ -23,8 +23,8 @@ export class PeriodSurveyService extends BaseService<PeriodSurvey> {
 
   getDotKhaoSatByDotKhaoSat(id: number) {
     return this.http
-      .get<PeriodSurvey[]>(
-        `${environment.apiUrl}/BangKhaoSat/GetByDotKhaoSat?id=${id}`
+      .get<BaseQuerieResponse<TableSurvey>>(
+        `${environment.apiUrl}/BangKhaoSat/GetByDotKhaoSat?Keyword=${id}`
       )
       .pipe(first());
   }

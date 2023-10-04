@@ -42,7 +42,9 @@ public class GetConfigCauHoiRequestHandler : BaseMasterFeatures,
                         LabelCauTraLoi = b.LabelCauTraLoi,
                         LoaiCauHoi = b.LoaiCauHoi,
                         MaCauHoi = b.MaCauHoi,
-                        TieuDe = b.TieuDe
+                        TieuDe = b.TieuDe,
+                        Noidung = b.NoiDung,
+                        SoLuongFileToiDa = b.SoLuongFileToiDa
                     };
         var lstCauHoi = await query.ToListAsync(cancellationToken);
         var lstId = lstCauHoi.Select(x => x.Id ?? 0).ToList();
