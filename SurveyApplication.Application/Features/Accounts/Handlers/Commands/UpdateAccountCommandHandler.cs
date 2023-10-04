@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SurveyApplication.Application.DTOs.Account.Validators;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.Accounts.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
+using SurveyApplication.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,11 +20,13 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
     public class UpdateAccountCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateAccountCommand, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UpdateAccountCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        public UpdateAccountCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, UserManager<ApplicationUser> userManager) : base(
             surveyRepository)
         {
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         public async Task<BaseCommandResponse> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
@@ -58,6 +64,27 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             account.NormalizedEmail = request.AccountDto.Email.ToUpper();
             account.Address = request.AccountDto.Address;
             await _surveyRepo.Account.UpdateAsync(account);
+
+            //var role = await _roleManager.FindByIdAsync(request.UpdateRoleDto.Id);
+
+            if (account != null)
+            {
+                // Lấy danh sách quyền cũ của vai trò
+                var existingClaims = await _userManager.GetClaimsAsync(account);
+
+                // Xóa tất cả các quyền cũ
+                foreach (var claim in existingClaims)
+                {
+                    await _userManager.RemoveClaimAsync(account, claim);
+                }
+
+                // Thêm các quyền mới
+                foreach (var claimModule in request.AccountDto.MatrixPermission)
+                {
+                    await _userManager.AddClaimAsync(account, new Claim(claimModule.Module.ToString(), JsonExtensions.SerializeToJson(claimModule.LstPermission.Select(x => x.Value)), JsonClaimValueTypes.JsonArray));
+                }
+            }
+
             await _surveyRepo.SaveAync();
 
             return new BaseCommandResponse("Sửa thành công!");
