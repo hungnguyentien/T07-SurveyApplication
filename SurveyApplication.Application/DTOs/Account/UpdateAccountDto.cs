@@ -13,3 +13,4 @@ namespace SurveyApplication.Application.DTOs.Account
         public List<string>? LstRoleName { get; set; }
     }
 }
+
