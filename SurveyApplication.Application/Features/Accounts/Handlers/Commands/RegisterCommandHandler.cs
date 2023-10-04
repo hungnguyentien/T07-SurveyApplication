@@ -53,20 +53,13 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 foreach (var roleName in request.Register.LstRoleName ?? new List<string>())
                     await _userManager.AddToRoleAsync(user, roleName);
 
-                if (request.Register.MatrixPermissionRole == null) return new BaseCommandResponse("Tạo quyền thất bại!");
-
-                foreach (var claimModule in request.Register.MatrixPermissionRole)
+                foreach (var claimModule in request.Register.MatrixPermission)
                 {
                     await _userManager.AddClaimAsync(user,
                         new Claim(claimModule.Module.ToString(),
                             JsonExtensions.SerializeToJson(claimModule.LstPermission.Select(x => x.Value)),
                             JsonClaimValueTypes.JsonArray));
                 }
-
-                //foreach (var claimUser in request.Register.MatrixPermissionUser)
-                //{
-                //    await _userManager.AddClaimAsync(claimUser, new Claim(claimUser.Module.ToString(), JsonExtensions.SerializeToJson(claimUser.LstPermission.Select(x => x.Value)), JsonClaimValueTypes.JsonArray));
-                //}
 
                 return new BaseCommandResponse("Tạo tài khoản thành công!");
             }
