@@ -20,7 +20,7 @@ public class DonVi : BaseDomainEntity
     [Required]
     public string TenDonVi { get; set; }
 
-    [Required] public string DiaChi { get; set; }
+    public string? DiaChi { get; set; }
 
     public string? MaSoThue { get; set; }
 
