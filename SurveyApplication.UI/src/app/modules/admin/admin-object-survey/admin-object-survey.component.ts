@@ -93,9 +93,9 @@ export class AdminObjectSurveyComponent {
       IdTinhTp: new FormControl('', Validators.required),
       IdQuanHuyen: new FormControl('', Validators.required),
       IdXaPhuong: new FormControl('', Validators.required),
-      CodeTinhTp: new FormControl(''),
-      CodeQuanHuyen: new FormControl(''),
-      CodeXaPhuong: new FormControl(''),
+      CodeTinhTp: new FormControl('', Validators.required),
+      CodeQuanHuyen: new FormControl('', Validators.required),
+      CodeXaPhuong: new FormControl('', Validators.required),
     });
 
     this.FormRepresentative = new FormGroup({
