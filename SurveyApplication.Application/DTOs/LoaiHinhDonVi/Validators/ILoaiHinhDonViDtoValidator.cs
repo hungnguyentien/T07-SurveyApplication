@@ -20,9 +20,5 @@ public class ILoaiHinhDonViDtoValidator : AbstractValidator<ILoaiHinhDonViDto>
                     var nameExists = await _LoaiHinhDonViRepository.Exists(x => x.TenLoaiHinh == model.TenLoaiHinh && x.MaLoaiHinh != model.MaLoaiHinh);
                     return !nameExists;
                 }).WithMessage("Tên loại hình đã tồn tại!");
-
-        RuleFor(p => p.MoTa)
-            .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
     }
 }

@@ -15,7 +15,6 @@ namespace SurveyApplication.Application.DTOs.Account
 
         public IFormFile? Img { get; set; }
         public List<MatrixPermission>? MatrixPermission { get; set; }
-
         public List<string>? LstRoleName { get; set; }
     }
 }
