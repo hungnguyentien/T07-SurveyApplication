@@ -152,7 +152,7 @@ export class AdminRoleComponent {
       },
     });
   };
-  
+
 
 
   createDialog = () => {
@@ -309,30 +309,33 @@ export class AdminRoleComponent {
     this.role = data.value;
     let lstModule: MatrixPermission[] = [];
     let selectedTree = this.selectedTreeData as any[];
-  
+
     // Tạo một đối tượng tạm thời để lưu trữ các mục cha và các mục con tương ứng
     const tempData: { [key: string]: any } = {};
-  
+
     // Bước 1: Xử lý và gom các mục con vào các mục cha tương ứng
     selectedTree.forEach((item) => {
       if (!item.parent) {
         // Nếu không có parent, thì đây là mục cha
         const moduleKey = item.key;
-        tempData[moduleKey] = {
-          module: item.data,
-          nameModule: item.label,
-          lstPermission: [],
-        };
+        if (!tempData[moduleKey]) {
+          // Nếu chưa có đối tượng cho mục cha, tạo một đối tượng tạm thời cho nó
+          tempData[moduleKey] = {
+            module: item.data,
+            nameModule: item.label,
+            lstPermission: [], // Khởi tạo một mảng lstPermission trước khi sử dụng
+          };
+        }
       } else {
         // Nếu có parent, thì đây là mục con
         const parentKey = item.parent.key;
         if (!tempData[parentKey]) {
           // Nếu chưa có đối tượng cho mục cha, tạo một đối tượng tạm thời cho nó
           const moduleKey = item.parent.key;
-          tempData[moduleKey] = {
+          tempData[parentKey] = {
             module: item.parent.data,
             nameModule: item.parent.label,
-            lstPermission: [],
+            lstPermission: [], // Khởi tạo một mảng lstPermission trước khi sử dụng
           };
         }
         // Thêm mục con vào mục cha tương ứng
@@ -342,7 +345,8 @@ export class AdminRoleComponent {
         });
       }
     });
-  
+
+
     // Bước 2: Chuyển các đối tượng từ tempData thành mảng lstModule
     for (const key in tempData) {
       if (tempData.hasOwnProperty(key)) {
@@ -352,10 +356,10 @@ export class AdminRoleComponent {
         }
       }
     }
-  
+
     // Cập nhật matrixPermission trong this.role
     this.role.matrixPermission = lstModule;
-  
+
     this.roleService.update<CreateUpdateRole>(this.role).subscribe({
       next: (res) => {
         if (res.success) {
@@ -368,7 +372,7 @@ export class AdminRoleComponent {
       },
     });
   };
-  
+
 
   Delete(data: any) {
     this.confirmationService.confirm({
