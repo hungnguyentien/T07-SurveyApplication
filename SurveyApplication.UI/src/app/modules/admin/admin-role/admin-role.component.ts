@@ -123,21 +123,36 @@ export class AdminRoleComponent {
     let lstModule: MatrixPermission[] = [];
     let selectedTree = this.selectedTreeData as any[];
     selectedTree
-      .filter((x) => !x.parent)
+      .filter((x) => !x.parent || typeof (x.parent) === 'object')
       .forEach((el) => {
-        lstModule.push({
-          module: el.data,
-          nameModule: el.label,
-          lstPermission: selectedTree
-            .filter((x) => x.parent && x.parent === el.key)
-            .map(
-              (p) =>
-                Object({
-                  name: p.label,
-                  value: p.data,
-                }) as LstPermission
-            ),
-        } as MatrixPermission);
+        if (el.parent) {
+          lstModule.push({
+            module: el.parent.data,
+            nameModule: el.parent.label,
+            lstPermission: selectedTree
+              .filter((x) => x.parent && x.parent.key === el.parent.key)
+              .map(
+                (p) =>
+                  Object({
+                    name: p.label,
+                    value: p.data,
+                  }) as LstPermission
+              ),
+          } as MatrixPermission);
+        } else
+          lstModule.push({
+            module: el.data,
+            nameModule: el.label,
+            lstPermission: selectedTree
+              .filter((x) => x.parent && x.parent === el.key)
+              .map(
+                (p) =>
+                  Object({
+                    name: p.label,
+                    value: p.data,
+                  }) as LstPermission
+              ),
+          } as MatrixPermission);
       });
     this.role.matrixPermission = lstModule;
     this.roleService.create<CreateUpdateRole>(this.role).subscribe({
@@ -283,18 +298,21 @@ export class AdminRoleComponent {
     this.roleService.getMatrixPermission().subscribe({
       next: (res) => {
         res.forEach((el) => {
-          let data: TreeNode = {
+          let data = {
             key: `${el.module.toString()}_${el.nameModule}`,
             label: el.nameModule,
             data: el.module,
-            children: el.lstPermission.map((x) => ({
-              key: `${el.module.toString()}_${el.nameModule}_${x.value.toString()}_${x.name}`,
-              label: x.name,
-              data: x.value,
-              parent: {} as TreeNode, // Set parent as an empty TreeNode
-              selectable: true, // Cho phép tích sửa tại đây
-            })),
-            selectable: true, // Cho phép tích sửa tại đây
+            children: el.lstPermission.map((x) =>
+              Object({
+                key: `${el.module.toString()}_${el.nameModule
+                  }_${x.value.toString()}_${x.name}`,
+                label: x.name,
+                data: x.value,
+                parent: `${el.module.toString()}_${el.nameModule}`,
+                selectable: true,
+              })
+            ),
+            selectable: true,
           };
           this.treeData.push(data);
         });
@@ -309,57 +327,41 @@ export class AdminRoleComponent {
     this.role = data.value;
     let lstModule: MatrixPermission[] = [];
     let selectedTree = this.selectedTreeData as any[];
+    selectedTree
+      .filter((x) => !x.parent || typeof (x.parent) === 'object')
+      .forEach((el) => {
+        if (el.parent) {
+          debugger
 
-    // Tạo một đối tượng tạm thời để lưu trữ các mục cha và các mục con tương ứng
-    const tempData: { [key: string]: any } = {};
-
-    // Bước 1: Xử lý và gom các mục con vào các mục cha tương ứng
-    selectedTree.forEach((item) => {
-      if (!item.parent) {
-        // Nếu không có parent, thì đây là mục cha
-        const moduleKey = item.key;
-        if (!tempData[moduleKey]) {
-          // Nếu chưa có đối tượng cho mục cha, tạo một đối tượng tạm thời cho nó
-          tempData[moduleKey] = {
-            module: item.data,
-            nameModule: item.label,
-            lstPermission: [], // Khởi tạo một mảng lstPermission trước khi sử dụng
-          };
-        }
-      } else {
-        // Nếu có parent, thì đây là mục con
-        const parentKey = item.parent.key;
-        if (!tempData[parentKey]) {
-          // Nếu chưa có đối tượng cho mục cha, tạo một đối tượng tạm thời cho nó
-          const moduleKey = item.parent.key;
-          tempData[parentKey] = {
-            module: item.parent.data,
-            nameModule: item.parent.label,
-            lstPermission: [], // Khởi tạo một mảng lstPermission trước khi sử dụng
-          };
-        }
-        // Thêm mục con vào mục cha tương ứng
-        tempData[parentKey].lstPermission.push({
-          name: item.label,
-          value: item.data,
-        });
-      }
-    });
-
-
-    // Bước 2: Chuyển các đối tượng từ tempData thành mảng lstModule
-    for (const key in tempData) {
-      if (tempData.hasOwnProperty(key)) {
-        // Kiểm tra xem module có được định nghĩa (không phải undefined) trước khi thêm vào lstModule
-        if (tempData[key].module !== undefined) {
-          lstModule.push(tempData[key]);
-        }
-      }
-    }
-
-    // Cập nhật matrixPermission trong this.role
+          lstModule.push({
+            module: el.parent.data,
+            nameModule: el.parent.label,
+            lstPermission: selectedTree
+              .filter((x) => x.parent && x.parent.key === el.parent.key)
+              .map(
+                (p) =>
+                  Object({
+                    name: p.label,
+                    value: p.data,
+                  }) as LstPermission
+              ),
+          } as MatrixPermission);
+        } else
+          lstModule.push({
+            module: el.data,
+            nameModule: el.label,
+            lstPermission: selectedTree
+              .filter((x) => x.parent && x.parent === el.key)
+              .map(
+                (p) =>
+                  Object({
+                    name: p.label,
+                    value: p.data,
+                  }) as LstPermission
+              ),
+          } as MatrixPermission);
+      });
     this.role.matrixPermission = lstModule;
-
     this.roleService.update<CreateUpdateRole>(this.role).subscribe({
       next: (res) => {
         if (res.success) {
