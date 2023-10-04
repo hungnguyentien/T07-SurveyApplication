@@ -49,12 +49,12 @@
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
-            Mã nhóm
+            Mã loại hình
           </div>
         </th>
         <th pResizableColumn>
           <div class="flex justify-content-between align-items-center">
-            Tên nhóm
+            Tên loại hình
           </div>
         </th>
         <th pResizableColumn>
@@ -133,14 +133,8 @@
       </div>
 
       <div class="form-group">
-        <label for="MoTa" class="col-form-label">Mô tả: <span style="color: red;">*</span></label>
-        <textarea class="form-control" formControlName="MoTa" id="MoTa" pInputText placeholder="Nhập mô tả" [ngClass]="{
-          'is-invalid': submitted && f('MoTa').errors
-        }"></textarea>
-        <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormUnitType.controls['MoTa'].valid && 
-          FormUnitType.controls['MoTa'].dirty && !checkBtnDetail">
-          Vui lòng nhập Mô tả
-        </small>
+        <label for="MoTa" class="col-form-label">Mô tả:</label>
+        <textarea class="form-control" formControlName="MoTa" id="MoTa" pInputText placeholder="Nhập mô tả"></textarea>
       </div>
     </ng-template>
     <ng-template pTemplate="footer">

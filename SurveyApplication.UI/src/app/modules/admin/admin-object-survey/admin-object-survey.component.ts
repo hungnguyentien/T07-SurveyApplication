@@ -89,7 +89,7 @@ export class AdminObjectSurveyComponent {
         Validators.required,
         Validators.pattern(lstRegExp.soDienThoai),
       ]),
-      DiaChi: new FormControl('', Validators.required),
+      DiaChi: new FormControl(''),
       IdTinhTp: new FormControl('', Validators.required),
       IdQuanHuyen: new FormControl('', Validators.required),
       IdXaPhuong: new FormControl('', Validators.required),

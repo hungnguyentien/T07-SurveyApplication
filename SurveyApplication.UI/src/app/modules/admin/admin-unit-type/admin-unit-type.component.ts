@@ -52,7 +52,7 @@ export class AdminUnitTypeComponent {
     this.FormUnitType = this.FormBuilder.group({
       MaLoaiHinh: [ { value: this.MaLoaiHinh, disabled: true }],
       TenLoaiHinh: ['', Validators.required],
-      MoTa: ['', Validators.required],
+      MoTa: [''],
     });
   };
 
