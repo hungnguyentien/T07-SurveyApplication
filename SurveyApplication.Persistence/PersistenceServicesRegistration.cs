@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common;
+using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Domain.Interfaces;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Domain.Models;
@@ -19,6 +20,8 @@ public static class PersistenceServicesRegistration
     public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.Configure<StorageConfigs>(configuration.GetSection("StorageConfigs"));
+
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
         services.Configure<IdentityOptions>(options =>
