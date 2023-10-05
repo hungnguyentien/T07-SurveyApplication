@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using SurveyApplication.Application.DTOs.Role;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SurveyApplication.Application.DTOs.Account
 {
@@ -17,3 +11,4 @@ namespace SurveyApplication.Application.DTOs.Account
         public List<string>? LstRoleName { get; set; }
     }
 }
+
