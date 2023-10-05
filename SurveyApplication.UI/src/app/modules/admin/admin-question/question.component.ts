@@ -82,7 +82,7 @@ export class QuestionComponent {
     this.frmCauHoi = this.formBuilder.group(
       {
         id: new FormControl<number>(0),
-        maCauHoi: [{ value: this.maCauHoi, disabled: false }],
+        maCauHoi: [{ value: this.maCauHoi, disabled: false }, Validators.required],
         loaiCauHoi: ['', Validators.required],
         tieuDe: [''],
         isOther: new FormControl<boolean>(true),
@@ -399,6 +399,7 @@ export class QuestionComponent {
   }
 
   addItem(isCot: boolean = true) {
+    debugger
     const data = isCot
       ? this.maCauHoi + '_Cot' + (this.lstCot.length + 1)
       : this.maCauHoi + '_Hang' + (this.lstHang.length + 1);
