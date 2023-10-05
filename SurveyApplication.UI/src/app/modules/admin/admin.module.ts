@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -115,6 +115,8 @@ import { AdminModuleManagementComponent } from './admin-module-management/admin-
 import { RouterModule } from '@angular/router';
 import { AdminIpaddressComponent } from './admin-ipaddress/admin-ipaddress.component';
 import { AdminBackupComponent } from './admin-backup/admin-backup.component';
+import { DynamicTableComponent } from '@app/layout/share/dynamic-table/dynamic-table.component';
+
 
 @NgModule({
   declarations: [
@@ -234,7 +236,7 @@ import { AdminBackupComponent } from './admin-backup/admin-backup.component';
     HttpClientModule,
     ShareModule,
   ],
-
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe],
 })
 export class AdminModule {}

@@ -122,10 +122,7 @@ export class AdminRoleComponent {
     this.role = data.value;
     let lstModule: MatrixPermission[] = [];
     let selectedTree = this.selectedTreeData as any[];
-    selectedTree
-      .filter((x) => !x.parent || typeof (x.parent) === 'object')
-      .forEach((el) => {
-        if (el.parent) {
+    selectedTree.filter((x) => !x.parent || typeof (x.parent) === 'object').forEach((el) => {if (el.parent) {
           lstModule.push({
             module: el.parent.data,
             nameModule: el.parent.label,

@@ -33,6 +33,8 @@ export class AdminAccountComponent {
   account!: Register;
   isCreate?: boolean;
   visible: boolean = false;
+  visibleRole: boolean = false;
+
   submitted: boolean = false;
 
   lstRole: Role[] = [];
@@ -68,6 +70,9 @@ export class AdminAccountComponent {
     });
   }
 
+  addRole =()=>{
+    this.visibleRole = true;
+  }
   checkPasswords: ValidatorFn = (
     group: AbstractControl
   ): ValidationErrors | null => {
