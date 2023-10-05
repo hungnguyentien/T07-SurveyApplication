@@ -73,7 +73,7 @@ namespace SurveyApplication.API.Controllers
 
         [HttpPost("Update")]
         [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Update })]
-        public async Task<ActionResult<AccountDto>> UpdateAccount([FromForm] UpdateAccountDto obj)
+        public async Task<ActionResult<AccountDto>> UpdateAccount(UpdateAccountDto obj)
         {
             var command = new UpdateAccountCommand { AccountDto = obj };
             var response = await _mediator.Send(command);

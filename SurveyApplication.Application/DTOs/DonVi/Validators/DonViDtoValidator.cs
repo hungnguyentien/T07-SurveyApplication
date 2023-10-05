@@ -31,10 +31,6 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
                     return !nameExists;
                 }).WithMessage("Tên đơn vị đã tồn tại!");
 
-            RuleFor(p => p.DiaChi)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
-
             RuleFor(p => p.Email)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull()
@@ -47,6 +43,18 @@ namespace SurveyApplication.Application.DTOs.DonVi.Validators
             RuleFor(p => p.SoDienThoai)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
+
+            RuleFor(p => p.IdTinhTp)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull();
+
+            RuleFor(p => p.IdQuanHuyen)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull();
+
+            RuleFor(p => p.IdXaPhuong)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull();
         }
     }
 }

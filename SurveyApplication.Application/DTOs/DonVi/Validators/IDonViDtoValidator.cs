@@ -26,10 +26,6 @@ public class IDonViDtoValidator : AbstractValidator<IDonViDto>
                 return !nameExists;
             }).WithMessage("Tên đơn vị đã tồn tại!");
 
-        RuleFor(p => p.DiaChi)
-            .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
-
         RuleFor(p => new { p.Email, p.MaDonVi })
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull()
@@ -42,5 +38,17 @@ public class IDonViDtoValidator : AbstractValidator<IDonViDto>
         RuleFor(p => p.SoDienThoai)
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();
+
+        RuleFor(p => p.IdTinhTp)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull();
+
+        RuleFor(p => p.IdQuanHuyen)
+        .NotEmpty().WithMessage("{PropertyName} is required.")
+        .NotNull();
+
+        RuleFor(p => p.IdXaPhuong)
+        .NotEmpty().WithMessage("{PropertyName} is required.")
+        .NotNull();
     }
 }

@@ -52,8 +52,9 @@ export class AdminPeriodSurveyComponent {
   actionDetail!:any;
   minDate!:Date;
   minDate2!:Date;
-  
+  currentDate!: Date;
 
+  currentDateFormatted!:any;
   modalTitle = '';
   constructor(
     private FormBuilder: FormBuilder,
@@ -62,10 +63,11 @@ export class AdminPeriodSurveyComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private datePipe: DatePipe
-  ) {}
+  ) {
+    this.currentDate = new Date();
+  }
  
   ngOnInit() {
-    
     this.LoadLoaiHinh();
     this.FormPeriodSurvey = this.FormBuilder.group(
       {
@@ -80,14 +82,7 @@ export class AdminPeriodSurveyComponent {
     );
     this.minDate = new Date();
     this.minDate2 = new Date(1900, 0, 1);
-   
   }
-  checkdate():Date{
-    let currentDate = new Date();
-    this.modalTitle  == 'Thêm mới đợt khảo sát'? currentDate =this.minDate:currentDate=this.minDate2
-    return currentDate
-  }
-  
   getDetailBangKhaoSat(data:number){
     this.visibleDetail = !this.visibleDetail;
     this.PeriodSurveyService.getDotKhaoSatByDotKhaoSat(data).subscribe((res)=>{
