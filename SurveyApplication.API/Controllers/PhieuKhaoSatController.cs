@@ -28,7 +28,9 @@ namespace SurveyApplication.API.Controllers;
 public class PhieuKhaoSatController : ControllerBase
 {
     private readonly IMediator _mediator;
+
     private EmailSettings EmailSettings { get; }
+
 
     public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings)
     {
@@ -153,9 +155,10 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     [HttpPost("UploadFiles")]
-    public ActionResult UploadFiles(List<IFormFile> files)
+    public async Task<ActionResult> UploadFiles([FromForm] UploadFileDto uploadFileDto)
     {
-        var result = new List<string>{"D:\\Stg"};
-        return Ok(result);
+        var command = new UploadFileCommand { UploadFileDto = uploadFileDto };
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
 }

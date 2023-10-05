@@ -9,5 +9,5 @@ public class LoaiHinhDonVi : BaseDomainEntity
 
     [Required] public string TenLoaiHinh { get; set; }
 
-    [Required] public string MoTa { get; set; }
+    public string? MoTa { get; set; }
 }

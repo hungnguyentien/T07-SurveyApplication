@@ -198,10 +198,8 @@
                 <div class="form-group col-md-6">
                     <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span
                             style="color: red;">*</span></label>
-                    <!-- <input type="date" formControlName="NgayBatDau" class="form-control" id="recipient-name"
-                        placeholder="Ngày Bắt Đầu"> -->
                     <p-calendar formControlName="NgayBatDau" id="NgayBatDau" appendTo="body" 
-                         dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"[minDate]="checkdate()"></p-calendar>
+                         dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"></p-calendar>
                          
                     <small style="color: #e24c4c;" class="ml-2"
                         *ngIf="!FormPeriodSurvey.get('NgayBatDau')?.valid && FormPeriodSurvey.get('NgayBatDau')?.dirty &&!checkBtnDetail == true">
@@ -214,10 +212,8 @@
                 <div class="form-group col-md-6">
                     <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span
                             style="color: red;">*</span></label>
-                    <!-- <input type="date" formControlName="NgayKetThuc" class="form-control" id="recipient-name"
-                        placeholder="Ngày kết thúc"> -->
                     <p-calendar formControlName="NgayKetThuc" id="NgayKetThuc" appendTo="body" 
-                         dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"  [minDate]="FormPeriodSurvey.get('NgayKetThuc')?.value" ></p-calendar>
+                         dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom" [minDate]="currentDate" ></p-calendar>
                     <small style="color: #e24c4c;" class="ml-2"
                         *ngIf="!FormPeriodSurvey.get('NgayKetThuc')?.valid && FormPeriodSurvey.get('NgayKetThuc')?.dirty &&!checkBtnDetail == true">
                         Vui lòng nhập Ngày kết thúc
