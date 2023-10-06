@@ -139,14 +139,14 @@
           Vui lòng nhập Tên
         </small>
         <div class="form-group">
-          <label for="type" class="col-form-label">Kiểu: <span style="color: red;">*</span></label>
-          <input type="text" formControlName="type" class="form-control" id="type" pInputText placeholder="Nhập kiểu"
+          <label for="type" class="col-form-label">Cấp Tỉnh/Thành Phố: <span style="color: red;">*</span></label>
+          <input type="text" formControlName="type" class="form-control" id="type" pInputText placeholder="Nhập Cấp Tỉnh/Thành Phố"
             [ngClass]="{
                 'is-invalid': submitted && f('type').errors
               }">
           <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['type'].valid && 
               FormTinhThanh.controls['type'].dirty && !checkBtnDetail == true">
-            Vui lòng nhập kiểu
+            Vui lòng nhập Cấp Tỉnh/Thành Phố
           </small>
         </div>
       </div>
