@@ -200,18 +200,65 @@ export class AdminTableSurveyComponent {
 
   //#region Loadding table and search
 
+  // loadListLazy = (event: any) => {
+  //   this.loading = true;
+  //   let pageSize = event.rows;
+  //   let pageIndex = event.first / pageSize + 1;
+  //   this.paging = {
+  //     pageIndex: pageIndex,
+  //     pageSize: pageSize,
+  //     keyword: this.keyWord,
+  //     orderBy: event.sortField
+  //       ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
+  //       : '',
+  //   };
+  //   this.TableSurveyService.getByCondition(this.paging).subscribe({
+  //     next: (res) => {
+  //       this.datas = res.data;
+  //       this.dataTotalRecords = res.totalFilter;
+  //     },
+  //     error: (e) => {
+  //       this.loading = false;
+  //     },
+  //     complete: () => {
+  //       this.loading = false;
+  //     },
+  //   });
+  // };
+
   loadListLazy = (event: any) => {
+    debugger;
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
+  
+    // Khởi tạo keyword là một chuỗi trống
+    let keyword = this.keyWord|| '';
+  
+    // Lặp qua các filter để xây dựng keyword
+    for (const field in event.filters) {
+      if (event.filters.hasOwnProperty(field)) {
+        const filterValue = event.filters[field][0].value;
+        if (filterValue != null) {
+          // Nếu filterValue không null, thì thêm vào keyword với điều kiện phù hợp
+          keyword += `${filterValue}`;
+        }
+      }
+    }
+    // // Xóa khoảng trắng và "and" cuối cùng khỏi keyword
+    // keyword = keyword.trim();
+    // if (keyword.endsWith('and')) {
+    //   keyword = keyword.slice(0, -3);
+    // }  
     this.paging = {
       pageIndex: pageIndex,
       pageSize: pageSize,
-      keyword: this.keyWord,
+      keyword:keyword, // Sử dụng keyword mới xây dựng từ các filter
       orderBy: event.sortField
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
     };
+  
     this.TableSurveyService.getByCondition(this.paging).subscribe({
       next: (res) => {
         this.datas = res.data;
@@ -225,6 +272,7 @@ export class AdminTableSurveyComponent {
       },
     });
   };
+  
 
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;

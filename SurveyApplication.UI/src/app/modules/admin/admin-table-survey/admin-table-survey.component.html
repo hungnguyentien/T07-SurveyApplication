@@ -47,7 +47,9 @@
             styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
             [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
             [totalRecords]="dataTotalRecords" [resizableColumns]="true"
-            currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+            currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+            
+            [globalFilterFields]="['maBangKhaoSat', 'tenBangKhaoSat' ,'tenDotKhaoSat' ,'tenLoaiHinh',]">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 40px;">
@@ -59,31 +61,37 @@
                     <th >
                         <div class="flex justify-content-between align-items-center">
                             Mã bảng khảo sát
+                            <p-columnFilter type="text" field="maBangKhaoSat" display="menu"></p-columnFilter>
                         </div>
                     </th>
                     <th >
                         <div class="flex justify-content-between align-items-center">
-                            Tên bảng khảo sát                                 
+                            Tên bảng khảo sát      
+                            <p-columnFilter type="text" field="tenBangKhaoSat"display="menu"></p-columnFilter>                           
                         </div>
                     </th>
                     <th >
                         <div class="flex justify-content-between align-items-center">
-                            Đợt khảo sát                          
+                            Đợt khảo sát          
+                            <p-columnFilter type="text" field="tenDotKhaoSat" display="menu"></p-columnFilter>                
                         </div>
                     </th>
                     <th >
                         <div class="flex justify-content-between align-items-center">
-                            Loại hình đơn vị khảo sát                            
+                            Loại hình đơn vị khảo sát      
+                            <p-columnFilter type="text" field="tenLoaiHinh"display="menu"></p-columnFilter>                      
                         </div>
                     </th>
                     <th >
                         <div class="flex justify-content-between align-items-center">
-                            Thời gian                         
+                            Thời gian                       
+                            <!-- <p-columnFilter type="text" field="thoigian" display="menu"></p-columnFilter>   -->
                         </div>
                     </th>
                     <th >
                         <div class="flex justify-content-between align-items-center">
-                            Trạng thái khảo sát                           
+                            Trạng thái khảo sát    
+                            <!-- <p-columnFilter type="text" field="trangThai"display="menu"></p-columnFilter>                        -->
                         </div>
                     </th>
                     <th style="width: 120px;text-align: center;">
