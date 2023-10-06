@@ -8,6 +8,7 @@ using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.DTOs.LinhVucHoatDong;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
+using SurveyApplication.Application.DTOs.StgFile;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Commands;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
 using SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Queries;
@@ -155,7 +156,7 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     [HttpPost("UploadFiles")]
-    public async Task<ActionResult> UploadFiles([FromForm] UploadFileDto uploadFileDto)
+    public async Task<ActionResult<List<StgFileDto>>> UploadFiles([FromForm] UploadFileDto uploadFileDto)
     {
         var command = new UploadFileCommand { UploadFileDto = uploadFileDto };
         var response = await _mediator.Send(command);

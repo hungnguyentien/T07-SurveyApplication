@@ -141,7 +141,7 @@
                     <div *ngSwitchCase="7">
                       <ng-container *ngFor="let item of rowData.cauHoiTraLoi; trackBy:trackByFn">
                         <ng-container *ngFor="let item of getDataKqFile(item.cauTraLoi); trackBy:trackByFn">
-                          <a (click)="downloadFileBase64(item)" download title="{{item.name}}">
+                          <a (click)="downloadFile(item)" download title="{{item.name}}" style="cursor: pointer;">
                             {{item.name}}
                           </a>
                           <br>
@@ -233,7 +233,7 @@
                   <div [ngSwitch]="item.loaiCauHoi">
                     <div *ngSwitchCase="7">
                       <ng-container *ngFor="let item of getDataKqFile(item.cauTraLoi); trackBy:trackByFn">
-                        <a (click)="downloadFileBase64(item)" download title="{{item.name}}">
+                        <a (click)="downloadFile(item)" download title="{{item.name}}" style="cursor: pointer;">
                           {{item.name}}
                         </a>
                         <br>

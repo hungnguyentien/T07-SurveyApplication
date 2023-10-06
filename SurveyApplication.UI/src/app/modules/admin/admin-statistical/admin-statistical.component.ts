@@ -19,6 +19,7 @@ import {
   BaoCaoCauHoiRequest,
   DoiTuongThamGiaKs,
   FileQuestion,
+  StgFile,
 } from '@app/models';
 import { DatePipe } from '@angular/common';
 @Component({
@@ -349,7 +350,56 @@ export class AdminStatisticalComponent {
     }
   };
 
-  downloadFileBase64 = (file: FileQuestion) => {
-    Utils.downloadFileBase64(file);
-  };
+  // downloadFileBase64 = (file: FileQuestion) => {
+  //   Utils.downloadFileBase64(file);
+  // };
+
+  downloadFile(file: FileQuestion) {
+    this.baoCaoCauHoiService.downloadFile(file.idFile).subscribe(
+      (data: StgFile) => {
+        const byteCharacters = atob(data.fileContents);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: data.contentType });
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = data.fileName;
+        document.body.appendChild(a);
+
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      (error) => {
+        console.error('Error downloading file:', error);
+      }
+    );
+  }
+
+  // downloadFileBase64 = (file: FileQuestion) => {
+  //   debugger
+  //   // let idFile = file.idFile;
+  //   const id = 1;
+  //   this.baoCaoCauHoiService.downloadFile(id).subscribe({
+  //     next: (res: any) => {
+  //       // let blob = new Blob([bytes], { type: type });
+  //       // let downloadUrl = URL.createObjectURL(blob);
+  //       let downloadUrl = res.physicalPath;
+
+  //       let a = document.createElement('a');
+  //       a.href = downloadUrl;
+        
+  //       a.download = res.fileName;
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       setTimeout(function () {
+  //         URL.revokeObjectURL(downloadUrl);
+  //       }, 100);
+  //     },
+  //   });
+  // };
 }

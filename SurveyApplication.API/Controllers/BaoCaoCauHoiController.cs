@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.Application.DTOs.BaoCaoCauHoi;
+using SurveyApplication.Application.DTOs.StgFile;
+using SurveyApplication.Application.Features.BangKhaoSats.Requests.Queries;
 using SurveyApplication.Application.Features.BaoCaoCauHoi.Requests.Queries;
+using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 
@@ -44,6 +47,14 @@ namespace SurveyApplication.API.Controllers
         {
             var result = await _mediator.Send(data);
             return Ok(result);
+        }
+
+        [HttpGet("DownloadFile/{id}")]
+        [HasPermission(new[] { (int)EnumModule.Code.TkKs }, new[] { (int)EnumPermission.Type.Read })]
+        public async Task<ActionResult<StgFileDto>> DownloadFile(long id)
+        {
+            var leaveAllocations = await _mediator.Send(new DownloadFileRequest { Id = id });
+            return Ok(leaveAllocations);
         }
     }
 }
