@@ -107,7 +107,7 @@
 
 
 <form *ngIf="frmAccount" #accountForm="ngForm" [formGroup]="frmAccount" (ngSubmit)="onSubmit(accountForm)">
-    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw', height: '90vh' }" [draggable]="false"
+    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"[dynamic]="true"
         [resizable]="true" [maximizable]="true">
         <ng-template pTemplate="header">
             <h5 class="modal-title">
@@ -116,7 +116,7 @@
         </ng-template>
         <ng-template pTemplate="body">
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-6"*ngIf="isCreate">
                     <label for="userName" class="col-form-label">Tài khoản: <span style="color: red">*</span></label>
                     <input type="text" pInputText class="form-control" id="userName" formControlName="userName"
                         [ngClass]="{ 'is-invalid': submitted && f('userName').errors }" />
@@ -174,7 +174,7 @@
                     </small>
                 </div>
             </div>
-            <div class="row"*ngIf="isCreate">
+            <div class="row">
                 <div class="form-group col-md-9">
                     <label for="lstRoleName" class="col-form-label">Nhóm quyền:</label>
                     <p-multiSelect [options]="lstRole" [(ngModel)]="selectedRole" defaultLabel="-- Chọn nhóm quyền --"
@@ -183,7 +183,7 @@
                         [ngModelOptions]="{standalone: true}" class="form-select-custom"></p-multiSelect>
                 </div>
                 <div class="form-group col-md-3" style="margin-top: 36px;">
-                    <button pButton type="button" icon="pi pi-plus" label="Thêm quyền" class="custom-button"></button>
+                    <button pButton type="button" icon="pi pi-plus" label="Thêm quyền" class="custom-button" (click)="addRole()"></button>
                 </div>
             </div>
             <div class="row">
@@ -209,17 +209,14 @@
 
 
 <!-- form quyền -->
-<!-- <form *ngIf="frmRole" #roleForm="ngForm" [formGroup]="frmRole" (ngSubmit)="onSubmit(roleForm)">
-    <p-dialog header="Header" [(visible)]="visibleRole" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
-        [resizable]="true" [maximizable]="true">
+<form (ngSubmit)="createSubmitRole($event)">
+    <p-dialog [(visible)]="visibleRole" [style]="{ width: '30vw' }">
         <ng-template pTemplate="header">
             <h5 class="modal-title">
-                {{ modaltitle }}
+              Chọn thêm quyền
             </h5>
         </ng-template>
         <ng-template pTemplate="body">
-            <div class="row">
-            </div>
             <div class="row">
                 <p-tree [value]="treeData" [value]="" selectionMode="checkbox" class="w-full"
                     [(selection)]="selectedTreeData"></p-tree>
@@ -227,10 +224,10 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <input type="hidden" formControlName="id">
-            <button pButton (click)="visible = false" type="button" label="Đóng"
+            <button pButton (click)="visibleRole = false" type="button" label="Đóng"
                 class="custom-button surface-600"></button>
-            <button pButton *ngIf="!checkBtnDetail" [disabled]="!frmRole.valid" type="submit" icon="pi pi-save" label="Lưu"
+            <button pButton type="submit" icon="pi pi-save" label="Lưu"
                 class="custom-button"></button>
         </ng-template>
     </p-dialog>
-</form> -->
+</form>
