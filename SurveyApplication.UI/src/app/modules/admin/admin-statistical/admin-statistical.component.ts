@@ -38,10 +38,6 @@ export class AdminStatisticalComponent {
 
   barData: any;
   barOptions: any;
-
-  selectedDotKhaoSat!: number;
-  selectedBangKhaoSat!: number;
-
   datas: any;
 
   @ViewChild('dtCt') tableCt!: Table;
@@ -78,15 +74,13 @@ export class AdminStatisticalComponent {
       ngayKetThuc: [],
     });
     this.loadPeriodSurvey();
-    this.loadTableSurvey();
     this.loadUnitType();
+    this.loadTableSurvey();
     this.getVauleChar(this.frmStatiscal.value);
     //Nhận data từ bên bảng khảo sát
     this.dataTableSurvey = this.baoCaoCauHoiService.getSharedData();
     if (this.dataTableSurvey) {
-      this.frmStatiscal.controls['idDotKhaoSat'].setValue(
-        parseInt(this.dataTableSurvey.idDotKhaoSat)
-      );
+      this.frmStatiscal.controls['idDotKhaoSat'].setValue(parseInt(this.dataTableSurvey.idDotKhaoSat)) 
       this.frmStatiscal.controls['idBangKhaoSat'].setValue(
         parseInt(this.dataTableSurvey.id)
       );
@@ -108,6 +102,7 @@ export class AdminStatisticalComponent {
         ...this.frmStatiscal.value,
       };
       this.getVauleChar(params);
+      this.loadTableSurvey();
     }
   }
 
@@ -326,9 +321,10 @@ export class AdminStatisticalComponent {
   }
 
   loadTableSurvey() {
-    const code = this.selectedDotKhaoSat;
-    this.periodSurveyService.getDotKhaoSatByDotKhaoSat(code).subscribe((data:any) => {
+    const selectedValue = this.frmStatiscal.get('idDotKhaoSat')?.value;
+    this.periodSurveyService.getDotKhaoSatByDotKhaoSat(selectedValue).subscribe((data:any) => {
       this.LstBangKhaoSat = data.data;
+      this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
     });
   }
 
