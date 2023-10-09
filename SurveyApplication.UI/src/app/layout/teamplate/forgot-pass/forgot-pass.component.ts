@@ -76,8 +76,9 @@ export class ForgotPassComponent {
     frmData['token'] = this.data.token;
     this.accountService.resetPassword(frmData).subscribe({
       next: (res) => {
+        console.log(res)
         debugger
-       if(res.success){
+       if(res.success == true){
         Utils.messageSuccess(this.messageService, res.message);
        }else{
         Utils.messageError(this.messageService, res.message);

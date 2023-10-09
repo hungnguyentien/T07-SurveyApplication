@@ -128,11 +128,11 @@
     </ng-template>
     <ng-template pTemplate="body">
       <div class="form-group">
-        <label for="code" class="col-form-label">Mã: <span style="color: red;">*</span></label>
+        <label for="code" class="col-form-label">Mã Xã/Phường: <span style="color: red;">*</span></label>
         <input type="text" formControlName="code" class="form-control" id="code" placeholder="Nhập mã Xã/Phường">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['code'].valid && 
             FormXaPhuong.controls['code'].dirty&&!checkBtnDetail == true">
-          Vui lòng nhập mã
+          Vui lòng nhập Mã Xã/Phường
         </small>
       </div>
       <div class="form-group">
@@ -150,7 +150,7 @@
         <label for="tinhtp" class="col-form-label">Tỉnh/Thành phố: <span style="color: red;">*</span> </label>
         <p-dropdown id="tinhtp" [options]="listDataTinh" [(ngModel)]="selectedTinh" (onChange)="onTinhTpChange()" optionLabel="name" optionValue="code" [filter]="true"appendTo="body"
           filterBy="name" emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
-          [showClear]="true" class="form-select-custom" placeholder="-- Chọn Tỉnh/Thành phố --">
+          [showClear]="true" [ngModelOptions]="{ standalone: true }" class="form-select-custom" placeholder="-- Chọn Tỉnh/Thành phố --">
         </p-dropdown>
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['parentCode'].valid && 
             FormXaPhuong.controls['parentCode'].dirty&&!checkBtnDetail == true">
@@ -158,8 +158,8 @@
         </small>
       </div>
       <div class="form-group">
-        <label for="quanhuyen" class="col-form-label">Quận/Huyện: <span style="color: red;">*</span> </label>
-        <p-dropdown id="quanhuyen" [options]="listDataHuyen" optionLabel="name" optionValue="code" [filter]="true"appendTo="body"
+        <label for="loaihinhdonvi" class="col-form-label">Quận/Huyện: <span style="color: red;">*</span> </label>
+        <p-dropdown id="loaicauhoi" [options]="listDataHuyen" optionLabel="name" optionValue="code" [filter]="true"appendTo="body"
           filterBy="name" emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
           [showClear]="true" class="form-select-custom" placeholder="-- Chọn Quận/Huyện --"
           formControlName="parentCode">
@@ -168,7 +168,20 @@
             FormXaPhuong.controls['parentCode'].dirty&&!checkBtnDetail == true">
           Vui lòng chọn Quận/Huyện
         </small>
+
       </div>
+      <div class="form-group">
+        <label for="name" class="col-form-label">Tên Xã/Phường: <span style="color: red;">*</span></label>
+        <input type="text" formControlName="name" class="form-control" id="name" pInputText
+          placeholder="Nhập tên Xã/Phường" [ngClass]="{
+              'is-invalid': submitted && f('name').errors
+            }">
+        <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['name'].valid && 
+            FormXaPhuong.controls['name'].dirty&&!checkBtnDetail == true">
+          Vui lòng nhập tên Xã/Phường
+        </small>
+      </div>
+
       <div class="form-group">
         <label for="type" class="col-form-label">Cấp Xã/Phường: <span style="color: red;">*</span></label>
         <input type="text" formControlName="type" class="form-control" id="type" pInputText
