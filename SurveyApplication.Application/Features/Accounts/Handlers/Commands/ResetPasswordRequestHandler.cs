@@ -40,7 +40,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
 
             if (user != null)
             {
-                var resetPassResult = await _userManager.ResetPasswordAsync(user, request.ResetPasswordDto.Token, request.ResetPasswordDto.Password);
+                var resetPassResult = await _userManager.ResetPasswordAsync(user, WebUtility.UrlDecode(request.ResetPasswordDto.Token), request.ResetPasswordDto.Password);
                 if (!resetPassResult.Succeeded) throw new Exception($"Mật khẩu không khớp, mời nhập lại.");
             }
             return new BaseCommandResponse
