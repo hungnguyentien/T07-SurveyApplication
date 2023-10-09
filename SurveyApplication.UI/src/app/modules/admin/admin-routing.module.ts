@@ -190,6 +190,14 @@ const routes: Routes = [
           title: 'error-403',
         },
       },
+      {
+        path: 'forgot-password',
+        component: Error403Component,
+        title: 'Tạo mật khẩu mới',
+        data: {
+          title: 'Tạo mật khẩu mới',
+        },
+      },
     ],
   },
 ];

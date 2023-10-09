@@ -11,6 +11,8 @@ import { HighlightGuiEmailDirective } from './highlight-gui-email.directive';
 import { PasswordModule } from 'primeng/password';
 import { DynamicTableComponent } from './dynamic-table/dynamic-table.component';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { NgxSpinnerModule } from "ngx-spinner";
 @NgModule({
   declarations: [LoginComponent, HighlightDirective, HighlightGuiEmailDirective, DynamicTableComponent],
   imports: [
@@ -20,7 +22,8 @@ import { TableModule } from 'primeng/table';
     ReactiveFormsModule,
     ToastModule,
     PasswordModule,
-    TableModule
+    TableModule,
+    DialogModule
   ],
   exports: [HighlightDirective, HighlightGuiEmailDirective],
 })
