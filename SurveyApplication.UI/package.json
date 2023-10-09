@@ -40,6 +40,7 @@
     "moment-timezone": "^0.5.43",
     "ngx-cookie-service": "^16.0.1",
     "ngx-loading": "^15.0.0",
+    "ngx-spinner": "^16.0.2",
     "or": "^0.2.0",
     "plotly": "^1.0.6",
     "plotly.js": "^2.26.0",
