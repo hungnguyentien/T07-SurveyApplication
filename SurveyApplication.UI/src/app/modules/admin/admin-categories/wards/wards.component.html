@@ -150,7 +150,7 @@
         <label for="tinhtp" class="col-form-label">Tỉnh/Thành phố: <span style="color: red;">*</span> </label>
         <p-dropdown id="tinhtp" [options]="listDataTinh" [(ngModel)]="selectedTinh" (onChange)="onTinhTpChange()" optionLabel="name" optionValue="code" [filter]="true"appendTo="body"
           filterBy="name" emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
-          [showClear]="true" class="form-select-custom" placeholder="-- Chọn Tỉnh/Thành phố --">
+          [showClear]="true" [ngModelOptions]="{ standalone: true }" class="form-select-custom" placeholder="-- Chọn Tỉnh/Thành phố --">
         </p-dropdown>
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormXaPhuong.controls['parentCode'].valid && 
             FormXaPhuong.controls['parentCode'].dirty&&!checkBtnDetail == true">
