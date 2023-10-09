@@ -114,10 +114,20 @@ export interface BaoCaoCauHoiChiTiet {
 }
 
 export interface FileQuestion {
+  idFile: number;
   content: string;
   name: string;
   type: string;
   path: string;
+}
+
+export interface StgFile {
+  id: number;
+  fileContents: string;
+  contentType: string;
+  fileName: string;
+  fileType: number;
+  physicalPath: string;
 }
 
 export interface DashBoard {

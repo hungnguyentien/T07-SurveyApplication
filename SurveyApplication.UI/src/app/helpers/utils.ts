@@ -262,21 +262,23 @@ export default class Utils {
       } else {
         let content = new Array();
         phieuKhaoSatService?.uploadFiles(options.files).subscribe({
-          next: (res) => {
-            options.files.forEach((file: any) => {
+          next: (res: any[]) => {
+            res.forEach((file: any) => {
               let fileReader = new FileReader();
+              const blob = new Blob([this.base64ToBytes(file.fileContents)], { type: file.contentType });
               fileReader.onload = function (e) {
-                // debugger
                 content = content.concat([
                   {
-                    name: file.name,
-                    type: file.type,
+                    idFile: file.id,
+                    name: file.fileName,
+                    type: file.contentType,
+                    size: file.size,
                     content: fileReader.result,
-                    path: '',
+                    path: file.physicalPath,
                     file: file,
                   } as FileQuestion,
                 ]);
-                if (content.length === options.files.length) {
+                if (content.length === res.length) {
                   options.callback(
                     'success',
                     content.map(function (fileContent) {
@@ -289,7 +291,7 @@ export default class Utils {
                   );
                 }
               };
-              fileReader.readAsDataURL(file);
+              fileReader.readAsDataURL(blob);
             });
           },
         });
