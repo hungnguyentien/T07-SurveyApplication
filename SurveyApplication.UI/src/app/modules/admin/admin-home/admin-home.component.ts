@@ -93,27 +93,30 @@ export class AdminHomeComponent {
   chart1(datas: DashBoard) {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
+    const firstFiveData = datas.lstCountDonViByLoaiHinh.slice(0, 4);
     this.dataNhomDoiTuong = {
-      labels: datas.lstCountDonViByLoaiHinh.map((x) => x.ten),
+      labels: firstFiveData.map((x) => x.ten),
       datasets: [
         {
-          data: datas.lstCountDonViByLoaiHinh.map((x) => x.count),
+          data: firstFiveData.map((x) => x.count),
           backgroundColor: [
             documentStyle.getPropertyValue('--blue-500'),
             documentStyle.getPropertyValue('--yellow-500'),
             documentStyle.getPropertyValue('--green-500'),
+            documentStyle.getPropertyValue('--pink-600'),
+            
           ],
           hoverBackgroundColor: [
-            documentStyle.getPropertyValue('--blue-400'),
-            documentStyle.getPropertyValue('--yellow-400'),
-            documentStyle.getPropertyValue('--green-400'),
+            documentStyle.getPropertyValue('--blue-500'),
+            documentStyle.getPropertyValue('--yellow-500'),
+            documentStyle.getPropertyValue('--green-500'),
+            documentStyle.getPropertyValue('--pink-600'),
           ],
         },
       ],
     };
     this.optionNhomDoiTuong = {
       cutout: '60%',
-
       plugins: {
         legend: {
           labels: {
@@ -127,21 +130,24 @@ export class AdminHomeComponent {
   chart2(datas: DashBoard) {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
+    const firstFiveData = datas.lstCountDot.slice(0, 4);
     this.dataDotKhaosat = {
-      labels: datas.lstCountDot.map((x) => x.ten),
+      labels: firstFiveData.map((x) => x.ten),
       datasets: [
         {
           borderWidth: 2,
-          data: datas.lstCountDot.map((x) => x.count),
+          data: firstFiveData.map((x) => x.count),
           backgroundColor: [
-            documentStyle.getPropertyValue('--orange-400'),
-            documentStyle.getPropertyValue('--green-600'),
-            documentStyle.getPropertyValue('--blue-400'),
+            documentStyle.getPropertyValue('--blue-500'),
+            documentStyle.getPropertyValue('--yellow-500'),
+            documentStyle.getPropertyValue('--green-500'),
+            documentStyle.getPropertyValue('--pink-600'),
           ],
           hoverBackgroundColor: [
-            documentStyle.getPropertyValue('--orange-300'),
+            documentStyle.getPropertyValue('--blue-500'),
+            documentStyle.getPropertyValue('--yellow-500'),
             documentStyle.getPropertyValue('--green-500'),
-            documentStyle.getPropertyValue('--blue-300'),
+            documentStyle.getPropertyValue('--pink-600'),
           ],
         },
       ],
