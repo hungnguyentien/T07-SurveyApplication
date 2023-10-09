@@ -73,7 +73,7 @@ export class AdminAccountComponent {
     this.frmAccount = this.formBuilder.group(
       {
         id: new FormControl<string>(''),
-        userName: [''],
+        userName: ['',[Validators.required, Validators.minLength(6)]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         passwordConfirmed: [''],
@@ -94,7 +94,6 @@ export class AdminAccountComponent {
   createSubmitRole = (data: any) => {
     this.role = data.value;
     this.frmAccount.setValue(this.formData);
-
     let lstModule: MatrixPermission[] = [];
     let selectedTree = this.selectedTreeData as any[];
     selectedTree.filter((x) => !x.parent || typeof (x.parent) === 'object').forEach((el) => {
@@ -230,6 +229,56 @@ export class AdminAccountComponent {
     this.frmAccount.controls['password'].setValue(data.password);
     this.frmAccount.controls['name'].setValue(data.name);
     this.frmAccount.controls['address'].setValue(data.address);
+
+    this.roleService.getPermissionById(data.id).subscribe({
+      next: (res) => {
+        let k = Object.keys(res);
+        let v = Object.values(res);
+        Utils.setValueForm(this.frmAccount, k, v);
+        // this.frmRole.controls['name'].disable();
+        let selectedTreeData = this.selectedTreeData as any[];
+        res.matrixPermission.forEach((el) => {
+          let data = {
+            key: `${el.module.toString()}_${el.nameModule}`,
+            label: el.nameModule,
+            data: el.module,
+          };
+          selectedTreeData.push(data);
+          el.lstPermission.forEach((x) => {
+            selectedTreeData.push({
+              key: `${el.module.toString()}_${el.nameModule
+                }_${x.value.toString()}_${x.name}`,
+              label: x.name,
+              data: x.value,
+              parent: `${el.module.toString()}_${el.nameModule}`,
+            });
+          });
+        });
+      },
+    });
+    this.roleService.getMatrixPermission().subscribe({
+      next: (res) => {
+        res.forEach((el) => {
+          let data = {
+            key: `${el.module.toString()}_${el.nameModule}`,
+            label: el.nameModule,
+            data: el.module,
+            children: el.lstPermission.map((x) =>
+              Object({
+                key: `${el.module.toString()}_${el.nameModule
+                  }_${x.value.toString()}_${x.name}`,
+                label: x.name,
+                data: x.value,
+                parent: `${el.module.toString()}_${el.nameModule}`,
+                selectable: true,
+              })
+            ),
+            selectable: true,
+          };
+          this.treeData.push(data);
+        });
+      },
+    });
 
     
   }

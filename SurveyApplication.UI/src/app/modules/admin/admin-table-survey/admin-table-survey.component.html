@@ -249,7 +249,7 @@
                     <label for="idDotKhaoSat" class="col-form-label">Đợt khảo sát: <span
                             style="color: red">*</span></label>
                     <p-dropdown id="idDotKhaoSat" [options]="DSDotKhaoSat" optionLabel="tenDotKhaoSat" optionValue="id"
-                        [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
+                        [filter]="true" filterBy="tenDotKhaoSat" emptyMessage="Không có kết quả nào"
                         emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
                         placeholder="-- Chọn đợt khảo sát --" formControlName="idDotKhaoSat" appendTo="body">
                     </p-dropdown>
@@ -455,7 +455,7 @@
     [maximizable]="true">
     <ng-template pTemplate="header">
         <h5 class="modal-title">
-            {{ showadd === true ? "Chọn câu hỏi" : "Cập nhật câu hỏi" }}
+            {{"Chọn câu hỏi"}}
         </h5>
     </ng-template>
 

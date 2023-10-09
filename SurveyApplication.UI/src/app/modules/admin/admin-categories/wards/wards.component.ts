@@ -4,6 +4,7 @@ import Utils from '@app/helpers/utils';
 import { Paging, XaPhuong } from '@app/models';
 import { QuanHuyenService } from '@app/services/quan-huyen.service';
 import { XaPhuongService } from '@app/services/xa-phuong.service';
+import { TinhThanhService } from '@app/services/tinh-thanh.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -20,6 +21,7 @@ export class WardsComponent {
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
+  selectedTinh: any;
   
   submitted: boolean = false;
   first = 0;
@@ -29,6 +31,7 @@ export class WardsComponent {
   visible: boolean = false;
 
   listDataHuyen : any = [];
+  listDataTinh : any = [];
   IdXaPhuong: any;
 
   checkBtnDetail:boolean = false
@@ -37,14 +40,16 @@ export class WardsComponent {
   constructor(
     private FormBuilder : FormBuilder,
     private XaPhuongService: XaPhuongService,
+    private quanHuyenService: QuanHuyenService,
     private messageService: MessageService,
-    private HuyenService:QuanHuyenService,
+    private tinhTpService: TinhThanhService,
     private confirmationService: ConfirmationService,
   ) {}
   ngOnInit() {
     this.loading = true;
     this.createForm();
-    this.GetAllHuyen();
+    this.GetAllTinhTp();
+    this.onTinhTpChange();
   }
 
   createForm = () => {
@@ -56,10 +61,23 @@ export class WardsComponent {
     });
   };
 
-  GetAllHuyen(){
-    this.HuyenService.getAll().subscribe(res=>{
-      this.listDataHuyen = res
+  GetAllTinhTp(){
+    this.tinhTpService.getAll().subscribe(res=>{
+      this.listDataTinh = res
     })
+  }
+
+  onTinhTpChange() {
+    const code = this.selectedTinh;
+    if (code) {
+      this.quanHuyenService.getQuanHuyenByTinhTp(code ?? '').subscribe((res) => {
+        this.listDataHuyen = res;
+      });
+    } else {
+      this.quanHuyenService.getAll().subscribe((res) => {
+        this.listDataHuyen = res;
+      });
+    }
   }
 
   detail(data:any){

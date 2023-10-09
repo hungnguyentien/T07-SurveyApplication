@@ -6,6 +6,8 @@ import {
   BaoCaoCauHoiChiTietRequest,
   BaoCaoCauHoiRequest,
   BaseQuerieResponse,
+  FileQuestion,
+  StgFile,
   ThongKeBaoCao,
 } from '@app/models';
 import { environment } from '@environments/environment';
@@ -42,7 +44,10 @@ export class BaoCaoCauHoiService {
       .pipe(first());
   }
 
-  
+  downloadFile(id: number) {
+    return this.http.get<StgFile>(`${environment.apiUrl}/BaoCaoCauHoi/DownloadFile/${id}`)
+    .pipe(first());
+  }
 
   setSharedData(data: any) {
     this.sharedData = data;

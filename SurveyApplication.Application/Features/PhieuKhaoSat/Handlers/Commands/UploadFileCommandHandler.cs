@@ -21,10 +21,12 @@ using AutoMapper.Configuration;
 using SurveyApplication.Application.Exceptions;
 using System.IO;
 using SurveyApplication.Domain.Models;
+using Vanara.PInvoke;
+using SurveyApplication.Application.DTOs.StgFile;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 {
-    public class UploadFileCommandHandler : BaseMasterFeatures, IRequestHandler<UploadFileCommand, BaseCommandResponse>
+    public class UploadFileCommandHandler : BaseMasterFeatures, IRequestHandler<UploadFileCommand, List<StgFileDto>>
     {
         private readonly IMapper _mapper;
         private StorageConfigs StorageConfigs { get; }
@@ -35,14 +37,16 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             StorageConfigs = storageConfigs.Value;
         }
 
-        public async Task<BaseCommandResponse> Handle(UploadFileCommand request, CancellationToken cancellationToken)
+        public async Task<List<StgFileDto>> Handle(UploadFileCommand request, CancellationToken cancellationToken)
         {
             var uploadFileDto = request.UploadFileDto;
 
             if (uploadFileDto == null || uploadFileDto.files == null || uploadFileDto.files.Count == 0)
             {
-                return new BaseCommandResponse("Không có tệp nào được tải lên.");
+                return null;
             }
+
+            var lstStgFiles = new List<StgFileDto>();
 
             foreach (var file in uploadFileDto.files)
             {
@@ -53,12 +57,6 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                     // Tạo thư mục nếu nó chưa tồn tại
                     Directory.CreateDirectory(yearMonthDayPath);
 
-                    // Kiểm tra nếu thư mục không tồn tại thì tạo mới
-                    if (!Directory.Exists(yearMonthDayPath))
-                    {
-                        Directory.CreateDirectory(yearMonthDayPath);
-                    }
-
                     var fileName = DateTime.Now.Ticks.ToString() + Path.GetExtension(file.FileName);
 
                     var filePath = Path.Combine(yearMonthDayPath, fileName);
@@ -68,20 +66,34 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                         await file.CopyToAsync(stream);
                     }
 
-                    var stgFile = new StgFile
+                    byte[] fileContents = File.ReadAllBytes(filePath);
+
+                    var stgFile = new StgFileDto
                     {
-                        FileName = fileName,
+                        FileContents= fileContents,
+                        FileName = file.FileName,
                         PhysicalPath = filePath,
                         ContentType = file.ContentType,
                         Size = file.Length,
                     };
 
-                    _surveyRepo.StgFile.Create(stgFile);
-                    _surveyRepo.SaveAync();
+                    var stg = _mapper.Map<StgFile>(new StgFileDto
+                    {
+                        FileContents = fileContents,
+                        FileName = file.FileName,
+                        PhysicalPath = filePath,
+                        ContentType = file.ContentType,
+                        Size = file.Length,
+                    });
+
+                    stg = await _surveyRepo.StgFile.Create(stg);
+                    await _surveyRepo.SaveAync();
+
+                    stgFile.Id= stg.Id;
+                    lstStgFiles.Add(stgFile);
                 }
             }
-
-            return new BaseCommandResponse("Tải lên tệp thành công.");
+            return lstStgFiles;
         }
     }
 }
