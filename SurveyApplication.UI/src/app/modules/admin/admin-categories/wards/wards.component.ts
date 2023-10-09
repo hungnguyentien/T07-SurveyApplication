@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup,FormBuilder, Validators, FormControl } from '@angular/forms';
 import Utils from '@app/helpers/utils';
-import { Paging, XaPhuong } from '@app/models';
+import { Paging, TinhThanh, XaPhuong } from '@app/models';
 import { QuanHuyenService } from '@app/services/quan-huyen.service';
 import { XaPhuongService } from '@app/services/xa-phuong.service';
 import { TinhThanhService } from '@app/services/tinh-thanh.service';
@@ -49,7 +49,6 @@ export class WardsComponent {
     this.loading = true;
     this.createForm();
     this.GetAllTinhTp();
-    this.onTinhTpChange();
   }
 
   createForm = () => {
@@ -69,15 +68,9 @@ export class WardsComponent {
 
   onTinhTpChange() {
     const code = this.selectedTinh;
-    if (code) {
-      this.quanHuyenService.getQuanHuyenByTinhTp(code ?? '').subscribe((res) => {
-        this.listDataHuyen = res;
-      });
-    } else {
-      this.quanHuyenService.getAll().subscribe((res) => {
-        this.listDataHuyen = res;
-      });
-    }
+    this.quanHuyenService.getQuanHuyenByTinhTp(code ?? '').subscribe((res) => {
+      this.listDataHuyen = res;
+    });
   }
 
   detail(data:any){
