@@ -33,6 +33,7 @@ export class AdminAccountComponent {
   account!: Register;
   isCreate?: boolean;
   visible: boolean = false;
+    
   visibleRole: boolean = false;
 
   submitted: boolean = false;
@@ -44,16 +45,20 @@ export class AdminAccountComponent {
   role!: CreateUpdateRole;
   treeData: TreeNode[] = [];
   selectedTreeData!: TreeNode<any> | TreeNode<any>[] | null;
+
+  formData: any = {};
   constructor(
     private formBuilder: FormBuilder,
     private roleService: RoleService,
     private accountService: AccountService,
     private messageService: MessageService
-  ) { }
+  ) { 
+    this.createFrom()
+  }
 
   ngOnInit() {
     
-    this.createFrom()
+    // this.createFrom()
     this.roleService.getAll().subscribe({
       next: (res) => {
         this.lstRole = res;
@@ -64,10 +69,11 @@ export class AdminAccountComponent {
   }
 
   createFrom(){
+    debugger
     this.frmAccount = this.formBuilder.group(
       {
         id: new FormControl<string>(''),
-        userName: ['', [Validators.required, Validators.minLength(6)]],
+        userName: ['',[Validators.required, Validators.minLength(6)]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         passwordConfirmed: [''],
@@ -78,10 +84,16 @@ export class AdminAccountComponent {
       },
       { validators: this.checkPasswords }
     );
+
+
+    this.frmAccount.valueChanges.subscribe((data) => {
+      this.formData = { ...data };
+    });
+   
   }
   createSubmitRole = (data: any) => {
-    debugger
     this.role = data.value;
+    this.frmAccount.setValue(this.formData);
     let lstModule: MatrixPermission[] = [];
     let selectedTree = this.selectedTreeData as any[];
     selectedTree.filter((x) => !x.parent || typeof (x.parent) === 'object').forEach((el) => {
@@ -123,8 +135,8 @@ export class AdminAccountComponent {
 
 
   addRole =()=>{
-    this.visibleRole = true;
-    this.createFrom();
+    this.visibleRole = true; 
+    this.frmAccount.setValue(this.formData);
     this.roleService.getMatrixPermission().subscribe({
       next: (res) => {
         res.forEach((el) => {
@@ -217,10 +229,80 @@ export class AdminAccountComponent {
     this.frmAccount.controls['password'].setValue(data.password);
     this.frmAccount.controls['name'].setValue(data.name);
     this.frmAccount.controls['address'].setValue(data.address);
+
+    this.roleService.getPermissionById(data.id).subscribe({
+      next: (res) => {
+        let k = Object.keys(res);
+        let v = Object.values(res);
+        Utils.setValueForm(this.frmAccount, k, v);
+        // this.frmRole.controls['name'].disable();
+        let selectedTreeData = this.selectedTreeData as any[];
+        res.matrixPermission.forEach((el) => {
+          let data = {
+            key: `${el.module.toString()}_${el.nameModule}`,
+            label: el.nameModule,
+            data: el.module,
+          };
+          selectedTreeData.push(data);
+          el.lstPermission.forEach((x) => {
+            selectedTreeData.push({
+              key: `${el.module.toString()}_${el.nameModule
+                }_${x.value.toString()}_${x.name}`,
+              label: x.name,
+              data: x.value,
+              parent: `${el.module.toString()}_${el.nameModule}`,
+            });
+          });
+        });
+      },
+    });
+    this.roleService.getMatrixPermission().subscribe({
+      next: (res) => {
+        res.forEach((el) => {
+          let data = {
+            key: `${el.module.toString()}_${el.nameModule}`,
+            label: el.nameModule,
+            data: el.module,
+            children: el.lstPermission.map((x) =>
+              Object({
+                key: `${el.module.toString()}_${el.nameModule
+                  }_${x.value.toString()}_${x.name}`,
+                label: x.name,
+                data: x.value,
+                parent: `${el.module.toString()}_${el.nameModule}`,
+                selectable: true,
+              })
+            ),
+            selectable: true,
+          };
+          this.treeData.push(data);
+        });
+      },
+    });
+
+    
   }
 
   updateSubmit =(data:any)=>{
-
+    this.submitted = true;
+    if (this.frmAccount.invalid) return;
+    this.account = data.value;
+    this.account.lstRoleName = this.selectedRole;
+    this.account.matrixPermission = this.matrixSelect;
+    this.accountService.update<Account>(this.account).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.table.reset();
+          Utils.messageSuccess(this.messageService, res.message);
+          this.visible = false;
+          this.frmAccount.reset();
+          this.account.lstRoleName = [];
+          this.account.matrixPermission = [];
+        } else {
+          Utils.messageError(this.messageService, res.errors.at(0) ?? '');
+        }
+      },
+    });
   }
   createSubmit = (data: any) => {
     debugger
@@ -249,7 +331,7 @@ export class AdminAccountComponent {
     this.isCreate = true;
     this.visible = true;
     this.submitted = false;
+    this.createFrom();
   };
-
   confirmDeleteMultiple = () => { };
 }

@@ -259,6 +259,7 @@ export class AdminRoleComponent {
 
 
   editDialog(id: string) {
+    debugger
     this.checkBtnDetail = false;
     this.isCreate = false;
     this.modaltitle = 'Cập nhật nhóm quyền';
@@ -328,8 +329,6 @@ export class AdminRoleComponent {
       .filter((x) => !x.parent || typeof (x.parent) === 'object')
       .forEach((el) => {
         if (el.parent) {
-          debugger
-
           lstModule.push({
             module: el.parent.data,
             nameModule: el.parent.label,

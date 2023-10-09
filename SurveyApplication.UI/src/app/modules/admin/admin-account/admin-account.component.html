@@ -183,7 +183,7 @@
                         [ngModelOptions]="{standalone: true}" class="form-select-custom"></p-multiSelect>
                 </div>
                 <div class="form-group col-md-3" style="margin-top: 36px;">
-                    <button pButton type="button" icon="pi pi-plus" label="Thêm quyền" class="custom-button" (click)="addRole()"></button>
+                    <button pButton type="button" icon="pi pi-plus" label="Thêm quyền"  (click)="addRole()" class="custom-button"   ></button>
                 </div>
             </div>
             <div class="row">
@@ -225,9 +225,9 @@
         <ng-template pTemplate="footer">
             <input type="hidden" formControlName="id">
             <button pButton (click)="visibleRole = false" type="button" label="Đóng"
-                class="custom-button surface-600"></button>
+                class="custom-button surface-600" ></button>
             <button pButton type="submit" icon="pi pi-save" label="Lưu"
-                class="custom-button"></button>
+                class="custom-button"  ></button>
         </ng-template>
     </p-dialog>
 </form>
