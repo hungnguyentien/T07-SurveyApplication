@@ -23,8 +23,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     ToastModule,
     PasswordModule,
     TableModule,
-    DialogModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
+    DialogModule
   ],
   exports: [HighlightDirective, HighlightGuiEmailDirective],
 })
