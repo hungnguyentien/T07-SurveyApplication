@@ -6,8 +6,17 @@ import { AdminTempleteComponent } from './admin-templete/admin-templete.componen
 import { LoginComponent } from '../share/login/login.component';
 import { AuthGuard } from '@app/helpers';
 import { CodeModule } from '@app/enums';
+import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 
 const routes: Routes = [
+  {
+    path: 'forgot-password',
+    component: ForgotPassComponent,
+    title: 'Tạo mật khẩu mới',
+    data: {
+      title: 'Tạo mật khẩu mới',
+    },
+  },
   {
     path: '',
     data: {

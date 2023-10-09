@@ -13,6 +13,7 @@ import { AdminTempleteComponent } from './admin-templete/admin-templete.componen
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PasswordModule } from 'primeng/password';
 @NgModule({
   declarations: [TemplatePublicComponent, AdminTempleteComponent],
   imports: [
@@ -27,6 +28,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     FileUploadModule,
     ConfirmDialogModule,
     MessageModule,
+    PasswordModule
   ],
 })
 export class TeamplateModule {}

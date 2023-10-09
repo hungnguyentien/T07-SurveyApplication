@@ -116,7 +116,7 @@ import { RouterModule } from '@angular/router';
 import { AdminIpaddressComponent } from './admin-ipaddress/admin-ipaddress.component';
 import { AdminBackupComponent } from './admin-backup/admin-backup.component';
 import { DynamicTableComponent } from '@app/layout/share/dynamic-table/dynamic-table.component';
-import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
+import { ForgotPassComponent } from '../../layout/teamplate/forgot-pass/forgot-pass.component';
 
 
 @NgModule({
