@@ -80,28 +80,18 @@ export class AdminStatisticalComponent {
     this.dataTableSurvey = this.baoCaoCauHoiService.getSharedData();
     if (this.dataTableSurvey) {
       this.frmStatiscal.controls['idDotKhaoSat'].setValue(parseInt(this.dataTableSurvey.idDotKhaoSat)) 
-      this.frmStatiscal.controls['idBangKhaoSat'].setValue(
-        parseInt(this.dataTableSurvey.id)
-      );
-      this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(
-        parseInt(this.dataTableSurvey.idLoaiHinh)
-      );
+      this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
+      this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(parseInt(this.dataTableSurvey.idLoaiHinh));
 
-      const ngayBatDauFormatted = this.datePipe.transform(
-        this.dataTableSurvey.ngayBatDau,
-        'dd/MM/yyyy'
-      );
-      const ngayKetThucFormatted = this.datePipe.transform(
-        this.dataTableSurvey.ngayKetThuc,
-        'dd/MM/yyyy'
-      );
+      const ngayBatDauFormatted = this.datePipe.transform(this.dataTableSurvey.ngayBatDau,'dd/MM/yyyy');
+      const ngayKetThucFormatted = this.datePipe.transform(this.dataTableSurvey.ngayKetThuc,'dd/MM/yyyy');
       this.frmStatiscal.controls['ngayBatDau'].setValue(ngayBatDauFormatted);
       this.frmStatiscal.controls['ngayKetThuc'].setValue(ngayKetThucFormatted);
       let params: BaoCaoCauHoiRequest = {
         ...this.frmStatiscal.value,
       };
-      this.getVauleChar(params);
       this.loadTableSurvey();
+      this.getVauleChar(params);
     }
   }
 

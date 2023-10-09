@@ -107,7 +107,7 @@
 
 
 <form *ngIf="frmAccount" #accountForm="ngForm" [formGroup]="frmAccount" (ngSubmit)="onSubmit(accountForm)">
-    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw', height: '90vh' }" [draggable]="false"
+    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"[dynamic]="true"
         [resizable]="true" [maximizable]="true">
         <ng-template pTemplate="header">
             <h5 class="modal-title">
@@ -116,7 +116,7 @@
         </ng-template>
         <ng-template pTemplate="body">
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-6"*ngIf="isCreate">
                     <label for="userName" class="col-form-label">Tài khoản: <span style="color: red">*</span></label>
                     <input type="text" pInputText class="form-control" id="userName" formControlName="userName"
                         [ngClass]="{ 'is-invalid': submitted && f('userName').errors }" />
@@ -146,13 +146,13 @@
             <div class="row" *ngIf="isCreate">
                 <div class="form-group col-md-6">
                     <label for="password" class="col-form-label">Mật khẩu: <span style="color: red">*</span></label>
-                    <div class="">
+                    <!-- <div class="">
                         <p-password formControlName="password" id="password" [toggleMask]="true"
                             [ngClass]="{ 'is-invalid': submitted && f('password').errors }"
                             [feedback]="false"></p-password>
-                    </div>
-                    <!-- <input type="password" pInputText class="form-control" id="password" formControlName="password"
-                        [ngClass]="{ 'is-invalid': submitted && f('password').errors }" /> -->
+                    </div> -->
+                    <input type="text" pInputText class="form-control" id="password" formControlName="password"
+                        [ngClass]="{ 'is-invalid': submitted && f('password').errors }" />
                     <small style="color: #e24c4c;" class="ml-2"
                         *ngIf="!frmAccount.controls['password'].valid && frmAccount.controls['password'].dirty">
                         Vui lòng nhập mật khẩu
@@ -160,27 +160,30 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="passwordConfirmed" class="col-form-label">Nhập lại mật khẩu:</label>
-                    <div class="">
+                    <!-- <div class="">
                         <p-password formControlName="passwordConfirmed" id="passwordConfirmed" [toggleMask]="true"
                             [ngClass]="{ 'is-invalid': submitted && f('passwordConfirmed').errors }"
                             [feedback]="false"></p-password>
-                    </div>
-                    <!-- <input type="password" pInputText class="form-control" id="passwordConfirmed"
+                    </div> -->
+                    <input type="text" pInputText class="form-control" id="passwordConfirmed"
                         formControlName="passwordConfirmed"
-                        [ngClass]="{ 'is-invalid': submitted && f('passwordConfirmed').errors }" /> -->
+                        [ngClass]="{ 'is-invalid': submitted && f('passwordConfirmed').errors }" />
                     <small style="color: #e24c4c;" class="ml-2"
                         *ngIf="frmAccount.controls['email'].dirty && frmAccount.hasError('notSame')">
                         Mật khẩu không phù hợp
                     </small>
                 </div>
             </div>
-            <div class="row"*ngIf="isCreate">
-                <div class="form-group col-md-12">
+            <div class="row">
+                <div class="form-group col-md-9">
                     <label for="lstRoleName" class="col-form-label">Nhóm quyền:</label>
                     <p-multiSelect [options]="lstRole" [(ngModel)]="selectedRole" defaultLabel="-- Chọn nhóm quyền --"
                         appendTo="body" optionLabel="name" optionValue="name" display="chip" id="lstRoleName"
                         emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
                         [ngModelOptions]="{standalone: true}" class="form-select-custom"></p-multiSelect>
+                </div>
+                <div class="form-group col-md-3" style="margin-top: 36px;">
+                    <button pButton type="button" icon="pi pi-plus" label="Thêm quyền"  (click)="addRole()" class="custom-button"   ></button>
                 </div>
             </div>
             <div class="row">
@@ -200,6 +203,31 @@
                 class="custom-button surface-600"></button>
             <button pButton  [disabled]="!frmAccount.valid" type="submit" icon="pi pi-save" label="Lưu"
                 class="custom-button"></button>
+        </ng-template>
+    </p-dialog>
+</form>
+
+
+<!-- form quyền -->
+<form (ngSubmit)="createSubmitRole($event)">
+    <p-dialog [(visible)]="visibleRole" [style]="{ width: '30vw' }">
+        <ng-template pTemplate="header">
+            <h5 class="modal-title">
+              Chọn thêm quyền
+            </h5>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <div class="row">
+                <p-tree [value]="treeData" [value]="" selectionMode="checkbox" class="w-full"
+                    [(selection)]="selectedTreeData"></p-tree>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <input type="hidden" formControlName="id">
+            <button pButton (click)="visibleRole = false" type="button" label="Đóng"
+                class="custom-button surface-600" ></button>
+            <button pButton type="submit" icon="pi pi-save" label="Lưu"
+                class="custom-button"  ></button>
         </ng-template>
     </p-dialog>
 </form>

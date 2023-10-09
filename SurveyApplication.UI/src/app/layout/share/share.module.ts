@@ -9,15 +9,18 @@ import { ToastModule } from 'primeng/toast';
 import { HighlightDirective } from './highlight.directive';
 import { HighlightGuiEmailDirective } from './highlight-gui-email.directive';
 import { PasswordModule } from 'primeng/password';
+import { DynamicTableComponent } from './dynamic-table/dynamic-table.component';
+import { TableModule } from 'primeng/table';
 @NgModule({
-  declarations: [LoginComponent, HighlightDirective, HighlightGuiEmailDirective],
+  declarations: [LoginComponent, HighlightDirective, HighlightGuiEmailDirective, DynamicTableComponent],
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     ToastModule,
-    PasswordModule
+    PasswordModule,
+    TableModule
   ],
   exports: [HighlightDirective, HighlightGuiEmailDirective],
 })
