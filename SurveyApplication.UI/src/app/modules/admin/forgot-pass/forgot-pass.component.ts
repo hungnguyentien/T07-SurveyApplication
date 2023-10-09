@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./forgot-pass.component.css']
 })
 export class ForgotPassComponent {
-
+  
 }

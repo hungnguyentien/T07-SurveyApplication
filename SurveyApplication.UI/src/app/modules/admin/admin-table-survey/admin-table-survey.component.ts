@@ -107,7 +107,7 @@ export class AdminTableSurveyComponent {
   minDate!:Date;
   minDate2!:Date;
   reon!:boolean;
-
+  currentDate!: Date;
   constructor(
     private router: Router,
     private FormBuilder: FormBuilder,
@@ -124,7 +124,10 @@ export class AdminTableSurveyComponent {
     private baocaocauhoiservice: BaoCaoCauHoiService,
     private config: PrimeNGConfig,
     private translateService: TranslateService
-  ) { }
+
+  ) { 
+    this.currentDate = new Date();
+  }
 
   ngOnInit() {
 
