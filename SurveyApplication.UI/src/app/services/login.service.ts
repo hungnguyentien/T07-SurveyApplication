@@ -100,5 +100,7 @@ export class LoginService {
   getByIdUser<T>(id: string): Observable<T> {
     return this.http.get<T>(`${environment.apiUrl}/Account/GetById/${id}`);
   }
-  
+  forgotPass(email:string){
+    return this.http.get(`${environment.apiUrl}/Account/ForgotPassword/${email}`)
+  }
 }

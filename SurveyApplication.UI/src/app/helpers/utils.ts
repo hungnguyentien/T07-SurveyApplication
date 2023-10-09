@@ -263,18 +263,17 @@ export default class Utils {
         let content = new Array();
         phieuKhaoSatService?.uploadFiles(options.files).subscribe({
           next: (res: any[]) => {
-            res.forEach((file: any) => {
+            res.forEach((result: any, i) => {
+              let file = options.files[i];
               let fileReader = new FileReader();
-              const blob = new Blob([this.base64ToBytes(file.fileContents)], { type: file.contentType });
               fileReader.onload = function (e) {
                 content = content.concat([
                   {
-                    idFile: file.id,
-                    name: file.fileName,
-                    type: file.contentType,
-                    size: file.size,
+                    idFile: result.id,
+                    name: file.name,
+                    type: file.type,
                     content: fileReader.result,
-                    path: file.physicalPath,
+                    path: result.physicalPath,
                     file: file,
                   } as FileQuestion,
                 ]);
@@ -291,7 +290,8 @@ export default class Utils {
                   );
                 }
               };
-              fileReader.readAsDataURL(blob);
+
+              fileReader.readAsDataURL(file);
             });
           },
         });
