@@ -12,7 +12,7 @@ import Utils from '@app/helpers/utils';
 import { Account, CreateUpdateRole, LstPermission, MatrixPermission, Paging, Register, Role } from '@app/models';
 import { RoleService } from '@app/services';
 import { AccountService } from '@app/services/account.service';
-import { MessageService, TreeNode } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 @Component({
@@ -51,7 +51,8 @@ export class AdminAccountComponent {
     private formBuilder: FormBuilder,
     private roleService: RoleService,
     private accountService: AccountService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) { 
     this.createFrom()
   }
@@ -84,6 +85,8 @@ export class AdminAccountComponent {
       },
       { validators: this.checkPasswords }
     );
+    this.treeData = [];
+    this.selectedTreeData = [];
 
 
     this.frmAccount.valueChanges.subscribe((data) => {
@@ -220,69 +223,52 @@ export class AdminAccountComponent {
     if (this.isCreate !== null) this.createSubmit(data);
     this.isCreate ? this.createSubmit(data) : this.updateSubmit(data);
   };
-  updateDialog(data:any){
-    debugger
+
+  updateDialog(data: any) {
+    debugger;
     this.isCreate = false;
     this.visible = true;
-    this.frmAccount.controls['userName'].setValue(data.userName);
-    this.frmAccount.controls['email'].setValue(data.email);
-    this.frmAccount.controls['password'].setValue(data.password);
-    this.frmAccount.controls['name'].setValue(data.name);
-    this.frmAccount.controls['address'].setValue(data.address);
-
-    this.roleService.getPermissionById(data.id).subscribe({
-      next: (res) => {
-        let k = Object.keys(res);
-        let v = Object.values(res);
-        Utils.setValueForm(this.frmAccount, k, v);
-        // this.frmRole.controls['name'].disable();
-        let selectedTreeData = this.selectedTreeData as any[];
-        res.matrixPermission.forEach((el) => {
-          let data = {
-            key: `${el.module.toString()}_${el.nameModule}`,
-            label: el.nameModule,
-            data: el.module,
-          };
-          selectedTreeData.push(data);
-          el.lstPermission.forEach((x) => {
-            selectedTreeData.push({
-              key: `${el.module.toString()}_${el.nameModule
-                }_${x.value.toString()}_${x.name}`,
-              label: x.name,
-              data: x.value,
-              parent: `${el.module.toString()}_${el.nameModule}`,
-            });
-          });
-        });
-      },
+  
+    // Cập nhật giá trị của các trường từ dữ liệu data
+    this.frmAccount.patchValue({
+      userName: data.userName,
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      address: data.address,
     });
-    this.roleService.getMatrixPermission().subscribe({
-      next: (res) => {
-        res.forEach((el) => {
-          let data = {
-            key: `${el.module.toString()}_${el.nameModule}`,
-            label: el.nameModule,
-            data: el.module,
-            children: el.lstPermission.map((x) =>
-              Object({
-                key: `${el.module.toString()}_${el.nameModule
-                  }_${x.value.toString()}_${x.name}`,
-                label: x.name,
-                data: x.value,
-                parent: `${el.module.toString()}_${el.nameModule}`,
-                selectable: true,
-              })
-            ),
-            selectable: true,
-          };
-          this.treeData.push(data);
-        });
-      },
-    });
+  //  this.roleService.getPermissionById(data.id).subscribe({
+  //     next: (res) => {
+  //       let k = Object.keys(res);
+  //       let v = Object.values(res);
+  //       Utils.setValueForm(this.frmAccount, k, v);
+        
+  //       let selectedTreeData = this.selectedTreeData as any[];
+  //       res.matrixPermission.forEach((el) => {
+  //         let data = {
+  //           key: `${el.module.toString()}_${el.nameModule}`,
+  //           label: el.nameModule,
+  //           data: el.module,
+  //         };
+  //         selectedTreeData.push(data);
+  //         el.lstPermission.forEach((x) => {
+  //           selectedTreeData.push({
+  //             key: `${el.module.toString()}_${el.nameModule
+  //               }_${x.value.toString()}_${x.name}`,
+  //             label: x.name,
+  //             data: x.value,
+  //             parent: `${el.module.toString()}_${el.nameModule}`,
+  //           });
+  //         });
+  //       });
 
-    
+  //     },
+  //   });
+ 
+  
+  
   }
-
+  
   updateSubmit =(data:any)=>{
     this.submitted = true;
     if (this.frmAccount.invalid) return;
@@ -334,4 +320,26 @@ export class AdminAccountComponent {
     this.createFrom();
   };
   confirmDeleteMultiple = () => { };
+
+  Delete(data: any) {
+    this.confirmationService.confirm({
+      message: 'Bạn có chắc chắn muốn xoá không ' + '?',
+      header: 'delete',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.accountService.delete(data.id).subscribe((res: any) => {
+          if (res.success == true){
+            Utils.messageSuccess(this.messageService, res.message);
+            this.table.reset();
+            this.frmAccount.reset();
+          }
+          else{
+            Utils.messageError(this.messageService, res.message);
+            this.table.reset();
+            this.frmAccount.reset();
+          }
+        });
+      },
+    });
+  }
 }
