@@ -403,10 +403,20 @@ export class AdminStatisticalComponent {
       { header: 'Số lượt chọn', key: 'soluotchon', width: 15 },
       { header: 'Tỷ lệ', key: 'tyle', width: 15 },
     ];
-  
+
     // Thêm dữ liệu
-    this.data.forEach((e, index) => {
-      worksheet.addRow({ stt: index + 1, cauhoicautraloi: e.name, soluotchon: e.brand, tyle: e.price });
+    this.datas.forEach((e: any, index: number) => {
+      if (e.cauHoiTraLoi.length && e.cauHoiTraLoi[index]) {
+        worksheet.addRow({ stt: index + 1, cauhoicautraloi: e.tenCauHoi, soluotchon: e.cauHoiTraLoi[index].soLuotChon, tyle: e.cauHoiTraLoi[index].tyLe + ' %'});
+      }
+      // if (e.cauHoiTraLoi.length > 1 && e.cauHoiTraLoi[index]) {
+      //   e.array.forEach((element: any) => {
+      //     worksheet.addRow({ stt: index + 1, cauhoicautraloi: element.tenCauHoi, soluotchon: element.soLuotChon, tyle: element.tyLe + ' %'});
+      //   });
+      // }
+       else {
+        worksheet.addRow({ stt: index + 1, cauhoicautraloi: e.tenCauHoi, soluotchon: '0', tyle: '0 %' });
+      }
     });
   
     // Định dạng cho các ô
@@ -419,12 +429,10 @@ export class AdminStatisticalComponent {
           pattern: 'solid',
           fgColor: { argb: 'FF808080' }
         };
-        // Đặt độ cao của hàng chứa header
-        row.height = 20; // Thay đổi độ cao tùy chỉnh cho header (20 là một ví dụ, bạn có thể điều chỉnh theo nhu cầu của bạn)
+        row.height = 20;
       }
     });
   
-    // Thêm border chỉ cho các ô nằm trong bảng
     worksheet.eachRow((row, rowNumber) => {
       if (rowNumber > 1) {
         row.eachCell((cell) => {
@@ -445,21 +453,21 @@ export class AdminStatisticalComponent {
   }
   
 
-  data: product[] = [
-    { id: 1, name: "Nivia Graffiti Basketball", brand: "Nivia", color: "Mixed", price: 391.00 },
-    { id: 2, name: "Strauss Official Basketball", brand: "Strauss", color: "Orange", price: 391.00 },
-    { id: 3, name: "Spalding Rebound Rubber Basketball", brand: "Spalding", color: "Brick", price: 675.00 },
-    { id: 4, name: "Cosco Funtime Basket Ball, Size 6 ", brand: "Cosco", color: "Orange", price: 300.00 },
-    { id: 5, name: "Nike Dominate 8P Basketball", brand: "Nike", color: "brick", price: 1295 },
-    { id: 6, name: "Nivia Europa Basketball", brand: "Nivia", color: "Orange", price: 280.00 }
-  ]
+  // data: product[] = [
+  //   { id: 1, name: "Nivia Graffiti Basketball", brand: "Nivia", color: "Mixed", price: 391.00 },
+  //   { id: 2, name: "Strauss Official Basketball", brand: "Strauss", color: "Orange", price: 391.00 },
+  //   { id: 3, name: "Spalding Rebound Rubber Basketball", brand: "Spalding", color: "Brick", price: 675.00 },
+  //   { id: 4, name: "Cosco Funtime Basket Ball, Size 6 ", brand: "Cosco", color: "Orange", price: 300.00 },
+  //   { id: 5, name: "Nike Dominate 8P Basketball", brand: "Nike", color: "brick", price: 1295 },
+  //   { id: 6, name: "Nivia Europa Basketball", brand: "Nivia", color: "Orange", price: 280.00 }
+  // ]
 }
 
 
-export interface product {
-  id: number
-  name: string
-  brand: string
-  color: string
-  price: number
-}
+// export interface product {
+//   id: number
+//   name: string
+//   brand: string
+//   color: string
+//   price: number
+// }
