@@ -248,11 +248,7 @@ export class AdminTableSurveyComponent {
         }
       }
     }
-    // // Xóa khoảng trắng và "and" cuối cùng khỏi keyword
-    // keyword = keyword.trim();
-    // if (keyword.endsWith('and')) {
-    //   keyword = keyword.slice(0, -3);
-    // }  
+   
     this.paging = {
       pageIndex: pageIndex,
       pageSize: pageSize,

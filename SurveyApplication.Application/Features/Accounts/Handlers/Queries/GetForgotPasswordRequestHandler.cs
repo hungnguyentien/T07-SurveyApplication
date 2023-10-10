@@ -48,7 +48,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             // Tạo URL với token
-            var callbackUrl = $"{EmailSettings.LinkDoiMatKhau}?email={user.Email}&token={token}";
+            var callbackUrl = $"{EmailSettings.LinkDoiMatKhau}?email={user.Email}&token={WebUtility.UrlEncode(token)}";
 
             // Tạo nội dung email với đường dẫn URL
             var bodyEmail = $"Nhấn vào đường link sau để đặt lại mật khẩu của bạn: <a href='{callbackUrl}'>{callbackUrl}</a>";

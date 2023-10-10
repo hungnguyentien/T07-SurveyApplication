@@ -1,0 +1,63 @@
+<div id="box-phieu-khao-sat">
+    <header class="header">
+        <img src="../../../../assets/img/header-client.png" alt="header">
+    </header>
+    <div id="box-content">
+        <div class="b-white">
+            <div class="box-header-phieu">
+                <div>TẠO MẬT KHẨU MỚI</div>
+                <div>
+                    Bạn vui lòng nhập mật khẩu mới và xác nhận mật khẩu
+                </div>
+            </div>
+            <div class="container">
+                <div style="width: 40%;margin: 0 auto; border: 1px solid #CCCC;">
+                    <form [formGroup]="frmForgotPass" (ngSubmit)="onSubmit()">
+                        <div class="row mt-3">
+                            <div class="form-group col-md-12 pl-5 pr-5">
+                                <label for="password" class="col-form-label">Mật khẩu mới: <span
+                                        style="color: red">*</span></label>
+                                <input type="text" pInputText class="form-control" id="password"
+                                    formControlName="password"
+                                    [ngClass]="{ 'is-invalid': submitted && f('password').errors }" />
+                                <small style="color: #e24c4c;" class="ml-2"
+                                    *ngIf="!frmForgotPass.controls['password'].valid && frmForgotPass.controls['password'].dirty">
+                                    Vui lòng nhập mật khẩu
+                                </small>
+                            </div>
+                            <div class="form-group col-md-12 pl-5 pr-5">
+                                <label for="confirmPassword" class="col-form-label">Nhập lại mật khẩu:<span
+                                        style="color: red">*</span></label>
+                                <input type="text" pInputText class="form-control" id="confirmPassword"
+                                    formControlName="confirmPassword"
+                                    [ngClass]="{ 'is-invalid': submitted && f('confirmPassword').errors }" />
+                                <small style="color: #e24c4c;" class="ml-2"
+                                    *ngIf="frmForgotPass.controls['email'].dirty && frmForgotPass.hasError('notSame')">
+                                    Mật khẩu không phù hợp
+                                </small>
+                            </div>
+                            <div>
+                                <a routerLink="/">
+                                    <button pButton type="button" class="custom-button surface-600 m-3" > Quay về đăng nhập</button>
+                                </a>
+                                <button pButton type="submit" class="custom-button m-3">Lưu</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div>
+            CỤC THƯƠNG MẠI ĐIỆN TỬ & KINH TẾ SỐ
+            BỘ CÔNG THƯƠNG
+        </div>
+        <div>
+            Địa chỉ: 25 P. Ngô Quyền, Tràng Tiền, Hoàn Kiếm, Hà Nội
+            Điện thoại: 024 2220 5396
+        </div>
+    </footer>
+
+</div>
+<p-toast></p-toast>

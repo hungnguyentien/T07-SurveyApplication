@@ -64,8 +64,8 @@ namespace SurveyApplication.API.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Update })]
-        public async Task<ActionResult> ForgotPassword(ResetPasswordDto ojb)
+        [AllowAnonymous]
+        public async Task<ActionResult> ResetPassword(ResetPasswordDto ojb)
         {
             var leaveAllocations = await _mediator.Send(new ResetPasswordRequest { ResetPasswordDto = ojb });
             return Ok(leaveAllocations);

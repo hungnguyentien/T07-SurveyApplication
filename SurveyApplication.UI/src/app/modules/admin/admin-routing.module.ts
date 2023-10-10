@@ -20,6 +20,7 @@ import { CodeModule } from '@app/enums';
 import { AdminModuleManagementComponent } from './admin-module-management/admin-module-management.component';
 import { AdminIpaddressComponent } from './admin-ipaddress/admin-ipaddress.component';
 import { AdminBackupComponent } from './admin-backup/admin-backup.component';
+import { ForgotPassComponent } from '../../layout/teamplate/forgot-pass/forgot-pass.component';
 
 const routes: Routes = [
   {
@@ -189,15 +190,7 @@ const routes: Routes = [
         data: {
           title: 'error-403',
         },
-      },
-      {
-        path: 'forgot-password',
-        component: Error403Component,
-        title: 'Tạo mật khẩu mới',
-        data: {
-          title: 'Tạo mật khẩu mới',
-        },
-      },
+      }
     ],
   },
 ];

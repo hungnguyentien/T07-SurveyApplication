@@ -12,6 +12,9 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import * as moment from 'moment';
 import 'moment-timezone'; // Import 'moment-timezone'
 import * as XLSX from 'xlsx';
+
+import { Workbook, Worksheet } from 'exceljs';
+import * as fs from 'file-saver';
 import { Table } from 'primeng/table';
 import {
   BaoCaoCauHoiChiTiet,
@@ -388,4 +391,75 @@ export class AdminStatisticalComponent {
   //     },
   //   });
   // };
+
+  exportExcel() {
+    let workbook = new Workbook();
+    let worksheet = workbook.addWorksheet('ProductSheet');
+     
+    // Định dạng cho header và độ rộng của các cột
+    worksheet.columns = [
+      { header: 'STT', key: 'stt', width: 10 },
+      { header: 'Câu hỏi - Câu trả lời', key: 'cauhoicautraloi', width: 70 },
+      { header: 'Số lượt chọn', key: 'soluotchon', width: 15 },
+      { header: 'Tỷ lệ', key: 'tyle', width: 15 },
+    ];
+  
+    // Thêm dữ liệu
+    this.data.forEach((e, index) => {
+      worksheet.addRow({ stt: index + 1, cauhoicautraloi: e.name, soluotchon: e.brand, tyle: e.price });
+    });
+  
+    // Định dạng cho các ô
+    worksheet.eachRow((row, rowNumber) => {
+      row.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+      if (rowNumber === 1) {
+        row.font = { bold: true };
+        row.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FF808080' }
+        };
+        // Đặt độ cao của hàng chứa header
+        row.height = 20; // Thay đổi độ cao tùy chỉnh cho header (20 là một ví dụ, bạn có thể điều chỉnh theo nhu cầu của bạn)
+      }
+    });
+  
+    // Thêm border chỉ cho các ô nằm trong bảng
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber > 1) {
+        row.eachCell((cell) => {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          };
+        });
+      }
+    });
+  
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, 'ProductData.xlsx');
+    });
+  }
+  
+
+  data: product[] = [
+    { id: 1, name: "Nivia Graffiti Basketball", brand: "Nivia", color: "Mixed", price: 391.00 },
+    { id: 2, name: "Strauss Official Basketball", brand: "Strauss", color: "Orange", price: 391.00 },
+    { id: 3, name: "Spalding Rebound Rubber Basketball", brand: "Spalding", color: "Brick", price: 675.00 },
+    { id: 4, name: "Cosco Funtime Basket Ball, Size 6 ", brand: "Cosco", color: "Orange", price: 300.00 },
+    { id: 5, name: "Nike Dominate 8P Basketball", brand: "Nike", color: "brick", price: 1295 },
+    { id: 6, name: "Nivia Europa Basketball", brand: "Nivia", color: "Orange", price: 280.00 }
+  ]
+}
+
+
+export interface product {
+  id: number
+  name: string
+  brand: string
+  color: string
+  price: number
 }
