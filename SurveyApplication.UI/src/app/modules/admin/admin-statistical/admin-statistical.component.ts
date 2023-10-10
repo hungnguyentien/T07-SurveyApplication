@@ -395,7 +395,7 @@ export class AdminStatisticalComponent {
   exportExcel() {
     let workbook = new Workbook();
     let worksheet = workbook.addWorksheet('ProductSheet');
-     
+    
     // Định dạng cho header và độ rộng của các cột
     worksheet.columns = [
       { header: 'STT', key: 'stt', width: 10 },
@@ -405,69 +405,47 @@ export class AdminStatisticalComponent {
     ];
 
     // Thêm dữ liệu
-    this.datas.forEach((e: any, index: number) => {
-      if (e.cauHoiTraLoi.length && e.cauHoiTraLoi[index]) {
-        worksheet.addRow({ stt: index + 1, cauhoicautraloi: e.tenCauHoi, soluotchon: e.cauHoiTraLoi[index].soLuotChon, tyle: e.cauHoiTraLoi[index].tyLe + ' %'});
-      }
-      // if (e.cauHoiTraLoi.length > 1 && e.cauHoiTraLoi[index]) {
-      //   e.array.forEach((element: any) => {
-      //     worksheet.addRow({ stt: index + 1, cauhoicautraloi: element.tenCauHoi, soluotchon: element.soLuotChon, tyle: element.tyLe + ' %'});
-      //   });
-      // }
-       else {
-        worksheet.addRow({ stt: index + 1, cauhoicautraloi: e.tenCauHoi, soluotchon: '0', tyle: '0 %' });
+    let x = 2;
+    let y = 2;
+    this.datas.forEach((e: any, i: number) => {
+      if (e && e.cauHoiTraLoi && e.cauHoiTraLoi.length > 0) {
+        worksheet.addRow({ stt: i + 1, cauhoicautraloi: e.tenCauHoi, soluotchon: '', tyle: '' });
+        worksheet.mergeCells(`B${x}:D${x}`);
+        x += e.cauHoiTraLoi.length + 1;
+
+        e.cauHoiTraLoi.forEach((element: any) => {
+          if (element.length > 1) {
+            worksheet.addRow({ stt: '', cauhoicautraloi: element.cauTraLoi, soluotchon: element.soLuotChon, tyle: parseFloat(element.tyLe.toFixed(4)) + ' %' });
+          } else {
+            worksheet.addRow({ stt: '', cauhoicautraloi: element.cauTraLoi, soluotchon: element.soLuotChon, tyle: parseFloat(element.tyLe.toFixed(4)) + ' %' });
+          }
+        });
+        worksheet.mergeCells(`A${y}:A${y + e.cauHoiTraLoi.length}`);
+        y += e.cauHoiTraLoi.length + 1;
       }
     });
-  
+
     // Định dạng cho các ô
     worksheet.eachRow((row, rowNumber) => {
-      row.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-      if (rowNumber === 1) {
-        row.font = { bold: true };
-        row.fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: 'FF808080' }
-        };
-        row.height = 20;
-      }
+      row.alignment = { wrapText: true };
+      row.eachCell((cell, colNumber) => {
+        cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+        row.height = 30;
+        
+        if (rowNumber === 1) {
+          cell.font = { bold: true };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF808080' } };
+          row.height = 40;
+        }
+      });
     });
-  
-    worksheet.eachRow((row, rowNumber) => {
-      if (rowNumber > 1) {
-        row.eachCell((cell) => {
-          cell.border = {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' }
-          };
-        });
-      }
-    });
-  
+
+    worksheet.getColumn('cauhoicautraloi').alignment = { vertical: 'middle', horizontal: 'left', wrapText: true };
+
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       fs.saveAs(blob, 'ProductData.xlsx');
     });
   }
-  
-
-  // data: product[] = [
-  //   { id: 1, name: "Nivia Graffiti Basketball", brand: "Nivia", color: "Mixed", price: 391.00 },
-  //   { id: 2, name: "Strauss Official Basketball", brand: "Strauss", color: "Orange", price: 391.00 },
-  //   { id: 3, name: "Spalding Rebound Rubber Basketball", brand: "Spalding", color: "Brick", price: 675.00 },
-  //   { id: 4, name: "Cosco Funtime Basket Ball, Size 6 ", brand: "Cosco", color: "Orange", price: 300.00 },
-  //   { id: 5, name: "Nike Dominate 8P Basketball", brand: "Nike", color: "brick", price: 1295 },
-  //   { id: 6, name: "Nivia Europa Basketball", brand: "Nivia", color: "Orange", price: 280.00 }
-  // ]
 }
-
-
-// export interface product {
-//   id: number
-//   name: string
-//   brand: string
-//   color: string
-//   price: number
-// }
