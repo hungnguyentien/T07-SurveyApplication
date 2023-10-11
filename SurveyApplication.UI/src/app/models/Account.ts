@@ -1,6 +1,7 @@
 import { MatrixPermission } from './Role';
 
 export interface Account {
+  matrixPermission: any;
   id: string;
   name: string | null;
   userName: string | null;

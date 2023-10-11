@@ -148,11 +148,11 @@
             <div class="row" *ngIf="isCreate">
                 <div class="form-group col-md-6">
                     <label for="password" class="col-form-label">Mật khẩu: <span style="color: red">*</span></label>
-                    <!-- <div class="">
+                    <div class="">
                         <p-password formControlName="password" id="password" [toggleMask]="true"
                             [ngClass]="{ 'is-invalid': submitted && f('password').errors }"
                             [feedback]="false"></p-password>
-                    </div> -->
+                    </div>
                     <input type="text" pInputText class="form-control" id="password" formControlName="password"
                         [ngClass]="{ 'is-invalid': submitted && f('password').errors }" />
                     <small style="color: #e24c4c;" class="ml-2"

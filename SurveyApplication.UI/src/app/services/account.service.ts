@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
-import { Account, BaseCommandResponse } from '@app/models';
+import { Account, BaseCommandResponse, Register } from '@app/models';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Observable, first } from 'rxjs';
@@ -25,7 +25,7 @@ export class AccountService extends BaseService<Account> {
   }
 
   getPermissionById(id: string) {
-    return this.http.get<Account>(
+    return this.http.get<Register>(
       `${environment.apiUrl}/Account/GetById/${id}`
     );
   }
