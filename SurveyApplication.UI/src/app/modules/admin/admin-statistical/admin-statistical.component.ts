@@ -166,14 +166,14 @@ export class AdminStatisticalComponent {
     return index;
   }
 
-  exportToExcel() {
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
-      this.table.el.nativeElement
-    );
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'ThongKe.xlsx');
-  }
+  // exportToExcel() {
+  //   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+  //     this.table.el.nativeElement
+  //   );
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  //   XLSX.writeFile(wb, 'ThongKe.xlsx');
+  // }
 
   getVauleChar = (params: BaoCaoCauHoiRequest) => {
     this.baoCaoCauHoiService.getBaoCaoCauHoi(params).subscribe({
@@ -392,9 +392,9 @@ export class AdminStatisticalComponent {
   //   });
   // };
 
-  exportExcel() {
+  exportExcelSimple() {
     let workbook = new Workbook();
-    let worksheet = workbook.addWorksheet('ProductSheet');
+    let worksheet = workbook.addWorksheet('Tổng quát');
     
     // Định dạng cho header và độ rộng của các cột
     worksheet.columns = [
@@ -445,7 +445,78 @@ export class AdminStatisticalComponent {
 
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      fs.saveAs(blob, 'ProductData.xlsx');
+      fs.saveAs(blob, 'ThongKeTongQuat.xlsx');
+    });
+  }
+
+  exportExcelDetail() {
+    let workbook = new Workbook();
+    let worksheet = workbook.addWorksheet('Chi tiết');
+  
+    // Định dạng cho header và độ rộng của các cột
+    worksheet.columns = [
+      { header: 'STT', key: 'stt', width: 10 },
+      { header: 'Dấu thời gian', key: 'dauthoigian', width: 30 },
+    ];
+  
+    let y = 2;
+    this.dataChiTiet.forEach((e: any, i: number) => {
+      let maxLength = 0;
+  
+      worksheet.getCell(`A${y}`).value = i + 1;
+      worksheet.getCell(`B${y}`).value = e.dauThoiGian;
+  
+      e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
+        worksheet.getCell(`${String.fromCharCode(67 + j)}1`).value = elem.cauHoi;
+  
+        if (elem.cauTraLoi.length > maxLength) {
+          maxLength = elem.cauTraLoi.length;
+        }
+  
+        elem.cauTraLoi.forEach((element: any, k: number) => {
+          worksheet.getCell(`${String.fromCharCode(67 + j)}${k + 2}`).value = element;
+        });
+      });
+  
+      worksheet.mergeCells(`A${y}:A${y + maxLength - 1}`);
+      worksheet.mergeCells(`B${y}:B${y + maxLength - 1}`);
+
+      worksheet.getColumn('A').width = 10;
+      worksheet.getColumn('B').width = 30;
+      for (let j = 0; j < e.lstCauHoiCauTraLoi.length; j++) {
+        worksheet.getColumn(String.fromCharCode(67 + j)).width = 15;
+      }
+      
+      e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
+        if (elem.cauTraLoi.length < maxLength) {
+          for (let k = elem.cauTraLoi.length; k < maxLength; k++) {
+            worksheet.getCell(`${String.fromCharCode(67 + j)}${k + 2}`).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' }};
+          }
+        }
+      });
+  
+      y += maxLength + 1;
+    });
+  
+    // Định dạng cho các ô
+    worksheet.eachRow((row, rowNumber) => {
+      row.alignment = { wrapText: true };
+      row.eachCell((cell, colNumber) => {
+        cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' }};
+        row.height = 30;
+  
+        if (rowNumber === 1) {
+          cell.font = { bold: true };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF808080' }};
+          row.height = 40;
+        }
+      });
+    });
+  
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, 'ThongKeChiTiet.xlsx');
     });
   }
 }
