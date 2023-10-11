@@ -93,6 +93,8 @@
                 </td>
                 <td>
                     <a class="m-3"><span (click)="updateDialog(rowData)" class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
+                    <a class="m-3"><span class="pi pi-trash" title="Xoá"    style="color: red;"
+                        aria-hidden="true"></span></a>
                 </td>
             </tr>
         </ng-template>
@@ -183,7 +185,7 @@
                         [ngModelOptions]="{standalone: true}" class="form-select-custom"></p-multiSelect>
                 </div>
                 <div class="form-group col-md-3" style="margin-top: 36px;">
-                    <button pButton type="button" icon="pi pi-plus" label="Thêm quyền" class="custom-button" (click)="addRole()"></button>
+                    <button pButton type="button" icon="pi pi-plus" label="Thêm quyền"  (click)="addRole()" class="custom-button"   ></button>
                 </div>
             </div>
             <div class="row">
@@ -225,9 +227,9 @@
         <ng-template pTemplate="footer">
             <input type="hidden" formControlName="id">
             <button pButton (click)="visibleRole = false" type="button" label="Đóng"
-                class="custom-button surface-600"></button>
+                class="custom-button surface-600" ></button>
             <button pButton type="submit" icon="pi pi-save" label="Lưu"
-                class="custom-button"></button>
+                class="custom-button"  ></button>
         </ng-template>
     </p-dialog>
 </form>

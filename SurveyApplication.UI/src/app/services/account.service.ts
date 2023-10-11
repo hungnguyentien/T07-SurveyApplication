@@ -18,4 +18,16 @@ export class AccountService extends BaseService<Account> {
       .post<BaseCommandResponse>(`${this.actionUrl}/register`, data)
       .pipe(first());
   }
+  resetPassword<T>(data: T): Observable<BaseCommandResponse> {
+    return this._http
+      .post<BaseCommandResponse>(`${this.actionUrl}/ResetPassword`, data)
+      .pipe(first());
+  }
+
+  getPermissionById(id: string) {
+    return this.http.get<Account>(
+      `${environment.apiUrl}/Account/GetById/${id}`
+    );
+  }
+ 
 }

@@ -11,7 +11,7 @@ export interface Account {
 export interface Register {
   id: string;
   address: string | null;
-  name: string | null;
+  name: string | null;  
   email: string;
   userName: string;
   password: string;
@@ -20,3 +20,5 @@ export interface Register {
   image: string | null;
   matrixPermission: MatrixPermission[] | null;
 }
+
+

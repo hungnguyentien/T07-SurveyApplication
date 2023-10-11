@@ -270,7 +270,7 @@
                     <label for="ngayBatDau" class="col-form-label">Ngày bắt đầu: <span
                             style="color: red;">*</span></label>
                     <p-calendar formControlName="ngayBatDau" id="ngayBatDau" appendTo="body" dateFormat="dd/mm/yy"
-                        [showIcon]="true" class="input-date-custom" [minDate]="checkDate()"></p-calendar>
+                        [showIcon]="true" class="input-date-custom"></p-calendar>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayBatDau'].valid && 
                         formTableSurvey.controls['ngayBatDau'].dirty && !checkBtnDetail == true">
@@ -284,7 +284,7 @@
                     <label for="ngayKetThuc" class="col-form-label">Ngày kết thúc: <span
                             style="color: red;">*</span></label>
                     <p-calendar formControlName="ngayKetThuc" id="ngayKetThuc" appendTo="body" dateFormat="dd/mm/yy"
-                        [showIcon]="true" class="input-date-custom"[minDate]="formTableSurvey.get('ngayBatDau')?.value"></p-calendar>
+                        [showIcon]="true" class="input-date-custom"[minDate]="currentDate"></p-calendar>
 
                     <small style="color: #e24c4c;" class="ml-2" *ngIf="!formTableSurvey.controls['ngayKetThuc'].valid && 
                         formTableSurvey.controls['ngayKetThuc'].dirty && !checkBtnDetail == true">

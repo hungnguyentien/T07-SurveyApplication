@@ -1,0 +1,79 @@
+::ng-deep .p-password{
+    height: 38px;
+    width: 100%;
+}
+::ng-deep .p-password-input{
+    width: 100% !important;
+}
+
+#box-phieu-khao-sat {
+    margin: auto;
+    max-width: 1440px;
+    position: relative;
+  }
+  
+  #box-content {
+    min-height: calc(100vh - 256px);
+    padding: 30px 60px;
+    background: url("/assets/img/12\ 3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .box-header-phieu {
+    height: 136px;
+  }
+  
+  .box-header-phieu div:first-child {
+    max-width: 500px;
+    margin: auto;
+    color: rgba(50, 87, 170, 1);
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .box-header-phieu div:last-child {
+    max-width: 550px;
+    margin: auto;
+    color: rgba(0, 0, 0, 1);
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+  }
+  
+  .b-white {
+    background: white;
+    padding: 0 60px 60px 60px;
+  }
+  
+  footer {
+    background: url("/assets/img/footer-client.png");
+    height: 136px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  footer > div {
+    color: rgba(57, 93, 175, 1);
+    font-size: 20px;
+    font-weight: 500;
+  }
+  
+  footer > div:first-child {
+    margin-right: 30px;
+    text-align: right;
+    max-width: 400px;
+  }
+  
+  footer > div:last-child {
+    margin-left: 30px;
+    text-align: left;
+    max-width: 500px;
+  }
