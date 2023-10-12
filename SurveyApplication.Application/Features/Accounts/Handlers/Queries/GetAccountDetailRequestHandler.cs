@@ -22,11 +22,13 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
     {
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
-        public GetAccountDetailRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper,UserManager<ApplicationUser> userManager) : base(
+        private readonly RoleManager<Domain.Role> _roleManager;
+        public GetAccountDetailRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper,UserManager<ApplicationUser> userManager, RoleManager<Domain.Role> roleManager) : base(
             surveyRepository)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         //public async Task<AccountDto> Handle(GetAccountDetailRequest request,
@@ -42,8 +44,21 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries
             var roles = await _userManager.GetRolesAsync(user);
             var roleList = roles.ToList();
 
+            //List<string> roleIds = new List<string>();
+
+            //foreach (var roleName in roles)
+            //{
+            //    var role = await _roleManager.FindByNameAsync(roleName);
+            //    if (role != null)
+            //    {
+            //        roleIds.Add(role.Id);
+            //    }
+            //}
+             var roleLstId = roleList.ToList();
+
             var accountDto = _mapper.Map<UpdateAccountDto>(user);
-            accountDto.LstRoleName = roleList;
+            accountDto.LstRoleName = roleLstId;
+            
 
 
 

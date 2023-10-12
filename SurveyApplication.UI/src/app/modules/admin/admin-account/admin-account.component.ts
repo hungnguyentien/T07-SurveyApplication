@@ -28,6 +28,7 @@ export class AdminAccountComponent {
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
+  GetUserId!:string;
 
   frmAccount!: FormGroup;
   account!: Register;
@@ -39,16 +40,12 @@ export class AdminAccountComponent {
   submitted: boolean = false;
 
   lstRole: Role[] = [];
-  selectedRole: string[] = [];
+  selectedRole: Role[] = [];
   matrixSelect: MatrixPermission[] = [];
 
   role!: CreateUpdateRole;
   treeData: TreeNode[] = [];
   selectedTreeData!: TreeNode<any> | TreeNode<any>[] | null;
-
- 
-  matchingRoles: Role[]=[];
-
   formData: any = {};
   constructor(
     private formBuilder: FormBuilder,
@@ -66,13 +63,6 @@ export class AdminAccountComponent {
     this.roleService.getAll().subscribe({
       next: (roles) => {
         this.lstRole = roles; // Danh sách quyền
-        const lstRoleNames = this.lstRole.map((role) => role.name); // Tạo một mảng tên quyền
-    
-        // Lấy giá trị lstRoleName từ frmAccount
-        const lstRoleNameFromForm = this.frmAccount.get('lstRoleName')?.value as any[];
-
-        this.matchingRoles = lstRoleNameFromForm.filter((roleName) => lstRoleNames.includes(roleName));
-    
       },
     });
     this.treeData = [];
@@ -230,14 +220,14 @@ export class AdminAccountComponent {
   };
 
   onSubmit = (data: any) => {
-    if (this.isCreate !== null) this.createSubmit(data);
+    if (this.isCreate !== null) 
     this.isCreate ? this.createSubmit(data) : this.updateSubmit(data);
   };
 
   updateDialog(data: any) {
-    debugger;
     this.isCreate = false;
     this.visible = true;
+    this.GetUserId = data.id;
     this.accountService.getPermissionById(data.id).subscribe({
       next: (res) => {
         // Cập nhật giá trị của các trường từ dữ liệu data 
@@ -246,13 +236,23 @@ export class AdminAccountComponent {
           email: res.email,
           name: res.name,
           address: res.address,
-          lstRoleName:this.matchingRoles,
-          matrixPermission:res.matrixPermission
+          lstRoleName: res.lstRoleName,
+          matrixPermission: res.matrixPermission
         });
+        const selectedRoleName: any[] = [];
+        if (res.lstRoleName != null) {
+          // Lặp qua lstRoleName và so sánh với roleId
+          res.lstRoleName.forEach((roleName) => {
+            const matchingRole = this.lstRole.find((role) => role.name === roleName);
+            if (matchingRole) {
+              // Nếu tìm thấy trùng khớp, thêm nó vào selectedRole
+              selectedRoleName.push(matchingRole);
+            }
+          });
+          this.selectedRole = selectedRoleName;
+        }
         let selectedTreeData = this.selectedTreeData as any[];
-
         if (res.matrixPermission != null) {
-          // Thực hiện các thao tác trên res.matrixPermission ở đây
           res.matrixPermission.forEach((el) => {
             let data = {
               key: `${el.module.toString()}_${el.nameModule}`,
@@ -273,30 +273,29 @@ export class AdminAccountComponent {
         }
       },
     });
-
-    // this.roleService.getMatrixPermission().subscribe({
-    //   next: (res) => {
-    //     res.forEach((el) => {
-    //       let data = {
-    //         key: `${el.module.toString()}_${el.nameModule}`,
-    //         label: el.nameModule,
-    //         data: el.module,
-    //         children: el.lstPermission.map((x) =>
-    //           Object({
-    //             key: `${el.module.toString()}_${el.nameModule
-    //               }_${x.value.toString()}_${x.name}`,
-    //             label: x.name,
-    //             data: x.value,
-    //             parent: `${el.module.toString()}_${el.nameModule}`,
-    //             selectable: true,
-    //           })
-    //         ),
-    //         selectable: true,
-    //       };
-    //       this.treeData.push(data);
-    //     });
-    //   },
-    // });
+    this.roleService.getMatrixPermission().subscribe({
+      next: (res) => {
+        res.forEach((el) => {
+          let data = {
+            key: `${el.module.toString()}_${el.nameModule}`,
+            label: el.nameModule,
+            data: el.module,
+            children: el.lstPermission.map((x) =>
+              Object({
+                key: `${el.module.toString()}_${el.nameModule
+                  }_${x.value.toString()}_${x.name}`,
+                label: x.name,
+                data: x.value,
+                parent: `${el.module.toString()}_${el.nameModule}`,
+                selectable: true,
+              })
+            ),
+            selectable: true,
+          };
+          this.treeData.push(data);
+        });
+      },
+    });
 
 
 
@@ -304,11 +303,13 @@ export class AdminAccountComponent {
 
   updateSubmit = (data: any) => {
     this.submitted = true;
-    if (this.frmAccount.invalid) return;
+    // if (this.frmAccount.invalid) return;
+    const names: string[] = this.selectedRole.map(role => role.name);
     this.account = data.value;
-    this.account.lstRoleName = this.selectedRole;
+    this.account.id=this.GetUserId;
+    this.account.lstRoleName = names;
     this.account.matrixPermission = this.matrixSelect;
-    this.accountService.update<Account>(this.account).subscribe({
+    this.accountService.update<Register>(this.account).subscribe({
       next: (res) => {
         if (res.success) {
           this.table.reset();
@@ -316,8 +317,11 @@ export class AdminAccountComponent {
           this.visible = false;
           this.frmAccount.reset();
           this.account.lstRoleName = [];
+          this.selectedRole=[];
           this.account.matrixPermission = [];
-        } else {
+          this.frmAccount.reset()
+        }
+         else {
           Utils.messageError(this.messageService, res.errors.at(0) ?? '');
         }
       },
@@ -328,7 +332,7 @@ export class AdminAccountComponent {
     this.submitted = true;
     if (this.frmAccount.invalid) return;
     this.account = data.value;
-    this.account.lstRoleName = this.selectedRole;
+    this.account.lstRoleName = this.selectedRole.map(role => role.name);
     this.account.matrixPermission = this.matrixSelect;
     this.accountService.register<Register>(this.account).subscribe({
       next: (res) => {
@@ -338,6 +342,8 @@ export class AdminAccountComponent {
           this.visible = false;
           this.frmAccount.reset();
           this.account.lstRoleName = [];
+          this.selectedRole=[];
+
           this.account.matrixPermission = [];
         } else {
           Utils.messageError(this.messageService, res.errors.at(0) ?? '');
@@ -351,6 +357,8 @@ export class AdminAccountComponent {
     this.visible = true;
     this.submitted = false;
     this.createFrom();
+   this.selectedRole=[];
+    
   };
   confirmDeleteMultiple = () => { };
 

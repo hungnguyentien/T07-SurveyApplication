@@ -148,11 +148,11 @@
             <div class="row" *ngIf="isCreate">
                 <div class="form-group col-md-6">
                     <label for="password" class="col-form-label">Mật khẩu: <span style="color: red">*</span></label>
-                    <div class="">
+                    <!-- <div class="">
                         <p-password formControlName="password" id="password" [toggleMask]="true"
                             [ngClass]="{ 'is-invalid': submitted && f('password').errors }"
                             [feedback]="false"></p-password>
-                    </div>
+                    </div> -->
                     <input type="text" pInputText class="form-control" id="password" formControlName="password"
                         [ngClass]="{ 'is-invalid': submitted && f('password').errors }" />
                     <small style="color: #e24c4c;" class="ml-2"
@@ -179,8 +179,8 @@
             <div class="row">
                 <div class="form-group col-md-9">
                     <label for="lstRoleName" class="col-form-label">Nhóm quyền:</label>
-                    <p-multiSelect [options]="lstRole" [(ngModel)]="selectedRole" defaultLabel="-- Chọn nhóm quyền --"
-                        appendTo="body" optionLabel="name" optionValue="name" display="chip" id="lstRoleName"
+                    <p-multiSelect [options]="lstRole" [(ngModel)]="selectedRole"  defaultLabel="-- Chọn nhóm quyền --"
+                    [filter]="true"  appendTo="body" optionLabel="name"  display="chip" id="lstRoleName"
                         emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
                         [ngModelOptions]="{standalone: true}" class="form-select-custom"></p-multiSelect>
                 </div>
@@ -203,7 +203,7 @@
             <input type="hidden" formControlName="id">
             <button pButton (click)="visible = false" type="button" label="Đóng"
                 class="custom-button surface-600"></button>
-            <button pButton  [disabled]="!frmAccount.valid" type="submit" icon="pi pi-save" label="Lưu"
+            <button pButton   type="submit" icon="pi pi-save" label="Lưu"
                 class="custom-button"></button>
         </ng-template>
     </p-dialog>

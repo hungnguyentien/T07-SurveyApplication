@@ -68,7 +68,7 @@ export class AdminStatisticalComponent {
   ) {}
 
   ngOnInit() {
-    Utils.translate('vi', this.translateService, this.config);
+    // Utils.translate('vi', this.translateService, this.config);
     this.frmStatiscal = this.formBuilder.group({
       idDotKhaoSat: [],
       idBangKhaoSat: [],
