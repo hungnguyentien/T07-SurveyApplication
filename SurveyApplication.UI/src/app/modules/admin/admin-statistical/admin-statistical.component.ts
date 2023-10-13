@@ -12,9 +12,13 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import * as moment from 'moment';
 import 'moment-timezone'; // Import 'moment-timezone'
 import * as XLSX from 'xlsx';
-
 import { Workbook, Worksheet } from 'exceljs';
 import * as fs from 'file-saver';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { PageOrientation } from 'pdfmake/interfaces';
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
 import { Table } from 'primeng/table';
 import {
   BaoCaoCauHoiChiTiet,
@@ -25,6 +29,7 @@ import {
   StgFile,
 } from '@app/models';
 import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-admin-statistical',
   templateUrl: './admin-statistical.component.html',
@@ -35,7 +40,7 @@ export class AdminStatisticalComponent {
   LstDotKhaoSat: any[] = [];
   LstBangKhaoSat: any[] = [];
   LstLoaiHinhDv: any[] = [];
-
+  multiBillZero: any[] = [];
   doughnutData: any;
   doughnutOptions: any;
 
@@ -518,5 +523,38 @@ export class AdminStatisticalComponent {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       fs.saveAs(blob, 'ThongKeChiTiet.xlsx');
     });
+  }
+
+  exportPDFDetail() {
+    const header: string[] = ['STT', 'Dấu thời gian'];
+    const data: string[][] = [];
+
+    this.dataChiTiet.forEach((e: any, i: number) => {
+      e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
+        header.push(elem.cauHoi);
+
+        elem.cauTraLoi.forEach((element: any) => {
+          if (!data[j]) {
+            data[j] = [];
+          }
+
+          data[j].push(element)
+        });
+      });
+    });
+
+    const documentDefinition = {
+      content: [
+        {
+          table: {
+            widths: [100, 100, 100],
+            headerRows: 1,
+            body: [header, ...data],
+          },
+        },
+      ],
+    };
+  
+    pdfMake.createPdf(documentDefinition).download('ThongKeChiTiet.pdf');
   }
 }
