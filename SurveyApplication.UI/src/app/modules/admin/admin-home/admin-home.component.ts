@@ -38,7 +38,7 @@ export class AdminHomeComponent {
   ) {}
 
   ngOnInit(): void {
-    Utils.translate('vi', this.translateService, this.config);
+    // Utils.translate('vi', this.translateService, this.config);
     this.FormAminHome = this.FormBuilder.group({
       NgayBatDau: ['', Validators.required],
       NgayKetThuc: ['', Validators.required],
