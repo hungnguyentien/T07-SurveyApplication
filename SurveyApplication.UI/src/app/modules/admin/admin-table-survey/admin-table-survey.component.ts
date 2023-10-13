@@ -104,9 +104,9 @@ export class AdminTableSurveyComponent {
   lstIdDonViError: boolean = false;
 
   iPanelTitle!: number;
-  minDate!:Date;
-  minDate2!:Date;
-  reon!:boolean;
+  minDate!: Date;
+  minDate2!: Date;
+  reon!: boolean;
   currentDate!: Date;
   constructor(
     private router: Router,
@@ -125,13 +125,13 @@ export class AdminTableSurveyComponent {
     private config: PrimeNGConfig,
     private translateService: TranslateService
 
-  ) { 
+  ) {
     this.currentDate = new Date();
   }
 
   ngOnInit() {
 
-    Utils.translate('vi', this.translateService, this.config);
+    // Utils.translate('vi', this.translateService, this.config);
     this.form = this.fb.group({
       searchText: [''], // Khởi tạo FormControl searchText
       idDotKhaoSat: [''], // Khởi tạo FormControl idDotKhaoSat
@@ -156,9 +156,9 @@ export class AdminTableSurveyComponent {
     this.minDate = new Date();
     this.minDate2 = new Date(1900, 0, 1);
   }
-  checkDate():Date{
+  checkDate(): Date {
     let currentDate = new Date();
-    this.modalTitle  == 'Thêm mới bảng khảo sát'? currentDate =this.minDate:currentDate=this.minDate2
+    this.modalTitle == 'Thêm mới bảng khảo sát' ? currentDate = this.minDate : currentDate = this.minDate2
     return currentDate
   }
 
@@ -174,7 +174,7 @@ export class AdminTableSurveyComponent {
 
     return null;
   }
-  
+
 
   LoadUnitType() {
     this.unitTypeService.getAll().subscribe((data) => {
@@ -234,10 +234,10 @@ export class AdminTableSurveyComponent {
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
-  
+
     // Khởi tạo keyword là một chuỗi trống
-    let keyword = this.keyWord|| '';
-  
+    let keyword = this.keyWord || '';
+
     // Lặp qua các filter để xây dựng keyword
     for (const field in event.filters) {
       if (event.filters.hasOwnProperty(field)) {
@@ -248,16 +248,16 @@ export class AdminTableSurveyComponent {
         }
       }
     }
-   
+
     this.paging = {
       pageIndex: pageIndex,
       pageSize: pageSize,
-      keyword:keyword, // Sử dụng keyword mới xây dựng từ các filter
+      keyword: keyword, // Sử dụng keyword mới xây dựng từ các filter
       orderBy: event.sortField
         ? `${event.sortField} ${event.sortOrder === 1 ? 'asc' : 'desc'}`
         : '',
     };
-  
+
     this.TableSurveyService.getByCondition(this.paging).subscribe({
       next: (res) => {
         this.datas = res.data;
@@ -271,7 +271,7 @@ export class AdminTableSurveyComponent {
       },
     });
   };
-  
+
 
   onSubmitSearch = () => {
     this.paging.keyword = this.keyWord;
@@ -339,17 +339,17 @@ export class AdminTableSurveyComponent {
     this.visible = !this.visible;
     this.modalTitle = 'Chi tiết bảng khảo sát';
     this.formTableSurvey.disable();
-    this.reon=true;
+    this.reon = true;
 
     this.lstBangKhaoSatCauHoiGroup.disable();
-    
-    
+
+
     this.lstBangKhaoSatCauHoi.clear();
 
     this.lstBangKhaoSatCauHoiGroup.clear();
 
-    
-  
+
+
     this.TableSurveyService.getById<CreateUpdateBangKhaoSat>(data.id).subscribe(
       {
         next: (res) => {
@@ -466,14 +466,14 @@ export class AdminTableSurveyComponent {
     });
     this.checkBtnDetail = false;
     this.showadd = true;
-    this.reon=false;
+    this.reon = false;
     this.visible = !this.visible;
     this.lstBangKhaoSatCauHoi.clear();
     this.lstBangKhaoSatCauHoiGroup.clear();
   }
   Edit(data: any) {
     this.showadd = false;
-    this.reon=false;
+    this.reon = false;
     this.checkBtnDetail = false;
     this.modalTitle = 'Cập nhật bảng khảo sát';
     this.visible = !this.visible;
@@ -615,21 +615,9 @@ export class AdminTableSurveyComponent {
           }
         },
 
-        error: (e: HttpErrorResponse | any) => {
-          debugger;
-          if (e instanceof HttpErrorResponse) {
-            if (e.error && Array.isArray(e.error) && e.error.length > 0) {
-              const errorMessage = e.error[0];
-              Utils.messageError(this.messageService, errorMessage);
-            }
-          } else if (typeof e === 'object' && 'errorMessage' in e) {
-            // Trường hợp e là một đối tượng chứa errorMessage
-            const errorMessage = e.errorMessage;
-            Utils.messageError(this.messageService, errorMessage);
-          } else {
-            // Xử lý lỗi mặc định nếu kiểu dữ liệu không xác định
-            Utils.messageError(this.messageService, 'Lỗi không xác định.');
-          }
+        error: (e) => {
+          const errorMessage = e.errorMessage;
+          Utils.messageError(this.messageService, errorMessage);
         },
       });
     }
@@ -654,21 +642,25 @@ export class AdminTableSurveyComponent {
           this.visible = false;
         }
       },
-      error: (e: HttpErrorResponse | any) => {
-        if (e instanceof HttpErrorResponse) {
-          if (e.error && Array.isArray(e.error) && e.error.length > 0) {
-            const errorMessage = e.error[0];
-            Utils.messageError(this.messageService, errorMessage);
-          }
-        } else if (typeof e === 'object' && 'errorMessage' in e) {
-          // Trường hợp e là một đối tượng chứa errorMessage
-          const errorMessage = e.errorMessage;
-          Utils.messageError(this.messageService, errorMessage);
-        } else {
-          // Xử lý lỗi mặc định nếu kiểu dữ liệu không xác định
-          Utils.messageError(this.messageService, 'Lỗi không xác định.');
-        }
+      error: (e) => {
+        const errorMessage = e.errorMessage;
+        Utils.messageError(this.messageService, errorMessage);
       },
+      // error: (e: HttpErrorResponse | any) => {
+      //   if (e instanceof HttpErrorResponse) {
+      //     if (e.error && Array.isArray(e.error) && e.error.length > 0) {
+      //       const errorMessage = e.error[0];
+      //       Utils.messageError(this.messageService, errorMessage);
+      //     }
+      //   } else if (typeof e === 'object' && 'errorMessage' in e) {
+      //     // Trường hợp e là một đối tượng chứa errorMessage
+      //     const errorMessage = e.errorMessage;
+      //     Utils.messageError(this.messageService, errorMessage);
+      //   } else {
+      //     // Xử lý lỗi mặc định nếu kiểu dữ liệu không xác định
+      //     Utils.messageError(this.messageService, 'Lỗi không xác định.');
+      //   }
+      // },
     });
   }
 
@@ -838,8 +830,8 @@ export class AdminTableSurveyComponent {
     const checkGruop = this.lstBangKhaoSatCauHoiGroup.length;
     return (checkGruop === 0 && checklst === 0) ? true : (checklst > 0 || checkGruop > 0) ? false : true;
   }
-  
-  
+
+
   get lstBangKhaoSatCauHoiGroup(): FormArray {
     return this.formTableSurvey.get('bangKhaoSatCauHoiGroup') as FormArray;
   }

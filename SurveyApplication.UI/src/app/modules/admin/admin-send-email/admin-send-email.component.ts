@@ -95,6 +95,7 @@ export class AdminSendEmailComponent {
   };
 
   detailDialog = (rowData: GuiEmailBks) => {
+    
     //TODO reset popup
     this.maBangKhaoSat = '';
     this.tenBangKhaoSat = '';

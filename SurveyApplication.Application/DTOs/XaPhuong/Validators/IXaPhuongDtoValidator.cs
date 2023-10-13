@@ -17,7 +17,7 @@ namespace SurveyApplication.Application.DTOs.XaPhuong.Validators
                 .NotNull()
                 .MustAsync(async (model, token) =>
                 {
-                    var nameExists = await _XaPhuongRepository.Exists(x => x.Name == model.Name && x.Code != model.Code);
+                    var nameExists = await _XaPhuongRepository.Exists(x => x.Name == model.Name && x.Code != model.Code && !x.Deleted);
                     return !nameExists;
                 }).WithMessage("Tên xã phường đã tồn tại!");
 

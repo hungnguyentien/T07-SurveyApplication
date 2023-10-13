@@ -217,14 +217,17 @@ export class QuestionComponent {
   };
 
   updateDialog = (id: number) => {
+    debugger
     this.isCreate = false;
     this.visible = true;
     this.submitted = false;
     this.createForm();
     this.cauHoiService.getById<CreateUpdateCauHoi>(id).subscribe({
       next: (res) => {
-        let k = Object.keys(res).filter((x) => x != 'loaiCauHoi');
-        let v = Object.values(res).filter((x) => x != res['loaiCauHoi']);
+        // let k = Object.keys(res).filter((x) => x != 'loaiCauHoi');
+        // let v = Object.values(res).filter((x) => x != res['loaiCauHoi']);
+        let k = Object.keys(res);
+        let v = Object.values(res);
         Utils.setValueForm(this.frmCauHoi, k, v);
         this.selectedLoaiCauHoi = res.loaiCauHoi.toString();
         this.isOther = res.isOther ?? false;
@@ -234,6 +237,7 @@ export class QuestionComponent {
             maCot: el.maCot,
             noidung: el.noidung,
           });
+        
           this.lstCot.push(newItem);
         });
         res.lstHang.forEach((el, i) => {
