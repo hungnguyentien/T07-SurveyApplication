@@ -530,35 +530,81 @@ export class AdminStatisticalComponent {
   }
 
   exportPDFDetail() {
+    interface TableData {
+      table: {
+        widths: (string | number)[];
+        body: any[][];
+      };
+    }
+  
+    // Function to create an empty cell
+    function createEmptyCell() {
+      return { text: '', noWrap: false };
+    }
+  
+    // Function to create an empty row
+    function createEmptyRow(length: number) {
+      const row = Array(length).fill(createEmptyCell());
+      return row;
+    }
+  
+    function createTable(data: TableData) {
+      return {
+        table: data.table,
+        layout: 'lightHorizontalLines',
+      };
+    }
+  
     const header: string[] = ['STT', 'Dấu thời gian'];
-    const data: string[][] = [];
-
+  
     this.dataChiTiet.forEach((e: any, i: number) => {
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
         header.push(elem.cauHoi);
+      });
+    });
+  
+    // Tạo dữ liệu cho bảng
+    const tableData: TableData = {
+      table: {
+        widths: Array(header.length).fill('auto'),
+        body: [[]],
+      },
+    };
+  debugger
+    // Khởi tạo mảng dữ liệu với số hàng và số cột tương ứng với header
+    for (let i = 0; i < this.dataChiTiet.length + 2; i++) {
+      tableData.table.body.push(createEmptyRow(header.length));
+    }
 
-        elem.cauTraLoi.forEach((element: any) => {
-          if (!data[j]) {
-            data[j] = [];
+    header.forEach((e: any, i: number) => {
+      if (!tableData.table.body[0][i]) {
+        tableData.table.body[0][i] = createEmptyCell();
+      }
+      tableData.table.body[0][i].text = e;
+    });
+  
+    // Bắt đầu điền dữ liệu vào ô
+    this.dataChiTiet.forEach((e: any, i: number) => {
+      e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
+        elem.cauTraLoi.forEach((element: any, k: number) => {
+          // Đảm bảo mảng con đã được khởi tạo
+          if (!tableData.table.body[j + 1]) {
+            tableData.table.body[j + 1] = createEmptyRow(header.length);
           }
-
-          data[j].push(element)
+          if (!tableData.table.body[j + 1][k + 2]) {
+            tableData.table.body[j + 1][k + 2] = createEmptyCell();
+          }
+          tableData.table.body[j + 1][k + 2].text = element;
         });
       });
     });
-
+  
     const documentDefinition = {
-      content: [
-        {
-          table: {
-            widths: [100, 100, 100],
-            headerRows: 1,
-            body: [header, ...data],
-          },
-        },
-      ],
+      pageOrientation: 'landscape' as PageOrientation,
+      content: [createTable(tableData)],
     };
   
-    pdfMake.createPdf(documentDefinition).download('ThongKeChiTiet.pdf');
-  }
+    const pdfDoc = pdfMake.createPdf(documentDefinition);
+    pdfDoc.download('example.pdf');
+  }  
 }
