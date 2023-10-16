@@ -50,7 +50,11 @@
               "survey-core",
               "moment-timezone",
               "survey-creator-core",
-              "survey-core/survey.i18n"
+              "survey-core/survey.i18n",
+              "exceljs",
+              "file-saver",
+              "pdfmake/build/pdfmake",
+              "pdfmake/build/vfs_fonts"
             ]
           },
           "configurations": {
