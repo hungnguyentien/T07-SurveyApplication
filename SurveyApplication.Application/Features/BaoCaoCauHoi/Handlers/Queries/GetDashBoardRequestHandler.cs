@@ -22,6 +22,9 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
         {
             var ngayBatDau = request.NgayBatDau.GetValueOrDefault(DateTime.MaxValue).Date;
             var ngayKetThuc = request.NgayKetThuc.GetValueOrDefault(DateTime.MinValue).Date;
+
+            ngayKetThuc = ngayBatDau == ngayKetThuc ? ngayKetThuc.AddHours(23).AddMinutes(59).AddSeconds(59) : ngayKetThuc;
+
             var tongDotKhaoSat = await (from a in _surveyRepo.DotKhaoSat.GetAllQueryable()
                                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.Id equals b.IdDotKhaoSat
                                         where (request.NgayBatDau == null || b.NgayBatDau.Date >= ngayBatDau) &&
