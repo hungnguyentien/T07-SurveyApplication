@@ -45,7 +45,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 {
                     FileContents = fileContents,
                     FileName = file.FileName,
-                    PhysicalPath = filePath.Substring("D:\\Stg".Length),
+                    PhysicalPath = filePath[StorageConfigs.BaseStorage.Length..],
                     ContentType = file.ContentType,
                     Size = file.Length,
                 };
