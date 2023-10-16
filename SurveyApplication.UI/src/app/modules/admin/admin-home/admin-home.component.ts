@@ -23,12 +23,13 @@ export class AdminHomeComponent {
   barOptions: any;
   FormAminHome!: FormGroup;
   listDashBoard!: DashBoard;
-
+  visibleDetail!:boolean;
   realDataChart!: DashBoard;
   sumBangKhoaSat!: number;
   sumDoiKhoaSat!: number;
   sumSoLuongThamGia!: number;
-
+  datas:any;
+  title:string='';
   constructor(
     private router: Router,
     private FormBuilder: FormBuilder,
@@ -44,6 +45,7 @@ export class AdminHomeComponent {
       NgayKetThuc: ['', Validators.required],
     });
     this.adminHomeService.GetAllDashBoard().subscribe((res) => {
+      debugger
       this.listDashBoard = res;
       this.sumBangKhoaSat = this.listDashBoard.countBangKhaoSat;
       this.sumDoiKhoaSat = this.listDashBoard.countDotKhaoSat;
@@ -52,6 +54,7 @@ export class AdminHomeComponent {
       this.verticalBar(this.realDataChart);
       this.chart1(this.realDataChart);
       this.chart2(this.realDataChart);
+     
     });
   }
 
@@ -87,9 +90,22 @@ export class AdminHomeComponent {
         this.verticalBar(this.realDataChart);
         this.chart1(this.realDataChart);
         this.chart2(this.realDataChart);
+       
       });
   }
 
+  dataModal(){
+   this.visibleDetail=true;
+   this.title="Danh sách số lượt tham gia khảo sát theo nhóm đối tượng";
+   this.datas=this.realDataChart.lstCountDonViByLoaiHinh;
+   this.reset();
+  }
+  dataModal2(){
+    this.visibleDetail=true;
+    this.title="Danh sách số lượt tham gia khảo sát theo đợt"
+    this.datas=this.realDataChart.lstCountDot
+    this.reset();
+  }
   chart1(datas: DashBoard) {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
@@ -164,6 +180,7 @@ export class AdminHomeComponent {
       },
     };
   }
+  
 
   verticalBar(datas: any) {
     const documentStyle = getComputedStyle(document.documentElement);
