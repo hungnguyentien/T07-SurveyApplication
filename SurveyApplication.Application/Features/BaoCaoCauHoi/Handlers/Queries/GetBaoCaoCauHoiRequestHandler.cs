@@ -35,6 +35,9 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             if (!string.IsNullOrEmpty(request.NgayKetThuc))
                 ngayKetThuc = DateTime.ParseExact(request.NgayKetThuc, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
+            if (!string.IsNullOrEmpty(request.NgayBatDau) && !string.IsNullOrEmpty(request.NgayKetThuc))
+                ngayKetThuc = ngayBatDau == ngayKetThuc ? ngayKetThuc.Value.AddHours(23).AddMinutes(59).AddSeconds(59) : ngayKetThuc.Value;
+
             var query = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
                         join c in _surveyRepo.DotKhaoSat.GetAllQueryable() on a.IdDotKhaoSat equals c.Id

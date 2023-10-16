@@ -19,6 +19,7 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
             var query = from a in _surveyRepo.BaoCaoCauHoi.GetAllQueryable()
                         join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.IdBangKhaoSat equals b.Id
                         join c in _surveyRepo.GuiEmail.GetAllQueryable() on a.IdGuiEmail equals c.Id
+                        join d in _surveyRepo.DonVi.GetAllQueryable() on a.IdDonVi equals d.Id
                         where a.IdDotKhaoSat == request.IdDotKhaoSat &&
                               a.IdBangKhaoSat == request.IdBangKhaoSat &&
                               (request.IdLoaiHinhDonVi == null || a.IdLoaiHinhDonVi == request.IdLoaiHinhDonVi) &&
@@ -29,12 +30,13 @@ namespace SurveyApplication.Application.Features.BaoCaoCauHoi.Handlers.Queries
                               !a.Deleted &&
                               c.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong
                         select a;
-            
+
             var data = from a in query
-                       group new { a } by new { a.IdBangKhaoSat, a.IdDotKhaoSat, a.IdDonVi, a.IdGuiEmail } into grBc
+                       group new { a } by new { a.IdBangKhaoSat, a.IdDotKhaoSat, a.IdDonVi, a.TenDaiDienCq, a.IdGuiEmail } into grBc
                        select new BaoCaoCauHoiChiTietDto
                        {
                            IdDonVi = grBc.Key.IdDonVi,
+                           TenDaiDienCq = grBc.Key.TenDaiDienCq,
                            IdBangKhaoSat = grBc.Key.IdBangKhaoSat,
                            IdDotKhaoSat = grBc.Key.IdDotKhaoSat,
                            DauThoiGian = query.First(x => x.IdDonVi == grBc.Key.IdDonVi && x.IdBangKhaoSat == grBc.Key.IdBangKhaoSat && x.IdDotKhaoSat == grBc.Key.IdDotKhaoSat).DauThoiGian ?? DateTime.MinValue,

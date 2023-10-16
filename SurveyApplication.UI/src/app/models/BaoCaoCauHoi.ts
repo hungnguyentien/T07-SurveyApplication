@@ -107,6 +107,7 @@ export interface CauHoiCauTraLoiChiTiet {
 
 export interface BaoCaoCauHoiChiTiet {
   idDonVi: number;
+  tenDaiDienCq: string;
   idBangKhaoSat: number;
   idDotKhaoSat: number;
   dauThoiGian: string;

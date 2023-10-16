@@ -3,6 +3,7 @@
     public class BaoCaoCauHoiChiTietDto
     {
         public int IdDonVi { get; set; }
+        public string TenDaiDienCq { get; set; }
         public int IdBangKhaoSat { get; set; }
         public int IdDotKhaoSat { get; set; }
         public DateTime DauThoiGian { get; set; }
