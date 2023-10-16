@@ -54,6 +54,7 @@ export class AdminStatisticalComponent {
   dataChiTiet: BaoCaoCauHoiChiTiet[] = [];
   dataTotalRecords!: number;
   keyWord!: string;
+  
   paging!: BaoCaoCauHoiChiTietRequest;
   lstTh: string[] = [];
 
@@ -88,6 +89,7 @@ export class AdminStatisticalComponent {
     //Nhận data từ bên bảng khảo sát
     this.dataTableSurvey = this.baoCaoCauHoiService.getSharedData();
     if (this.dataTableSurvey) {
+      debugger
       this.frmStatiscal.controls['idDotKhaoSat'].setValue(parseInt(this.dataTableSurvey.idDotKhaoSat)) 
       this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
       this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(parseInt(this.dataTableSurvey.idLoaiHinh));
@@ -140,6 +142,7 @@ export class AdminStatisticalComponent {
   };
 
   onSubmitSearch = () => {
+    debugger
     this.paging.keyword = this.keyWord;
     this.getBaoCaoCauHoiChiTiet(this.paging);
   };
@@ -276,6 +279,7 @@ export class AdminStatisticalComponent {
   };
 
   search = () => {
+    debugger
     let frmValue = this.frmStatiscal.value;
     let ngayBatDau = frmValue.ngayBatDau
       ? moment(frmValue.ngayBatDau, 'DD/MM/YYYY').format('YYYY-MM-DD')

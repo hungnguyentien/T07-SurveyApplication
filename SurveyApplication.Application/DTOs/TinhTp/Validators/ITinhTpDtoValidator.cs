@@ -17,7 +17,7 @@ namespace SurveyApplication.Application.DTOs.TinhTp.Validators
                 .NotNull()
                 .MustAsync(async (model, token) =>
                 {
-                    var nameExists = await _TinhTpRepository.Exists(x => x.Name == model.Name && x.Code != model.Code);
+                    var nameExists = await _TinhTpRepository.Exists(x => x.Name == model.Name && x.Code != model.Code && !x.Deleted);
                     return !nameExists;
                 }).WithMessage("Tên tỉnh thành phố đã tồn tại!");
 

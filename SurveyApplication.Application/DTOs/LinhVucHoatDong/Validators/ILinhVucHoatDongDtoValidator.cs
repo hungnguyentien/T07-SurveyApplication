@@ -16,7 +16,7 @@ namespace SurveyApplication.Application.DTOs.LinhVucHoatDong.Validators
                 .NotNull()
                 .MustAsync(async (model, token) =>
                 {
-                    var nameExists = await _LinhVucHoatDongRepository.Exists(x => x.TenLinhVuc == model.TenLinhVuc && x.MaLinhVuc != model.MaLinhVuc);
+                    var nameExists = await _LinhVucHoatDongRepository.Exists(x => x.TenLinhVuc == model.TenLinhVuc && x.MaLinhVuc != model.MaLinhVuc && !x.Deleted);
                     return !nameExists;
                 }).WithMessage("Tên lĩnh vực đã tồn tại!");
 

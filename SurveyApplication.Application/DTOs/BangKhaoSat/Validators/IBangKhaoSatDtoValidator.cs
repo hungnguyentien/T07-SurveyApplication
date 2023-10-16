@@ -25,7 +25,7 @@ public class IBangKhaoSatDtoValidator : AbstractValidator<IBangKhaoSatDto>
             .NotNull()
             .MustAsync(async (model, token) =>
             {
-                var nameExists = await _bangKhaoSatRepository.Exists(x => x.TenBangKhaoSat == model.TenBangKhaoSat && x.MaBangKhaoSat != model.MaBangKhaoSat);
+                var nameExists = await _bangKhaoSatRepository.Exists(x => x.TenBangKhaoSat == model.TenBangKhaoSat && x.MaBangKhaoSat != model.MaBangKhaoSat && !x.Deleted);
                 return !nameExists;
             }).WithMessage("Tên bảng khảo sát đã tồn tại!");
 

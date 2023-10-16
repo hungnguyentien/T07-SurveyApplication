@@ -73,18 +73,8 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             
             
             await _surveyRepo.Account.UpdateAsync(account);
-
             var role = await _roleManager.FindByIdAsync(request.AccountDto.Id);
-
-
-
-            
-
-            var user = await _userManager.FindByIdAsync(request.AccountDto.Id);
-           
-
-          
-
+            var user = await _userManager.FindByIdAsync(request.AccountDto.Id);        
             if (account != null)
             {
                 var currentRoles = await _userManager.GetRolesAsync(user);
@@ -101,8 +91,6 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 }
 
             }
-
-
 
             if (account != null)
             {
