@@ -215,7 +215,11 @@
                   class="pFrozen pFrozen-1 top-0">
                   Dấu thời gian
                 </th>
-                <th pResizableColumn *ngFor="let col of lstTh; trackBy:trackByFn">
+                <th [style]="lstTh.length > 0 ? 'width: 150px;text-align: center;' : 'width: auto;text-align: center;'"
+                  class="pFrozen pFrozen-1 top-0">
+                  Tên đơn vị
+                </th>
+                <th pResizableColumn *ngFor="let col of lstTh; trackBy:trackByFn" class="text-ellipsis">
                   {{ col }}
                 </th>
               </tr>
@@ -228,6 +232,9 @@
                 </td>
                 <td class="pFrozen pFrozen-1">
                   {{rowData.dauThoiGian | date:'dd/MM/yyyy hh:ss'}}
+                </td>
+                <td class="pFrozen pFrozen-1">
+                  {{rowData.tenDaiDienCq}}
                 </td>
                 <td *ngFor="let item of rowData.lstCauHoiCauTraLoi; trackBy:trackByFn">
                   <div [ngSwitch]="item.loaiCauHoi">
