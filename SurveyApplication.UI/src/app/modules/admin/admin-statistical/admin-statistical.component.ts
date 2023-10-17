@@ -85,11 +85,17 @@ export class AdminStatisticalComponent {
     this.loadPeriodSurvey();
     this.loadUnitType();
     this.loadTableSurvey();
-    this.getVauleChar(this.frmStatiscal.value);
+
     //Nhận data từ bên bảng khảo sát
     this.dataTableSurvey = this.baoCaoCauHoiService.getSharedData();
-    if (this.dataTableSurvey) {
+    if(this.dataTableSurvey==undefined){
       debugger
+      this.getVauleChar(this.frmStatiscal.value);
+  
+    }
+    // this.dataTableSurvey = this.baoCaoCauHoiService.getSharedData();
+    else  {
+      
       this.frmStatiscal.controls['idDotKhaoSat'].setValue(parseInt(this.dataTableSurvey.idDotKhaoSat)) 
       this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
       this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(parseInt(this.dataTableSurvey.idLoaiHinh));
@@ -98,15 +104,18 @@ export class AdminStatisticalComponent {
       const ngayKetThucFormatted = this.datePipe.transform(this.dataTableSurvey.ngayKetThuc,'dd/MM/yyyy');
       this.frmStatiscal.controls['ngayBatDau'].setValue(ngayBatDauFormatted);
       this.frmStatiscal.controls['ngayKetThuc'].setValue(ngayKetThucFormatted);
+
       let params: BaoCaoCauHoiRequest = {
         ...this.frmStatiscal.value,
       };
+     
       this.loadTableSurvey();
-      this.getVauleChar(params);
+     this.getVauleChar(params);
     }
   }
 
   loadListLazy = (event: any) => {
+    
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
@@ -142,12 +151,13 @@ export class AdminStatisticalComponent {
   };
 
   onSubmitSearch = () => {
-    debugger
+    
     this.paging.keyword = this.keyWord;
     this.getBaoCaoCauHoiChiTiet(this.paging);
   };
 
   getBaoCaoCauHoiChiTiet = (paging: BaoCaoCauHoiChiTietRequest) => {
+    
     this.baoCaoCauHoiService.getBaoCaoCauHoiChiTiet(paging).subscribe({
       next: (res) => {
         this.lstTh = [];
@@ -187,15 +197,13 @@ export class AdminStatisticalComponent {
     this.baoCaoCauHoiService.getBaoCaoCauHoi(params).subscribe({
       next: (res) => {
         this.datas = res.listCauHoiTraLoi ?? [];
-        this.setChar(
-          [res.countDonViMoi, res.countDonViTraLoi],
-          res.lstDoiTuongThamGiaKs
-        );
+        this.setChar([res.countDonViMoi, res.countDonViTraLoi], res.lstDoiTuongThamGiaKs);
       },
     });
   };
 
   setChar = (doughnutData: number[], barData: DoiTuongThamGiaKs[]) => {
+    debugger
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     this.doughnutData = {
@@ -279,7 +287,7 @@ export class AdminStatisticalComponent {
   };
 
   search = () => {
-    debugger
+    
     let frmValue = this.frmStatiscal.value;
     let ngayBatDau = frmValue.ngayBatDau
       ? moment(frmValue.ngayBatDau, 'DD/MM/YYYY').format('YYYY-MM-DD')
@@ -305,7 +313,7 @@ export class AdminStatisticalComponent {
       this.paging.keyword = this.keyWord;
       this.paging.idBangKhaoSat = frmValue.idBangKhaoSat;
       this.paging.idDotKhaoSat = frmValue.idDotKhaoSat;
-      this.paging.idLoaiHinhDonVi = frmValue.idLoaiHinh;
+      this.paging.idLoaiHinhDonVi = frmValue.idLoaiHinhDonVi;
       this.paging.ngayBatDau = ngayBatDau;
       this.paging.ngayKetThuc = ngayKetThuc;
       this.getBaoCaoCauHoiChiTiet(this.paging);
@@ -379,7 +387,7 @@ export class AdminStatisticalComponent {
   }
 
   // downloadFileBase64 = (file: FileQuestion) => {
-  //   debugger
+  //   
   //   // let idFile = file.idFile;
   //   const id = 1;
   //   this.baoCaoCauHoiService.downloadFile(id).subscribe({
