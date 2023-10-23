@@ -30,6 +30,20 @@ export class AccountService extends BaseService<Account> {
     );
   }
  
+  deleteMultipleAccount(ids: string[]): Observable<BaseCommandResponse> {
+    return this._http
+      .request<BaseCommandResponse>(
+        'delete',
+        `${this.actionUrl}/DeleteMultiple`,
+        { body: ids }
+      )
+      .pipe(first());
+  }
+  deleteAcount(id: string): Observable<BaseCommandResponse> {
+    return this._http
+      .delete<BaseCommandResponse>(`${this.actionUrl}/Delete/${id}`)
+      .pipe(first());
+  }
 
  
 }

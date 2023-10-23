@@ -360,15 +360,48 @@ export class AdminAccountComponent {
    this.selectedRole=[];
     
   };
-  confirmDeleteMultiple = () => { };
+
+  confirmDeleteMultiple() {
+    debugger
+    let ids: string[] = [];
+    this.selectedAccount.forEach((el) => {
+      ids.push(el.id);
+    });
+
+    this.confirmationService.confirm({
+      message: `Bạn có chắc chắn muốn xoá ${ids.length} tài khoản này?`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.accountService.deleteMultipleAccount(ids).subscribe({
+          next: (res: any) => {
+            if (res.success == false) {
+              Utils.messageError(this.messageService, res.message);
+            } else {
+              Utils.messageSuccess(
+                this.messageService,
+                `Xoá ${ids.length} tài khoản thành công!`
+              );
+              this.selectedAccount = [];
+            }
+          },
+          error: (e) => Utils.messageError(this.messageService, e.message),
+          complete: () => {
+            this.table.reset();
+          },
+        });
+      },
+      reject: () => {},
+    });
+  }
 
   Delete(data: any) {
+    debugger
     this.confirmationService.confirm({
       message: 'Bạn có chắc chắn muốn xoá không ' + '?',
       header: 'delete',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.accountService.delete(data.id).subscribe((res: any) => {
+        this.accountService.deleteAcount(data.id).subscribe((res: any) => {
           if (res.success == true) {
             Utils.messageSuccess(this.messageService, res.message);
             this.table.reset();
