@@ -596,13 +596,13 @@ export class AdminStatisticalComponent {
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
         elem.cauTraLoi.forEach((element: any, k: number) => {
           // Đảm bảo mảng con đã được khởi tạo
-          if (!tableData.table.body[i + 1][k + 2])
-            tableData.table.body[i + 1][k + 2] = createEmptyCell();
+          if (!tableData.table.body[i + 1][k + 3])
+            tableData.table.body[i + 1][k + 3] = createEmptyCell();
 
-          if (element.indexOf('[{') && element.lastIndexOf('}]'))
-            tableData.table.body[i + 1][k + 2].text = element[0].name;
+          if (element.indexOf('[{"'))
+            tableData.table.body[i + 1][k + 3].text = element[0].name;
 
-          tableData.table.body[i + 1][k + 2].text = element;
+          tableData.table.body[i + 1][k + 3].text = element;
 
           // k += 1;
         });
