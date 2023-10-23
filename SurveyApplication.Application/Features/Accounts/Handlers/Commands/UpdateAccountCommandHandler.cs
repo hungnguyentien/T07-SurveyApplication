@@ -24,7 +24,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
         private readonly RoleManager<Domain.Role> _roleManager;
 
         public UpdateAccountCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, UserManager<ApplicationUser> userManager,
-            RoleManager<Domain.Role> roleManager) : base( surveyRepository)
+            RoleManager<Domain.Role> roleManager) : base(surveyRepository)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -36,12 +36,12 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             var validator = new UpdateAccountDtoValidator(_surveyRepo.Account);
             var validatorResult = await validator.ValidateAsync(request.AccountDto);
 
-            
+
 
             if (validatorResult.IsValid == false) throw new ValidationException(validatorResult);
 
             var account = await _surveyRepo.Account.FirstOrDefaultAsync(x => x.Id == request.AccountDto.Id);
-            
+
 
             if (request.AccountDto.Img != null && request.AccountDto.Img.Length > 0)
             {
@@ -70,25 +70,24 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             account.Email = request.AccountDto.Email;
             account.NormalizedEmail = request.AccountDto.Email.ToUpper();
             account.Address = request.AccountDto.Address;
-            
-            
+
+
             await _surveyRepo.Account.UpdateAsync(account);
-            var role = await _roleManager.FindByIdAsync(request.AccountDto.Id);
-            var user = await _userManager.FindByIdAsync(request.AccountDto.Id);        
+            var user = await _userManager.FindByIdAsync(request.AccountDto.Id);
             if (account != null)
             {
                 var currentRoles = await _userManager.GetRolesAsync(user);
+                if (currentRoles != null)
+                    foreach (var roleName in currentRoles)
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, roleName);
+                    }
 
-                foreach (var roleName in currentRoles)
-                {
-                    await _userManager.RemoveFromRoleAsync(user, roleName);
-                }
-
-
-                foreach (var roleName in request.AccountDto.LstRoleName)
-                {
-                    await _userManager.AddToRoleAsync(user, roleName);
-                }
+                if (request.AccountDto.LstRoleName != null)
+                    foreach (var roleName in request.AccountDto.LstRoleName)
+                    {
+                        await _userManager.AddToRoleAsync(user, roleName);
+                    }
 
             }
 
@@ -104,15 +103,15 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 }
 
                 // Thêm các quyền mới
-                foreach (var claimModule in request.AccountDto.MatrixPermission)
-                {
-                    await _userManager.AddClaimAsync(account, new Claim(claimModule.Module.ToString(), JsonExtensions.SerializeToJson(claimModule.LstPermission.Select(x => x.Value)), JsonClaimValueTypes.JsonArray));
-                }
+                if (request.AccountDto.MatrixPermission != null)
+                    foreach (var claimModule in request.AccountDto.MatrixPermission)
+                    {
+                        await _userManager.AddClaimAsync(account, new Claim(claimModule.Module.ToString(), JsonExtensions.SerializeToJson(claimModule.LstPermission.Select(x => x.Value)), JsonClaimValueTypes.JsonArray));
+                    }
             }
 
 
             await _surveyRepo.SaveAync();
-
             return new BaseCommandResponse("Sửa thành công!");
         }
     }
