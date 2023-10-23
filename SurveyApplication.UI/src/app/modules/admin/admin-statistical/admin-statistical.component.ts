@@ -544,48 +544,78 @@ export class AdminStatisticalComponent {
         body: any[][];
       };
     }
-
+  
     function createTable(data: TableData) {
       return {
         table: data.table,
         layout: 'lightHorizontalLines',
       };
     }
-
-    const header: string[] = ['STT', 'Dấu thời gian'];
+  
+    function createEmptyCell() {
+      return { text: '', noWrap: false };
+    }
+  
+    function createEmptyRow(length: number) {
+      const row = Array(length).fill(createEmptyCell());
+      return row;
+    }
+  
+    const header: string[] = ['STT', 'Dấu thời gian', 'Tên đơn vị'];
     const data: any[][] = [];
-
+  
     this.dataChiTiet.forEach((e: any, i: number) => {
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
         header.push(elem.cauHoi);
       });
     });
-    
+  
     const maxLength = Math.max(header.length, ...data.map(row => row.length));
     header.length = maxLength;
     data.forEach(row => {
       row.length = maxLength;
     });
-    console.log(data);
-    console.log(header);
-
+  
     // Tạo dữ liệu cho bảng
     const tableData: TableData = {
       table: {
         widths: Array(maxLength).fill('auto'),
-        body: [
-          header,
-          ...([['1', '2', '1', '2', '1', '2', '1', '2', '2', '1', '2']] as any[]),
-        ],
+        body: [header],
       },
     };
+  
+    this.dataChiTiet.forEach((e: any, i: number) => {
+      if (!tableData.table.body[i + 1])
+        tableData.table.body[i + 1] = createEmptyRow(maxLength);
 
+      tableData.table.body[i + 1][0] = { text: (i + 1).toString() };
+      tableData.table.body[i + 1][1] = { text: e.dauThoiGian };
+      tableData.table.body[i + 1][2] = { text: e.tenDaiDienCq };
+  
+      debugger
+      e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
+        elem.cauTraLoi.forEach((element: any, k: number) => {
+          // Đảm bảo mảng con đã được khởi tạo
+          if (!tableData.table.body[i + 1][k + 2])
+            tableData.table.body[i + 1][k + 2] = createEmptyCell();
+
+          if (element.indexOf('[{') && element.lastIndexOf('}]'))
+            tableData.table.body[i + 1][k + 2].text = element[0].name;
+
+          tableData.table.body[i + 1][k + 2].text = element;
+
+          // k += 1;
+        });
+      });
+    });
+  
     const documentDefinition = {
       pageOrientation: 'landscape' as PageOrientation,
       content: [createTable(tableData)],
     };
-
+  
     const pdfDoc = pdfMake.createPdf(documentDefinition);
     pdfDoc.download('example.pdf');
   }
+  
 }
