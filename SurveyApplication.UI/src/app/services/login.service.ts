@@ -24,7 +24,6 @@ export class LoginService {
   }
 
   login(model: Login) {
-    debugger
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     };

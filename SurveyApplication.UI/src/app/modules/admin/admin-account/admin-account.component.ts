@@ -70,7 +70,6 @@ export class AdminAccountComponent {
   }
 
   createFrom() {
-    debugger
     this.frmAccount = this.formBuilder.group(
       {
         id: new FormControl<string>(''),
@@ -328,7 +327,6 @@ export class AdminAccountComponent {
     });
   }
   createSubmit = (data: any) => {
-    debugger
     this.submitted = true;
     if (this.frmAccount.invalid) return;
     this.account = data.value;

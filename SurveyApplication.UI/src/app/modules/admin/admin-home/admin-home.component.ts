@@ -45,7 +45,6 @@ export class AdminHomeComponent {
       NgayKetThuc: ['', Validators.required],
     });
     this.adminHomeService.GetAllDashBoard().subscribe((res) => {
-      debugger
       this.listDashBoard = res;
       this.sumBangKhoaSat = this.listDashBoard.countBangKhaoSat;
       this.sumDoiKhoaSat = this.listDashBoard.countDotKhaoSat;

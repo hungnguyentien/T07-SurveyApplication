@@ -591,8 +591,6 @@ export class AdminStatisticalComponent {
       tableData.table.body[i + 1][0] = { text: (i + 1).toString() };
       tableData.table.body[i + 1][1] = { text: e.dauThoiGian };
       tableData.table.body[i + 1][2] = { text: e.tenDaiDienCq };
-  
-      debugger
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
         elem.cauTraLoi.forEach((element: any, k: number) => {
           // Đảm bảo mảng con đã được khởi tạo

@@ -124,7 +124,6 @@ export class FieldOfActivityComponent {
     this.checkBtnDetail = false;
     this.modalTitle = 'Thêm lĩnh vực hoạt động';
     this.FormFieldOfActivity.enable();
-    debugger
     this.FormFieldOfActivity.reset();
     this.FormFieldOfActivity.get('maLinhVuc')?.disable();
     this.FieldOfActivityService.generateMaLinhVuc().subscribe({

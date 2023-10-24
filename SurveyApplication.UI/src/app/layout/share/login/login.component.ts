@@ -58,7 +58,6 @@ export class LoginComponent {
     this.visible = true;
   }
   SubmitforgotPass(){
-    debugger
     const data = this.forgotPass 
     this.loginService.forgotPass(data).subscribe({
       next: (res: any) => {
