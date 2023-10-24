@@ -151,9 +151,16 @@
 .custom {
   .p-tabview {
     .p-tabview-nav {
+      padding: 0;
       li {
         .p-tabview-nav-link {
           padding: 0;
+          button {
+            background: white;
+            color: #4e73df;
+            border: none;
+            padding: 0.75rem 1rem;
+          }
         }
       }
     }

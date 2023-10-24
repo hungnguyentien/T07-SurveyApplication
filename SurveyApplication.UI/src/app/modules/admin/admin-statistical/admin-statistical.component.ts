@@ -54,7 +54,7 @@ export class AdminStatisticalComponent {
   dataChiTiet: BaoCaoCauHoiChiTiet[] = [];
   dataTotalRecords!: number;
   keyWord!: string;
-  
+
   paging!: BaoCaoCauHoiChiTietRequest;
   lstTh: string[] = [];
 
@@ -89,12 +89,24 @@ export class AdminStatisticalComponent {
     //Nhận data từ bên bảng khảo sát
     this.dataTableSurvey = this.baoCaoCauHoiService.getSharedData();
     if (this.dataTableSurvey) {
-      this.frmStatiscal.controls['idDotKhaoSat'].setValue(parseInt(this.dataTableSurvey.idDotKhaoSat)) 
-      this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
-      this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(parseInt(this.dataTableSurvey.idLoaiHinh));
+      this.frmStatiscal.controls['idDotKhaoSat'].setValue(
+        parseInt(this.dataTableSurvey.idDotKhaoSat)
+      );
+      this.frmStatiscal.controls['idBangKhaoSat'].setValue(
+        parseInt(this.dataTableSurvey.id)
+      );
+      this.frmStatiscal.controls['idLoaiHinhDonVi'].setValue(
+        parseInt(this.dataTableSurvey.idLoaiHinh)
+      );
 
-      const ngayBatDauFormatted = this.datePipe.transform(this.dataTableSurvey.ngayBatDau,'dd/MM/yyyy');
-      const ngayKetThucFormatted = this.datePipe.transform(this.dataTableSurvey.ngayKetThuc,'dd/MM/yyyy');
+      const ngayBatDauFormatted = this.datePipe.transform(
+        this.dataTableSurvey.ngayBatDau,
+        'dd/MM/yyyy'
+      );
+      const ngayKetThucFormatted = this.datePipe.transform(
+        this.dataTableSurvey.ngayKetThuc,
+        'dd/MM/yyyy'
+      );
       this.frmStatiscal.controls['ngayBatDau'].setValue(ngayBatDauFormatted);
       this.frmStatiscal.controls['ngayKetThuc'].setValue(ngayKetThucFormatted);
       let params: BaoCaoCauHoiRequest = {
@@ -240,11 +252,19 @@ export class AdminStatisticalComponent {
         },
       ],
     };
-    
+
     // Hàm để lấy màu sắc dựa trên chỉ số
     function getColorByIndex(index: number) {
       const colors = [
-        'red', 'blue', 'green', 'orange', 'purple', 'pink', 'brown', 'gray', 'yellow',
+        'red',
+        'blue',
+        'green',
+        'orange',
+        'purple',
+        'pink',
+        'brown',
+        'gray',
+        'yellow',
       ];
       return colors[index % colors.length];
     }
@@ -322,17 +342,22 @@ export class AdminStatisticalComponent {
   };
 
   loadPeriodSurvey() {
-    this.periodSurveyService.getAll().subscribe((data:any) => {
+    this.periodSurveyService.getAll().subscribe((data: any) => {
       this.LstDotKhaoSat = data;
     });
   }
 
   loadTableSurvey() {
     const selectedValue = this.frmStatiscal.get('idDotKhaoSat')?.value;
-    this.periodSurveyService.getDotKhaoSatByDotKhaoSat(selectedValue).subscribe((data:any) => {
-      this.LstBangKhaoSat = data.data;
-      this.frmStatiscal.controls['idBangKhaoSat'].setValue(parseInt(this.dataTableSurvey.id));
-    });
+    this.periodSurveyService
+      .getDotKhaoSatByDotKhaoSat(selectedValue)
+      .subscribe((data: any) => {
+        this.LstBangKhaoSat = data.data;
+        this.dataTableSurvey &&
+          this.frmStatiscal.controls['idBangKhaoSat'].setValue(
+            parseInt(this.dataTableSurvey.id)
+          );
+      });
   }
 
   loadUnitType() {
@@ -394,7 +419,7 @@ export class AdminStatisticalComponent {
 
   //       let a = document.createElement('a');
   //       a.href = downloadUrl;
-        
+
   //       a.download = res.fileName;
   //       document.body.appendChild(a);
   //       a.click();
@@ -408,7 +433,7 @@ export class AdminStatisticalComponent {
   exportExcelSimple() {
     let workbook = new Workbook();
     let worksheet = workbook.addWorksheet('Tổng quát');
-    
+
     // Định dạng cho header và độ rộng của các cột
     worksheet.columns = [
       { header: 'STT', key: 'stt', width: 10 },
@@ -422,15 +447,30 @@ export class AdminStatisticalComponent {
     let y = 2;
     this.datas.forEach((e: any, i: number) => {
       if (e && e.cauHoiTraLoi && e.cauHoiTraLoi.length > 0) {
-        worksheet.addRow({ stt: i + 1, cauhoicautraloi: e.tenCauHoi, soluotchon: '', tyle: '' });
+        worksheet.addRow({
+          stt: i + 1,
+          cauhoicautraloi: e.tenCauHoi,
+          soluotchon: '',
+          tyle: '',
+        });
         worksheet.mergeCells(`B${x}:D${x}`);
         x += e.cauHoiTraLoi.length + 1;
 
         e.cauHoiTraLoi.forEach((element: any) => {
           if (element.length > 1) {
-            worksheet.addRow({ stt: '', cauhoicautraloi: element.cauTraLoi, soluotchon: element.soLuotChon, tyle: parseFloat(element.tyLe.toFixed(4)) + ' %' });
+            worksheet.addRow({
+              stt: '',
+              cauhoicautraloi: element.cauTraLoi,
+              soluotchon: element.soLuotChon,
+              tyle: parseFloat(element.tyLe.toFixed(4)) + ' %',
+            });
           } else {
-            worksheet.addRow({ stt: '', cauhoicautraloi: element.cauTraLoi, soluotchon: element.soLuotChon, tyle: parseFloat(element.tyLe.toFixed(4)) + ' %' });
+            worksheet.addRow({
+              stt: '',
+              cauhoicautraloi: element.cauTraLoi,
+              soluotchon: element.soLuotChon,
+              tyle: parseFloat(element.tyLe.toFixed(4)) + ' %',
+            });
           }
         });
         worksheet.mergeCells(`A${y}:A${y + e.cauHoiTraLoi.length}`);
@@ -442,22 +482,41 @@ export class AdminStatisticalComponent {
     worksheet.eachRow((row, rowNumber) => {
       row.alignment = { wrapText: true };
       row.eachCell((cell, colNumber) => {
-        cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+        cell.alignment = {
+          vertical: 'middle',
+          horizontal: 'center',
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
         row.height = 30;
-        
+
         if (rowNumber === 1) {
           cell.font = { bold: true };
-          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF808080' } };
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FF808080' },
+          };
           row.height = 40;
         }
       });
     });
 
-    worksheet.getColumn('cauhoicautraloi').alignment = { vertical: 'middle', horizontal: 'left', wrapText: true };
+    worksheet.getColumn('cauhoicautraloi').alignment = {
+      vertical: 'middle',
+      horizontal: 'left',
+      wrapText: true,
+    };
 
     workbook.xlsx.writeBuffer().then((data) => {
-      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      let blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
       fs.saveAs(blob, 'ThongKeTongQuat.xlsx');
     });
   }
@@ -465,34 +524,36 @@ export class AdminStatisticalComponent {
   exportExcelDetail() {
     let workbook = new Workbook();
     let worksheet = workbook.addWorksheet('Chi tiết');
-  
+
     // Định dạng cho header và độ rộng của các cột
     worksheet.columns = [
       { header: 'STT', key: 'stt', width: 10 },
       { header: 'Dấu thời gian', key: 'dauthoigian', width: 30 },
       { header: 'Tên đơn vị', key: 'tendonvi', width: 30 },
     ];
-  
+
     let y = 2;
     this.dataChiTiet.forEach((e: any, i: number) => {
       let maxLength = 0;
-  
+
       worksheet.getCell(`A${y}`).value = i + 1;
       worksheet.getCell(`B${y}`).value = e.dauThoiGian;
       worksheet.getCell(`C${y}`).value = e.tenDaiDienCq;
-  
+
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
-        worksheet.getCell(`${String.fromCharCode(68 + j)}1`).value = elem.cauHoi;
-  
+        worksheet.getCell(`${String.fromCharCode(68 + j)}1`).value =
+          elem.cauHoi;
+
         if (elem.cauTraLoi.length > maxLength) {
           maxLength = elem.cauTraLoi.length;
         }
-  
+
         elem.cauTraLoi.forEach((element: any, k: number) => {
-          worksheet.getCell(`${String.fromCharCode(68 + j)}${k + 2}`).value = element;
+          worksheet.getCell(`${String.fromCharCode(68 + j)}${k + 2}`).value =
+            element;
         });
       });
-  
+
       worksheet.mergeCells(`A${y}:A${y + maxLength - 1}`);
       worksheet.mergeCells(`B${y}:B${y + maxLength - 1}`);
       worksheet.mergeCells(`C${y}:C${y + maxLength - 1}`);
@@ -503,36 +564,57 @@ export class AdminStatisticalComponent {
       for (let j = 0; j < e.lstCauHoiCauTraLoi.length; j++) {
         worksheet.getColumn(String.fromCharCode(68 + j)).width = 15;
       }
-      
+
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
         if (elem.cauTraLoi.length < maxLength) {
           for (let k = elem.cauTraLoi.length; k < maxLength; k++) {
-            worksheet.getCell(`${String.fromCharCode(68 + j)}${k + 2}`).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' }};
+            worksheet.getCell(`${String.fromCharCode(68 + j)}${k + 2}`).border =
+              {
+                top: { style: 'thin' },
+                left: { style: 'thin' },
+                bottom: { style: 'thin' },
+                right: { style: 'thin' },
+              };
           }
         }
       });
-  
+
       y += maxLength + 1;
     });
-  
+
     // Định dạng cho các ô
     worksheet.eachRow((row, rowNumber) => {
       row.alignment = { wrapText: true };
       row.eachCell((cell, colNumber) => {
-        cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' }};
+        cell.alignment = {
+          vertical: 'middle',
+          horizontal: 'center',
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
         row.height = 30;
-  
+
         if (rowNumber === 1) {
           cell.font = { bold: true };
-          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF808080' }};
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FF808080' },
+          };
           row.height = 40;
         }
       });
     });
-  
+
     workbook.xlsx.writeBuffer().then((data) => {
-      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      let blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
       fs.saveAs(blob, 'ThongKeChiTiet.xlsx');
     });
   }
@@ -544,38 +626,38 @@ export class AdminStatisticalComponent {
         body: any[][];
       };
     }
-  
+
     function createTable(data: TableData) {
       return {
         table: data.table,
         layout: 'lightHorizontalLines',
       };
     }
-  
+
     function createEmptyCell() {
       return { text: '', noWrap: false };
     }
-  
+
     function createEmptyRow(length: number) {
       const row = Array(length).fill(createEmptyCell());
       return row;
     }
-  
+
     const header: string[] = ['STT', 'Dấu thời gian', 'Tên đơn vị'];
     const data: any[][] = [];
-  
+
     this.dataChiTiet.forEach((e: any, i: number) => {
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
         header.push(elem.cauHoi);
       });
     });
-  
-    const maxLength = Math.max(header.length, ...data.map(row => row.length));
+
+    const maxLength = Math.max(header.length, ...data.map((row) => row.length));
     header.length = maxLength;
-    data.forEach(row => {
+    data.forEach((row) => {
       row.length = maxLength;
     });
-  
+
     // Tạo dữ liệu cho bảng
     const tableData: TableData = {
       table: {
@@ -583,7 +665,7 @@ export class AdminStatisticalComponent {
         body: [header],
       },
     };
-  
+
     this.dataChiTiet.forEach((e: any, i: number) => {
       if (!tableData.table.body[i + 1])
         tableData.table.body[i + 1] = createEmptyRow(maxLength);
@@ -606,14 +688,13 @@ export class AdminStatisticalComponent {
         });
       });
     });
-  
+
     const documentDefinition = {
       pageOrientation: 'landscape' as PageOrientation,
       content: [createTable(tableData)],
     };
-  
+
     const pdfDoc = pdfMake.createPdf(documentDefinition);
     pdfDoc.download('example.pdf');
   }
-  
 }
