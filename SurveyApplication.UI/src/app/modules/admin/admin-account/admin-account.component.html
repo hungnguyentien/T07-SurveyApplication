@@ -49,6 +49,9 @@
         [resizableColumns]="true">
         <ng-template pTemplate="header">
             <tr>
+                <th style="width: 40px;">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
                 <th style="width: 60px;text-align: center;">
                     STT
                 </th>
@@ -75,6 +78,9 @@
 
         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
             <tr class="p-selectable-row">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
                 <td class="vertical-align-middle text-center">
                     <span class="p-column-title">STT</span>
                     {{ rowIndex + 1}}
@@ -93,7 +99,7 @@
                 </td>
                 <td>
                     <a class="m-3"><span (click)="updateDialog(rowData)" class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
-                    <a class="m-3"><span class="pi pi-trash" title="Xoá"    style="color: red;"
+                    <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)"   style="color: red;"
                         aria-hidden="true"></span></a>
                 </td>
             </tr>
