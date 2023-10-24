@@ -9,6 +9,7 @@ using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Utility;
 using SurveyApplication.Utility.Enums;
 using SurveyApplication.Domain.Common.Configurations;
+using SurveyApplication.Utility.LogUtils;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 {
@@ -16,13 +17,14 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
     {
         private readonly IEmailSender _emailSender;
         private EmailSettings EmailSettings { get; }
-
+        private readonly ILoggerManager _logger;
 
         public ScheduleSendMailCommandHandler(ISurveyRepositoryWrapper surveyRepository,
-            IEmailSender emailSender, IOptions<EmailSettings> emailSettings) : base(surveyRepository)
+            IEmailSender emailSender, IOptions<EmailSettings> emailSettings, ILoggerManager logger) : base(surveyRepository)
         {
             _emailSender = emailSender;
             EmailSettings = emailSettings.Value;
+            _logger = logger;
         }
 
         public async Task<BaseCommandResponse> Handle(ScheduleSendMailCommand request, CancellationToken cancellationToken)
@@ -61,6 +63,9 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             var bodyEmail =
                 $"{guiEmail.NoiDung} \n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
             var resultSend = await _emailSender.SendEmail(bodyEmail, guiEmail.TieuDe, guiEmail.DiaChiNhan);
+            if (!resultSend.IsSuccess)
+                _logger.LogError(JsonConvert.SerializeObject(resultSend));
+
             guiEmail.TrangThai = resultSend.IsSuccess
                 ? (int)EnumGuiEmail.TrangThai.ThanhCong
                 : (int)EnumGuiEmail.TrangThai.GuiLoi;
