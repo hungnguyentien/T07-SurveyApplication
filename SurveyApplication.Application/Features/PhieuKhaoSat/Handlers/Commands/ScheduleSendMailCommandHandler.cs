@@ -64,7 +64,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 $"{guiEmail.NoiDung} \n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
             var resultSend = await _emailSender.SendEmail(bodyEmail, guiEmail.TieuDe, guiEmail.DiaChiNhan);
             if (!resultSend.IsSuccess)
-                _logger.LogError(JsonConvert.SerializeObject(resultSend));
+                _logger.LogError($"----- Địa chỉ nhận {guiEmail.DiaChiNhan} \n {JsonConvert.SerializeObject(resultSend)}");
 
             guiEmail.TrangThai = resultSend.IsSuccess
                 ? (int)EnumGuiEmail.TrangThai.ThanhCong
