@@ -94,6 +94,7 @@ export class LoginService {
     this.cookieService.delete('currentUser', '/');
     sessionStorage.removeItem('currentUser');
     this.currentUserSubject.next('');
+    this.router.navigate(['/']);
   }
   
   getByIdUser<T>(id: string): Observable<T> {
