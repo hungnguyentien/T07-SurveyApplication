@@ -22,6 +22,8 @@ export class AdminTempleteComponent {
   Role!: string;
   Address!: string;
 
+  
+
   constructor(
     private loginService: LoginService,
     private FormBuilder: FormBuilder,
@@ -54,6 +56,7 @@ export class AdminTempleteComponent {
   }
 
   save = () => {
+    debugger
     const formData = new FormData();
     const updatedData = this.FormProfile.value;
     formData.append('name', updatedData.name);
@@ -61,7 +64,7 @@ export class AdminTempleteComponent {
     formData.append('address', updatedData.address);
     formData.append('img', updatedData.img);
     formData.append('id', this.userId);
-    this.accountService.update(formData).subscribe((res) => {
+    this.accountService.updateProfile(formData).subscribe((res) => {
       if (res.success) {
         Utils.messageSuccess(this.messageService, res.message);
         this.visible = false;

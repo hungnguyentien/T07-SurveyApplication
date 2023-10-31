@@ -45,5 +45,11 @@ export class AccountService extends BaseService<Account> {
       .pipe(first());
   }
 
+  updateProfile<T>(data: T): Observable<BaseCommandResponse> {
+    return this._http
+      .post<BaseCommandResponse>(`${this.actionUrl}/UpdateProfile`, data)
+      .pipe(first());
+  }
+
  
 }

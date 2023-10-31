@@ -73,12 +73,22 @@ namespace SurveyApplication.API.Controllers
 
         [HttpPost("Update")]
         [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Update })]
-        public async Task<ActionResult<UpdateAccountDto>> UpdateAccount([FromForm] UpdateAccountDto obj)
+        public async Task<ActionResult<UpdateAccountDto>> UpdateAccount( UpdateAccountDto obj)
         {
             var command = new UpdateAccountCommand { AccountDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
+        [HttpPost("UpdateProfile")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Update })]
+        public async Task<ActionResult<UpdateAccountDto>> UpdateProfile( [FromForm]UpdateAccountDto obj)
+        {
+            var command = new UpdateAccountCommand { AccountDto = obj };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
 
         [HttpDelete("Delete/{id}")]
         [HasPermission(new[] { (int)EnumModule.Code.QlTk }, new[] { (int)EnumPermission.Type.Deleted })]

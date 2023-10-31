@@ -301,6 +301,7 @@ export class AdminAccountComponent {
   }
 
   updateSubmit = (data: any) => {
+    debugger
     this.submitted = true;
     // if (this.frmAccount.invalid) return;
     const names: string[] = this.selectedRole.map(role => role.name);

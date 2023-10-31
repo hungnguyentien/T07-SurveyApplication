@@ -16,7 +16,7 @@ namespace SurveyApplication.Application.Features.Role.Handlers.Queries
 
         public async Task<List<RoleDto>> Handle(GetRoleListRequest request, CancellationToken cancellationToken)
         {
-            var role = await _surveyRepo.Role.GetAllListAsync();
+            var role = await _surveyRepo.Role.GetAllListAsync(x => !x.Deleted);
             return _mapper.Map<List<RoleDto>>(role);
         }
     }
