@@ -18,6 +18,7 @@ import {
   Paging,
   DonViNguoiDaiDienResponse,
   QuanHuyen,
+  FileQuestion,
 } from '@app/models';
 import Utils from '@app/helpers/utils';
 import { lastValueFrom } from 'rxjs';
@@ -36,6 +37,7 @@ export class AdminObjectSurveyComponent {
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
+  uploadedFiles: any[] = [];
 
   checkBtnDetail: boolean = false;
   actionDetail!: any;
@@ -55,6 +57,7 @@ export class AdminObjectSurveyComponent {
   ContainerAdd: any[] = [];
 
   visible: boolean = false;
+  showhide: boolean = false;
   lstLinhVuc: LinhVucHoatDong[] | undefined;
 
   cities: HanhChinhVn[] = [];
@@ -477,5 +480,21 @@ export class AdminObjectSurveyComponent {
     });
   }
 
+  Import() {
+    this.showhide = !this.showhide;
+  }
+
+  onUpload(event: any) {
+    this.phieuKhaoSatService.uploadFiles(event.files).subscribe((res: any) => {
+    })
+    for (const file of event.files) {
+      this.uploadedFiles.push(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      this.objectSurveyService.Import(formData).subscribe((res: any) => {
+        this.messageService.add({severity: 'success', summary: 'File Uploaded', detail: ''});
+      });
+    }
+  }
   //#endregion
 }

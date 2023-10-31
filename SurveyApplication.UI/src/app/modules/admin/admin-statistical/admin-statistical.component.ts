@@ -617,5 +617,4 @@ export class AdminStatisticalComponent {
     const pdfDoc = pdfMake.createPdf(documentDefinition);
     pdfDoc.download('example.pdf');
   }
-  
 }

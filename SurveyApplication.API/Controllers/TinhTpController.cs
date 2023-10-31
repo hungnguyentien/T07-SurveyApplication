@@ -91,11 +91,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<IActionResult> ImportTinhTp([FromForm] ImportTinhTpDto obj)
         {
             var command = new ImportTinhTpCommand { File = obj.File };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

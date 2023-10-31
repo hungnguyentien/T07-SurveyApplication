@@ -96,11 +96,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<IActionResult> ImportQuanHuyen([FromForm] ImportQuanHuyenDto obj)
         {
             var command = new ImportQuanHuyenCommand { File = obj.File };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

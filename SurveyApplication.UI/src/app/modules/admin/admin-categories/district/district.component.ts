@@ -4,6 +4,7 @@ import Utils from '@app/helpers/utils';
 import { Paging, QuanHuyen } from '@app/models';
 import { QuanHuyenService } from '@app/services/quan-huyen.service';
 import { TinhThanhService } from '@app/services/tinh-thanh.service';
+import { PhieuKhaoSatService } from '@app/services/phieu-khao-sat.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -17,6 +18,7 @@ export class DistrictComponent {
   loading: boolean = true;
   datas: QuanHuyen[] = [];
   selectedQuanHuyen!: QuanHuyen[];
+  uploadedFiles: any[] = [];
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
@@ -28,6 +30,8 @@ export class DistrictComponent {
   listDataTinh :any =  [];
 
   visible: boolean = false;
+  showhide: boolean = false;
+
   IdQuanHuyen: any;
 
   checkBtnDetail:boolean = false
@@ -37,6 +41,7 @@ export class DistrictComponent {
     private FormBuilder : FormBuilder,
     private QuanHuyenService: QuanHuyenService,
     private Tinhservice: TinhThanhService,
+    private PhieuKhaoSatService: PhieuKhaoSatService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
@@ -255,5 +260,22 @@ export class DistrictComponent {
       },
       reject: () => { },
     });
+  }
+
+  Import() {
+    this.showhide = !this.showhide;
+  }
+
+  onUpload(event: any) {
+    this.PhieuKhaoSatService.uploadFiles(event.files).subscribe((res: any) => {
+    })
+    for (const file of event.files) {
+      this.uploadedFiles.push(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      this.QuanHuyenService.Import(formData).subscribe((res: any) => {
+        this.messageService.add({severity: 'success', summary: 'File Uploaded', detail: ''});
+      });
+    }
   }
 }

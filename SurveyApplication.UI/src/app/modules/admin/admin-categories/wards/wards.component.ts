@@ -5,6 +5,7 @@ import { Paging, TinhThanh, XaPhuong } from '@app/models';
 import { QuanHuyenService } from '@app/services/quan-huyen.service';
 import { XaPhuongService } from '@app/services/xa-phuong.service';
 import { TinhThanhService } from '@app/services/tinh-thanh.service';
+import { PhieuKhaoSatService } from '@app/services/phieu-khao-sat.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -18,6 +19,7 @@ export class WardsComponent {
   loading: boolean = true;
   datas: XaPhuong[] = [];
   selectedXaPhuong!: XaPhuong[];
+  uploadedFiles: any[] = [];
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
@@ -29,6 +31,7 @@ export class WardsComponent {
   FormXaPhuong!: FormGroup;
   listFormXaPhuong!: [];
   visible: boolean = false;
+  showhide: boolean = false;
 
   listDataHuyen : any = [];
   listDataTinh : any = [];
@@ -41,6 +44,7 @@ export class WardsComponent {
     private FormBuilder : FormBuilder,
     private XaPhuongService: XaPhuongService,
     private quanHuyenService: QuanHuyenService,
+    private PhieuKhaoSatService: PhieuKhaoSatService,
     private messageService: MessageService,
     private tinhTpService: TinhThanhService,
     private confirmationService: ConfirmationService,
@@ -230,8 +234,8 @@ export class WardsComponent {
       },
     });
   }
+
   confirmDeleteMultiple() {
-    
     let ids: number[] = [];
     this.selectedXaPhuong.forEach((el) => {
       ids.push(el.id);
@@ -260,5 +264,22 @@ export class WardsComponent {
       },
       reject: () => { },
     });
+  }
+
+  Import() {
+    this.showhide = !this.showhide;
+  }
+
+  onUpload(event: any) {
+    this.PhieuKhaoSatService.uploadFiles(event.files).subscribe((res: any) => {
+    })
+    for (const file of event.files) {
+      this.uploadedFiles.push(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      this.XaPhuongService.Import(formData).subscribe((res: any) => {
+        this.messageService.add({severity: 'success', summary: 'File Uploaded', detail: ''});
+      });
+    }
   }
 }

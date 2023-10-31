@@ -4,6 +4,7 @@ import Utils from '@app/helpers/utils';
 import { Paging } from '@app/models';
 import { TinhThanh } from '@app/models/TinhThanh';
 import { TinhThanhService } from '@app/services/tinh-thanh.service';
+import { PhieuKhaoSatService } from '@app/services/phieu-khao-sat.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -17,6 +18,7 @@ export class ProvinceComponent {
   loading: boolean = true;
   datas: TinhThanh[] = [];
   selectedTinhThanh!: TinhThanh[];
+  uploadedFiles: any[] = [];
   paging!: Paging;
   dataTotalRecords!: number;
   keyWord!: string;
@@ -28,11 +30,14 @@ export class ProvinceComponent {
   showadd!: boolean;
   FormTinhThanh!: FormGroup;
   visible: boolean = false;
+  showhide: boolean = false;
+
   checkBtnDetail: boolean = false;
   modalTitle: string="";
   constructor(
     private FormBuilder : FormBuilder,
     private TinhThanhService: TinhThanhService,
+    private PhieuKhaoSatService: PhieuKhaoSatService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
@@ -237,4 +242,20 @@ export class ProvinceComponent {
     });
   }
 
+  Import() {
+    this.showhide = !this.showhide;
+  }
+
+  onUpload(event: any) {
+    this.PhieuKhaoSatService.uploadFiles(event.files).subscribe((res: any) => {
+    })
+    for (const file of event.files) {
+      this.uploadedFiles.push(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      this.TinhThanhService.Import(formData).subscribe((res: any) => {
+        this.messageService.add({severity: 'success', summary: 'File Uploaded', detail: ''});
+      });
+    }
+  }
 }

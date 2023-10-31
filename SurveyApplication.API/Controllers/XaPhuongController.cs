@@ -98,11 +98,8 @@ namespace SurveyApplication.API.Controllers
         public async Task<IActionResult> ImportXaPhuong([FromForm] ImportXaPhuongDto obj)
         {
             var command = new ImportXaPhuongCommand { File = obj.File };
-            await _mediator.Send(command);
-            return Ok(new
-            {
-                Success = true,
-            });
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

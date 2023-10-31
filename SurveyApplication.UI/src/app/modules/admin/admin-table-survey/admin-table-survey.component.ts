@@ -600,7 +600,7 @@ export class AdminTableSurveyComponent {
       const ObjTableSurvey = this.formTableSurvey.value;
       ObjTableSurvey['maBangKhaoSat'] = this.MaBangKhaoSat;
       ObjTableSurvey.ngayBatDau = Utils.plusDate(ObjTableSurvey.ngayBatDau, 'DD/MM/YYYY');
-      ObjTableSurvey.ngayKetThuc = Utils.plusDate(ObjTableSurvey.ngayKetThuc, 'DD/MM/YYYY');
+      ObjTableSurvey.ngayKetThuc = ObjTableSurvey.ngayKetThuc, 'DD/MM/YYYY';
       this.TableSurveyService.create(ObjTableSurvey).subscribe({
         next: (res) => {
           if (res != null) {
