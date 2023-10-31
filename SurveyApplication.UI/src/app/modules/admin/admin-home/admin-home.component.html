@@ -6,8 +6,8 @@
         <label for="ngayBatDau">Ngày bắt đầu</label>
       </div>
       <div class="col-8">
-        <p-calendar formControlName="NgayBatDau" value="valueNgayBatDau" id="ngayBatDau" 
-          dateFormat="dd/mm/yy" [showIcon]="true" ></p-calendar>
+        <p-calendar formControlName="NgayBatDau" value="valueNgayBatDau" id="ngayBatDau" dateFormat="dd/mm/yy"
+          [showIcon]="true" class="input-date-custom"></p-calendar>
       </div>
     </div>
     <div class="form-group form-inline col-3 my-0">
@@ -15,8 +15,8 @@
         <label for="ngayKetThuc">Ngày kết thúc</label>
       </div>
       <div class="col-8">
-        <p-calendar formControlName="NgayKetThuc" value="valueNgayKetThuc" id="ngayKetThuc" 
-          dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+        <p-calendar formControlName="NgayKetThuc" value="valueNgayKetThuc" id="ngayKetThuc" dateFormat="dd/mm/yy"
+          [showIcon]="true" class="input-date-custom"></p-calendar>
       </div>
     </div>
     <div class="form-group form-inline col-4 my-0">
@@ -61,6 +61,7 @@
         <h6 class="flex justify-content-center mt-4 mb-3">Số lượt tham gia khảo sát theo nhóm đối tượng</h6>
         <div class="flex justify-content-center pb-2">
           <p-chart type="doughnut" [data]="dataNhomDoiTuong" [options]="optionNhomDoiTuong"></p-chart>
+          <a (click)="dataModal()" class=" pi pi-eye underline">Xem Thêm</a>
           <div>
             <!-- <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
               thêm</a> -->
@@ -71,6 +72,7 @@
         <h6 class="flex justify-content-center mt-4 mb-3">Số lượt tham gia khảo sát theo đợt</h6>
         <div class="flex justify-content-center pb-2">
           <p-chart type="doughnut" [data]="dataDotKhaosat" [options]="optionDotKhaosat"></p-chart>
+          <a (click)="dataModal2()" class="pi pi-eye underline">Xem thêm</a>
           <div>
             <!-- <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
               thêm</a> -->
@@ -97,3 +99,39 @@
   </div>
 
 </div>
+<p-dialog header=" h5" [(visible)]="visibleDetail" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+  [resizable]="true" [maximizable]="true">
+  <ng-template pTemplate="header">
+    <h5 class="modal-title">
+      {{title}}
+    </h5>
+  </ng-template>
+  <p-table [value]="datas" styleClass="p-datatable-striped" [rows]="5" [showCurrentPageReport]="true"
+    [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>STT</th>
+        <th>Tên</th>
+        <th>Số Lượng</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+      <tr>
+        <td> {{ rowIndex + 1}}</td>
+        <td>{{ row.ten }}</td>
+        <td>{{ row.count }}</td>
+
+      </tr>
+    </ng-template>
+  </p-table>
+  <ng-template pTemplate="footer">
+    <input type="hidden" formControlName="id">
+    <button pButton (click)="visibleDetail = false" type="button" label="Đóng"
+      class="custom-button surface-600"></button>
+
+  </ng-template>
+
+
+
+
+</p-dialog>

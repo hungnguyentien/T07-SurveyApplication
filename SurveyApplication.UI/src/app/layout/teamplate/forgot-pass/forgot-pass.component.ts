@@ -70,14 +70,12 @@ export class ForgotPassComponent {
     ) as FormControl;
   };
   onSubmit(){
-    debugger
     const frmData = this.frmForgotPass.value;
     frmData['email'] = this.data.email;
     frmData['token'] = this.data.token;
     this.accountService.resetPassword(frmData).subscribe({
       next: (res) => {
         console.log(res)
-        debugger
        if(res.success == true){
         Utils.messageSuccess(this.messageService, res.message);
        }else{

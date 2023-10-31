@@ -230,7 +230,7 @@ export class AdminTableSurveyComponent {
   // };
 
   loadListLazy = (event: any) => {
-    debugger;
+
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;

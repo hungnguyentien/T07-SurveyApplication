@@ -217,7 +217,6 @@ export class QuestionComponent {
   };
 
   updateDialog = (id: number) => {
-    debugger
     this.isCreate = false;
     this.visible = true;
     this.submitted = false;
@@ -403,7 +402,6 @@ export class QuestionComponent {
   }
 
   addItem(isCot: boolean = true) {
-    debugger
     const data = isCot
       ? this.maCauHoi + '_Cot' + (this.lstCot.length + 1)
       : this.maCauHoi + '_Hang' + (this.lstHang.length + 1);

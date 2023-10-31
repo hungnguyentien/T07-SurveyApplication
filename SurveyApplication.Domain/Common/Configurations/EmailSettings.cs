@@ -7,4 +7,6 @@ public class EmailSettings
     public string SecretKey { get; set; }
     public string LinkKhaoSat { get; set; }
     public string LinkDoiMatKhau { get; set; }
+    public string Host { get; set; }
+    public int Port { get; set; }
 }

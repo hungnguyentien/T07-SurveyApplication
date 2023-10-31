@@ -161,6 +161,7 @@ export class AdminPeriodSurveyComponent {
   // };
   
   loadListLazy = (event: any) => {
+ 
     this.loading = true;
     let pageSize = event.rows;
     let pageIndex = event.first / pageSize + 1;
@@ -293,7 +294,7 @@ export class AdminPeriodSurveyComponent {
       const ObjPeriodSurvey = this.FormPeriodSurvey.value;
       ObjPeriodSurvey['MaDotKhaoSat'] = this.MaDotKhaoSat;
       ObjPeriodSurvey.NgayBatDau = Utils.plusDate(ObjPeriodSurvey.NgayBatDau, 'DD/MM/YYYY');
-      ObjPeriodSurvey.NgayKetThuc = ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY';
+      ObjPeriodSurvey.NgayKetThuc = Utils.plusDate(ObjPeriodSurvey.NgayKetThuc, 'DD/MM/YYYY');
       this.PeriodSurveyService.create(ObjPeriodSurvey).subscribe({
         next: (res:any) => {
           if (res.success == true) {

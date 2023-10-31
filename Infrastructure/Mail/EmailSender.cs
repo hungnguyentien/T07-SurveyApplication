@@ -53,7 +53,7 @@ public class EmailSender : IEmailSender
                     }
 
                     var netCred = new NetworkCredential(userEmail, passwordEmail);
-                    var smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                    var smtpClient = new SmtpClient(EmailSettings.Host, EmailSettings.Port);
                     smtpClient.EnableSsl = true;
                     smtpClient.UseDefaultCredentials = false;
                     smtpClient.Credentials = netCred;

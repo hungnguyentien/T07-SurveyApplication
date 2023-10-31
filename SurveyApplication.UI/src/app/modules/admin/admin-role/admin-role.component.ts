@@ -259,7 +259,6 @@ export class AdminRoleComponent {
 
 
   editDialog(id: string) {
-    debugger
     this.checkBtnDetail = false;
     this.isCreate = false;
     this.modaltitle = 'Cập nhật nhóm quyền';
