@@ -34,8 +34,11 @@ public static class PersistenceServicesRegistration
         });
 
         services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
-
+        // connect to msssql with connection string from app settings
         services.AddDbContext<SurveyApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SurveyManagerConnectionString"), b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
+
+        //// connect to postgres with connection string from app settings
+        //services.AddDbContext<SurveyApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("SurveyManagerConnectionString"), b => b.MigrationsAssembly(typeof(SurveyApplicationDbContext).Assembly.FullName)));
 
         services.AddIdentity<ApplicationUser, Role>()
             .AddEntityFrameworkStores<SurveyApplicationDbContext>().AddDefaultTokenProviders()

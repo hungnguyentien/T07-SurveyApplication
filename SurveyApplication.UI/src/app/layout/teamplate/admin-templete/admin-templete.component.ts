@@ -108,6 +108,30 @@ export class AdminTempleteComponent {
     }
   }
 
+  dropDown = () => {
+    const dropDown = document.getElementById('dropdown-menu-login');
+    if(dropDown){
+      const checkShow = dropDown.classList.value.indexOf('show') >= 0;
+      if(checkShow){
+        dropDown.classList.remove('show');
+      }else{
+        dropDown.classList.add('show');
+      }
+    }
+  }
+
+  showModal = () => {
+    const dropDown = document.getElementById('logoutModal');
+    dropDown && dropDown.classList.add('show');
+    dropDown && dropDown.classList.add('d-block');
+  }
+
+  closeModal = () => {
+    const dropDown = document.getElementById('logoutModal');
+    dropDown && dropDown.classList.remove('show');
+    dropDown && dropDown.classList.remove('d-block');
+  }
+
   pageTop = () => {
     window.scroll({
       top: 0,

@@ -115,20 +115,20 @@
 
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button" (click)="dropDown()"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{userName}}</span>
                             <img class="img-profile rounded-circle" [src]="urlFist || 'http://placehold.it/180'" />
                         </a>
                         <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" id="dropdown-menu-login"
                             aria-labelledby="userDropdown">
                             <a style="cursor: pointer;" class="dropdown-item" (click)="editProfile()">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Hồ Sơ
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a style="cursor: pointer;" class="dropdown-item" href="/" data-toggle="modal"
+                            <a style="cursor: pointer;" class="dropdown-item" (click)="showModal()"
                                 data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Đăng xuất
@@ -174,14 +174,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Đăng Xuất</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <button class="close" type="button" (click)="closeModal()" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">Bạn có chắc chắn muốn đăng xuất không?</div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Huỷ</button>
-                <a class="btn btn-primary" href="/" (click)="logout()">Đăng xuất</a>
+                <button class="btn btn-secondary" type="button" (click)="closeModal()">Huỷ</button>
+                <a class="btn btn-primary" (click)="logout()">Đăng xuất</a>
             </div>
         </div>
     </div>
