@@ -29,9 +29,7 @@ namespace SurveyApplication.API.Controllers;
 public class PhieuKhaoSatController : ControllerBase
 {
     private readonly IMediator _mediator;
-
     private EmailSettings EmailSettings { get; }
-
 
     public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings)
     {

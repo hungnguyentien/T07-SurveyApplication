@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.DonVi;
+using SurveyApplication.Application.DTOs.DonVi.Validators;
 using SurveyApplication.Application.DTOs.DonViAndNguoiDaiDien;
+using SurveyApplication.Application.DTOs.QuanHuyen;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
+using SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility.Enums;
 
@@ -98,6 +101,15 @@ namespace SurveyApplication.API.Controllers
         public async Task<ActionResult> DeleteMultipleDonVi(List<int> ids)
         {
             var command = new DeleteDonViCommand { Ids = ids };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("Import")]
+        [HasPermission(new[] { (int)EnumModule.Code.QlDv }, new[] { (int)EnumPermission.Type.Import })]
+        public async Task<IActionResult> ImportDonVi([FromForm] ImportDonViDto obj)
+        {
+            var command = new ImportDonViCommand { File = obj.File };
             var response = await _mediator.Send(command);
             return Ok(response);
         }

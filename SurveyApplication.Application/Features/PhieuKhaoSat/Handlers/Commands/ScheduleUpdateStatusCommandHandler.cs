@@ -20,7 +20,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             var hoanThanhDks = await _surveyRepo.DotKhaoSat.GetAllListAsync(x => !x.Deleted && x.NgayKetThuc.Date.AddDays(1) <= DateTime.Now.Date && x.TrangThai != (int)EnumDotKhaoSat.TrangThai.HoanThanh);
             if (hoanThanhDks.Any())
             {
-                //TODO check đợt khảo sát có bảng sảo sát mới update
+                //TODO check đợt khảo sát có bảng khảo sát mới update
                 var hasBks = await _surveyRepo.BangKhaoSat.GetAllQueryable()
                     .Where(x => !x.Deleted && hoanThanhDks.Select(dks => dks.Id).Contains(x.IdDotKhaoSat)).Select(x => x.IdDotKhaoSat)
                     .ToListAsync(cancellationToken: cancellationToken);
@@ -87,7 +87,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 
             #endregion
 
-            #region Updte đợt khảo sát
+            #region Update đợt khảo sát
 
             //var lstUpdateDks = new List<DotKhaoSat>();
             //var hoanThanhDks2 = await _surveyRepo.DotKhaoSat.GetAllListAsync(x => !x.Deleted && x.TrangThai != (int)EnumDotKhaoSat.TrangThai.HoanThanh);

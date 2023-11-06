@@ -20,4 +20,9 @@ export class QuanHuyenService extends BaseService<QuanHuyen> {
       )
       .pipe(first());
   }
+
+  Import(file: any) {
+    return this.http.post<any>(
+      `${environment.apiUrl}/QuanHuyen/Import`, file);
+  }
 }

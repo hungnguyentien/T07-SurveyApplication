@@ -18,7 +18,7 @@ public class CreateBangKhaoSatDto : IBangKhaoSatDto
     public int? IdDotKhaoSat { get; set; }
     public string? TenBangKhaoSat { get; set; }
     public string? MoTa { get; set; }
-    public DateTime? NgayBatDau { get; set; }
-    public DateTime? NgayKetThuc { get; set; }
+    public DateTime NgayBatDau { get; set; }
+    public DateTime NgayKetThuc { get; set; }
     public int? TrangThai { get; set; }
 }

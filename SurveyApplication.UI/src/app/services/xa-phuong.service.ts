@@ -20,4 +20,9 @@ export class XaPhuongService extends BaseService<XaPhuong> {
       )
       .pipe(first());
   }
+
+  Import(file: any) {
+    return this.http.post<any>(
+      `${environment.apiUrl}/XaPhuong/Import`, file);
+  }
 }

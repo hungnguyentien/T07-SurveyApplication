@@ -23,6 +23,11 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
 
     public async Task<BaseCommandResponse> Handle(CreateBangKhaoSatCommand request, CancellationToken cancellationToken)
     {
+        if (request.BangKhaoSatDto.NgayBatDau.Date == request.BangKhaoSatDto.NgayKetThuc.Date)
+        {
+            request.BangKhaoSatDto.NgayBatDau = request.BangKhaoSatDto.NgayBatDau.Date;
+            request.BangKhaoSatDto.NgayKetThuc = request.BangKhaoSatDto.NgayKetThuc.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+        }
         var response = new BaseCommandResponse();
         var validator = new CreateBangKhaoSatDtoValidator(_surveyRepo.BangKhaoSat);
         if (request.BangKhaoSatDto != null)
@@ -42,11 +47,11 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
             throw new FluentValidation.ValidationException("Đợt khảo sát đã kết thúc");
 
         if (dotKhaoSat.NgayBatDau.Date >
-            request.BangKhaoSatDto.NgayBatDau.GetValueOrDefault(DateTime.MinValue).Date)
+            request.BangKhaoSatDto.NgayBatDau.Date)
             throw new FluentValidation.ValidationException("Ngày bắt đầu không được nhỏ hơn ngày bắt đầu đợt khảo sát");
 
         if (dotKhaoSat.NgayKetThuc.Date <
-            request.BangKhaoSatDto.NgayKetThuc.GetValueOrDefault(DateTime.MinValue).Date)
+            request.BangKhaoSatDto.NgayKetThuc.Date)
             throw new FluentValidation.ValidationException("Ngày kết thúc không được lớn hơn ngày kết thúc đợt khảo sát");
 
         //TODO Gửi mail mới update trạng thái

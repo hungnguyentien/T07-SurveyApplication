@@ -21,9 +21,9 @@
       </button>
     </div>
     <div class="ml-3">
-      <!-- <button pButton type="button" icon="pi pi-file-import" label="Import" class="custom-button"
+      <button pButton (click)=" Import()" data-toggle="modal" data-target="#importForm" type="button" icon="pi pi-file-import" label="Import" class="custom-button"
         style="background-color: green;">
-      </button> -->
+      </button>
     </div>
     <div class="ml-3">
       <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"
@@ -137,7 +137,29 @@
   </p-table>
 </div>
 
-
+<form method="POST" class="card flex justify-content-center">
+  <p-dialog [(visible)]="showhide" [modal]="true" [style]="{ width: '60vw' }" [draggable]="false" [resizable]="false">
+    <p-header>
+      <h5 class="modal-title">Chọn hoặc kéo thả file vào đây</h5>
+    </p-header>
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p-fileUpload name="files[]" url="https://localhost:7270/api/PhieuKhaoSat/UploadFiles" (onUpload)="onUpload($event)" [multiple]="true" accept=".png, .jpeg, .jpg, .json, .xlsx" [maxFileSize]="10000000">
+          <ng-template pTemplate="content">
+              <ul *ngIf="uploadedFiles.length">
+                  <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+              </ul>
+          </ng-template>
+        </p-fileUpload>
+      </div>
+    </div>
+    <p-footer>
+      <button pButton (click)="showhide = false" type="button" label="Đóng" class="custom-button surface-600"></button>
+    </p-footer>
+  </p-dialog>
+</form>
 
 <form *ngIf="FormObjectSurvey" [formGroup]="FormObjectSurvey" (ngSubmit)="Save()" method="POST"
   class="card flex justify-content-center">
