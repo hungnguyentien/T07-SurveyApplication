@@ -49,7 +49,7 @@ namespace SurveyApplication.Application.Features.DonVis.Handlers.Commands
                         string diaChi = worksheet.Cells[row, 6].Text;
                         // Cắt chuỗi qua dấu ","
                         string[] parts = diaChi.Split(',');
-                        string[] newParts = parts.Where(x => x.IndexOf("Việt Nam") == -1).ToArray();
+                        string[] newParts = parts.Where(x => x.IndexOf("Việt Nam", StringComparison.OrdinalIgnoreCase) == -1).ToArray();
                         // Loại bỏ từ "Việt Nam" trong chuỗi
                         string tinh = newParts.Length >= 0 ? newParts[newParts.Length - 1].Trim() : diaChi;
                         string huyen = newParts.Length >= 0 ? newParts[newParts.Length - 2].Trim() : diaChi;
