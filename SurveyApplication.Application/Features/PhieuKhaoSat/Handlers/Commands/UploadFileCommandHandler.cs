@@ -41,11 +41,12 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 }
 
                 var fileContents = await File.ReadAllBytesAsync(filePath, cancellationToken);
+                var physicalPath = filePath[StorageConfigs.BaseStorage.Length..];
                 var stgFile = new StgFileDto
                 {
                     FileContents = fileContents,
                     FileName = file.FileName,
-                    PhysicalPath = filePath[StorageConfigs.BaseStorage.Length..],
+                    PhysicalPath = physicalPath,
                     ContentType = file.ContentType,
                     Size = file.Length,
                 };
@@ -54,7 +55,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 {
                     FileContents = fileContents,
                     FileName = file.FileName,
-                    PhysicalPath = filePath,
+                    PhysicalPath = physicalPath,
                     ContentType = file.ContentType,
                     Size = file.Length,
                 });

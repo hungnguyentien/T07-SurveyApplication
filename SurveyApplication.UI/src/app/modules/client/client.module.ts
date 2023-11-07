@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SurveyCreatorModule } from 'survey-creator-angular';
 import { SurveyModule } from 'survey-angular-ui';
-import { NgxLoadingModule } from 'ngx-loading';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { DropdownModule } from 'primeng/dropdown';
 
 import { ClientHomeComponent } from './client-home/client-home.component';
@@ -23,7 +23,7 @@ import { SurveyInfoComponent } from './survey-info/survey-info.component';
     SurveyCreatorModule,
     SurveyModule,
     ReactiveFormsModule,
-    NgxLoadingModule.forRoot({}),
+    NgxSpinnerModule,
     ///TODO add primeng
     DropdownModule,
   ],
