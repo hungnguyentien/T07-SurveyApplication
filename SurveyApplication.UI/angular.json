@@ -33,15 +33,12 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/survey-core/defaultV2.min.css",
               "node_modules/survey-creator-core/survey-creator-core.min.css",
-              "src/assets/css/sb-admin-2.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/vendor/jquery/jquery.min.js",
-              "src/assets/vendor/jquery-easing/jquery.easing.min.js",
-              "src/assets/js/sb-admin-2.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/chart.js/dist/chart.js",
               "node_modules/quill/dist/quill.js"
