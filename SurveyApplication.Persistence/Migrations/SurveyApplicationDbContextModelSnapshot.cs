@@ -446,7 +446,7 @@ namespace SurveyApplication.Persistence.Migrations
                     b.Property<int?>("IdLinhVuc")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdLoaiHinh")
+                    b.Property<int?>("IdLoaiHinh")
                         .HasColumnType("int");
 
                     b.Property<int>("IdQuanHuyen")
@@ -981,7 +981,6 @@ namespace SurveyApplication.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ChucVu")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Created")
@@ -994,7 +993,6 @@ namespace SurveyApplication.Persistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HoTen")

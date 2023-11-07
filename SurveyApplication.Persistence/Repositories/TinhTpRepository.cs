@@ -23,5 +23,10 @@ namespace SurveyApplication.Persistence.Repositories
             var entity = await _dbContext.TinhTp.AsNoTracking().FirstOrDefaultAsync(x => x.Code == code && !x.Deleted);
             return entity != null;
         }
+        public async Task<int?> GetByName(string tinh)
+        {
+            var entity = await _dbContext.TinhTp.AsNoTracking().FirstOrDefaultAsync(x => x.Name == tinh && !x.Deleted);
+            return entity?.Id;
+        }
     }
 }

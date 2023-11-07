@@ -11,11 +11,11 @@ public class NguoiDaiDien : BaseDomainEntity
 
     [Required] public string HoTen { get; set; }
 
-    [Required] public string ChucVu { get; set; }
+    public string? ChucVu { get; set; }
 
     [Required] public string SoDienThoai { get; set; }
 
-    [Required] public string Email { get; set; }
+    public string? Email { get; set; }
 
     public string? MoTa { get; set; }
 }
