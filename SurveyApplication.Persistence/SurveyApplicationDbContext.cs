@@ -18,6 +18,7 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SurveyApplicationDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<StgFile>(e => { e.Property(o => o.Size).HasColumnType("decimal(18,4)"); });
         modelBuilder.HasDbFunction(typeof(JsonSqlExtensions).GetMethod(nameof(JsonSqlExtensions.JsonValue))!)
                 .HasTranslation(e => SqlFunctionExpression.Create(
                     "JSON_VALUE", e, typeof(string), null));
