@@ -14,7 +14,6 @@ import {
 import 'survey-core/survey.i18n';
 import { KqTrangThai } from '@app/enums';
 import { environment } from '@environments/environment';
-import * as crypto from 'crypto-js';
 
 @Component({
   selector: 'app-survey-info',
