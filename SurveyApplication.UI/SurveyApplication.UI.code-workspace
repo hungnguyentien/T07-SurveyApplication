@@ -9,7 +9,7 @@
 			"**/.git": true,
 			"**/.angular": true,
 			"**/.vscode": true,
-			"**/.code-workspace": true,
+			"SurveyApplication.UI.code-workspace": true,
 			"**/.gitignore": true
 		}
 	}
