@@ -12,11 +12,8 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
  
     public class UpdateProfileCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateProfileCommand, BaseCommandResponse>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-
         public UpdateProfileCommandHandler(ISurveyRepositoryWrapper surveyRepository, UserManager<ApplicationUser> userManager) : base(surveyRepository)
         {
-            _userManager = userManager;
         }
 
         public async Task<BaseCommandResponse> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
