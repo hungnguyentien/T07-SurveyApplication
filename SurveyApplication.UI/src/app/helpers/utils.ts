@@ -187,7 +187,7 @@ export default class Utils {
     survey.addNavigationItem({
       id: 'sv-nav-back-page',
       title: 'Quay lại',
-      visibleIndex: 47,
+      visibleIndex: 46,
       action: () => {
         //TODO quay lại trang trước
         router && router.navigate([`/${linkBackPage}/${data}`]);
@@ -195,6 +195,39 @@ export default class Utils {
       css: 'nav-button',
       innerCss: 'sd-btn nav-input',
     });
+
+    linkBackPage != 'phieu/thong-tin-chung' &&
+      survey.addNavigationItem({
+        id: 'sv-nav-download-survey',
+        title: 'Tải phiếu',
+        visibleIndex: 47,
+        action: () => {
+          phieuKhaoSatService?.dowloadSurvey(data).subscribe(
+            (data: any) => {
+              const byteCharacters = atob(data.fileContents);
+              const byteNumbers = new Array(byteCharacters.length);
+              for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+              }
+
+              const byteArray = new Uint8Array(byteNumbers);
+              const blob = new Blob([byteArray], { type: data.contentType });
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = data.fileName;
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+            },
+            (error) => {
+              console.error('Error downloading file:', error);
+            }
+          );;
+        },
+        css: 'nav-button',
+        innerCss: 'sd-btn nav-input',
+      });
 
     trangThai !== KqTrangThai.HoanThanh &&
       survey.addNavigationItem({
@@ -537,7 +570,7 @@ export default class Utils {
         res.lstCauHoi
           .filter((x) => x.panelTitle === panelTitle)
           .forEach((el, j) =>
-            this.configCauHoiEl(el, readOnly, elsPanel, (j + 1))
+            this.configCauHoiEl(el, readOnly, elsPanel, j + 1)
           );
         els.push({
           type: 'panel',

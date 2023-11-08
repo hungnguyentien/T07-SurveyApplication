@@ -20,7 +20,6 @@ using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Utility;
-using Vanara;
 
 namespace SurveyApplication.API.Controllers;
 
@@ -159,5 +158,45 @@ public class PhieuKhaoSatController : ControllerBase
         var command = new UploadFileCommand { UploadFileDto = uploadFileDto };
         var response = await _mediator.Send(command);
         return Ok(response);
+    }
+
+    private const string PathJson = @"TempData\MAU_PKS_DOANH_NGHIEP.docx";
+    [HttpGet("DownloadTemplateSurvey/{data}")]
+    public async Task<ActionResult> DownloadTemplateSurvey(string data)
+    {
+        var thongTinChung =
+            JsonConvert.DeserializeObject<EmailThongTinChungDto>(
+                StringUltils.DecryptWithKey(data, EmailSettings.SecretKey));
+        //var result = await _mediator.Send(new GetThongTinChungRequest { IdGuiEmail = thongTinChung?.IdGuiEmail ?? 0 });
+
+        byte[] content;
+        var fileName = $"PKS_{"Chi nhánh Công ty Cổ phần đầu tư OSUM"}_MST_{"0106216707-001"}.docx";
+        var contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        var dict = new Dictionary<string, string>();
+        dict.Add("HO_TEN", "Nguyễn Tuấn Anh");
+        dict.Add("CHUC_VU", "Bo doi");
+        dict.Add("DIEN_THOAI", "02113760368");
+        dict.Add("EMAIL", "tuananh@gmail.com");
+        dict.Add("TEN_DON_VI", "Chi nhánh Công ty Cổ phần đầu tư OSUM");
+        dict.Add("DIA_CHI", "Thôn Triệu Tổ, xã Trung Nguyên, huyện Yên Lạc, tỉnh Vĩnh Phúc, Việt Nam");
+        dict.Add("DIEN_THOAI_2", "02113760368");
+        dict.Add("EMAIL_2", "toannck32@wru.vn");
+        dict.Add("\u2610", "x");
+        dict.Add("\uf052", "v");
+        dict.Add("\uf09c", "c");
+        dict.Add("\uf099", "k");
+        using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PathJson));
+        using (var ms = new MemoryStream())
+        {
+            await r.BaseStream.CopyToAsync(ms);
+            content = await Ultils.ReplaceDocxFile(ms.ToArray(), dict);
+        }
+
+        return Ok(new
+        {
+            fileName,
+            contentType,
+            fileContents = content
+        });
     }
 }

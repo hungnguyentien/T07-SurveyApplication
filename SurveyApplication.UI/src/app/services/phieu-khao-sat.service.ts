@@ -94,4 +94,10 @@ export class PhieuKhaoSatService {
       formData
     );
   }
+
+  dowloadSurvey(data:string) {
+    return this.http
+      .get(`${environment.apiUrl}/PhieuKhaoSat/DownloadTemplateSurvey/${data}`)
+      .pipe(first());
+  }
 }
