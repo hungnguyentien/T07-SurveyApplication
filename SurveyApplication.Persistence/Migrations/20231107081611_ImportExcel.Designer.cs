@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyApplication.Persistence;
 
@@ -11,9 +12,10 @@ using SurveyApplication.Persistence;
 namespace SurveyApplication.Persistence.Migrations
 {
     [DbContext(typeof(SurveyApplicationDbContext))]
-    partial class SurveyApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231107081611_ImportExcel")]
+    partial class ImportExcel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

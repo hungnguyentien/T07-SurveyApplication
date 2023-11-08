@@ -7,7 +7,7 @@ public class DonVi : BaseDomainEntity
 {
     [Required][MaxLength(250)] public string MaDonVi { get; set; }
 
-    public int IdLoaiHinh { get; set; }
+    public int? IdLoaiHinh { get; set; }
 
     public int? IdLinhVuc { get; set; }
 
