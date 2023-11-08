@@ -1,0 +1,48 @@
+#surveyCreator {
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .icons {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    background-position: center;
+    background-repeat: no-repeat;
+    vertical-align: top;
+    object-fit: contain;
+    margin-right: 5px;
+  }
+  
+  .icon-khai-lai-tu-dau {
+    background-image: url("/assets/img/icons/khai-lai-tu-dau.svg");
+  }
+  
+  .icon-quay-lai {
+    background-image: url("/assets/img/icons/quay-lai.svg");
+    width: 10px;
+    height: 15px;
+    background-size: 15px 10px;
+  }
+  
+  :host {
+    .custom-complete b {
+      color: red;
+    }
+  
+    .sd-element--complex.sd-element--with-frame
+      > .sd-element__header--location-top {
+      padding: 0;
+    }
+  
+    .sd-element--complex.sd-element--with-frame
+      > .sd-element__header--location-top:after {
+      bottom: -15px;
+    }
+  
+    .sd-title.sd-element__title.sd-panel__title {
+      padding-top: 15px;
+      margin-left: -10px;
+    }
+  }
+  

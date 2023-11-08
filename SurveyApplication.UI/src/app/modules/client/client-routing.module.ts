@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Error500Component } from '@app/layout/partials/error500/error500.component';
 import {
+  ClientHomeComponent,
   GeneralInfoComponent,
   SurveyInfoComponent,
 } from '@app/modules/client';
+import { SurveyEnterpriseComponent } from './survey-enterprise/survey-enterprise.component';
 
 const routes: Routes = [
   {
@@ -13,6 +15,22 @@ const routes: Routes = [
       title: 'Khảo sát',
     },
     children: [
+      {
+        path: 'khao-sat-thong-tin-chung/:data',
+        component: ClientHomeComponent,
+        title: 'Thông tin doanh nghiệp',
+        data: {
+          title: 'Thông tin doanh nghiệp',
+        },
+      },
+      {
+        path: 'khao-sat-doanh-nghiep',
+        component: SurveyEnterpriseComponent,
+        title: 'Thông tin phiếu khảo sát',
+        data: {
+          title: 'Thông tin phiếu khảo sát',
+        },
+      },
       {
         path: 'thong-tin-chung/:data',
         component: GeneralInfoComponent,

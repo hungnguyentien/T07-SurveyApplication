@@ -10,11 +10,13 @@ import { ClientHomeComponent } from './client-home/client-home.component';
 import { ClientRoutingModule } from './client-routing.module';
 import { GeneralInfoComponent } from './general-info/general-info.component';
 import { SurveyInfoComponent } from './survey-info/survey-info.component';
+import { SurveyEnterpriseComponent } from './survey-enterprise/survey-enterprise.component';
 @NgModule({
   declarations: [
     ClientHomeComponent,
     GeneralInfoComponent,
     SurveyInfoComponent,
+    SurveyEnterpriseComponent,
   ],
   imports: [
     CommonModule,

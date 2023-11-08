@@ -6,13 +6,11 @@ using SurveyApplication.Application.Features.Accounts.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Domain.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
 {
  
-    public class UpdateProfileCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateAccountCommand, BaseCommandResponse>
+    public class UpdateProfileCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateProfileCommand, BaseCommandResponse>
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -21,7 +19,7 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
             _userManager = userManager;
         }
 
-        public async Task<BaseCommandResponse> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
             var validator = new UpdateAccountDtoValidator(_surveyRepo.Account);
             if (request.AccountDto != null)
@@ -49,7 +47,14 @@ namespace SurveyApplication.Application.Features.Accounts.Handlers.Commands
                 await request.AccountDto.Img.CopyToAsync(stream, cancellationToken);
             }
 
-
+            if (request.AccountDto == null) return new BaseCommandResponse("Sửa thành công!");
+            if (account == null) return new BaseCommandResponse("Sửa thành công!");
+            account.Image = request.AccountDto.Image;
+            account.Name = request.AccountDto.Name;
+            account.Email = request.AccountDto.Email;
+            if (request.AccountDto.Email != null) account.NormalizedEmail = request.AccountDto.Email.ToUpper();
+            account.Address = request.AccountDto.Address;
+            await _surveyRepo.Account.UpdateAsync(account);
             await _surveyRepo.SaveAync();
             return new BaseCommandResponse("Sửa thành công!");
         }

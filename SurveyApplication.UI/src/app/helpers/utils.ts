@@ -131,7 +131,9 @@ export default class Utils {
     surveyData: string = '',
     trangThai: number = 0,
     messageService: MessageService | undefined = undefined,
-    phieuKhaoSatService: PhieuKhaoSatService | undefined = undefined
+    phieuKhaoSatService: PhieuKhaoSatService | undefined = undefined,
+    linkBackPage: string = 'phieu/thong-tin-chung',
+    linkKsLai: string = 'phieu/thong-tin-khao-sat'
   ) => {
     let status = KqTrangThai.HoanThanh;
     const survey = new Model(configJson);
@@ -188,7 +190,7 @@ export default class Utils {
       visibleIndex: 47,
       action: () => {
         //TODO quay lại trang trước
-        router && router.navigate([`/phieu/thong-tin-chung/${data}`]);
+        router && router.navigate([`/${linkBackPage}/${data}`]);
       },
       css: 'nav-button',
       innerCss: 'sd-btn nav-input',
@@ -306,7 +308,7 @@ export default class Utils {
           Object.keys(data).length !== 0
             ? ''
             : `<div><b>Bạn chưa nhập câu trả lời vui lòng khảo sát lại!</b></div>`
-        } <a href="phieu/thong-tin-khao-sat">Khảo sát lại</a></div>`;
+        } <a href="${linkKsLai}">Khảo sát lại</a></div>`;
 
       Object.keys(data).length !== 0 && subscribe && subscribe(sender, status);
     });
@@ -345,7 +347,7 @@ export default class Utils {
   ) {
     let loaiCauHoi = el.loaiCauHoi;
     let name = el.maCauHoi;
-    let title = `${index + 1}. ${el.tieuDe}`;
+    let title = `${index}. ${el.tieuDe}`;
     let isRequired = el.batBuoc ?? false;
     let requiredErrorText = isRequired
       ? 'Vui lòng nhập câu trả lời của bạn!'
@@ -534,7 +536,9 @@ export default class Utils {
         const elsPanel: any[] = [];
         res.lstCauHoi
           .filter((x) => x.panelTitle === panelTitle)
-          .forEach((el, i) => this.configCauHoiEl(el, readOnly, elsPanel, i));
+          .forEach((el, j) =>
+            this.configCauHoiEl(el, readOnly, elsPanel, (j + 1))
+          );
         els.push({
           type: 'panel',
           name: `panel${i}`,
@@ -544,7 +548,7 @@ export default class Utils {
       });
     else
       res.lstCauHoi.forEach((el, i) =>
-        this.configCauHoiEl(el, readOnly, els, i)
+        this.configCauHoiEl(el, readOnly, els, i + 1)
       );
     return els;
   };

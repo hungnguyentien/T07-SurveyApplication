@@ -84,7 +84,7 @@ namespace SurveyApplication.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<UpdateAccountDto>> UpdateProfile( [FromForm]UpdateAccountDto obj)
         {
-            var command = new UpdateAccountCommand { AccountDto = obj };
+            var command = new UpdateProfileCommand { AccountDto = obj };
             var response = await _mediator.Send(command);
             return Ok(response);
         }

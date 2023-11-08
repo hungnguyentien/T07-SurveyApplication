@@ -19,9 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
     <Folder Include="TempData\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

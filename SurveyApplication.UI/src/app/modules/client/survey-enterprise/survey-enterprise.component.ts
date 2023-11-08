@@ -17,11 +17,11 @@ import { environment } from '@environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-survey-info',
-  templateUrl: './survey-info.component.html',
-  styleUrls: ['./survey-info.component.css'],
+  selector: 'app-survey-enterprise',
+  templateUrl: './survey-enterprise.component.html',
+  styleUrls: ['./survey-enterprise.component.css'],
 })
-export class SurveyInfoComponent {
+export class SurveyEnterpriseComponent {
   model!: Model;
   generalInfo!: GeneralInfo;
   saveSurvey!: SaveSurvey;
@@ -110,7 +110,9 @@ export class SurveyInfoComponent {
         surveyData,
         trangThai,
         this.messageService,
-        this.phieuKhaoSatService
+        this.phieuKhaoSatService,
+        'phieu/khao-sat-thong-tin-chung',
+        'phieu/khao-sat-doanh-nghiep'
       );
     };
 

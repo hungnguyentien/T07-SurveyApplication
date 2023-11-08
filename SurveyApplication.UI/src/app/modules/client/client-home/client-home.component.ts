@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   FormControl,
 } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 
 import {
   GeneralInfo,
+  HanhChinhVn,
   LinhVucHoatDong,
   UnitType,
 } from '@app/models';
+import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
-import { UnitTypeService } from '@app/services/unit-type.service';
-import { LinhVucHoatDongService, PhieuKhaoSatService } from '@app/services';
+import { lstRegExp } from '@app/helpers';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-client-home',
@@ -27,79 +28,84 @@ export class ClientHomeComponent {
   frmGeneralInfo!: FormGroup;
   submitCount!: number;
   submitted!: boolean;
-  loading!: boolean;
 
-  tinh: any[] | undefined;
-  selectedTinh: string | undefined;
+  tinh: HanhChinhVn[] | undefined;
+  selectedTinh: number | undefined;
 
-  quanHuyen: any[] | undefined;
-  selectedQuanHuyen: string | undefined;
+  quanHuyen: HanhChinhVn[] | undefined;
+  selectedQuanHuyen: number | undefined;
 
-  phuongXa: any[] | undefined;
-  selectedPhuongXa: string | undefined;
+  phuongXa: HanhChinhVn[] | undefined;
+  selectedPhuongXa: number | undefined;
 
   dataArr: any[] | undefined;
 
   lstLoaiHinhDonVi: UnitType[] | undefined;
+  selectedLoaiHinhDonVi: number | undefined;
 
   lstLinhVuc: LinhVucHoatDong[] | undefined;
+  selectedLinhVuc: number | undefined;
+  showBtnReset: boolean = true;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private messageService: MessageService,
-    private loaiHinhDonViService: UnitTypeService,
+    private spinner: NgxSpinnerService,
     private phieuKhaoSatService: PhieuKhaoSatService,
-    private linhVucHoatDongService: LinhVucHoatDongService
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    let data = this.activatedRoute.snapshot.paramMap.get('data') ?? '';
+    !data &&
+      this.router.navigate(['/error-500'], {
+        queryParams: { message: 'Không tìm thấy dữ liệu' },
+      });
     this.submitCount = 0;
     this.submitted = false;
-    this.loading = false;
-    this.quanHuyen = [];
-    this.phuongXa = [];
+    this.spinner.show();
     this.phieuKhaoSatService.getTinh().subscribe({
       next: (res) => {
         this.tinh = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
-        this.loading = false;
+        this.spinner.hide();
       },
       complete: () => {
-        this.loading = false;
+        this.spinner.hide();
+      },
+    });
+
+    this.phieuKhaoSatService.getQuanHuyen().subscribe({
+      next: (res) => {
+        this.quanHuyen = res;
+      },
+    });
+
+    this.phieuKhaoSatService.getPhuongXa().subscribe({
+      next: (res) => {
+        this.phuongXa = res;
       },
     });
 
     this.frmGeneralInfo = this.formBuilder.group({
       DonVi: this.formBuilder.group({
         TenDonVi: ['', Validators.required],
-        Tinh: ['', Validators.required],
-        QuanHuyen: [''],
-        PhuongXa: [''],
+        IdTinhTp: [''],
+        IdQuanHuyen: [''],
+        IdXaPhuong: [''],
         DiaChi: ['', Validators.required],
         IdLoaiHinh: ['', Validators.required],
         IdLinhVuc: ['', Validators.required],
         MaSoThue: [''],
         WebSite: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
-            ),
-          ],
+          // [Validators.required, Validators.pattern(lstRegExp.webSite)],
         ],
         Email: ['', [Validators.required, Validators.email]],
         SoDienThoai: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
-            ),
-          ],
+          [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
         ],
       }),
       NguoiDaiDien: this.formBuilder.group({
@@ -108,41 +114,68 @@ export class ClientHomeComponent {
         Email: ['', [Validators.required, Validators.email]],
         SoDienThoai: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
-            ),
-          ],
+          [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
         ],
       }),
     });
 
-    this.loaiHinhDonViService.getAll().subscribe({
+    this.phieuKhaoSatService.getAllLoaiHinhDonVi().subscribe({
       next: (res) => {
-        this.loading = true;
+        this.spinner.show();
         this.lstLoaiHinhDonVi = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
-        this.loading = false;
+        this.spinner.hide();
       },
       complete: () => {
-        this.loading = false;
+        this.spinner.hide();
       },
     });
 
-    this.linhVucHoatDongService.getAll().subscribe({
+    this.phieuKhaoSatService.getAllLinhVucHoatDong().subscribe({
       next: (res) => {
-        this.loading = true;
+        this.spinner.show();
         this.lstLinhVuc = res;
       },
       error: (e) => {
-        Utils.messageError(this.messageService, e.message);
-        this.loading = false;
+        this.spinner.hide();
       },
       complete: () => {
-        this.loading = false;
+        this.spinner.hide();
+      },
+    });
+
+    this.phieuKhaoSatService.getGeneralInfo(data).subscribe({
+      next: (res) => {
+        this.spinner.show();
+        this.generalInfo = res;
+        this.generalInfo.data = data;
+        Utils.setValueFormNetted(
+          this.frmGeneralInfo,
+          'donVi',
+          Object.keys(res.donVi),
+          Object.values(res.donVi)
+        );
+        Utils.setValueFormNetted(
+          this.frmGeneralInfo,
+          'nguoiDaiDien',
+          Object.keys(res.nguoiDaiDien),
+          Object.values(res.nguoiDaiDien)
+        );
+        this.selectedLoaiHinhDonVi = res.donVi.idLoaiHinh;
+        this.selectedLinhVuc = res.donVi.idLinhVuc;
+        this.selectedTinh = res.donVi.idTinhTp;
+        this.selectedQuanHuyen = res.donVi.idQuanHuyen;
+        this.selectedPhuongXa = res.donVi.idXaPhuong;
+        //this.frmGeneralInfo.disable();
+        this.generalInfo.trangThaiKq === 2 && this.frmGeneralInfo.disable();
+        this.showBtnReset = this.generalInfo.trangThaiKq !== 2;
+      },
+      error: (e) => {
+        this.spinner.hide();
+      },
+      complete: () => {
+        this.spinner.hide();
       },
     });
   }
@@ -158,16 +191,9 @@ export class ClientHomeComponent {
   onSubmit = () => {
     this.submitted = true;
     this.submitCount++;
-    if (this.frmGeneralInfo.invalid) {
-      return;
-    }
-
-    Utils.messageSuccess(
-      this.messageService,
-      'Nhập thông tin chung thành công!'
-    );
+    if (this.frmGeneralInfo.invalid) return;
     setTimeout(() => {
-      this.router.navigateByUrl('/phieu/thong-tin-khao-sat', {
+      this.router.navigateByUrl('/phieu/khao-sat-doanh-nghiep', {
         state: this.generalInfo,
       });
     }, 3000);
@@ -186,7 +212,6 @@ export class ClientHomeComponent {
         //     this.quanHuyen = res;
         //   },
         //   error: (e) => {
-        //     Utils.messageError(this.messageService, e.message);
         //     this.loading = false;
         //   },
         //   complete: () => {
@@ -207,7 +232,6 @@ export class ClientHomeComponent {
         //     this.phuongXa = res;
         //   },
         //   error: (e) => {
-        //     Utils.messageError(this.messageService, e.message);
         //     this.loading = false;
         //   },
         //   complete: () => {
@@ -223,19 +247,18 @@ export class ClientHomeComponent {
   };
 
   setDiaChi = () => {
-    let arr = [
-      this.tinh?.find((x) => x.code == this.selectedTinh)?.['name_with_type'],
-      this.quanHuyen?.find((x) => x.code == this.selectedQuanHuyen)?.[
-        'name_with_type'
-      ],
-      this.phuongXa?.find((x) => x.code == this.selectedPhuongXa)?.[
-        'name_with_type'
-      ],
-    ];
-
-    this.frmGeneralInfo
-      ?.get('DonVi')
-      ?.get('DiaChi')
-      ?.setValue(arr.filter((x) => x).join(' ,'));
+    // let arr = [
+    //   this.tinh?.find((x) => x.code == this.selectedTinh)?.['name_with_type'],
+    //   this.quanHuyen?.find((x) => x.code == this.selectedQuanHuyen)?.[
+    //     'name_with_type'
+    //   ],
+    //   this.phuongXa?.find((x) => x.code == this.selectedPhuongXa)?.[
+    //     'name_with_type'
+    //   ],
+    // ];
+    // this.frmGeneralInfo
+    //   ?.get('DonVi')
+    //   ?.get('DiaChi')
+    //   ?.setValue(arr.filter((x) => x).join(' ,'));
   };
 }

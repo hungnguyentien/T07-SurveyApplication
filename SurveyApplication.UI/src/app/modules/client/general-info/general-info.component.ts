@@ -16,6 +16,7 @@ import {
 import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { lstRegExp } from '@app/helpers';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-general-info',
@@ -27,7 +28,6 @@ export class GeneralInfoComponent {
   frmGeneralInfo!: FormGroup;
   submitCount!: number;
   submitted!: boolean;
-  loading!: boolean;
 
   tinh: HanhChinhVn[] | undefined;
   selectedTinh: number | undefined;
@@ -50,6 +50,7 @@ export class GeneralInfoComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService,
     private phieuKhaoSatService: PhieuKhaoSatService,
     private activatedRoute: ActivatedRoute
   ) {}
@@ -62,16 +63,16 @@ export class GeneralInfoComponent {
       });
     this.submitCount = 0;
     this.submitted = false;
-    this.loading = false;
+    this.spinner.show();
     this.phieuKhaoSatService.getTinh().subscribe({
       next: (res) => {
         this.tinh = res;
       },
       error: (e) => {
-        this.loading = false;
+        this.spinner.hide();
       },
       complete: () => {
-        this.loading = false;
+        this.spinner.hide();
       },
     });
 
@@ -120,33 +121,33 @@ export class GeneralInfoComponent {
 
     this.phieuKhaoSatService.getAllLoaiHinhDonVi().subscribe({
       next: (res) => {
-        this.loading = true;
+        this.spinner.show();
         this.lstLoaiHinhDonVi = res;
       },
       error: (e) => {
-        this.loading = false;
+        this.spinner.hide();
       },
       complete: () => {
-        this.loading = false;
+        this.spinner.hide();
       },
     });
 
     this.phieuKhaoSatService.getAllLinhVucHoatDong().subscribe({
       next: (res) => {
-        this.loading = true;
+        this.spinner.show();
         this.lstLinhVuc = res;
       },
       error: (e) => {
-        this.loading = false;
+        this.spinner.hide();
       },
       complete: () => {
-        this.loading = false;
+        this.spinner.hide();
       },
     });
 
     this.phieuKhaoSatService.getGeneralInfo(data).subscribe({
       next: (res) => {
-        this.loading = true;
+        this.spinner.show();
         this.generalInfo = res;
         this.generalInfo.data = data;
         Utils.setValueFormNetted(
@@ -171,10 +172,10 @@ export class GeneralInfoComponent {
         this.showBtnReset = this.generalInfo.trangThaiKq !== 2;
       },
       error: (e) => {
-        this.loading = false;
+        this.spinner.hide();
       },
       complete: () => {
-        this.loading = false;
+        this.spinner.hide();
       },
     });
   }
