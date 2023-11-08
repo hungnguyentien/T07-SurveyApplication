@@ -26,3 +26,4 @@ export * from './Module';
 export * from './TinhThanh';
 export * from './IpAddress';
 export * from './BackupRestore';
+export * from './ResearchSurvey';

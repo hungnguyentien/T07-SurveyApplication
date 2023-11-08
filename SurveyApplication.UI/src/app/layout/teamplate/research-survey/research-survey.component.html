@@ -1,0 +1,57 @@
+<div id="box-phieu-khao-sat">
+    <app-header-client></app-header-client>
+    <div id="box-content">
+        <div class="b-white">
+            <div class="box-header-phieu">
+                <div>KHẢO SÁT Doanh nghiệp</div>
+                <div>
+                    Tư vấn hỗ trợ xây dựng và áp dụng hệ thống truy xuất nguồn gốc sản phẩm, hàng hóa cho các sản phẩm,
+                    hàng
+                    hoá Bộ Công Thương
+                </div>
+            </div>
+            <div>
+                <form (ngSubmit)="onSubmitSearch()">
+                    <div class="mb-3 row">
+                        <div class="col-sm-10">
+                            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+                                [ngModelOptions]="{ standalone: true }"
+                                placeholder="Mã số doanh nghiệp hoặc mã số thuế" />
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-tra-cuu">
+                                Tra cứu
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <table class="table">
+                    <thead>
+                        <th>Tiêu đề</th>
+                        <th>Địa chỉ nhận</th>
+                        <th>Tên bảng khảo sát</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th>Khảo sát</th>
+                    </thead>
+                    <tr *ngFor="let item of datas">
+                        <td>{{ item.tieuDe }}</td>
+                        <td>{{ item.diaChiNhan }}</td>
+                        <td>{{ item.tenBangKhaoSat }}</td>
+                        <td>{{ item.ngayBatDau | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ item.ngayKetThuc | date:'dd/MM/yyyy' }}</td>
+                        <td><a class="link" (click)="khaoSat(item.linkKhaoSat)" title="{{item.tieuDe}}">Chi tiết khảo sát</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <app-footer-client></app-footer-client>
+</div>
+<p-toast></p-toast>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" (click)="pageTop()">
+    <i class="fas fa-angle-up"></i>
+</a>

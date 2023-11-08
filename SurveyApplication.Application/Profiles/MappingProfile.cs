@@ -93,5 +93,8 @@ public class MappingProfile : Profile
         CreateMap<Role, RoleDto>().ReverseMap();
 
         CreateMap<StgFile, StgFileDto>().ReverseMap();
+
+        CreateMap<DonVi, DoanhNghiepDto>().ReverseMap();
+        CreateMap<NguoiDaiDien, NguoiDaiDienDnDto>().ReverseMap();
     }
 }

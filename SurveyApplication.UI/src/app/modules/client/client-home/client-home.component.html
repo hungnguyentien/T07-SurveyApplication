@@ -2,17 +2,17 @@
   <form *ngIf="frmGeneralInfo" [formGroup]="frmGeneralInfo" (ngSubmit)="onSubmit()">
     <div class="box-info">
       <h2 class="text-uppercase">PHẦN 1: THÔNG TIN CHUNG</h2>
-      <ng-container formGroupName="DonVi">
+      <ng-container formGroupName="donVi">
         <div class="thong-tin-don-vi">
           <div class="mb-3 lbl fw-bold">I. Thông tin đơn vị</div>
           <div class="mb-3 row">
-            <label class="col-sm-2 col-form-label require" for="TenDonVi">Tên đơn vị:</label>
+            <label class="col-sm-2 col-form-label require" for="tenDonVi">Tên đơn vị:</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" [ngClass]="{
-                  'is-invalid': submitCount > 0 && f('DonVi', 'TenDonVi').errors
-                }" id="TenDonVi" formControlName="TenDonVi" />
-              <div *ngIf="submitCount > 0 && f('DonVi', 'TenDonVi').errors" class="invalid-feedback">
-                <small *ngIf="f('DonVi', 'TenDonVi').errors?.['required']">
+                  'is-invalid': submitCount > 0 && f('donVi', 'tenDonVi').errors
+                }" id="tenDonVi" formControlName="tenDonVi" />
+              <div *ngIf="submitCount > 0 && f('donVi', 'tenDonVi').errors" class="invalid-feedback">
+                <small *ngIf="f('donVi', 'tenDonVi').errors?.['required']">
                   Vui lòng nhập tên đơn vị
                 </small>
               </div>
@@ -26,7 +26,7 @@
                   <p-dropdown [options]="tinh" [(ngModel)]="selectedTinh" optionLabel="name" optionValue="id"
                     [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
                     emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                    placeholder="-- Tỉnh thành phố --" formControlName="IdTinhTp"
+                    placeholder="-- Tỉnh thành phố --" formControlName="idTinhTp"
                     (onChange)="handlerChangeTinh($event)">
                   </p-dropdown>
                 </div>
@@ -34,7 +34,7 @@
                   <p-dropdown [options]="quanHuyen" [(ngModel)]="selectedQuanHuyen" optionLabel="name" optionValue="id"
                     [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
                     emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                    placeholder="-- Quận huyện --" formControlName="IdQuanHuyen"
+                    placeholder="-- Quận huyện --" formControlName="idQuanHuyen"
                     (onChange)="handlerChangeQuanHuyen($event)">
                   </p-dropdown>
                 </div>
@@ -42,17 +42,17 @@
                   <p-dropdown [options]="phuongXa" [(ngModel)]="selectedPhuongXa" optionLabel="name" optionValue="id"
                     [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
                     emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                    placeholder="-- Phường xã --" formControlName="IdXaPhuong"
+                    placeholder="-- Phường xã --" formControlName="idXaPhuong"
                     (onChange)="handlerChangePhuongXa($event)">
                   </p-dropdown>
                 </div>
                 <div class="col-3">
-                  <input type="text" class="form-control" id="DiaChi" formControlName="DiaChi" [ngClass]="{
+                  <input type="text" class="form-control" id="diaChi" formControlName="diaChi" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('DonVi', 'DiaChi').errors
+                        submitCount > 0 && f('donVi', 'diaChi').errors
                     }" />
-                  <div *ngIf="submitCount > 0 && f('DonVi', 'DiaChi').errors" class="invalid-feedback">
-                    <small *ngIf="f('DonVi', 'DiaChi').errors?.['required']">
+                  <div *ngIf="submitCount > 0 && f('donVi', 'diaChi').errors" class="invalid-feedback">
+                    <small *ngIf="f('donVi', 'diaChi').errors?.['required']">
                       Vui lòng nhập địa chỉ
                     </small>
                   </div>
@@ -70,13 +70,13 @@
                   <p-dropdown [options]="lstLoaiHinhDonVi" [(ngModel)]="selectedLoaiHinhDonVi" optionLabel="tenLoaiHinh"
                     optionValue="id" [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
                     emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                    placeholder="-- Chọn loại hình đơn vị --" formControlName="IdLoaiHinh" [ngClass]="{
+                    placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinh" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('DonVi', 'IdLoaiHinh').errors
+                        submitCount > 0 && f('donVi', 'idLoaiHinh').errors
                     }">
                   </p-dropdown>
-                  <div *ngIf="submitCount > 0 && f('DonVi', 'IdLoaiHinh').errors" class="invalid-feedback">
-                    <small *ngIf="f('DonVi', 'IdLoaiHinh').errors?.['required']">
+                  <div *ngIf="submitCount > 0 && f('donVi', 'idLoaiHinh').errors" class="invalid-feedback">
+                    <small *ngIf="f('donVi', 'idLoaiHinh').errors?.['required']">
                       Vui lòng chọn loại hình đơn vị
                     </small>
                   </div>
@@ -90,13 +90,13 @@
                   <p-dropdown [options]="lstLinhVuc" [(ngModel)]="selectedLinhVuc" optionLabel="tenLinhVuc"
                     optionValue="id" [filter]="true" filterBy="tenLinhVuc" emptyMessage="Không có kết quả nào"
                     emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                    placeholder="-- Chọn loại hình đơn vị --" formControlName="IdLinhVuc" [ngClass]="{
+                    placeholder="-- Chọn loại hình đơn vị --" formControlName="idLinhVuc" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('DonVi', 'IdLinhVuc').errors
+                        submitCount > 0 && f('donVi', 'idLinhVuc').errors
                     }">
                   </p-dropdown>
-                  <div *ngIf="submitCount > 0 && f('DonVi', 'IdLinhVuc').errors" class="invalid-feedback">
-                    <small *ngIf="f('DonVi', 'IdLinhVuc').errors?.['required']">
+                  <div *ngIf="submitCount > 0 && f('donVi', 'idLinhVuc').errors" class="invalid-feedback">
+                    <small *ngIf="f('donVi', 'idLinhVuc').errors?.['required']">
                       Vui lòng chọn lĩnh vực hoạt động
                     </small>
                   </div>
@@ -109,7 +109,7 @@
               <div class="row">
                 <label class="col-sm-4 col-form-label">Mã số thuế:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" formControlName="MaSoThue" />
+                  <input type="text" class="form-control" formControlName="maSoThue" />
                 </div>
               </div>
             </div>
@@ -117,15 +117,15 @@
               <div class="row">
                 <label class="col-sm-4 col-form-label">Website:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" formControlName="WebSite" [ngClass]="{
+                  <input type="text" class="form-control" formControlName="webSite" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('DonVi', 'WebSite').errors
+                        submitCount > 0 && f('donVi', 'webSite').errors
                     }" />
-                  <div *ngIf="submitCount > 0 && f('DonVi', 'WebSite').errors" class="invalid-feedback">
-                    <!-- <small *ngIf="f('DonVi', 'WebSite').errors?.['required']">
+                  <div *ngIf="submitCount > 0 && f('donVi', 'webSite').errors" class="invalid-feedback">
+                    <!-- <small *ngIf="f('donVi', 'webSite').errors?.['required']">
                       Vui lòng nhập website
                     </small>
-                    <small *ngIf="f('DonVi', 'WebSite').errors?.['pattern']">
+                    <small *ngIf="f('donVi', 'webSite').errors?.['pattern']">
                       Website không đúng định dạng
                     </small> -->
                   </div>
@@ -138,16 +138,16 @@
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Email:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" formControlName="Email" [ngClass]="{
+                  <input type="text" class="form-control" formControlName="email" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('DonVi', 'Email').errors
+                        submitCount > 0 && f('donVi', 'email').errors
                     }" />
-                  <div *ngIf="submitCount > 0 && f('DonVi', 'Email').errors" class="invalid-feedback">
-                    <small *ngIf="f('DonVi', 'Email').errors?.['required']">
+                  <div *ngIf="submitCount > 0 && f('donVi', 'email').errors" class="invalid-feedback">
+                    <small *ngIf="f('donVi', 'email').errors?.['required']">
                       Vui lòng nhập email
                     </small>
-                    <small *ngIf="f('DonVi', 'Email').errors?.['email']">
-                      Email không đúng định dạng
+                    <small *ngIf="f('donVi', 'email').errors?.['email']">
+                      email không đúng định dạng
                     </small>
                   </div>
                 </div>
@@ -157,15 +157,15 @@
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Số điện thoại:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" formControlName="SoDienThoai" [ngClass]="{
+                  <input type="text" class="form-control" formControlName="soDienThoai" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('DonVi', 'SoDienThoai').errors
+                        submitCount > 0 && f('donVi', 'soDienThoai').errors
                     }" />
-                  <div *ngIf="submitCount > 0 && f('DonVi', 'SoDienThoai').errors" class="invalid-feedback">
-                    <small *ngIf="f('DonVi', 'SoDienThoai').errors?.['required']">
+                  <div *ngIf="submitCount > 0 && f('donVi', 'soDienThoai').errors" class="invalid-feedback">
+                    <small *ngIf="f('donVi', 'soDienThoai').errors?.['required']">
                       Vui lòng nhập số điện thoại
                     </small>
-                    <small *ngIf="f('DonVi', 'SoDienThoai').errors?.['pattern']">
+                    <small *ngIf="f('donVi', 'soDienThoai').errors?.['pattern']">
                       Số điện thoại không đúng định dạng
                     </small>
                   </div>
@@ -176,7 +176,7 @@
         </div>
       </ng-container>
       <hr class="divider" />
-      <ng-container formGroupName="NguoiDaiDien">
+      <ng-container formGroupName="nguoiDaiDien">
         <div class="thong-tin-nguoi-dien-phieu">
           <div class="mb-3 lbl fw-bold">
             II. Thông tin người điền phiếu (Người đại diện cho đơn vị)
@@ -186,12 +186,12 @@
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Họ tên:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" formControlName="HoTen" [ngClass]="{
+                  <input type="text" class="form-control" formControlName="hoTen" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('NguoiDaiDien', 'HoTen').errors
+                        submitCount > 0 && f('nguoiDaiDien', 'hoTen').errors
                     }" />
-                  <div *ngIf="submitCount > 0 && f('NguoiDaiDien', 'HoTen').errors" class="invalid-feedback">
-                    <small *ngIf="f('NguoiDaiDien', 'HoTen').errors?.['required']">
+                  <div *ngIf="submitCount > 0 && f('nguoiDaiDien', 'hoTen').errors" class="invalid-feedback">
+                    <small *ngIf="f('nguoiDaiDien', 'hoTen').errors?.['required']">
                       Vui lòng nhập họ tên
                     </small>
                   </div>
@@ -202,14 +202,14 @@
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Chức vụ:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" formControlName="ChucVu" [ngClass]="{
+                  <input type="text" class="form-control" formControlName="chucVu" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('NguoiDaiDien', 'ChucVu').errors
+                        submitCount > 0 && f('nguoiDaiDien', 'chucVu').errors
                     }" />
                   <div *ngIf="
-                      submitCount > 0 && f('NguoiDaiDien', 'ChucVu').errors
+                      submitCount > 0 && f('nguoiDaiDien', 'chucVu').errors
                     " class="invalid-feedback">
-                    <small *ngIf="f('NguoiDaiDien', 'ChucVu').errors?.['required']">
+                    <small *ngIf="f('nguoiDaiDien', 'chucVu').errors?.['required']">
                       Vui lòng nhập chức vụ
                     </small>
                   </div>
@@ -222,16 +222,16 @@
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Email:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" formControlName="Email" [ngClass]="{
+                  <input type="text" class="form-control" formControlName="email" [ngClass]="{
                       'is-invalid':
-                        submitCount > 0 && f('NguoiDaiDien', 'Email').errors
+                        submitCount > 0 && f('nguoiDaiDien', 'email').errors
                     }" />
-                  <div *ngIf="submitCount > 0 && f('NguoiDaiDien', 'Email').errors" class="invalid-feedback">
-                    <small *ngIf="f('NguoiDaiDien', 'Email').errors?.['required']">
+                  <div *ngIf="submitCount > 0 && f('nguoiDaiDien', 'email').errors" class="invalid-feedback">
+                    <small *ngIf="f('nguoiDaiDien', 'email').errors?.['required']">
                       Vui lòng nhập email
                     </small>
-                    <small *ngIf="f('NguoiDaiDien', 'Email').errors?.['email']">
-                      Email không đúng định dạng
+                    <small *ngIf="f('nguoiDaiDien', 'email').errors?.['email']">
+                      email không đúng định dạng
                     </small>
                   </div>
                 </div>
@@ -241,18 +241,18 @@
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Số điện thoại:</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" formControlName="SoDienThoai" [ngClass]="{
+                  <input type="text" class="form-control" formControlName="soDienThoai" [ngClass]="{
                       'is-invalid':
                         submitCount > 0 &&
-                        f('NguoiDaiDien', 'SoDienThoai').errors
+                        f('nguoiDaiDien', 'soDienThoai').errors
                     }" />
                   <div *ngIf="
-                      submitCount > 0 && f('NguoiDaiDien', 'SoDienThoai').errors
+                      submitCount > 0 && f('nguoiDaiDien', 'soDienThoai').errors
                     " class="invalid-feedback">
-                    <small *ngIf="f('NguoiDaiDien', 'SoDienThoai').errors?.['required']">
+                    <small *ngIf="f('nguoiDaiDien', 'soDienThoai').errors?.['required']">
                       Vui lòng nhập số điện thoại
                     </small>
-                    <small *ngIf="f('NguoiDaiDien', 'SoDienThoai').errors?.['pattern']">
+                    <small *ngIf="f('nguoiDaiDien', 'soDienThoai').errors?.['pattern']">
                       Số điện thoại không đúng định dạng
                     </small>
                   </div>

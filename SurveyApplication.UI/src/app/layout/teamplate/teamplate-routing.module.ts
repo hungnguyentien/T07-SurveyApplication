@@ -7,6 +7,7 @@ import { LoginComponent } from '../share/login/login.component';
 import { AuthGuard } from '@app/helpers';
 import { CodeModule } from '@app/enums';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
+import { ResearchSurveyComponent } from './research-survey/research-survey.component';
 
 const routes: Routes = [
   {
@@ -64,6 +65,14 @@ const routes: Routes = [
         component: LoginComponent,
         data: {
           title: 'Đăng nhập',
+        },
+      },
+      {
+        path: 'khao-sat',
+        component: ResearchSurveyComponent,
+        title: 'Khảo sát doanh nghiệp',
+        data: {
+          title: 'Khảo sát doanh nghiệp',
         },
       },
     ],

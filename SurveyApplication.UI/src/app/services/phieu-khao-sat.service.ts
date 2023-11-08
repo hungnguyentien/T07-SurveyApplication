@@ -11,6 +11,9 @@ import {
   CreateBaoCaoCauHoiCommand,
   LinhVucHoatDong,
   UnitType,
+  PhieuKhaoSatDoanhNghiep,
+  BaseQuerieResponse,
+  UpdateDoanhNghiep,
 } from '@app/models';
 import { environment } from '@environments/environment';
 import Utils from '@app/helpers/utils';
@@ -99,5 +102,18 @@ export class PhieuKhaoSatService {
     return this.http
       .get(`${environment.apiUrl}/PhieuKhaoSat/DownloadTemplateSurvey/${data}`)
       .pipe(first());
+  }
+
+  searchSurveyByDonVi(keyword:string) {
+    return this.http
+      .get<BaseQuerieResponse<PhieuKhaoSatDoanhNghiep>>(`${environment.apiUrl}/PhieuKhaoSat/SearchSurveyByDonVi/${keyword}`)
+      .pipe(first());
+  }
+
+  updateDoanhNghiep(data: UpdateDoanhNghiep) {
+    return this.http.post<BaseCommandResponse>(
+      `${environment.apiUrl}/PhieuKhaoSat/UpdateDoanhNghiep`,
+      data
+    );
   }
 }

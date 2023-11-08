@@ -1,13 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using SurveyApplication.Application.DTOs.NguoiDaiDien;
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Queries;
 using SurveyApplication.Domain.Common;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using System.Net.WebSockets;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
 {

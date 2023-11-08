@@ -43,17 +43,26 @@ export default class Utils {
     frm: FormGroup<any>,
     nettedField: string,
     keys: string[],
-    values: any[]
+    values: any[],
+    capitalize: boolean = true
   ) => {
-    keys.forEach((el, i) => {
-      values[i] != null &&
-        values[i] != undefined &&
-        Utils.getFormControl(
-          frm,
-          Utils.capitalizeFirstLetter(nettedField),
-          Utils.capitalizeFirstLetter(el)
-        )?.setValue(values[i].toString());
-    });
+    capitalize
+      ? keys.forEach((el, i) => {
+          values[i] != null &&
+            values[i] != undefined &&
+            Utils.getFormControl(
+              frm,
+              Utils.capitalizeFirstLetter(nettedField),
+              Utils.capitalizeFirstLetter(el)
+            )?.setValue(values[i].toString());
+        })
+      : keys.forEach((el, i) => {
+          values[i] != null &&
+            values[i] != undefined &&
+            Utils.getFormControl(frm, nettedField, el)?.setValue(
+              values[i].toString()
+            );
+        });
   };
 
   static setValueForm = (
@@ -223,7 +232,7 @@ export default class Utils {
             (error) => {
               console.error('Error downloading file:', error);
             }
-          );;
+          );
         },
         css: 'nav-button',
         innerCss: 'sd-btn nav-input',
@@ -850,5 +859,22 @@ export default class Utils {
       i = 3;
     while (i--) roman = (key[+(digits?.pop() ?? 0) + i * 10] || '') + roman;
     return Array(+digits.join('') + 1).join('M') + roman;
+  };
+
+  static shallowObjectEqual = (object1: any, object2: any): boolean => {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+
+    for (let key of keys1) {
+      if (object1[key]?.toString() !== object2[key]?.toString()) {
+        return false;
+      }
+    }
+
+    return true;
   };
 }

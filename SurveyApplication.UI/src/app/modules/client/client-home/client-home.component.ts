@@ -12,11 +12,13 @@ import {
   HanhChinhVn,
   LinhVucHoatDong,
   UnitType,
+  UpdateDoanhNghiep,
 } from '@app/models';
 import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { lstRegExp } from '@app/helpers';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-client-home',
@@ -46,11 +48,13 @@ export class ClientHomeComponent {
   lstLinhVuc: LinhVucHoatDong[] | undefined;
   selectedLinhVuc: number | undefined;
   showBtnReset: boolean = true;
+  dataCheck: UpdateDoanhNghiep | undefined;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private spinner: NgxSpinnerService,
+    private messageService: MessageService,
     private phieuKhaoSatService: PhieuKhaoSatService,
     private activatedRoute: ActivatedRoute
   ) {}
@@ -89,34 +93,35 @@ export class ClientHomeComponent {
     });
 
     this.frmGeneralInfo = this.formBuilder.group({
-      DonVi: this.formBuilder.group({
-        TenDonVi: ['', Validators.required],
-        IdTinhTp: [''],
-        IdQuanHuyen: [''],
-        IdXaPhuong: [''],
-        DiaChi: ['', Validators.required],
-        IdLoaiHinh: ['', Validators.required],
-        IdLinhVuc: ['', Validators.required],
-        MaSoThue: [''],
-        WebSite: [
+      donVi: this.formBuilder.group({
+        tenDonVi: ['', Validators.required],
+        idTinhTp: [''],
+        idQuanHuyen: [''],
+        idXaPhuong: [''],
+        diaChi: ['', Validators.required],
+        idLoaiHinh: ['', Validators.required],
+        idLinhVuc: ['', Validators.required],
+        maSoThue: [''],
+        webSite: [
           '',
           // [Validators.required, Validators.pattern(lstRegExp.webSite)],
         ],
-        Email: ['', [Validators.required, Validators.email]],
-        SoDienThoai: [
+        email: ['', [Validators.required, Validators.email]],
+        soDienThoai: [
           '',
           [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
         ],
       }),
-      NguoiDaiDien: this.formBuilder.group({
-        HoTen: ['', Validators.required],
-        ChucVu: ['', Validators.required],
-        Email: ['', [Validators.required, Validators.email]],
-        SoDienThoai: [
+      nguoiDaiDien: this.formBuilder.group({
+        hoTen: ['', Validators.required],
+        chucVu: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        soDienThoai: [
           '',
           [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
         ],
       }),
+      idGuiEmail: [''],
     });
 
     this.phieuKhaoSatService.getAllLoaiHinhDonVi().subscribe({
@@ -154,13 +159,15 @@ export class ClientHomeComponent {
           this.frmGeneralInfo,
           'donVi',
           Object.keys(res.donVi),
-          Object.values(res.donVi)
+          Object.values(res.donVi),
+          false
         );
         Utils.setValueFormNetted(
           this.frmGeneralInfo,
           'nguoiDaiDien',
           Object.keys(res.nguoiDaiDien),
-          Object.values(res.nguoiDaiDien)
+          Object.values(res.nguoiDaiDien),
+          false
         );
         this.selectedLoaiHinhDonVi = res.donVi.idLoaiHinh;
         this.selectedLinhVuc = res.donVi.idLinhVuc;
@@ -170,6 +177,7 @@ export class ClientHomeComponent {
         //this.frmGeneralInfo.disable();
         this.generalInfo.trangThaiKq === 2 && this.frmGeneralInfo.disable();
         this.showBtnReset = this.generalInfo.trangThaiKq !== 2;
+        this.dataCheck = this.frmGeneralInfo.value as UpdateDoanhNghiep;
       },
       error: (e) => {
         this.spinner.hide();
@@ -192,11 +200,29 @@ export class ClientHomeComponent {
     this.submitted = true;
     this.submitCount++;
     if (this.frmGeneralInfo.invalid) return;
-    setTimeout(() => {
-      this.router.navigateByUrl('/phieu/khao-sat-doanh-nghiep', {
-        state: this.generalInfo,
+    let data = this.frmGeneralInfo.value as UpdateDoanhNghiep;
+    if (
+      Utils.shallowObjectEqual(data.donVi, this.dataCheck?.donVi) &&
+      Utils.shallowObjectEqual(data.nguoiDaiDien, this.dataCheck?.nguoiDaiDien)
+    ) {
+      setTimeout(() => {
+        this.router.navigateByUrl('/phieu/khao-sat-doanh-nghiep', {
+          state: this.generalInfo,
+        });
+      }, 500);
+    } else {
+      data.idGuiEmail = this.activatedRoute.snapshot.paramMap.get('data') ?? '';
+      this.phieuKhaoSatService.updateDoanhNghiep(data).subscribe({
+        next: (res) => {
+          res.success && Utils.messageSuccess(this.messageService, res.message);
+          setTimeout(() => {
+            this.router.navigateByUrl('/phieu/khao-sat-doanh-nghiep', {
+              state: this.generalInfo,
+            });
+          }, 3000);
+        },
       });
-    }, 3000);
+    }
   };
 
   resetForm = () => Utils.resetForm(this.frmGeneralInfo);

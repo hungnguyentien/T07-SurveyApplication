@@ -9,32 +9,35 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService} from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { AccountService } from '@app/services/account.service';
 import Utils from '@app/helpers/utils';
 @Component({
   selector: 'app-forgot-pass',
   templateUrl: './forgot-pass.component.html',
-  styleUrls: ['./forgot-pass.component.css']
+  styleUrls: ['./forgot-pass.component.css'],
 })
 export class ForgotPassComponent {
   submitted: boolean = false;
-  frmForgotPass!:FormGroup;
-  data:any;
-  constructor(private formBuilder:FormBuilder,private router: Router,private accountService:AccountService, private messageService:MessageService){}
+  frmForgotPass!: FormGroup;
+  data: any;
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private accountService: AccountService,
+    private messageService: MessageService
+  ) {}
   ngOnInit() {
     this.actionRequest();
-    this.frmForgotPass = this.formBuilder.group(
-      {
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required]],
-      }
-    ), { validator: this.checkPasswords };
+    (this.frmForgotPass = this.formBuilder.group({
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+    })),
+      { validator: this.checkPasswords };
   }
 
-  
   actionRequest() {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       // Lấy chuỗi URL sau khi thay đổi route
       const currentURL = this.router.url;
       // Tách phần query từ dấu "?"
@@ -53,7 +56,6 @@ export class ForgotPassComponent {
       this.data = paramMap;
     });
   }
-  
 
   checkPasswords: ValidatorFn = (
     group: AbstractControl
@@ -69,22 +71,22 @@ export class ForgotPassComponent {
         : this.frmForgotPass?.get(name)
     ) as FormControl;
   };
-  onSubmit(){
+  onSubmit() {
     const frmData = this.frmForgotPass.value;
     frmData['email'] = this.data.email;
     frmData['token'] = this.data.token;
     this.accountService.resetPassword(frmData).subscribe({
       next: (res) => {
-        console.log(res)
-       if(res.success == true){
-        Utils.messageSuccess(this.messageService, res.message);
-       }else{
-        Utils.messageError(this.messageService, res.message);
-       }
+        console.log(res);
+        if (res.success == true) {
+          Utils.messageSuccess(this.messageService, res.message);
+        } else {
+          Utils.messageError(this.messageService, res.message);
+        }
       },
       error: (e) => {
         Utils.messageError(this.messageService, e.message);
-      }
-    })
+      },
+    });
   }
 }

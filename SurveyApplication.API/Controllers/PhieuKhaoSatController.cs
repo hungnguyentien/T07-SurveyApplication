@@ -199,4 +199,20 @@ public class PhieuKhaoSatController : ControllerBase
             fileContents = content
         });
     }
+
+    [HttpGet("SearchSurveyByDonVi/{keyword}")]
+    public async Task<ActionResult> SearchSurveyByDonVi(string keyword)
+    {
+        var command = new GetPhieuKhaoSatRequest { Keyword = keyword, PageSize = 10};
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPost("UpdateDoanhNghiep")]
+    public async Task<ActionResult> UpdateDoanhNghiep(UpdateDoanhNghiepDto doanhNghiepDto)
+    {
+        var command = new UpdateDoanhNghiepCommand { UpdateDoanhNghiepDto = doanhNghiepDto};
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
 }

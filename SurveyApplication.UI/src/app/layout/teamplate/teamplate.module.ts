@@ -14,8 +14,9 @@ import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PasswordModule } from 'primeng/password';
+import { ResearchSurveyComponent } from './research-survey/research-survey.component';
 @NgModule({
-  declarations: [TemplatePublicComponent, AdminTempleteComponent],
+  declarations: [TemplatePublicComponent, AdminTempleteComponent, ResearchSurveyComponent],
   imports: [
     CommonModule,
     FormsModule,
