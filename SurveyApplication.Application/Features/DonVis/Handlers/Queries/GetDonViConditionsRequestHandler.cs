@@ -3,10 +3,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.DonVi;
 using SurveyApplication.Application.Features.DonVis.Requests.Queries;
-using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using System.Linq;
 
 namespace SurveyApplication.Application.Features.DonVis.Handlers.Queries;
 
