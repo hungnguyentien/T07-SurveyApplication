@@ -146,16 +146,20 @@ export class AdminObjectSurveyComponent {
   onCityChange(): void {
     const code = this.selectedTinh;
     this.wards = [];
-    this.quanHuyenService.getQuanHuyenByTinhTp(code ?? '').subscribe((res) => {
-      this.districts = res;
-    });
+    code &&
+      this.quanHuyenService.getQuanHuyenByTinhTp(code).subscribe((res) => {
+        this.districts = res;
+      });
   }
 
   onDistrictChange(): void {
     const code = this.selectedQuanHuyen;
-    this.xaPhuongService.getPhuongXaByQuanHuyen(code ?? '').subscribe((res) => {
-      this.wards = res;
-    });
+    code &&
+      this.xaPhuongService
+        .getPhuongXaByQuanHuyen(code)
+        .subscribe((res) => {
+          this.wards = res;
+        });
   }
 
   GetUnitType() {
@@ -485,14 +489,19 @@ export class AdminObjectSurveyComponent {
   }
 
   onUpload(event: any) {
-    this.phieuKhaoSatService.uploadFiles(event.files).subscribe((res: any) => {
-    })
+    this.phieuKhaoSatService
+      .uploadFiles(event.files)
+      .subscribe((res: any) => {});
     for (const file of event.files) {
       this.uploadedFiles.push(file);
       const formData = new FormData();
       formData.append('file', file);
       this.objectSurveyService.Import(formData).subscribe((res: any) => {
-        this.messageService.add({severity: 'success', summary: 'File Uploaded', detail: ''});
+        this.messageService.add({
+          severity: 'success',
+          summary: 'File Uploaded',
+          detail: '',
+        });
       });
     }
   }

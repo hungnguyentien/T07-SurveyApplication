@@ -5,6 +5,7 @@ import { SurveyCreatorModule } from 'survey-creator-angular';
 import { SurveyModule } from 'survey-angular-ui';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { DropdownModule } from 'primeng/dropdown';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { ClientHomeComponent } from './client-home/client-home.component';
 import { ClientRoutingModule } from './client-routing.module';
@@ -28,6 +29,7 @@ import { SurveyEnterpriseComponent } from './survey-enterprise/survey-enterprise
     NgxSpinnerModule,
     ///TODO add primeng
     DropdownModule,
+    ConfirmDialogModule,
   ],
 })
 export class ClientModule {}

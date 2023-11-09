@@ -137,6 +137,16 @@
   }
 }
 
+#sv-nav-download-survey{
+  input[type="button"] {
+    &.sd-btn {
+      background: rgba(36, 119, 69, 1);
+      padding-left: 8px;
+      color: white;
+    }
+  }
+}
+
 .ng-invalid {
   + small {
     &.invalid-feedback {

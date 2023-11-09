@@ -18,7 +18,7 @@ import { PhieuKhaoSatService } from '@app/services';
 import Utils from '@app/helpers/utils';
 import { lstRegExp } from '@app/helpers';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-client-home',
@@ -55,8 +55,9 @@ export class ClientHomeComponent {
     private formBuilder: FormBuilder,
     private spinner: NgxSpinnerService,
     private messageService: MessageService,
+    private activatedRoute: ActivatedRoute,
     private phieuKhaoSatService: PhieuKhaoSatService,
-    private activatedRoute: ActivatedRoute
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -211,15 +212,24 @@ export class ClientHomeComponent {
         });
       }, 500);
     } else {
-      data.idGuiEmail = this.activatedRoute.snapshot.paramMap.get('data') ?? '';
-      this.phieuKhaoSatService.updateDoanhNghiep(data).subscribe({
-        next: (res) => {
-          res.success && Utils.messageSuccess(this.messageService, res.message);
-          setTimeout(() => {
-            this.router.navigateByUrl('/phieu/khao-sat-doanh-nghiep', {
-              state: this.generalInfo,
-            });
-          }, 3000);
+      this.confirmationService.confirm({
+        message: `Bạn có chắc chắn muốn cập nhật không?`,
+        header: 'delete',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          data.idGuiEmail =
+            this.activatedRoute.snapshot.paramMap.get('data') ?? '';
+          this.phieuKhaoSatService.updateDoanhNghiep(data).subscribe({
+            next: (res) => {
+              res.success &&
+                Utils.messageSuccess(this.messageService, res.message);
+              setTimeout(() => {
+                this.router.navigateByUrl('/phieu/khao-sat-doanh-nghiep', {
+                  state: this.generalInfo,
+                });
+              }, 3000);
+            },
+          });
         },
       });
     }

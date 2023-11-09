@@ -46,6 +46,16 @@ namespace SurveyApplication.Utility
                         foreach (var item in dict.Where(item => text.Text.Equals(item.Key)))
                             text.Text = text.Text.Replace(item.Key, item.Value);
 
+                        var symbolChar = body.Descendants<SymbolChar>().ToList();
+                        var getRadioSymbol = symbolChar.Where(x => x.Parent?.Parent?.Parent?.FirstChild?.Parent?.FirstChild?.ElementAtOrDefault(2)?.GetAttributes().FirstOrDefault().Value == "RadioBox").ToList();
+                        var getCheckSymbol = symbolChar.Where(x => x.Parent?.Parent?.Parent?.FirstChild?.Parent?.FirstChild?.ElementAtOrDefault(2)?.GetAttributes().FirstOrDefault().Value == "CheckBox").ToList();
+                        //TODO Radiobox replace Char nếu trùng code (title)
+                        //t2.Char = "F099";
+                        //t2.Char = "F09C";
+                        //TODO Checkbox replace Char nếu trùng code (title)
+                        //t2.Char = "F0A8";
+                        //t2.Char = "F052";
+
                         wordDoc.MainDocumentPart.Document.Body = body;
                     }
 
@@ -55,7 +65,7 @@ namespace SurveyApplication.Utility
 
                 return stream.ToArray();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

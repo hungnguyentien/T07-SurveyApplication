@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace SurveyApplication.Utility
 {
@@ -71,6 +72,86 @@ namespace SurveyApplication.Utility
             while ((newUrl = Uri.EscapeDataString(url)) != url)
                 url = newUrl;
             return newUrl;
+        }
+
+        /// <summary>
+        /// Có dấu sang không dâu
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ConvertToCamelString(this string str)
+        {
+            if (str == null)
+            {
+                return null;
+            }
+
+            // Creates a TextInfo based on the "en-US" culture.
+            var textInfo = new CultureInfo("en-US", false).TextInfo;
+
+            var newStr = textInfo.ToTitleCase(str.ConvertToUnSign()).Replace(" ", string.Empty);
+
+            return char.ToUpper(newStr[0]) + newStr[1..];
+        }
+
+        /// <summary>
+        /// Có dấu sang không dâu
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private static string ConvertToUnSign(this string str)
+        {
+            if (str == null)
+            {
+                return null;
+            }
+
+            var vietnameseSigns = new[]
+            {
+
+                "aAeEoOuUiIdDyY",
+
+                "áàạảãâấầậẩẫăắằặẳẵ",
+
+                "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
+
+                "éèẹẻẽêếềệểễ",
+
+                "ÉÈẸẺẼÊẾỀỆỂỄ",
+
+                "óòọỏõôốồộổỗơớờợởỡ",
+
+                "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
+
+                "úùụủũưứừựửữ",
+
+                "ÚÙỤỦŨƯỨỪỰỬỮ",
+
+                "íìịỉĩ",
+
+                "ÍÌỊỈĨ",
+
+                "đ",
+
+                "Đ",
+
+                "ýỳỵỷỹ",
+
+                "ÝỲỴỶỸ"
+
+            };
+            //Tiến hành thay thế , lọc bỏ dấu cho chuỗi
+            for (int i = 1; i < vietnameseSigns.Length; i++)
+            {
+                for (int j = 0; j < vietnameseSigns[i].Length; j++)
+                {
+                    str = str.Replace(vietnameseSigns[i][j], vietnameseSigns[0][i - 1]);
+                }
+            }
+
+            var reg = new Regex("[/*'\",_&#^@]");
+            return reg.Replace(str, " ");
+
         }
     }
 }
