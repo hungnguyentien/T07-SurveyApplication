@@ -280,12 +280,12 @@
 
 <p-confirmDialog #cd [style]="{width: '30vw'}">
   <ng-template pTemplate="header">
-    <h5>Bạn có chắc chắn muốn cập nhật đơn vị!</h5>
+    <h5>Cập nhật đơn vị</h5>
   </ng-template>
   <ng-template pTemplate="footer">
-    <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Không"
+    <button type="button" pButton class="custom-small-button btn btn-secondary" label="Không"
       (click)="cd.reject()"></button>
-    <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
+    <button type="button" pButton class="custom-small-button" style="background-color: #ea5c5c"
       label="Có" (click)="cd.accept()"></button>
   </ng-template>
 </p-confirmDialog>

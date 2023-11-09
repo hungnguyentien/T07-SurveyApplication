@@ -214,7 +214,7 @@ export class ClientHomeComponent {
     } else {
       this.confirmationService.confirm({
         message: `Bạn có chắc chắn muốn cập nhật không?`,
-        header: 'delete',
+        header: 'info',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
           data.idGuiEmail =

@@ -26,4 +26,10 @@
     <ProjectReference Include="..\SurveyApplication.Application\SurveyApplication.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TempData\MAU_PKS_DOANH_NGHIEP.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

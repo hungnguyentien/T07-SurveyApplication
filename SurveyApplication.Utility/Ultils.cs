@@ -31,7 +31,7 @@ namespace SurveyApplication.Utility
             return capacity;
         }
 
-        public static async Task<byte[]> ReplaceDocxFile(byte[] content, Dictionary<string, string> dict)
+        public static async Task<byte[]> ReplaceDocxFile(byte[] content, Dictionary<string, string> dict, Dictionary<string, string> dictSymbolChar)
         {
             try
             {
@@ -43,18 +43,32 @@ namespace SurveyApplication.Utility
                     if (body != null)
                     {
                         foreach (var text in body.Descendants<Text>())
-                        foreach (var item in dict.Where(item => text.Text.Equals(item.Key)))
-                            text.Text = text.Text.Replace(item.Key, item.Value);
+                            foreach (var item in dict.Where(item => text.Text.Trim().Equals(item.Key)))
+                                text.Text = text.Text.Replace(item.Key, item.Value);
 
                         var symbolChar = body.Descendants<SymbolChar>().ToList();
                         var getRadioSymbol = symbolChar.Where(x => x.Parent?.Parent?.Parent?.FirstChild?.Parent?.FirstChild?.ElementAtOrDefault(2)?.GetAttributes().FirstOrDefault().Value == "RadioBox").ToList();
                         var getCheckSymbol = symbolChar.Where(x => x.Parent?.Parent?.Parent?.FirstChild?.Parent?.FirstChild?.ElementAtOrDefault(2)?.GetAttributes().FirstOrDefault().Value == "CheckBox").ToList();
                         //TODO Radiobox replace Char nếu trùng code (title)
-                        //t2.Char = "F099";
-                        //t2.Char = "F09C";
+                        foreach (var itemSymbolChar in getRadioSymbol)
+                        {
+                            foreach (var keySymbolChar in dictSymbolChar.Where(keySymbolChar => itemSymbolChar.Parent?.Parent?.Parent?.FirstChild?.Parent?.FirstChild
+                                             ?.ElementAtOrDefault(1)?.GetAttributes().FirstOrDefault().Value ==
+                                         keySymbolChar.Key))
+                            {
+                                itemSymbolChar.Char = keySymbolChar.Value;
+                            }
+                        }
                         //TODO Checkbox replace Char nếu trùng code (title)
-                        //t2.Char = "F0A8";
-                        //t2.Char = "F052";
+                        foreach (var itemSymbolChar in getCheckSymbol)
+                        {
+                            foreach (var keySymbolChar in dictSymbolChar.Where(keySymbolChar => itemSymbolChar.Parent?.Parent?.Parent?.FirstChild?.Parent?.FirstChild
+                                             ?.ElementAtOrDefault(1)?.GetAttributes().FirstOrDefault().Value ==
+                                         keySymbolChar.Key))
+                            {
+                                itemSymbolChar.Char = keySymbolChar.Value;
+                            }
+                        }
 
                         wordDoc.MainDocumentPart.Document.Body = body;
                     }
