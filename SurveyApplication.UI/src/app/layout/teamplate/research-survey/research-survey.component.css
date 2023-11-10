@@ -13,7 +13,7 @@
 }
 
 .box-header-phieu {
-  height: 136px;
+  height: 235px;
 }
 
 .box-header-phieu div:first-child {
@@ -28,7 +28,7 @@
 }
 
 .box-header-phieu div:last-child {
-  max-width: 550px;
+  max-width: 100%;
   margin: auto;
   color: rgba(0, 0, 0, 1);
   font-size: 14px;

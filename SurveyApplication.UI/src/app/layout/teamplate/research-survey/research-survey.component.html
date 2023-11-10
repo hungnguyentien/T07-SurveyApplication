@@ -4,10 +4,32 @@
         <div class="b-white">
             <div class="box-header-phieu">
                 <div>KHẢO SÁT Doanh nghiệp</div>
-                <div>
-                    Tư vấn hỗ trợ xây dựng và áp dụng hệ thống truy xuất nguồn gốc sản phẩm, hàng hóa cho các sản phẩm,
-                    hàng
-                    hoá Bộ Công Thương
+                <div style="text-align: center;">
+                    Đây là website chỉ sử dụng cho mục đích phục vụ khảo sát nhu cầu triển khai truy xuất nguồn gốc xuất
+                    xứ sản phẩm,
+                    hàng hoá của các doanh nghiệp và đơn vị trên toàn quốc nhằm xây dựng cơ sở dữ liệu thực tế làm căn
+                    cứ để đánh giá nhu cầu và thực trạng triển khai,
+                    ứng dụng truy xuất nguồn gốc xuất xứ đối với các sản phẩm, hàng hoá trên thị trường,
+                    tiến tới xây dựng hệ thống quản lý truy xuất nguồn gốc một cách phù hợp.<br>
+                </div>
+                <div style="text-align: start;width: 1100px;">
+                    Quý Doanh nghiệp, Quý đơn vị có thể xem nội dung toàn văn công văn:
+                    <ol>
+                        <li>
+                            <a href="http://" target="_blank" rel="noopener noreferrer">
+                                Công văn số 1476/TMĐT-KTS của Cục Thương mại điện tử và Kinh tế số (Bộ Công Thương) về
+                                việc
+                                Khảo sát nhu cầu triển khai truy xuất nguồn gốc xuất xứ sản phẩm, hàng hóa
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://" target="_blank" rel="noopener noreferrer">
+                                Công văn số 56/AITECH-KS của Công ty Cổ phần tư vấn giải pháp Trí tuệ nhân tạo về việc
+                                thực
+                                hiện Khảo sát nhu cầu triển khai truy xuất nguồn gốc sản phẩm, hàng hóa
+                            </a>
+                        </li>
+                    </ol>
                 </div>
             </div>
             <div>
@@ -42,7 +64,8 @@
                         <td>{{ item.tenBangKhaoSat }}</td>
                         <td>{{ item.ngayBatDau | date:'dd/MM/yyyy' }}</td>
                         <td>{{ item.ngayKetThuc | date:'dd/MM/yyyy' }}</td>
-                        <td><a class="link" (click)="khaoSat(item.linkKhaoSat)" title="{{item.tieuDe}}">Chi tiết khảo sát</a></td>
+                        <td><a class="link" (click)="khaoSat(item.linkKhaoSat)" title="{{item.tieuDe}}">Chi tiết khảo
+                                sát</a></td>
                     </tr>
                 </table>
             </div>
