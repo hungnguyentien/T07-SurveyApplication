@@ -460,14 +460,14 @@ export class AdminStatisticalComponent {
           if (element.length > 1) {
             worksheet.addRow({
               stt: '',
-              cauhoicautraloi: element.cauTraLoi,
+              cauhoicautraloi: element.cauTraLoi.length > 1000 ? JSON.parse(element.cauTraLoi)[0].name : element.cauTraLoi,
               soluotchon: element.soLuotChon,
               tyle: parseFloat(element.tyLe.toFixed(4)) + ' %',
             });
           } else {
             worksheet.addRow({
               stt: '',
-              cauhoicautraloi: element.cauTraLoi,
+              cauhoicautraloi: element.cauTraLoi.length > 1000 ? JSON.parse(element.cauTraLoi)[0].name : element.cauTraLoi,
               soluotchon: element.soLuotChon,
               tyle: parseFloat(element.tyLe.toFixed(4)) + ' %',
             });
@@ -537,20 +537,18 @@ export class AdminStatisticalComponent {
       let maxLength = 0;
 
       worksheet.getCell(`A${y}`).value = i + 1;
-      worksheet.getCell(`B${y}`).value = e.dauThoiGian;
+      worksheet.getCell(`B${y}`).value = this.datePipe.transform(e.dauThoiGian, 'dd-MM-yyyy HH:mm:ss');
       worksheet.getCell(`C${y}`).value = e.tenDaiDienCq;
 
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
-        worksheet.getCell(`${String.fromCharCode(68 + j)}1`).value =
-          elem.cauHoi;
+        worksheet.getCell(`${String.fromCharCode(68 + j)}1`).value = elem.cauHoi;
 
         if (elem.cauTraLoi.length > maxLength) {
           maxLength = elem.cauTraLoi.length;
         }
-
+        
         elem.cauTraLoi.forEach((element: any, k: number) => {
-          worksheet.getCell(`${String.fromCharCode(68 + j)}${k + 2}`).value =
-            element;
+          worksheet.getCell(`${String.fromCharCode(68 + j)}${k + 2}`).value = element.length > 1000 ? JSON.parse(element)[0].name : element;
         });
       });
 
@@ -667,24 +665,15 @@ export class AdminStatisticalComponent {
     };
 
     this.dataChiTiet.forEach((e: any, i: number) => {
-      if (!tableData.table.body[i + 1])
-        tableData.table.body[i + 1] = createEmptyRow(maxLength);
-
-      tableData.table.body[i + 1][0] = { text: (i + 1).toString() };
-      tableData.table.body[i + 1][1] = { text: e.dauThoiGian };
-      tableData.table.body[i + 1][2] = { text: e.tenDaiDienCq };
       e.lstCauHoiCauTraLoi.forEach((elem: any, j: number) => {
+        if (!tableData.table.body[j + 1])
+          tableData.table.body[j + 1] = createEmptyRow(maxLength);
         elem.cauTraLoi.forEach((element: any, k: number) => {
-          // Đảm bảo mảng con đã được khởi tạo
-          if (!tableData.table.body[i + 1][k + 3])
-            tableData.table.body[i + 1][k + 3] = createEmptyCell();
-
-          if (element.indexOf('[{"'))
-            tableData.table.body[i + 1][k + 3].text = element[0].name;
-
-          tableData.table.body[i + 1][k + 3].text = element;
-
-          // k += 1;
+          tableData.table.body[k + 1][0] = { text: (k + 1).toString() };
+          tableData.table.body[k + 1][1] = { text: this.datePipe.transform(e.dauThoiGian, 'dd-MM-yyyy HH:mm:ss') };
+          tableData.table.body[k + 1][2] = { text: e.tenDaiDienCq };
+        
+          tableData.table.body[k + 1][j + 3] = { text: element.length > 1000 ? JSON.parse(element)[0].name : element };
         });
       });
     });
@@ -695,6 +684,6 @@ export class AdminStatisticalComponent {
     };
 
     const pdfDoc = pdfMake.createPdf(documentDefinition);
-    pdfDoc.download('example.pdf');
+    pdfDoc.download('ThongKeChiTiet.pdf');
   }
 }

@@ -24,10 +24,13 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
         var query = from d in _surveyRepo.DonVi.GetAllQueryable()
                     join b in _surveyRepo.NguoiDaiDien.GetAllQueryable()
                     on d.Id equals b.IdDonVi
+
                     join o in _surveyRepo.LoaiHinhDonVi.GetAllQueryable()
-                    on d.IdLoaiHinh equals o.Id
+                        on d.IdLoaiHinh equals o.Id into loaiHinhGroup
+                    from lh in loaiHinhGroup.DefaultIfEmpty()
+
                     join s in _surveyRepo.LinhVucHoatDong.GetAllQueryable()
-                    on d.IdLinhVuc equals s.Id into linhVucGroup
+                        on d.IdLinhVuc equals s.Id into linhVucGroup
                     from lv in linhVucGroup.DefaultIfEmpty()
 
                     join tinh in _surveyRepo.TinhTp.GetAllQueryable()
@@ -50,7 +53,7 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                         IdLinhVuc = lv != null ? lv.Id : null,
                         IdDonVi = d.Id,
                         IdNguoiDaiDien = b.Id,
-                        IdLoaiHinh = o.Id,
+                        IdLoaiHinh = lh != null ? lh.Id : null,
 
                         IdTinhTp = d.IdTinhTp,
                         IdQuanHuyen = d.IdQuanHuyen,
@@ -64,13 +67,13 @@ public class GetDonViConditionsRequestHandler : BaseMasterFeatures,
                         WebSite = d.WebSite,
                         SoDienThoaiDonVi = d.SoDienThoai,
 
-                        TenLoaiHinh = o.TenLoaiHinh,
+                        TenLoaiHinh = lh != null ? lh.TenLoaiHinh : "",
 
                         HoTen = b.HoTen,
-                        ChucVu = b.ChucVu,
+                        ChucVu = b.ChucVu != null ? b.ChucVu : "",
                         SoDienThoaiNguoiDaiDien = b.SoDienThoai,
-                        EmailNguoiDaiDien = b.Email,
-                        MoTa = b.MoTa,
+                        EmailNguoiDaiDien = b.Email != null ? b.Email : "",
+                        MoTa = b.MoTa != null ? b.MoTa : "" ,
                         Id = d.Id
                     };
 
