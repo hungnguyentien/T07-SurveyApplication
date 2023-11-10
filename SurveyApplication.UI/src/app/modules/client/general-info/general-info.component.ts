@@ -96,7 +96,7 @@ export class GeneralInfoComponent {
         IdXaPhuong: [''],
         DiaChi: ['', Validators.required],
         IdLoaiHinh: ['', Validators.required],
-        IdLinhVuc: ['', Validators.required],
+        IdLinhVuc: [''],
         MaSoThue: [''],
         WebSite: [
           '',

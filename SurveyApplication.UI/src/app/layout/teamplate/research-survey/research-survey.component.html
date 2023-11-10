@@ -16,14 +16,14 @@
                     Quý Doanh nghiệp, Quý đơn vị có thể xem nội dung toàn văn công văn:
                     <ol>
                         <li>
-                            <a href="https://drive.google.com/file/d/1npP1hDNXrhuzFiy8MIF1ZbH27XlwUNVP/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                            <a href="https://kstxng.idea.gov.vn/assets/cv/CV_1476TM%C4%90T-KTS.pdf" target="_blank" rel="noopener noreferrer">
                                 Công văn số 1476/TMĐT-KTS của Cục Thương mại điện tử và Kinh tế số (Bộ Công Thương) về
                                 việc
                                 Khảo sát nhu cầu triển khai truy xuất nguồn gốc xuất xứ sản phẩm, hàng hóa
                             </a>
                         </li>
                         <li>
-                            <a href="https://docs.google.com/document/d/1zzgG527dQlGeXGtgssHghYI9gc2NIhjF/edit?usp=sharing&ouid=100769498809343657945&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">
+                            <a href="https://kstxng.idea.gov.vn/assets/cv/CV_56AITECH-KS.pdf" target="_blank" rel="noopener noreferrer">
                                 Công văn số 56/AITECH-KS của Công ty Cổ phần tư vấn giải pháp Trí tuệ nhân tạo về việc
                                 thực
                                 hiện Khảo sát nhu cầu triển khai truy xuất nguồn gốc sản phẩm, hàng hóa
@@ -49,11 +49,11 @@
                 </form>
             </div>
             <div>
-                <table class="table">
+                <table class="table" *ngIf="datas.length > 0">
                     <thead>
                         <th>Tiêu đề</th>
                         <th>Địa chỉ nhận</th>
-                        <th>Tên bảng khảo sát</th>
+                        <!-- <th>Tên bảng khảo sát</th> -->
                         <th>Ngày bắt đầu</th>
                         <th>Ngày kết thúc</th>
                         <th>Khảo sát</th>
@@ -61,7 +61,7 @@
                     <tr *ngFor="let item of datas">
                         <td>{{ item.tieuDe }}</td>
                         <td>{{ item.diaChiNhan }}</td>
-                        <td>{{ item.tenBangKhaoSat }}</td>
+                        <!-- <td>{{ item.tenBangKhaoSat }}</td> -->
                         <td>{{ item.ngayBatDau | date:'dd/MM/yyyy' }}</td>
                         <td>{{ item.ngayKetThuc | date:'dd/MM/yyyy' }}</td>
                         <td><a class="link" (click)="khaoSat(item.linkKhaoSat)" title="{{item.tieuDe}}">Chi tiết khảo

@@ -21,7 +21,11 @@ export class ResearchSurveyComponent {
   onSubmitSearch = () => {
     this.phieuKhaoSatService.searchSurveyByDonVi(this.keyWord).subscribe({
       next: (res) => {
-        this.datas = res.data;
+        if(res.data.length > 1){
+          this.datas = res.data;
+        }else{
+          this.router.navigate([`/phieu/khao-sat-thong-tin-chung/${res.data[0].linkKhaoSat}`]);
+        }
       },
       complete: () => {},
     });

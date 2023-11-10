@@ -205,7 +205,7 @@ export default class Utils {
       innerCss: 'sd-btn nav-input',
     });
 
-    linkBackPage != 'phieu/thong-tin-chung' &&
+    trangThai !== KqTrangThai.ChuaLuu &&
       survey.addNavigationItem({
         id: 'sv-nav-download-survey',
         title: 'Tải phiếu',

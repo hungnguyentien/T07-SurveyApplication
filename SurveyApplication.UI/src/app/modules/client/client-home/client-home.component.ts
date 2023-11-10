@@ -101,7 +101,7 @@ export class ClientHomeComponent {
         idXaPhuong: [''],
         diaChi: ['', Validators.required],
         idLoaiHinh: ['', Validators.required],
-        idLinhVuc: ['', Validators.required],
+        idLinhVuc: [''],
         maSoThue: [''],
         webSite: [
           '',

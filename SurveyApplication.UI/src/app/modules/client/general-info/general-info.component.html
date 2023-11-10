@@ -85,7 +85,7 @@
             </div>
             <div class="col">
               <div class="row">
-                <label class="col-sm-4 col-form-label require">Lĩnh vực hoạt động:</label>
+                <label class="col-sm-4 col-form-label">Lĩnh vực hoạt động:</label>
                 <div class="col-sm-8">
                   <p-dropdown [options]="lstLinhVuc" [(ngModel)]="selectedLinhVuc" optionLabel="tenLinhVuc"
                     optionValue="id" [filter]="true" filterBy="tenLinhVuc" emptyMessage="Không có kết quả nào"
@@ -95,11 +95,11 @@
                         submitCount > 0 && f('DonVi', 'IdLinhVuc').errors
                     }">
                   </p-dropdown>
-                  <div *ngIf="submitCount > 0 && f('DonVi', 'IdLinhVuc').errors" class="invalid-feedback">
+                  <!-- <div *ngIf="submitCount > 0 && f('DonVi', 'IdLinhVuc').errors" class="invalid-feedback">
                     <small *ngIf="f('DonVi', 'IdLinhVuc').errors?.['required']">
                       Vui lòng chọn lĩnh vực hoạt động
                     </small>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
