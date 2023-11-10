@@ -42,6 +42,7 @@ namespace SurveyApplication.Utility
                     var body = wordDoc.MainDocumentPart?.Document.Body;
                     if (body != null)
                     {
+                        //var t = body.Descendants<Text>();
                         foreach (var text in body.Descendants<Text>())
                             foreach (var item in dict.Where(item => text.Text.Trim().Equals(item.Key)))
                                 text.Text = text.Text.Replace(item.Key, item.Value);
@@ -57,6 +58,7 @@ namespace SurveyApplication.Utility
                                          keySymbolChar.Key))
                             {
                                 itemSymbolChar.Char = keySymbolChar.Value;
+                                itemSymbolChar.Font = "Wingdings 2";
                             }
                         }
                         //TODO Checkbox replace Char nếu trùng code (title)
@@ -67,6 +69,7 @@ namespace SurveyApplication.Utility
                                          keySymbolChar.Key))
                             {
                                 itemSymbolChar.Char = keySymbolChar.Value;
+                                itemSymbolChar.Font = "Wingdings 2";
                             }
                         }
 

@@ -2,6 +2,7 @@
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Queries;
 using System.Collections;
+using System.Globalization;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Domain.Interfaces.Persistence;
@@ -12,7 +13,6 @@ using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Utility;
 using SurveyApplication.Utility.Enums;
-using static Vanara.PInvoke.LANGID;
 
 namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
 {
@@ -56,7 +56,9 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                 { "TEN_DON_VI", donVi.TenDonVi },
                 { "DIA_CHI", donVi.DiaChi ?? "" },
                 { "DIEN_THOAI_2", donVi.SoDienThoai },
-                { "EMAIL_2", donVi.Email }
+                { "EMAIL_2", donVi.Email },
+                { "Day", DateTime.Now.Day.ToString(CultureInfo.InvariantCulture) },
+                { "Month", DateTime.Now.Month.ToString(CultureInfo.InvariantCulture) }
             };
             var dictSymbolChar = new Dictionary<string, string>();
             var ketQua = await _surveyRepo.KetQua.FirstOrDefaultAsync(x => !x.Deleted && x.IdGuiEmail == guiEmail.Id);
