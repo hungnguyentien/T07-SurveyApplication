@@ -20,6 +20,8 @@ using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Utility;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace SurveyApplication.API.Controllers;
 

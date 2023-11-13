@@ -11,7 +11,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 1281px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
@@ -34,6 +34,29 @@
             color: #007bff;
         }
 
+        .box-header-phieu div:first-child {
+            max-width: 500px;
+            margin: auto;
+            color: rgba(50, 87, 170, 1);
+            font-size: 24px;
+            font-weight: 500;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 20px;
+            padding-bottom: 3px;
+        }
+
+            .box-header-phieu div:first-child small {
+                color: #000;
+                font-size: 14px;
+                text-transform: uppercase;
+                text-align: center;
+            }
+
+        .text-indent-30 {
+            text-indent: 30px;
+        }
+
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -42,19 +65,88 @@
 </head>
 <body>
     <div class="container">
-        <h1>Phản hồi về khảo sát</h1>
-        <p>Xin chào,</p>
-        <p>Cảm ơn bạn đã tham gia khảo sát của chúng tôi. Ý kiến của bạn rất quý báu và giúp chúng tôi cải thiện dịch vụ của mình.</p>
-        <p>Dưới đây là một số thông tin về khảo sát của bạn:</p>
-        <ul>
-            <li><strong>Tên khảo sát:</strong> {{TieuDe}}</li>
-            <li><strong>Nội dung:</strong> {{NoiDung}}</li>
-        </ul>
-        <p>Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào khác, xin vui lòng liên hệ với chúng tôi qua địa chỉ email: <a href="mailto:toandevillived@gmail.com">toandevillived@gmail.com</a>.</p>
-        <p>Cảm ơn bạn một lần nữa!</p>
-        <div class="footer">
-            <p>Trân trọng,</p>
-            <p>Tập đoàn Trí Nam</p>
+        <div class="box-header-phieu">
+            <div class="text-center">
+                <div>PHIẾU KHẢO SÁT</div>
+                <small>DÀNH CHO DOANH NGHIỆP, ĐƠN VỊ SẢN XUẤT</small>
+            </div>
+            <div style="text-align: start;width: 1100px;">
+                <P class="text-indent-30">Kính gửi: Quý Doanh nghiệp, Quý Đơn vị</P>
+                <P class="text-indent-30">
+                    Thực hiện chủ trương, định hướng của Chính phủ về việc triển khai hệ thống
+                    truy
+                    xuất nguồn gốc
+                    tại
+                    các Quyết định số 100/QĐ-TTg ngày 19 tháng 01 năm 2019 của Thủ tướng Chính phủ về việc phê duyệt
+                    đề
+                    án triển khai, áp dụng và quản lý hệ thống truy xuất nguồn gốc; Quyết định số 1978/QĐ-BCT ngày
+                    28
+                    tháng 7 năm 2020 của Bộ trưởng Bộ Công Thương về việc ban hành Kế hoạch thực hiện “Đề án triển
+                    khai,
+                    áp dụng và quản lý hệ thống truy xuất nguồn gốc sản phẩm, hàng hoá giai đoạn đến năm 2025, định
+                    hướng đến năm 2030” thuộc phạm vi quản lý của Bộ Công Thương, nhằm triển khai hệ thống truy xuất
+                    nguồn gốc đáp ứng đúng nhu cầu thực tiễn, Cục Thương mại điện tử và Kinh tế số (TMĐT và KTS)
+                    phối
+                    hợp với đơn vị tư vấn là Công ty Cổ phần tư vấn giải pháp Trí tuệ nhân tạo thực hiện khảo sát
+                    nhu
+                    cầu triển khai truy xuất nguồn gốc xuất xứ sản phẩm, hàng hoá của các doanh nghiệp và đơn vị
+                    trên
+                    toàn quốc.
+                </P>
+                <P class="text-indent-30">
+                    Kết quả cuộc khảo sát sẽ là cơ sở dữ liệu thực tế để Cục TMĐT và KTS đánh
+                    giá chính
+                    xác nhu cầu
+                    và
+                    thực trạng triển khai, ứng dụng truy xuất nguồn gốc xuất xứ đối với các sản phẩm, hàng hoá trên
+                    thị
+                    trường, qua đó có cơ sở đề xây dựng, triển khai hệ thống truy xuất nguồn gốc một cách phù hợp.
+                    Trên cơ sở đó, Cục TMĐT và KTS kính đề nghị Quý Doanh nghiệp, Quý Đơn vị cùng tích cực tham gia
+                    và
+                    cuộc khảo sát, giúp Cục TMĐT và KTS cũng như đơn vị tư vấn hoàn thành cuộc khảo sát thành công.
+                </P>
+                <P class="text-indent-30">Trân trọng ./.</P>
+
+                <p>Vui lòng ấn vào <a href="{LINK_SEND_MAIL}" target="_blank">đây để thực hiện khảo sát</a></p>
+                <!--<a href="https://kstxng.idea.gov.vn/assets/cv/CV_1476TM%C4%90T-KTS.pdf" target="_blank"
+                   rel="noopener noreferrer">
+                    Bấm để xem chi tiết Công văn số 1476/TMĐT-KTS v/v Khảo sát nhu cầu triển khai truy xuất nguồn
+                    gốc
+                    xuất xứ sản phẩm, hàng hóa
+                </a>
+                <br>
+                <a href="https://kstxng.idea.gov.vn/assets/cv/CV_56AITECH-KS.pdf" target="_blank"
+                   rel="noopener noreferrer">
+                    Bấm để xem chi tiết Công văn số 56/AITECH-KS v/v thực hiện Khảo sát nhu cầu triển khai truy xuất
+                    nguồn gốc sản phẩm, hàng hóa
+                </a>-->
+
+                <div style="text-align: start;margin-top: 20px;">
+                    Quý Doanh nghiệp, Quý Đơn vị có thể thực hiện khảo sát theo phiếu đơn vị tư vấn đã gửi cho doanh
+                    nghiệp hoặc thực hiện online trên hệ thống theo các bước như sau:
+                    <ol>
+                        <li>
+                            Nhập mã số doanh nghiệp hoặc mã số thuế vào ô bên dưới và bấm xác nhận
+                        </li>
+                        <li>
+                            Nhập thông tin trả lời phiếu khảo sát sau đó bấm Gửi phiếu
+                        </li>
+                        <li>
+                            Tải file, in ký, đóng dấu và gửi về địa chỉ: Công ty Cổ phần tư vấn giải pháp Trí tuệ
+                            nhân tạo, Số
+                            15 Lô 1E, Trung Yên 11C, phường Trung Hòa, quận Cầu Giấy, thành phố Hà Nội
+                        </li>
+                    </ol>
+                </div>
+
+                <div style="text-align: start">
+                    Mọi thắc mắc xin vui lòng liên hệ bộ phận chăm sóc kỹ thuật:
+                    <ul>
+                        <li>Đỗ Thị Tâm – Số điện thoại: 0378.937.568</li>
+                        <li>Nguyễn Thuỳ Dung – Số điện thoại: 0936.407.792</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </body>

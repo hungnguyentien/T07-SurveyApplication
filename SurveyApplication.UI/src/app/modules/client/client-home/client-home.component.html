@@ -21,7 +21,7 @@
           <div class="mb-3 row">
             <label class="col-sm-2 col-form-label require">Địa chỉ:</label>
             <div class="col-sm-10">
-              <div class="row">
+              <div class="row fix-diachi">
                 <div class="col-3">
                   <p-dropdown [options]="tinh" [(ngModel)]="selectedTinh" optionLabel="name" optionValue="id"
                     [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
@@ -104,7 +104,7 @@
               </div>
             </div>
           </div>
-          <div class="mb-3 row">
+          <div class="mb-3 row flex-direction">
             <div class="col">
               <div class="row">
                 <label class="col-sm-4 col-form-label">Mã số thuế:</label>
@@ -133,7 +133,7 @@
               </div>
             </div>
           </div>
-          <div class="mb-3 row">
+          <div class="mb-3 row flex-direction">
             <div class="col">
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Email:</label>
@@ -181,7 +181,7 @@
           <div class="mb-3 lbl fw-bold">
             II. Thông tin người điền phiếu (Người đại diện cho đơn vị)
           </div>
-          <div class="mb-3 row">
+          <div class="mb-3 row flex-direction">
             <div class="col">
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Họ tên:</label>
@@ -217,7 +217,7 @@
               </div>
             </div>
           </div>
-          <div class="mb-3 row">
+          <div class="mb-3 row flex-direction">
             <div class="col">
               <div class="row">
                 <label class="col-sm-4 col-form-label require">Email:</label>

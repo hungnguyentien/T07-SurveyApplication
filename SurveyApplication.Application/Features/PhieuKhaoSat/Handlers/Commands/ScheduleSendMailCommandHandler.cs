@@ -56,10 +56,10 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 
         private async Task DoWork(Domain.GuiEmail guiEmail)
         {
-            var thongTinChung = new EmailThongTinChungDto
-            {
-                IdGuiEmail = guiEmail.Id
-            };
+            //var thongTinChung = new EmailThongTinChungDto
+            //{
+            //    IdGuiEmail = guiEmail.Id
+            //};
             var bodyEmail =
                 $"{guiEmail.NoiDung} " +
                 //$"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)} " +

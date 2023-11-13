@@ -151,7 +151,7 @@ export default class Utils {
     survey.applyTheme(themeJson);
     survey.locale = 'vi';
     // Set label for btn Complete
-    survey.completeText = 'Gửi thông tin';
+    survey.completeText = 'Gửi thông tin và tải phiếu khảo sát';
     survey.onErrorCustomText.add((sender, options) => {
       if (options.name === 'exceedsize') {
         options.text = options.text.replaceAll(
@@ -321,6 +321,7 @@ export default class Utils {
       }
     });
 
+    let data2 = data;
     survey.onComplete.add((sender, options) => {
       // Hoàn thành khảo sát
       let data = sender.data;
@@ -329,7 +330,12 @@ export default class Utils {
           Object.keys(data).length !== 0
             ? ''
             : `<div><b>Bạn chưa nhập câu trả lời vui lòng khảo sát lại!</b></div>`
-        } <a href="${linkKsLai}">Khảo sát lại</a></div>`;
+        } <div><b>Cảm ơn phản hồi của bạn!</b></div><br>
+        <p>Vui lòng ấn vào nút tải phiếu nếu không tải được phiếu khảo sát</p>
+        <button style="margin: auto; border: 2px solid;" onclick="downloadPhieu2('${
+          environment.apiUrl
+        }/PhieuKhaoSat/DownloadTemplateSurvey/${data2}')">Tải phiếu</button></div>`;
+      // } <a href="${linkKsLai}">Khảo sát lại</a></div>`;
 
       Object.keys(data).length !== 0 && subscribe && subscribe(sender, status);
     });

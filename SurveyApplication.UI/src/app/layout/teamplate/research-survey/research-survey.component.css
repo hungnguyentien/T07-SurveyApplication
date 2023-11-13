@@ -13,7 +13,7 @@
 }
 
 .box-header-phieu {
-  height: auto;
+  height: auto !important;
   margin-bottom: 30px;
 }
 
