@@ -211,28 +211,7 @@ export default class Utils {
         title: 'Tải phiếu',
         visibleIndex: 47,
         action: () => {
-          phieuKhaoSatService?.dowloadSurvey(data).subscribe(
-            (data: any) => {
-              const byteCharacters = atob(data.fileContents);
-              const byteNumbers = new Array(byteCharacters.length);
-              for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-              }
-
-              const byteArray = new Uint8Array(byteNumbers);
-              const blob = new Blob([byteArray], { type: data.contentType });
-              const url = window.URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = data.fileName;
-              document.body.appendChild(a);
-              a.click();
-              window.URL.revokeObjectURL(url);
-            },
-            (error) => {
-              console.error('Error downloading file:', error);
-            }
-          );
+          this.downloadPhieu(phieuKhaoSatService, data);
         },
         css: 'nav-button',
         innerCss: 'sd-btn nav-input',
@@ -356,6 +335,34 @@ export default class Utils {
     });
 
     return survey;
+  };
+
+  static downloadPhieu = (
+    phieuKhaoSatService: PhieuKhaoSatService | undefined,
+    data: string = ''
+  ) => {
+    phieuKhaoSatService?.dowloadSurvey(data).subscribe(
+      (data: any) => {
+        const byteCharacters = atob(data.fileContents);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: data.contentType });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = data.fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      (error) => {
+        console.error('Error downloading file:', error);
+      }
+    );
   };
 
   /**
@@ -567,6 +574,7 @@ export default class Utils {
   }
 
   static configCauHoi = (res: SurveyConfig): any[] => {
+    let count: number = 0;
     const els: any[] = [];
     const readOnly = res.trangThaiKq === KqTrangThai.HoanThanh;
     const lstPanelTitle = res.lstCauHoi
@@ -578,9 +586,10 @@ export default class Utils {
         const elsPanel: any[] = [];
         res.lstCauHoi
           .filter((x) => x.panelTitle === panelTitle)
-          .forEach((el, j) =>
-            this.configCauHoiEl(el, readOnly, elsPanel, j + 1)
-          );
+          .forEach((el, j) => {
+            count++;
+            this.configCauHoiEl(el, readOnly, elsPanel, count);
+          });
         els.push({
           type: 'panel',
           name: `panel${i}`,

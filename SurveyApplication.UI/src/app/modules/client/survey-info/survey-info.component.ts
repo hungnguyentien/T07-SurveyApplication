@@ -84,6 +84,10 @@ export class SurveyInfoComponent {
                   );
               //TODO đồng bộ kết quả sau khi hoàn thành khảo sát
               if (res.success && status === KqTrangThai.HoanThanh) {
+                Utils.downloadPhieu(
+                  this.phieuKhaoSatService,
+                  this.generalInfo.data
+                );
                 let data = {
                   lstBaoCaoCauHoi: this.lstBaoCaoCauHoi,
                   idGuiEmail: this.generalInfo.data,

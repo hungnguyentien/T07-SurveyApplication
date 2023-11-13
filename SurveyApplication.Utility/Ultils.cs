@@ -64,13 +64,13 @@ namespace SurveyApplication.Utility
                         //TODO Checkbox replace Char nếu trùng code (title)
                         foreach (var itemSymbolChar in getCheckSymbol)
                         {
-                            foreach (var keySymbolChar in dictSymbolChar.Where(keySymbolChar => itemSymbolChar.Parent?.Parent?.Parent?.FirstChild?.Parent?.FirstChild
-                                             ?.ElementAtOrDefault(1)?.GetAttributes().FirstOrDefault().Value ==
-                                         keySymbolChar.Key))
-                            {
-                                itemSymbolChar.Char = keySymbolChar.Value;
-                                itemSymbolChar.Font = "Wingdings 2";
-                            }
+                            var keyItemChar = itemSymbolChar.Parent?.Parent?.Parent
+                                ?.FirstChild?.Parent?.FirstChild
+                                ?.ElementAtOrDefault(1)?.GetAttributes().FirstOrDefault().Value?.Trim();
+                            var itemDict = dictSymbolChar.FirstOrDefault(x => x.Key.ToLower() == keyItemChar?.ToLower());
+                            if (itemDict.Value == null) continue;
+                            itemSymbolChar.Char = itemDict.Value;
+                            itemSymbolChar.Font = "Wingdings 2";
                         }
 
                         wordDoc.MainDocumentPart.Document.Body = body;
