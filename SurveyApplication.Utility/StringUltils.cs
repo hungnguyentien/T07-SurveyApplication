@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using System;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SurveyApplication.Utility
 {
-    public static  class StringUltils
+    public static class StringUltils
     {
         /// <summary>
         ///     Mã hóa chuỗi có mật khẩu (có các ký tự đặc biệt)
@@ -152,6 +153,13 @@ namespace SurveyApplication.Utility
             var reg = new Regex("[/*'\",_&#^@]");
             return reg.Replace(str, " ");
 
+        }
+
+        public static string ConvertDayOfWeekToTcvn(this DayOfWeek day)
+        {
+            if (day == DayOfWeek.Sunday)
+                return "Chủ Nhật";
+            return $"Thứ {(int)day + 1}";
         }
     }
 }

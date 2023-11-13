@@ -314,11 +314,11 @@
 
   &-item {
     &--disabled {
-      opacity: 0.3;
+      opacity: .9;
     }
 
     &__decorator {
-      opacity: 0.3;
+      opacity: .3;
       &.sd-radio__decorator {
         border: 1px solid #000;
         background: white !important;

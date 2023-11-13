@@ -57,6 +57,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                 { "DIA_CHI", donVi.DiaChi ?? "" },
                 { "DIEN_THOAI_2", donVi.SoDienThoai },
                 { "EMAIL_2", donVi.Email },
+                { "DayOfWeek", DateTime.Now.DayOfWeek.ConvertDayOfWeekToTcvn() },
                 { "Day", DateTime.Now.Day.ToString(CultureInfo.InvariantCulture) },
                 { "Month", DateTime.Now.Month.ToString(CultureInfo.InvariantCulture) }
             };
@@ -79,39 +80,39 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                         switch (cauHoi.LoaiCauHoi)
                         {
                             case (int)EnumCauHoi.Type.Radio:
-                            {
-                                dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{dictKq[cauHoi.MaCauHoi]?.ToString().ConvertToCamelString()}", "F09C");
-                                if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
-                                    dict.Add($"{cauHoi.MaCauHoi}_Comment", dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
-                                break;
-                            }
-                            case (int)EnumCauHoi.Type.CheckBox:
-                            {
-                                var lstCauTraLoi = JsonConvert.DeserializeObject<List<string>>(dictKq[cauHoi.MaCauHoi]?.ToString() ?? "") ?? new List<string>();
-                                foreach (var cauTraLoi in lstCauTraLoi)
                                 {
-                                    dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{cauTraLoi.ConvertToCamelString()}", "F052");
+                                    dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{dictKq[cauHoi.MaCauHoi]?.ToString().ConvertToCamelString()}", "F09C");
                                     if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
                                         dict.Add($"{cauHoi.MaCauHoi}_Comment", dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
+                                    break;
                                 }
-
-                                break;
-                            }
-                            case (int)EnumCauHoi.Type.MultiTextMatrix:
-                            {
-                                var objCauTraLoi = JsonConvert.DeserializeObject<Hashtable>(dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
-                                foreach (var hang in lstHang.Where(x => x.IdCauHoi == cauHoi.Id))
+                            case (int)EnumCauHoi.Type.CheckBox:
                                 {
-                                    var objCauTraLoiHang =
-                                        JsonConvert.DeserializeObject<Hashtable>(objCauTraLoi?[hang.MaHang]?.ToString() ?? "");
-                                    foreach (var cot in lstCot.Where(x => x.IdCauHoi == cauHoi.Id))
+                                    var lstCauTraLoi = JsonConvert.DeserializeObject<List<string>>(dictKq[cauHoi.MaCauHoi]?.ToString() ?? "") ?? new List<string>();
+                                    foreach (var cauTraLoi in lstCauTraLoi)
                                     {
-                                        dict.Add($"{cauHoi.MaCauHoi}_{hang.MaHang}_{cot.MaCot}", objCauTraLoiHang?[cot.MaCot]?.ToString() ?? "");
+                                        dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{cauTraLoi.ConvertToCamelString()}", "F052");
+                                        if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
+                                            dict.Add($"{cauHoi.MaCauHoi}_Comment", dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
                                     }
-                                }
 
-                                break;
-                            }
+                                    break;
+                                }
+                            case (int)EnumCauHoi.Type.MultiTextMatrix:
+                                {
+                                    var objCauTraLoi = JsonConvert.DeserializeObject<Hashtable>(dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
+                                    foreach (var hang in lstHang.Where(x => x.IdCauHoi == cauHoi.Id))
+                                    {
+                                        var objCauTraLoiHang =
+                                            JsonConvert.DeserializeObject<Hashtable>(objCauTraLoi?[hang.MaHang]?.ToString() ?? "");
+                                        foreach (var cot in lstCot.Where(x => x.IdCauHoi == cauHoi.Id))
+                                        {
+                                            dict.Add($"{cauHoi.MaCauHoi}_{hang.MaHang}_{cot.MaCot}", objCauTraLoiHang?[cot.MaCot]?.ToString() ?? "");
+                                        }
+                                    }
+
+                                    break;
+                                }
                             default:
                                 dict.Add($"{cauHoi.MaCauHoi}", dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
                                 break;
