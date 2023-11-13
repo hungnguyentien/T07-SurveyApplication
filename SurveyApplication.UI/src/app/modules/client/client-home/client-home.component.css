@@ -79,9 +79,9 @@
   margin-bottom: 24px;
 }
 
-:host {
+/* :host {
   .p-dialog-footer {
     display: flex;
     justify-content: flex-end;
   }
-}
+} */

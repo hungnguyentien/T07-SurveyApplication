@@ -137,7 +137,7 @@
   }
 }
 
-#sv-nav-download-survey{
+#sv-nav-download-survey {
   input[type="button"] {
     &.sd-btn {
       background: rgba(36, 119, 69, 1);
@@ -314,11 +314,11 @@
 
   &-item {
     &--disabled {
-      opacity: .9;
+      opacity: 0.9;
     }
 
     &__decorator {
-      opacity: .3;
+      opacity: 0.6;
       &.sd-radio__decorator {
         border: 1px solid #000;
         background: white !important;
@@ -386,4 +386,14 @@ button {
 
 .p-dropdown-items {
   padding: 0;
+}
+
+.sd-element__title.sd-element__title--disabled,
+.sd-item--disabled .sd-item__control-label {
+  opacity: 0.9;
+}
+
+.khao-sat .p-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
 }

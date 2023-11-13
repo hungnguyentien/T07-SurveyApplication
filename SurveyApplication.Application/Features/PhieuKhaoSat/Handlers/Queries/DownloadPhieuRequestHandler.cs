@@ -73,7 +73,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                     .Where(x => !x.Deleted && lstIdCauHoi.Contains(x.IdCauHoi)).ToListAsync(cancellationToken: cancellationToken);
                 var lstCot = await _surveyRepo.Cot.GetAllQueryable().AsNoTracking()
                     .Where(x => !x.Deleted && lstIdCauHoi.Contains(x.IdCauHoi)).ToListAsync(cancellationToken: cancellationToken);
-                foreach (var cauHoi in lstCauHoi.Where(x => dictKq != null && dictKq.ContainsKey(x.MaCauHoi)))
+                foreach (var cauHoi in lstCauHoi.Where(x => dictKq != null))
                 {
                     if (dictKq != null)
                     {
@@ -84,17 +84,17 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                                     dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{dictKq[cauHoi.MaCauHoi]?.ToString().ConvertToCamelString()}", "F09C");
                                     if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
                                         dict.Add($"{cauHoi.MaCauHoi}_Comment", dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
+
                                     break;
                                 }
                             case (int)EnumCauHoi.Type.CheckBox:
                                 {
                                     var lstCauTraLoi = JsonConvert.DeserializeObject<List<string>>(dictKq[cauHoi.MaCauHoi]?.ToString() ?? "") ?? new List<string>();
                                     foreach (var cauTraLoi in lstCauTraLoi)
-                                    {
                                         dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{cauTraLoi.ConvertToCamelString()}", "F052");
-                                        if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
+
+                                    if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
                                             dict.Add($"{cauHoi.MaCauHoi}_Comment", dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
-                                    }
 
                                     break;
                                 }

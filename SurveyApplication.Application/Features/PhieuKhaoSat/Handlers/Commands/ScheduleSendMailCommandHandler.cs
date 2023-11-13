@@ -61,7 +61,9 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                 IdGuiEmail = guiEmail.Id
             };
             var bodyEmail =
-                $"{guiEmail.NoiDung} \n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
+                $"{guiEmail.NoiDung} " +
+                $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)} " +
+                $"\n Link khảo sát doanh nghiệp online: {EmailSettings.DomainKhaoSat}/khao-sat";
             var resultSend = await _emailSender.SendEmail(bodyEmail, guiEmail.TieuDe, guiEmail.DiaChiNhan);
             if (!resultSend.IsSuccess)
                 _logger.LogError($"----- Địa chỉ nhận {guiEmail.DiaChiNhan} \n {JsonConvert.SerializeObject(resultSend)}");

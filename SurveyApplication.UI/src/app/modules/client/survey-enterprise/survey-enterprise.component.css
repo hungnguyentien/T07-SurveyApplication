@@ -25,7 +25,7 @@
     background-size: 15px 10px;
   }
   
-  :host {
+  /* :host {
     .custom-complete b {
       color: red;
     }
@@ -44,5 +44,5 @@
       padding-top: 15px;
       margin-left: -10px;
     }
-  }
+  } */
   
