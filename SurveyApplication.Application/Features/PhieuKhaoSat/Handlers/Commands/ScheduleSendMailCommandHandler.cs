@@ -32,7 +32,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 
         public async Task<BaseCommandResponse> Handle(ScheduleSendMailCommand request, CancellationToken cancellationToken)
         {
-            var lstGuiEmail = await _surveyRepo.GuiEmail.GetAllQueryable().AsNoTracking().Where(x => !x.Deleted && (x.TrangThai == (int)EnumGuiEmail.TrangThai.DangGui || x.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi)).Take(100).ToListAsync(cancellationToken: cancellationToken);
+            var lstGuiEmail = await _surveyRepo.GuiEmail.GetAllQueryable().AsNoTracking().Where(x => !x.Deleted && (x.TrangThai == (int)EnumGuiEmail.TrangThai.DangGui || x.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi)).Take(10).ToListAsync(cancellationToken: cancellationToken);
             if (!lstGuiEmail.Any())
                 return new BaseCommandResponse
                 {
@@ -43,7 +43,19 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
             var path = Path.Combine(Directory.GetCurrentDirectory(), PathTemplateEmail);
             var externalHtmlContent = await File.ReadAllTextAsync(path, cancellationToken);
             var lstAttachment = new List<byte[]?>();
-            var lstAttachmentName = new List<string>();
+            var lstAttachmentName = new List<string>
+            {
+                "CV_1476TMĐT-KTS.pdf",
+                "CV_56AITECH-KS.pdf"
+            };
+            foreach (var attachmentName in lstAttachmentName)
+            {
+                using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), @$"{PathCv}\{attachmentName}"));
+                using var ms = new MemoryStream();
+                await r.BaseStream.CopyToAsync(ms, cancellationToken);
+                lstAttachment.Add(ms.ToArray());
+            }
+
             foreach (var guiEmail in lstGuiEmail)
             {
                 if (string.IsNullOrEmpty(guiEmail.NoiDung))
@@ -51,15 +63,6 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                     var mdv = lstDonVi.FirstOrDefault(x => x.Id == guiEmail.IdDonVi)?.MaDonVi ?? "";
                     var bodyHtml = externalHtmlContent.Replace("{{LINK_SEND_MAIL}}", $"{EmailSettings.DomainKhaoSat}/khao-sat?maDoanhNghiep={mdv}");
                     guiEmail.NoiDung = bodyHtml;
-                    lstAttachmentName.Add("CV_1476TMĐT-KTS.pdf");
-                    lstAttachmentName.Add("CV_56AITECH-KS.pdf");
-                    foreach (var attachmentName in lstAttachmentName)
-                    {
-                        using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), @$"{PathCv}\{attachmentName}"));
-                        using var ms = new MemoryStream();
-                        await r.BaseStream.CopyToAsync(ms, cancellationToken);
-                        lstAttachment.Add(ms.ToArray());
-                    }
                 }
                 else
                 {
@@ -70,11 +73,10 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
                     guiEmail.NoiDung = $"{guiEmail.NoiDung} " +
                                         $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)} " +
                                         $"\n Link khảo sát doanh nghiệp online: {EmailSettings.DomainKhaoSat}/khao-sat";
-                    //$"\n {EmailSettings.DomainKhaoSat}/khao-sat";
                 }
             }
 
-            const int pageSize = 10;
+            const int pageSize = 5;
             var subscriberCount = lstGuiEmail.Count();
             var amountOfPages = (int)Math.Ceiling((double)subscriberCount / pageSize);
             for (var pageIndex = 0; pageIndex < amountOfPages; pageIndex++)
