@@ -19,8 +19,8 @@ public class IGuiEmailDtoValidator : AbstractValidator<IGuiEmailDto>
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull();
 
-        RuleFor(p => p.NoiDung)
-            .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull();
+        //RuleFor(p => p.NoiDung)
+        //    .NotEmpty().WithMessage("{PropertyName} is required.")
+        //    .NotNull();
     }
 }

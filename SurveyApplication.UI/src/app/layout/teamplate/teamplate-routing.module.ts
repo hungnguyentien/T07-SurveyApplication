@@ -74,7 +74,7 @@ const routes: Routes = [
         data: {
           title: 'Khảo sát doanh nghiệp',
         },
-      },
+      }
     ],
   },
 ];

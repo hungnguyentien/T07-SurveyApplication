@@ -1,4 +1,4 @@
-function downloadPhieu2(url) {
+const taiPhieu = (url) => {
   $.ajax({
     async: false,
     method: "GET",
@@ -27,4 +27,12 @@ function downloadPhieu2(url) {
       // If fail
       alert(textStatus + ": " + errorThrown);
     });
-}
+};
+
+$(document)
+  .off("click", ".btn-tai-phieu")
+  .on("click", ".btn-tai-phieu", (e) => {
+    let url = $(e.target).attr("href");
+    taiPhieu(url);
+    return false;
+  });

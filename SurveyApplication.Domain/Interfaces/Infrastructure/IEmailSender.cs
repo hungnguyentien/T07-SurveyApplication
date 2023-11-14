@@ -4,6 +4,6 @@ namespace SurveyApplication.Domain.Interfaces.Infrastructure;
 
 public interface IEmailSender
 {
-    Task<EmailRespose> SendEmail(string body, string? title, string? toEmail, byte[]? attachment = null,
-        string attachmentName = "");
+    Task<EmailRespose> SendEmail(string body, string? title, string? toEmail, IList<byte[]?>? lstAttachment = null,
+        IList<string>? lstAttachmentName = null);
 }

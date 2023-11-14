@@ -343,8 +343,24 @@
   }
 }
 
-.custom-complete b {
-  color: red;
+.custom-complete {
+  b {
+    color: red;
+  }
+
+  .btn-tai-phieu {
+    border: 1px solid #19b394;
+    color: #19b394;
+    :hover {
+      background-color: #19b394;
+      color: #19b394;
+    }
+
+    :active {
+      background-color: #19b394;
+      color: #19b394;
+    }
+  }
 }
 
 .input-date-custom {
@@ -402,7 +418,7 @@ $fuschia: #247745;
 $button-bg: $fuschia;
 $button-text-color: #fff;
 $baby-blue: #f8faff;
-#sv-nav-complete {
+.btn-tai-phieu {
   font-family: "Helvetica", "Arial", sans-serif;
   appearance: none;
   border: none;

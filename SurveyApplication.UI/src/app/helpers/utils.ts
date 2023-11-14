@@ -321,21 +321,24 @@ export default class Utils {
       }
     });
 
-    let data2 = data;
+    let dataGuiMail = data;
     survey.onComplete.add((sender, options) => {
       // Hoàn thành khảo sát
       let data = sender.data;
       if (status !== KqTrangThai.HoanThanh)
-        survey.completedHtml = `<div class='custom-complete'> ${
-          Object.keys(data).length !== 0
-            ? ''
-            : `<div><b>Bạn chưa nhập câu trả lời vui lòng khảo sát lại!</b></div>`
-        } <div><b>Cảm ơn phản hồi của bạn!</b></div><br>
-        <p>Vui lòng ấn vào nút tải phiếu nếu không tải được phiếu khảo sát</p>
-        <button style="margin: auto; border: 2px solid;" onclick="downloadPhieu2('${
-          environment.apiUrl
-        }/PhieuKhaoSat/DownloadTemplateSurvey/${data2}')">Tải phiếu</button></div>`;
-      // } <a href="${linkKsLai}">Khảo sát lại</a></div>`;
+        survey.completedHtml = `<div class='custom-complete'>
+                                  ${
+                                    Object.keys(data).length !== 0
+                                      ? ''
+                                      : `<div><b>Bạn chưa nhập câu trả lời vui lòng khảo sát lại!</b></div>`
+                                  } <a href="${linkKsLai}">Khảo sát lại</a>
+                                </div>`;
+      else if (status == KqTrangThai.HoanThanh)
+        survey.completedHtml = `<div class="custom-complete">
+                                  <h3>Cảm ơn phản hồi của bạn!</h3>
+                                  <p>Vui lòng ấn vào nút tải phiếu nếu không tải được phiếu khảo sát</p>
+                                  <a class="btn btn-tai-phieu" href="${environment.apiUrl}/PhieuKhaoSat/DownloadTemplateSurvey/${dataGuiMail}">Tải phiếu</a>
+                                </div>`;
 
       Object.keys(data).length !== 0 && subscribe && subscribe(sender, status);
     });

@@ -22,8 +22,8 @@ public class EmailSender : IEmailSender
     /// <param name="body"></param>
     /// <param name="title"></param>
     /// <param name="toEmail"></param>
-    /// <param name="attachment"></param>
-    /// <param name="attachmentName"></param>
+    /// <param name="lstAttachment"></param>
+    /// <param name="lstAttachmentName"></param>
     /// <returns></returns>
     public async Task<EmailRespose> SendEmail(string body, string? title, string? toEmail, IList<byte[]?>? lstAttachment = null,
         IList<string>? lstAttachmentName = null)
@@ -35,8 +35,6 @@ public class EmailSender : IEmailSender
             {
                 var userEmail = EmailSettings.Username;
                 var passwordEmail = EmailSettings.Password;
-                //string externalHtmlContent = File.ReadAllText(@"D:\LamViecCty\TriNam\HR.LeaveManagement\Infrastructure\Mail\EmailSender.html");
-                //string bodyHtml = externalHtmlContent.Replace("{{TieuDe}}", title).Replace("{{NoiDung}}", body);
                 if (toEmail != null)
                 {
                     var mailMessage = new MailMessage(userEmail, toEmail, title, body)

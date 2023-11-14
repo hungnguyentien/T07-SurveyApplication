@@ -912,7 +912,7 @@ export class AdminTableSurveyComponent {
     }
 
     this.frmGuiEmail = this.FormBuilder.group({
-      noidung: ['', Validators.required],
+      noidung: [''],
       tieuDe: ['', Validators.required],
       lstIdDonVi: this.FormBuilder.array([] as number[], Validators.required),
       lstBangKhaoSat: this.FormBuilder.array(

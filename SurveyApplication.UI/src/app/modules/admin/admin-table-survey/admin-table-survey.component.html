@@ -573,12 +573,12 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="noidung" class="col-form-label">Nhập nội dung <span style="color: red;">*</span></label>
+                    <label for="noidung" class="col-form-label">Nhập nội dung</label>
                     <p-editor formControlName="noidung" [style]="{ height: '100px' }" id="noidung"></p-editor>
-                    <small *ngIf="!frmGuiEmail.controls['noidung'].valid && frmGuiEmail.controls['noidung'].dirty && !checkBtnDetail == true"
+                    <!-- <small *ngIf="!frmGuiEmail.controls['noidung'].valid && frmGuiEmail.controls['noidung'].dirty && !checkBtnDetail == true"
                         class="invalid-feedback">
-                        Vui lòng nhập tiêu đề
-                    </small>
+                        Vui lòng nhập nội dung
+                    </small> -->
                 </div>
             </div>
         </ng-template>
