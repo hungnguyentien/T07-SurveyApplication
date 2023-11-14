@@ -44,7 +44,10 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
             var bks = await _surveyRepo.BangKhaoSat.FirstOrDefaultAsync(x => !x.Deleted && x.Id == guiEmail.IdBangKhaoSat);
             var donVi = await _surveyRepo.DonVi.FirstOrDefaultAsync(x => !x.Deleted && x.Id == guiEmail.IdDonVi) ?? new DonVi();
             var nguoiDaiDien = await _surveyRepo.NguoiDaiDien.FirstOrDefaultAsync(x => !x.Deleted && x.Id == guiEmail.IdDonVi) ?? new NguoiDaiDien();
-
+            var xaPhuong = await _surveyRepo.XaPhuong.FirstOrDefaultAsync(x => !x.Deleted && x.Id == donVi.IdXaPhuong) ?? new XaPhuong();
+            var quanHuyen = await _surveyRepo.QuanHuyen.FirstOrDefaultAsync(x => !x.Deleted && x.Id == donVi.IdQuanHuyen) ?? new QuanHuyen();
+            var tinhThanh = await _surveyRepo.TinhTp.FirstOrDefaultAsync(x => !x.Deleted && x.Id == donVi.IdTinhTp) ?? new TinhTp();
+            var diaChi = new List<string> { donVi.DiaChi ?? "", xaPhuong.Name, quanHuyen.Name, tinhThanh.Name };
             byte[] content;
             var fileName = $"PKS_{bks?.TenBangKhaoSat}_{donVi.TenDonVi}_MST_{donVi.MaSoThue}.docx";
             var dict = new Dictionary<string, string>
@@ -54,7 +57,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                 { "DIEN_THOAI", nguoiDaiDien.SoDienThoai },
                 { "EMAIL", nguoiDaiDien.Email ?? "" },
                 { "TEN_DON_VI", donVi.TenDonVi },
-                { "DIA_CHI", donVi.DiaChi ?? "" },
+                { "DIA_CHI", string.Join(",", diaChi.Where(x => !string.IsNullOrEmpty(x))) },
                 { "DIEN_THOAI_2", donVi.SoDienThoai },
                 { "EMAIL_2", donVi.Email },
                 { "DayOfWeek", DateTime.Now.DayOfWeek.ConvertDayOfWeekToTcvn() },
@@ -73,7 +76,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                     .Where(x => !x.Deleted && lstIdCauHoi.Contains(x.IdCauHoi)).ToListAsync(cancellationToken: cancellationToken);
                 var lstCot = await _surveyRepo.Cot.GetAllQueryable().AsNoTracking()
                     .Where(x => !x.Deleted && lstIdCauHoi.Contains(x.IdCauHoi)).ToListAsync(cancellationToken: cancellationToken);
-                foreach (var cauHoi in lstCauHoi.Where(x => dictKq != null))
+                foreach (var cauHoi in lstCauHoi.Where(_ => dictKq != null))
                 {
                     if (dictKq != null)
                     {
@@ -94,7 +97,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
                                         dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{cauTraLoi.ConvertToCamelString()}", "F052");
 
                                     if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
-                                            dict.Add($"{cauHoi.MaCauHoi}_Comment", dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
+                                        dict.Add($"{cauHoi.MaCauHoi}_Comment", dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
 
                                     break;
                                 }
