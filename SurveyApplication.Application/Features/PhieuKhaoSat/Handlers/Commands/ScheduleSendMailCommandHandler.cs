@@ -32,7 +32,7 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Commands
 
         public async Task<BaseCommandResponse> Handle(ScheduleSendMailCommand request, CancellationToken cancellationToken)
         {
-            var lstGuiEmail = await _surveyRepo.GuiEmail.GetAllListAsync(x => !x.Deleted && (x.TrangThai == (int)EnumGuiEmail.TrangThai.DangGui || x.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi));
+            var lstGuiEmail = await _surveyRepo.GuiEmail.GetAllQueryable().AsNoTracking().Where(x => !x.Deleted && (x.TrangThai == (int)EnumGuiEmail.TrangThai.DangGui || x.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi)).Take(100).ToListAsync(cancellationToken: cancellationToken);
             if (!lstGuiEmail.Any())
                 return new BaseCommandResponse
                 {
