@@ -336,7 +336,7 @@ export default class Utils {
       else if (status == KqTrangThai.HoanThanh)
         survey.completedHtml = `<div class="custom-complete">
                                   <h3>Cảm ơn phản hồi của bạn!</h3>
-                                  <p style="padding: 0 18px;">Vui lòng tải phiếu, in ký, đóng dấu và gửi về địa chỉ: Công ty Cổ phần tư vấn giải pháp Trí tuệ nhân tạo, Số 15 Lô 1E, Trung Yên 11C, phường Trung Hòa, quận Cầu Giấy, thành phố Hà Nội</p>
+                                  <p class="note-complete">Vui lòng tải phiếu, in ký, đóng dấu và gửi về địa chỉ: Công ty Cổ phần tư vấn giải pháp Trí tuệ nhân tạo, Số 15 Lô 1E, Trung Yên 11C, phường Trung Hòa, quận Cầu Giấy, thành phố Hà Nội</p>
                                   <a class="btn btn-tai-phieu" href="${environment.apiUrl}/PhieuKhaoSat/DownloadTemplateSurvey/${dataGuiMail}">Tải phiếu</a>
                                 </div>`;
 

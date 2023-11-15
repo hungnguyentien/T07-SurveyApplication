@@ -572,3 +572,8 @@ $baby-blue: #f8faff;
     background-position: 200% center;
   }
 }
+
+.note-complete {
+  max-width: calc(100% - 3rem);
+  margin: auto;
+}

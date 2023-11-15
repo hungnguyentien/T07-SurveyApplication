@@ -26,7 +26,7 @@ export class SurveyEnterpriseComponent {
   generalInfo!: GeneralInfo;
   saveSurvey!: SaveSurvey;
   lstBaoCaoCauHoi: CreateBaoCaoCauHoi[] = [];
-
+  note: boolean = true;
   constructor(
     private router: Router,
     private spinner: NgxSpinnerService,
@@ -108,6 +108,7 @@ export class SurveyEnterpriseComponent {
             },
             complete: () => {
               this.spinner.hide();
+              this.note = false;
             },
           });
         },
