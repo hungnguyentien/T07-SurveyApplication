@@ -46,6 +46,39 @@
     }
   } */
 
-.note{
+.note {
   margin-top: 15px;
+}
+
+* :host {
+  .sd-table__cell--header .sv-vue-title-additional-div,
+  .sd-table__cell--header,
+  .sd-table__cell {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+    background-color: #fff !important;
+    border-left: 1px solid rgba(0, 0, 0, 0.16);
+  }
+
+  .sd-table__cell--header .sv-vue-title-additional-div input,
+  .sd-table__cell--header input,
+  .sd-table__cell input{
+   background: #fff !important;
+  }
+
+  .sd-table__cell--header {
+    border-top: 1px solid rgba(0, 0, 0, 0.16);
+  }
+
+  .sd-table__row .sd-table__cell--header:last-child,
+  .sd-table__row .sd-table__cell:last-child, 
+  .sd-table__cell--header:last-child {
+    border-right: 1px solid rgba(0, 0, 0, 0.16) !important;
+  }
+
+  .sd-root-modern:not(.sd-root-modern--mobile)
+    .sd-table__cell:not(.sd-table__cell--actions):not(
+      .sd-table__cell--action
+    ):not(.sd-table__cell--empty.sd-table__cell--error) {
+      width: max-content;
+  }
 }

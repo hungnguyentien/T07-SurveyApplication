@@ -116,6 +116,12 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries
 
                                     break;
                                 }
+                            case (int)EnumCauHoi.Type.LongText:
+                                {
+                                    dict.Add($"{cauHoi.MaCauHoi}", dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
+
+                                    break;
+                                }
                             default:
                                 dict.Add($"{cauHoi.MaCauHoi}", dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
                                 break;
