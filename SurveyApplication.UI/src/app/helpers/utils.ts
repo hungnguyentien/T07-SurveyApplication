@@ -321,6 +321,14 @@ export default class Utils {
       }
     });
 
+    // survey.onValidateQuestion.add((survey, options) => {
+    //   if (options.name === "memo") {
+    //     if (options.value.indexOf("survey") === -1) {
+    //       options.error = 'Your answer must contain the word "survey"'
+    //     }
+    //   }
+    // });
+
     let dataGuiMail = data;
     survey.onComplete.add((sender, options) => {
       // Hoàn thành khảo sát
@@ -405,12 +413,25 @@ export default class Utils {
   ) {
     let loaiCauHoi = el.loaiCauHoi;
     let name = el.maCauHoi;
-    let title = `${index}. ${el.tieuDe}`;
+    let title = `${index + 2}. ${el.tieuDe}`;
     let isRequired = el.batBuoc ?? false;
     let requiredErrorText = isRequired
       ? 'Vui lòng nhập câu trả lời của bạn!'
       : '';
     let description = el.noidung?.replace(/<\/?[^>]+(>|$)/g, ''); //Remove html tag from string
+    let validators = [
+      {
+        type: 'text',
+        maxLength: 500,
+      },
+    ];
+    // let validatorsMatrixText = [
+    //   {
+    //     type: 'expression',
+    //     text: 'Câu trả lời không được vượt quá 250 ký tự!',
+    //     expression: /^.{250}$/,
+    //   },
+    // ];
     let choicesRadio = new Array();
     el.lstCot.forEach((el, i) => {
       choicesRadio.push({
@@ -503,6 +524,8 @@ export default class Utils {
         requiredErrorText: requiredErrorText,
         description: description,
         readOnly: readOnly,
+        validators: validators,
+        maxLength: 500,
       });
     } else if (loaiCauHoi == TypeCauHoi.LongText) {
       els.push({
@@ -513,6 +536,8 @@ export default class Utils {
         requiredErrorText: requiredErrorText,
         description: description,
         readOnly: readOnly,
+        validators: validators,
+        maxLength: 500,
       });
     } else if (loaiCauHoi == TypeCauHoi.SingleSelectMatrix) {
       els.push({
@@ -562,6 +587,7 @@ export default class Utils {
         cellType: 'text',
         columnColCount: 1,
         readOnly: readOnly,
+        // validators: validatorsMatrixText,
       });
     } else if (loaiCauHoi == TypeCauHoi.UploadFile) {
       els.push({
