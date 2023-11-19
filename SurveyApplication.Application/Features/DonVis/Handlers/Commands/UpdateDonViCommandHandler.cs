@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using SurveyApplication.Application.DTOs.DonVi.Validators;
-using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DonVis.Requests.Commands;
-using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
@@ -20,8 +19,9 @@ public class UpdateDonViCommandHandler : BaseMasterFeatures, IRequestHandler<Upd
 
     public async Task<BaseCommandResponse> Handle(UpdateDonViCommand request, CancellationToken cancellationToken)
     {
-        if (await _surveyRepo.GuiEmail.Exists(x => request.DonViDto != null && !x.Deleted && x.IdDonVi == request.DonViDto.Id))
-            throw new FluentValidation.ValidationException("Đơn vị đã được sử dụng");
+        if (await _surveyRepo.GuiEmail.Exists(x =>
+                request.DonViDto != null && !x.Deleted && x.IdDonVi == request.DonViDto.Id))
+            throw new ValidationException("Đơn vị đã được sử dụng");
 
         var response = new BaseCommandResponse();
         var validator = new UpdateDonViDtoValidator(_surveyRepo.DonVi);

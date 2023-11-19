@@ -25,7 +25,8 @@ public class EmailSender : IEmailSender
     /// <param name="lstAttachment"></param>
     /// <param name="lstAttachmentName"></param>
     /// <returns></returns>
-    public async Task<EmailRespose> SendEmail(string body, string? title, string? toEmail, IList<byte[]?>? lstAttachment = null,
+    public async Task<EmailRespose> SendEmail(string body, string? title, string? toEmail,
+        IList<byte[]?>? lstAttachment = null,
         IList<string>? lstAttachmentName = null)
     {
         var result = new EmailRespose();
@@ -44,20 +45,19 @@ public class EmailSender : IEmailSender
 
                     //Add attachment
                     if (lstAttachment != null)
-                    {
                         foreach (var attachment in lstAttachment)
                         {
                             var index = lstAttachment.ToList().FindIndex(x => x == attachment);
                             var attachmentName = lstAttachmentName?.ElementAt(index);
                             if (attachment != null)
                             {
-                                var fileName = string.IsNullOrWhiteSpace(attachmentName) ? "FileDefault" : attachmentName;
+                                var fileName = string.IsNullOrWhiteSpace(attachmentName)
+                                    ? "FileDefault"
+                                    : attachmentName;
                                 var stream = new MemoryStream(attachment);
                                 mailMessage.Attachments.Add(new Attachment(stream, fileName));
-
                             }
                         }
-                    }
 
                     var netCred = new NetworkCredential(userEmail, passwordEmail);
                     var smtpClient = new SmtpClient(EmailSettings.Host, EmailSettings.Port);

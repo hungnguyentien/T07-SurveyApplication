@@ -1,13 +1,12 @@
 ﻿using SurveyApplication.Domain;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Persistence.Repositories
+namespace SurveyApplication.Persistence.Repositories;
+
+public class StgFileRepository : GenericRepository<StgFile>, IStgFileRepository
 {
-    public class StgFileRepository : GenericRepository<StgFile>, IStgFileRepository
+    public StgFileRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
     {
-        public StgFileRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
-        {
-            DbContext = dbContext;
-        }
+        DbContext = dbContext;
     }
 }

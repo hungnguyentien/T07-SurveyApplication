@@ -45,7 +45,8 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
         if (validationResult.IsValid == false)
         {
             response.Success = false;
-            response.Message = $"{(request.CreateKetQuaDto?.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh ? "Gửi thông tin" : "Lưu tạm")} không thành công!";
+            response.Message =
+                $"{(request.CreateKetQuaDto?.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh ? "Gửi thông tin" : "Lưu tạm")} không thành công!";
             response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
             return response;
         }
@@ -88,8 +89,11 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
         await _surveyRepo.SaveAync();
 
         var countBks =
-            await _surveyRepo.GuiEmail.CountAsync(x => x.IdBangKhaoSat == guiEmail.IdBangKhaoSat && !x.Deleted && x.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong);
-        var countKq = await _surveyRepo.KetQua.CountAsync(x => x.IdGuiEmail == guiEmail.Id && !x.Deleted && x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh);
+            await _surveyRepo.GuiEmail.CountAsync(x =>
+                x.IdBangKhaoSat == guiEmail.IdBangKhaoSat && !x.Deleted &&
+                x.TrangThai == (int)EnumGuiEmail.TrangThai.ThanhCong);
+        var countKq = await _surveyRepo.KetQua.CountAsync(x =>
+            x.IdGuiEmail == guiEmail.Id && !x.Deleted && x.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh);
         if (countBks > 0 && countKq > 0 && countBks == countKq)
         {
             bks.TrangThai = (int)EnumBangKhaoSat.TrangThai.HoanThanh;
@@ -98,7 +102,8 @@ public class CreateKetQuaCommandHandler : BaseMasterFeatures, IRequestHandler<Cr
         }
 
         response.Success = true;
-        response.Message = $"{(request.CreateKetQuaDto?.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh ? "Gửi thông tin" : "Lưu tạm")} thành công!";
+        response.Message =
+            $"{(request.CreateKetQuaDto?.TrangThai == (int)EnumKetQua.TrangThai.HoanThanh ? "Gửi thông tin" : "Lưu tạm")} thành công!";
         response.Id = ketQua.Id;
         return response;
     }

@@ -15,7 +15,9 @@ public class GuiEmailDto : BaseDto
     public int IdDonVi { get; set; }
     public string TenDonVi { get; set; }
     public string NguoiThucHien { get; set; }
+
     public string LinkKhaoSat { get; set; }
+
     // đã thực hiện khảo sát
     public bool IsKhaoSat { get; set; }
 }
@@ -38,5 +40,4 @@ public class GuiEmailBksDetailDto
     public string MaBangKhaoSat { get; set; }
     public string TenBangKhaoSat { get; set; }
     public List<GuiEmailDto> LstGuiEmail { get; set; }
-
 }

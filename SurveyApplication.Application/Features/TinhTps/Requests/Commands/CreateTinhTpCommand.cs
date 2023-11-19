@@ -2,10 +2,9 @@
 using SurveyApplication.Application.DTOs.TinhTp;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.Application.Features.TinhTps.Requests.Commands
+namespace SurveyApplication.Application.Features.TinhTps.Requests.Commands;
+
+public class CreateTinhTpCommand : IRequest<BaseCommandResponse>
 {
-    public class CreateTinhTpCommand : IRequest<BaseCommandResponse>
-    {
-        public CreateTinhTpDto? TinhTpDto { get; set; }
-    }
+    public CreateTinhTpDto? TinhTpDto { get; set; }
 }

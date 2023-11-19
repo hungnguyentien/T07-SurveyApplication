@@ -2,10 +2,9 @@
 using SurveyApplication.Application.DTOs.PhieuKhaoSat;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands
+namespace SurveyApplication.Application.Features.PhieuKhaoSat.Requests.Commands;
+
+public class UpdateDoanhNghiepCommand : IRequest<BaseCommandResponse>
 {
-    public class UpdateDoanhNghiepCommand: IRequest<BaseCommandResponse>
-    {
-        public UpdateDoanhNghiepDto? UpdateDoanhNghiepDto { get; set; }
-    }
+    public UpdateDoanhNghiepDto? UpdateDoanhNghiepDto { get; set; }
 }

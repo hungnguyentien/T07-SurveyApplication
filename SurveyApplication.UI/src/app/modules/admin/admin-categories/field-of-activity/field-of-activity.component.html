@@ -4,9 +4,11 @@
   </ng-template>
   <ng-template pTemplate="footer">
     <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
-      (click)="cd.reject()"></button>
+            (click)="cd.reject()">
+    </button>
     <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
-      label="Xóa" (click)="cd.accept()"></button>
+            label="Xóa" (click)="cd.accept()">
+    </button>
   </ng-template>
 </p-confirmDialog>
 
@@ -18,15 +20,16 @@
     </div>
     <div class="ml-3">
       <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
-        *ngIf="selectedFieldOfActivity && selectedFieldOfActivity.length > 0" class="custom-button"
-        style="background-color: #ea5c5c;"></button>
+              *ngIf="selectedFieldOfActivity && selectedFieldOfActivity.length > 0" class="custom-button"
+              style="background-color: #ea5c5c;">
+      </button>
     </div>
   </div>
   <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
       <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"(ngModelChange)="onSubmitSearch()"
-        [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+             [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá "/>
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
       <i class="pi pi-search"></i>
@@ -35,11 +38,11 @@
 </div>
 <div class="card mt-3">
   <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
-    scrollHeight="calc(100vh - 396px)" [(selection)]="selectedFieldOfActivity" dataKey="id"
-    styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
-    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
-    [resizableColumns]="true">
+           scrollHeight="calc(100vh - 396px)" [(selection)]="selectedFieldOfActivity" dataKey="id"
+           styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
+           currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+           [resizableColumns]="true">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 40px;">
@@ -80,7 +83,7 @@
           <span class="p-column-title">STT</span>
           {{ rowIndex + 1}}
         </td>
-        <td class="color_Hover"  (click)="detail(rowData)">
+        <td class="color_Hover" (click)="detail(rowData)">
           <span class="ml-1 vertical-align-middle">{{ rowData.maLinhVuc }}</span>
         </td>
         <td>
@@ -91,10 +94,16 @@
           <span class="ml-1 vertical-align-middle">{{ rowData.moTa }}</span>
         </td>
         <td>
-          <a class="m-3" (click)="Edit(rowData)"><span class="pi pi-pencil" title="Cập nhật"
-              aria-hidden="true"></span></a>
-          <a class="m-3" title="Xoá" (click)="Delete(rowData)"><span class="pi pi-trash" style="color: red;"
-              aria-hidden="true"></span></a>
+          <a class="m-3" (click)="Edit(rowData)">
+            <span class="pi pi-pencil" title="Cập nhật"
+                  aria-hidden="true">
+            </span>
+          </a>
+          <a class="m-3" title="Xoá" (click)="Delete(rowData)">
+            <span class="pi pi-trash" style="color: red;"
+                  aria-hidden="true">
+            </span>
+          </a>
         </td>
       </tr>
     </ng-template>
@@ -109,7 +118,7 @@
 <!-- modal -->
 <form *ngIf="FormFieldOfActivity" #form="ngForm" [formGroup]="FormFieldOfActivity" (ngSubmit)="onSubmit()">
   <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '40vw'}" [draggable]="false" [resizable]="true"
-    [maximizable]="true">
+            [maximizable]="true">
     <ng-template pTemplate="header">
       <h5 class="modal-title">
         {{ modalTitle}}
@@ -128,7 +137,7 @@
       <div class="form-group">
         <label for="tenLinhVuc" class="col-form-label">Tên lĩnh vực: <span style="color: red;">*</span></label>
         <input type="text" formControlName="tenLinhVuc" class="form-control" id="tenLinhVuc" pInputText
-          placeholder="Nhập tên lĩnh vực" [ngClass]="{
+               placeholder="Nhập tên lĩnh vực" [ngClass]="{
               'is-invalid': submitted && f('tenLinhVuc').errors
             }">
         <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormFieldOfActivity.controls['tenLinhVuc'].valid && 
@@ -151,7 +160,8 @@
     <ng-template pTemplate="footer">
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
       <button pButton *ngIf="!checkBtnDetail == true" [disabled]="!FormFieldOfActivity.valid" type="submit" icon="pi pi-save" label="Lưu"
-        class="custom-button"></button>
+              class="custom-button">
+      </button>
     </ng-template>
   </p-dialog>
 </form>

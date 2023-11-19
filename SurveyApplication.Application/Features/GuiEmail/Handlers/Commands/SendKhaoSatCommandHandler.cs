@@ -17,17 +17,19 @@ namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands;
 
 public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<SendKhaoSatCommand, BaseCommandResponse>
 {
-    private readonly IMapper _mapper;
     private readonly IEmailSender _emailSender;
-    private EmailSettings EmailSettings { get; }
+    private readonly IMapper _mapper;
 
-    public SendKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, IEmailSender emailSender,
+    public SendKhaoSatCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper,
+        IEmailSender emailSender,
         IOptions<EmailSettings> emailSettings) : base(surveyRepository)
     {
         _mapper = mapper;
         _emailSender = emailSender;
         EmailSettings = emailSettings.Value;
     }
+
+    private EmailSettings EmailSettings { get; }
 
     public async Task<BaseCommandResponse> Handle(SendKhaoSatCommand request, CancellationToken cancellationToken)
     {
@@ -125,7 +127,8 @@ public class SendKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<Sen
         {
             IdGuiEmail = guiEmail.Id
         };
-        var linkKhaoSat = $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
+        var linkKhaoSat =
+            $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
         var bodyEmail = $"{guiEmail.NoiDung} {linkKhaoSat}";
         var resultSend = await _emailSender.SendEmail(bodyEmail, guiEmail.TieuDe, guiEmail.DiaChiNhan);
         guiEmail.TrangThai = resultSend.IsSuccess

@@ -4,10 +4,10 @@
   </ng-template>
   <ng-template pTemplate="footer">
     <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
-      (click)="cd.reject()">
+            (click)="cd.reject()">
     </button>
     <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
-      label="Xóa" (click)="cd.accept()">
+            label="Xóa" (click)="cd.accept()">
     </button>
   </ng-template>
 </p-confirmDialog>
@@ -21,8 +21,8 @@
     </div>
     <div class="ml-3">
       <button pButton type="button" *ngIf="selectedQuestion && selectedQuestion.length > 0"
-        (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
-        style="background-color: #ea5c5c">
+              (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
+              style="background-color: #ea5c5c">
       </button>
     </div>
   </div>
@@ -30,7 +30,7 @@
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
       <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
-        (ngModelChange)="searchOnChange($event)" [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+             (ngModelChange)="searchOnChange($event)" [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá "/>
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
       <i class="pi pi-search"></i>
@@ -40,11 +40,11 @@
 
 <div class="card mt-3">
   <p-table #dt ngClass="cust-tbl" [value]="lstQuestion" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
-    [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedQuestion" dataKey="id"
-    styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
-    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
-    [globalFilterFields]="['data.maCauHoi', 'data.tieuDe', 'data.loaiCauHoi']" [resizableColumns]="true">
+           [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedQuestion" dataKey="id"
+           styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
+           currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+           [globalFilterFields]="['data.maCauHoi', 'data.tieuDe', 'data.loaiCauHoi']" [resizableColumns]="true">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 40px;">
@@ -116,228 +116,232 @@
 
 <!-- modal create update -->
 <form *ngIf="frmCauHoi" #cauHoiForm="ngForm" [formGroup]="frmCauHoi" (ngSubmit)="onSubmit(cauHoiForm)">
-  <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
-    [resizable]="true" [maximizable]="true">
-    <ng-template pTemplate="header">
-      <h5 class="modal-title">
-        {{ isCreate === true ? "Thêm mới câu hỏi" : "Cập nhật câu hỏi" }}
-      </h5>
-    </ng-template>
-    <ng-template pTemplate="body">
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label for="maCauHoi" class="col-form-label">Mã: <span style="color: red">*</span></label>
-          <input type="text" class="form-control" id="maCauHoi" formControlName="maCauHoi"
-            [(ngModel)]="maCauHoi" (input)="changeMaCauHoi(maCauHoi)" [ngClass]="{
-            'is-invalid': submitted && f('maCauHoi').errors}" />
-          <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmCauHoi.controls['maCauHoi'].valid && 
+<p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+          [resizable]="true" [maximizable]="true">
+<ng-template pTemplate="header">
+  <h5 class="modal-title">
+    {{ isCreate === true ? "Thêm mới câu hỏi" : "Cập nhật câu hỏi" }}
+  </h5>
+</ng-template>
+<ng-template pTemplate="body">
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="maCauHoi" class="col-form-label">Mã: <span style="color: red">*</span></label>
+      <input type="text" class="form-control" id="maCauHoi" formControlName="maCauHoi"
+             [(ngModel)]="maCauHoi" (input)="changeMaCauHoi(maCauHoi)" [ngClass]="{
+            'is-invalid': submitted && f('maCauHoi').errors}"/>
+      <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmCauHoi.controls['maCauHoi'].valid && 
           frmCauHoi.controls['maCauHoi'].dirty">
-            Vui lòng nhập mã
-          </small>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red">*</span></label>
-          <p-dropdown id="loaicauhoi" [options]="lstLoaiCauHoi" [(ngModel)]="selectedLoaiCauHoi" optionLabel="text"
-            optionValue="value" emptyMessage="Không có kết quả nào" class="form-select-custom" [ngClass]="{
+        Vui lòng nhập mã
+      </small>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="loaicauhoi" class="col-form-label">Loại câu hỏi: <span style="color: red">*</span></label>
+      <p-dropdown id="loaicauhoi" [options]="lstLoaiCauHoi" [(ngModel)]="selectedLoaiCauHoi" optionLabel="text"
+                  optionValue="value" emptyMessage="Không có kết quả nào" class="form-select-custom" [ngClass]="{
             'is-invalid': submitted && f('loaiCauHoi').errors
           }" formControlName="loaiCauHoi" (onChange)="handlerChangeLCh($event)">
-          </p-dropdown>
-          <div *ngIf="submitted && f('loaiCauHoi').errors" class="invalid-feedback">
-            <small *ngIf="f('loaiCauHoi').errors?.['required']">
-              Vui lòng nhập loại câu hỏi
+      </p-dropdown>
+      <div *ngIf="submitted && f('loaiCauHoi').errors" class="invalid-feedback">
+        <small *ngIf="f('loaiCauHoi').errors?.['required']">
+          Vui lòng nhập loại câu hỏi
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="tieuDe" class="col-form-label">Tiêu đề: <span style="color: red">*</span></label>
+
+    <input type="text" pInputText class="form-control" id="tieuDe" formControlName="tieuDe"
+           placeholder="Nhập tiêu đề câu hỏi" required/>
+
+    <small *ngIf="!frmCauHoi.controls['tieuDe'].valid && frmCauHoi.controls['tieuDe'].dirty"
+           class="invalid-feedback">
+      Vui lòng nhập tiêu đề
+    </small>
+  </div>
+
+  <ng-container *ngIf="selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1'">
+    <div class="row">
+      <div class="col-md-6 d-flex align-items-center">
+        <div class="d-flex justify-content-start align-items-center">
+          <p-checkbox formControlName="isOther" [(ngModel)]="isOther" [binary]="true" inputId="isOther"
+                      (change)="handlerChange($event)">
+          </p-checkbox>
+          <label for="isOther" class="mb-0 ml-2">Câu trả lời khác</label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group" *ngIf="isOther">
+          <label for="labelCauTraLoi" class="col-form-label">label câu trả lời khác:</label>
+          <input type="text" pInputText class="form-control" formControlName="labelCauTraLoi" id="labelCauTraLoi"
+                 placeholder="Nhập tiêu đề câu hỏi"/>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="selectedLoaiCauHoi === '7'">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="soLuongFileToiDa" class="col-form-label">Số lượng file (Tối đa)</label>
+          <div>
+            <p-inputNumber class="w-100" styleClass="w-100" inputStyleClass="form-control" [allowEmpty]="false"
+                           formControlName="soLuongFileToiDa" [min]="1" [max]="10" [ngClass]="{
+                  'is-invalid':
+                    cauHoiForm.submitted && f('soLuongFileToiDa').errors
+                }" id="soLuongFileToiDa" placeholder="Nhập khích thước file">
+            </p-inputNumber>
+            <div *ngIf="
+                  cauHoiForm.submitted && f('soLuongFileToiDa').errors
+                " class="invalid-feedback">
+              <small *ngIf="f('soLuongFileToiDa').errors?.['required']">
+                Vui lòng nhập số lượng file
+              </small>
+            </div>
+            <small style="color: #e24c4c;" class="ml-2" *ngIf="frmCauHoi.hasError('soLuongFileError')">
+              Vui lòng nhập số lượng file trong khoảng 1 đến 10
             </small>
           </div>
         </div>
       </div>
-
-      <div class="form-group">
-        <label for="tieuDe" class="col-form-label">Tiêu đề: <span style="color: red">*</span></label>
-
-        <input type="text" pInputText class="form-control" id="tieuDe" formControlName="tieuDe"
-          placeholder="Nhập tiêu đề câu hỏi" required />
-
-        <small *ngIf="!frmCauHoi.controls['tieuDe'].valid && frmCauHoi.controls['tieuDe'].dirty"
-          class="invalid-feedback">
-          Vui lòng nhập tiêu đề
-        </small>
-      </div>
-
-      <ng-container *ngIf="selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1'">
-        <div class="row">
-          <div class="col-md-6 d-flex align-items-center">
-            <div class="d-flex justify-content-start align-items-center">
-              <p-checkbox formControlName="isOther" [(ngModel)]="isOther" [binary]="true" inputId="isOther"
-                (change)="handlerChange($event)">
-              </p-checkbox>
-              <label for="isOther" class="mb-0 ml-2">Câu trả lời khác</label>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group" *ngIf="isOther">
-              <label for="labelCauTraLoi" class="col-form-label">label câu trả lời khác:</label>
-              <input type="text" pInputText class="form-control" formControlName="labelCauTraLoi" id="labelCauTraLoi"
-                placeholder="Nhập tiêu đề câu hỏi" />
-            </div>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="selectedLoaiCauHoi === '7'">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="soLuongFileToiDa" class="col-form-label">Số lượng file (Tối đa)</label>
-              <div>
-                <p-inputNumber class="w-100" styleClass="w-100" inputStyleClass="form-control" [allowEmpty]="false"
-                  formControlName="soLuongFileToiDa" [min]="1" [max]="10" [ngClass]="{
-                  'is-invalid':
-                    cauHoiForm.submitted && f('soLuongFileToiDa').errors
-                }" id="soLuongFileToiDa" placeholder="Nhập khích thước file">
-                </p-inputNumber>
-                <div *ngIf="
-                  cauHoiForm.submitted && f('soLuongFileToiDa').errors
-                " class="invalid-feedback">
-                  <small *ngIf="f('soLuongFileToiDa').errors?.['required']">
-                    Vui lòng nhập số lượng file
-                  </small>
-                </div>
-                <small style="color: #e24c4c;" class="ml-2" *ngIf="frmCauHoi.hasError('soLuongFileError')">
-                  Vui lòng nhập số lượng file trong khoảng 1 đến 10
-                </small>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <label for="kichThuocFile" class="col-form-label">Kích thước file (Tối đa)</label>
-            <div>
-              <p-inputNumber class="w-100" styleClass="w-100" inputStyleClass="form-control" [allowEmpty]="false"
-                formControlName="kichThuocFile" [min]="10" [max]="100" suffix=" MB" [ngClass]="{
+      <div class="col-md-6">
+        <label for="kichThuocFile" class="col-form-label">Kích thước file (Tối đa)</label>
+        <div>
+          <p-inputNumber class="w-100" styleClass="w-100" inputStyleClass="form-control" [allowEmpty]="false"
+                         formControlName="kichThuocFile" [min]="10" [max]="100" suffix=" MB" [ngClass]="{
                 'is-invalid':
                   cauHoiForm.submitted && f('kichThuocFile').errors
               }" id="kichThuocFile" placeholder="Số lượng file">
-              </p-inputNumber>
-              <div *ngIf="cauHoiForm.submitted && f('kichThuocFile').errors" class="invalid-feedback">
-                <small *ngIf="f('kichThuocFile').errors?.['required']">
-                  Vui lòng nhập kích thước file
-                </small>
-              </div>
-              <small style="color: #e24c4c;" class="ml-2" *ngIf="frmCauHoi.hasError('kichThuocFileError')">
-                Vui lòng nhập khích thước file trong khoảng 10 đến 100
-              </small>
-            </div>
+          </p-inputNumber>
+          <div *ngIf="cauHoiForm.submitted && f('kichThuocFile').errors" class="invalid-feedback">
+            <small *ngIf="f('kichThuocFile').errors?.['required']">
+              Vui lòng nhập kích thước file
+            </small>
           </div>
+          <small style="color: #e24c4c;" class="ml-2" *ngIf="frmCauHoi.hasError('kichThuocFileError')">
+            Vui lòng nhập khích thước file trong khoảng 10 đến 100
+          </small>
         </div>
-      </ng-container>
-
-      <div class="form-group">
-        <label for="noidung" class="col-form-label">Nội dung:</label>
-        <p-editor formControlName="noidung" [style]="{ height: '100px' }"></p-editor>
-        <!-- <small *ngIf="!frmCauHoi.controls['noidung'].valid && frmCauHoi.controls['noidung'].dirty"
-          class="invalid-feedback">
-          Vui lòng nhập nội dung
-        </small> -->
-
       </div>
+    </div>
+  </ng-container>
 
-      <div class="form-group" *ngIf="
+  <div class="form-group">
+    <label for="noidung" class="col-form-label">Nội dung:</label>
+    <p-editor formControlName="noidung" [style]="{ height: '100px' }"></p-editor>
+    <!-- <small *ngIf="!frmCauHoi.controls['noidung'].valid && frmCauHoi.controls['noidung'].dirty"
+                class="invalid-feedback">
+      Vui lòng nhập nội dung
+    </small> -->
+
+  </div>
+
+  <div class="form-group" *ngIf="
         selectedLoaiCauHoi !== '2' &&
         selectedLoaiCauHoi !== '3' &&
         selectedLoaiCauHoi !== '7'
       ">
-        <label class="col-form-label">
-          {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'Đáp án' : 'Cột' }}: <span style="color: red">*</span>
-        </label>
-        <button type="button" [ngClass]="selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'px-2' : 'px-3 mr-1'"
-          class="btn btn-add float-end custom-button mb-2" (click)="addItem()"> <i
-            class="pi pi-plus mr-2"></i>
-          Thêm {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'đáp án' : 'cột' }}
-        </button>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th style="width: 60px;text-align: center;">STT</th>
-              <th style="width: 9rem">Mã</th>
-              <th>Câu trả lời</th>
-              <th style="width: 120px; text-align: center;">Chức năng</th>
-            </tr>
-          </thead>
-          <tbody formArrayName="lstCot">
-            <tr *ngFor="let item of lstCot.controls; let i = index" [formGroupName]="i">
-              <td class="text-center vertical-align-middle">
-                {{ i + 1 }}
-                <input formControlName="id" type="hidden" />
-              </td>
-              <td>
-                <input formControlName="maCot" class="form-control" style="width: 100%" type="text" />
-              </td>
-              <td>
-                <input formControlName="noidung" class="form-control" style="width: 100%" type="text" />
-              </td>
-              <td class="text-center vertical-align-middle">
-                <div>
-                  <button class="ml-2 btn_plus" type="button" (click)="addItem()">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                  </button>
-                  <button class="ml-3 btn_delete" type="button" (click)="deleteItem(i)">
-                    <i class="pi pi-trash" aria-hidden="true"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <label class="col-form-label">
+      {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'Đáp án' : 'Cột' }}: <span style="color: red">*</span>
+    </label>
+    <button type="button" [ngClass]="selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'px-2' : 'px-3 mr-1'"
+            class="btn btn-add float-end custom-button mb-2" (click)="addItem()">
+      <i
+        class="pi pi-plus mr-2">
+      </i>
+      Thêm {{ selectedLoaiCauHoi === '0' || selectedLoaiCauHoi === '1' ? 'đáp án' : 'cột' }}
+    </button>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th style="width: 60px;text-align: center;">STT</th>
+        <th style="width: 9rem">Mã</th>
+        <th>Câu trả lời</th>
+        <th style="width: 120px; text-align: center;">Chức năng</th>
+      </tr>
+      </thead>
+      <tbody formArrayName="lstCot">
+      <tr *ngFor="let item of lstCot.controls; let i = index" [formGroupName]="i">
+        <td class="text-center vertical-align-middle">
+          {{ i + 1 }}
+          <input formControlName="id" type="hidden"/>
+        </td>
+        <td>
+          <input formControlName="maCot" class="form-control" style="width: 100%" type="text"/>
+        </td>
+        <td>
+          <input formControlName="noidung" class="form-control" style="width: 100%" type="text"/>
+        </td>
+        <td class="text-center vertical-align-middle">
+          <div>
+            <button class="ml-2 btn_plus" type="button" (click)="addItem()">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+            <button class="ml-3 btn_delete" type="button" (click)="deleteItem(i)">
+              <i class="pi pi-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 
-      <div class="form-group" *ngIf="
+  <div class="form-group" *ngIf="
         selectedLoaiCauHoi === '6' ||
         selectedLoaiCauHoi === '5' ||
         selectedLoaiCauHoi === '4'
       ">
-        <label class="col-form-label">Hàng: <span style="color: red">*</span></label>
-        <button type="button" class="btn btn-add float-end custom-button mb-3 px-3" (click)="addItem(false)"><i
-            class="pi pi-plus"></i>
-          Thêm hàng
-        </button>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th style="width: 60px;text-align: center;">STT</th>
-              <th style="width: 9rem">Mã</th>
-              <th>Câu trả lời</th>
-              <th style="width: 120px;text-align: center;">Chức năng</th>
-            </tr>
-          </thead>
-          <tbody formArrayName="lstHang">
-            <tr *ngFor="let item of lstHang.controls; let i = index" [formGroupName]="i">
-              <td class="text-center vertical-align-middle">
-                {{ i + 1 }}
-                <input formControlName="id" type="hidden" />
-              </td>
-              <td>
-                <input formControlName="maHang" class="form-control" style="width: 100%" type="text" />
-              </td>
-              <td>
-                <input formControlName="noidung" class="form-control" style="width: 100%" type="text" />
-              </td>
-              <td class="text-center vertical-align-middle">
-                <div>
-                  <button class="ml-2 btn_plus" type="button" (click)="addItem(false)">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                  </button>
-                  <button class="ml-3 btn_delete" type="button" (click)="deleteItem(i, false)">
-                    <i class="pi pi-trash" aria-hidden="true"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-      <input type="hidden" formControlName="id">
-      <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600 px-4"></button>
-      <button pButton [disabled]="!frmCauHoi.valid || (selectedLoaiCauHoi !== '2' && selectedLoaiCauHoi !== '3' && selectedLoaiCauHoi !== '7' && lstCot.length === 0 && lstHang.length === 0)" type="submit" icon="pi pi-save" label="Lưu"class="custom-button px-4"></button>
-    </ng-template>
-  </p-dialog>
+    <label class="col-form-label">Hàng: <span style="color: red">*</span></label>
+    <button type="button" class="btn btn-add float-end custom-button mb-3 px-3" (click)="addItem(false)">
+      <i
+        class="pi pi-plus">
+      </i>
+      Thêm hàng
+    </button>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th style="width: 60px;text-align: center;">STT</th>
+        <th style="width: 9rem">Mã</th>
+        <th>Câu trả lời</th>
+        <th style="width: 120px;text-align: center;">Chức năng</th>
+      </tr>
+      </thead>
+      <tbody formArrayName="lstHang">
+      <tr *ngFor="let item of lstHang.controls; let i = index" [formGroupName]="i">
+        <td class="text-center vertical-align-middle">
+          {{ i + 1 }}
+          <input formControlName="id" type="hidden"/>
+        </td>
+        <td>
+          <input formControlName="maHang" class="form-control" style="width: 100%" type="text"/>
+        </td>
+        <td>
+          <input formControlName="noidung" class="form-control" style="width: 100%" type="text"/>
+        </td>
+        <td class="text-center vertical-align-middle">
+          <div>
+            <button class="ml-2 btn_plus" type="button" (click)="addItem(false)">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+            <button class="ml-3 btn_delete" type="button" (click)="deleteItem(i, false)">
+              <i class="pi pi-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+<ng-template pTemplate="footer">
+  <input type="hidden" formControlName="id">
+  <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600 px-4"></button>
+  <button pButton [disabled]="!frmCauHoi.valid || (selectedLoaiCauHoi !== '2' && selectedLoaiCauHoi !== '3' && selectedLoaiCauHoi !== '7' && lstCot.length === 0 && lstHang.length === 0)" type="submit" icon="pi pi-save" label="Lưu"class="custom-button px-4"></button>
+</ng-template>
+</p-dialog>
 </form>

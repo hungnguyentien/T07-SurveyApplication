@@ -4,10 +4,10 @@
   </ng-template>
   <ng-template pTemplate="footer">
     <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
-      (click)="cd.reject()">
+            (click)="cd.reject()">
     </button>
     <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
-      label="Xóa" (click)="cd.accept()">
+            label="Xóa" (click)="cd.accept()">
     </button>
   </ng-template>
 </p-confirmDialog>
@@ -17,18 +17,18 @@
   <div class="d-flex mt-3">
     <div>
       <button (click)=" Add()" data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus"
-        label="Thêm mới" class="custom-button">
+              label="Thêm mới" class="custom-button">
       </button>
     </div>
     <div class="ml-3">
       <button pButton (click)=" Import()" data-toggle="modal" data-target="#importForm" type="button" icon="pi pi-file-import" label="Import" class="custom-button"
-        style="background-color: green;">
+              style="background-color: green;">
       </button>
     </div>
     <div class="ml-3">
       <button pButton type="button" icon="pi pi-trash" label="Xoá" class="custom-button"
-        (click)="confirmDeleteMultiple()" *ngIf="selectedObjectSurvey && selectedObjectSurvey.length > 0"
-        style="background-color: #ea5c5c;">
+              (click)="confirmDeleteMultiple()" *ngIf="selectedObjectSurvey && selectedObjectSurvey.length > 0"
+              style="background-color: #ea5c5c;">
       </button>
     </div>
   </div>
@@ -36,7 +36,7 @@
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
       <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord" (ngModelChange)="onSubmitSearch()"
-        [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+             [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá "/>
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
       <i class="pi pi-search"></i>
@@ -46,11 +46,11 @@
 
 <div class="card mt-3">
   <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
-    scrollHeight="calc(100vh - 396px)" [(selection)]="selectedObjectSurvey" dataKey="id"
-    styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
-    [resizableColumns]="true" currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi"
-    [filterDelay]="0">
+           scrollHeight="calc(100vh - 396px)" [(selection)]="selectedObjectSurvey" dataKey="id"
+           styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
+           [resizableColumns]="true" currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi"
+           [filterDelay]="0">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 40px;">
@@ -148,9 +148,9 @@
       <div class="modal-body">
         <p-fileUpload name="files[]" url="https://localhost:7270/api/PhieuKhaoSat/UploadFiles" (onUpload)="onUpload($event)" [multiple]="true" accept=".png, .jpeg, .jpg, .json, .xlsx" [maxFileSize]="10000000">
           <ng-template pTemplate="content">
-              <ul *ngIf="uploadedFiles.length">
-                  <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
-              </ul>
+            <ul *ngIf="uploadedFiles.length">
+              <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+            </ul>
           </ng-template>
         </p-fileUpload>
       </div>
@@ -162,7 +162,7 @@
 </form>
 
 <form *ngIf="FormObjectSurvey" [formGroup]="FormObjectSurvey" (ngSubmit)="Save()" method="POST"
-  class="card flex justify-content-center">
+      class="card flex justify-content-center">
   <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '77vw' }" [draggable]="false" [resizable]="false">
     <p-header>
       <h5 class="modal-title">{{ modalTitle }}</h5>
@@ -192,12 +192,17 @@
         </div>
         <div class="row">
           <div class="form-group col-md-6">
-            <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị: <span
-                style="color: red;">*</span></label>
+            <label for="loaihinhdonvi" class="col-form-label">
+              Loại hình đơn vị:
+              <span
+                style="color: red;">
+                *
+              </span>
+            </label>
             <p-dropdown id="loaicauhoi" [options]="listloaihinhdonvi" optionLabel="tenLoaiHinh" optionValue="id"
-              [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
-              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Chọn loại hình đơn vị --" formControlName="IdLoaiHinh">
+                        [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
+                        emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                        placeholder="-- Chọn loại hình đơn vị --" formControlName="IdLoaiHinh">
             </p-dropdown>
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['IdLoaiHinh'].valid && 
               FormObjectSurvey.controls['IdLoaiHinh'].dirty && !checkBtnDetail">
@@ -207,9 +212,9 @@
           <div class="form-group col-md-6">
             <label for="IdLinhVuc" class="col-form-label">Lĩnh vực hoạt động: </label>
             <p-dropdown id="IdLinhVuc" [options]="listlinhvuchoatdong" optionLabel="tenLinhVuc" optionValue="id"
-              [filter]="true" filterBy="tenLinhVuc" emptyMessage="Không có kết quả nào"
-              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Chọn Lĩnh vực hoạt động --" formControlName="IdLinhVuc">
+                        [filter]="true" filterBy="tenLinhVuc" emptyMessage="Không có kết quả nào"
+                        emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                        placeholder="-- Chọn Lĩnh vực hoạt động --" formControlName="IdLinhVuc">
             </p-dropdown>
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['IdLinhVuc'].valid && 
               FormObjectSurvey.controls['IdLinhVuc'].dirty && !checkBtnDetail">
@@ -230,12 +235,12 @@
             <label for="Email" class="col-form-label">Email: <span style="color: red;">*</span></label>
             <input formControlName="Email" type="text" pInputText class="form-control" id="Email">
             <small style="color: #e24c4c;" class="ml-2"
-              *ngIf="!FormObjectSurvey.controls['Email'].valid && FormObjectSurvey.controls['Email']?.errors?.['required'] && FormObjectSurvey.controls['Email'].dirty && !checkBtnDetail">
+                   *ngIf="!FormObjectSurvey.controls['Email'].valid && FormObjectSurvey.controls['Email']?.errors?.['required'] && FormObjectSurvey.controls['Email'].dirty && !checkBtnDetail">
               Vui lòng nhập email
             </small>
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['Email'].valid && FormObjectSurvey.controls['Email'].dirty &&
                FormObjectSurvey.controls['Email']?.errors?.['email'] && !checkBtnDetail">
-               Email không đúng định dạng
+              Email không đúng định dạng
             </small>
           </div>
           <div class="form-group col-md-6">
@@ -243,7 +248,7 @@
             <input formControlName="SoDienThoai" type="text" pInputText class="form-control" id="sdt">
 
             <small style="color: #e24c4c;" class="ml-2"
-              *ngIf="FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && !checkBtnDetail">
+                   *ngIf="FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && !checkBtnDetail">
               Vui lòng nhập Số điện thoại
             </small>
 
@@ -253,28 +258,28 @@
           <label class="col-form-label">Địa chỉ: <span style="color: red;">*</span></label>
           <div class="form-group col-md-3">
             <p-dropdown [options]="cities" [(ngModel)]="selectedTinh" optionLabel="name" optionValue="code"
-              [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
-              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Tỉnh thành phố --" formControlName="CodeTinhTp" (onChange)="onCityChange()">
+                        [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
+                        emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                        placeholder="-- Tỉnh thành phố --" formControlName="CodeTinhTp" (onChange)="onCityChange()">
             </p-dropdown>
           </div>
           <div class="form-group col-md-3">
             <p-dropdown [options]="districts" [(ngModel)]="selectedQuanHuyen" optionLabel="name" optionValue="code"
-              [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
-              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Quận huyện --" formControlName="CodeQuanHuyen" (onChange)="onDistrictChange()">
+                        [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
+                        emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                        placeholder="-- Quận huyện --" formControlName="CodeQuanHuyen" (onChange)="onDistrictChange()">
             </p-dropdown>
           </div>
           <div class="form-group col-md-3">
             <p-dropdown [options]="wards" [(ngModel)]="selectedPhuongXa" optionLabel="name" optionValue="code"
-              [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
-              emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-              placeholder="-- Phường xã --" formControlName="CodeXaPhuong">
+                        [filter]="true" filterBy="name" emptyMessage="Không có kết quả nào"
+                        emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                        placeholder="-- Phường xã --" formControlName="CodeXaPhuong">
             </p-dropdown>
           </div>
           <div class="form-group col-md-3">
             <input type="text" formControlName="DiaChi" class="form-control" pInputText id="sdt"
-              placeholder="Nhập địa chỉ chi tiết">
+                   placeholder="Nhập địa chỉ chi tiết">
             <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormObjectSurvey.controls['DiaChi'].valid && 
                 FormObjectSurvey.controls['DiaChi'].dirty && !checkBtnDetail">
               Vui lòng nhập Địa chỉ
@@ -319,7 +324,7 @@
             <input formControlName="SoDienThoai" pInputText type="text" class="form-control" id="sdt">
 
             <small style="color: #e24c4c;" class="ml-2"
-              *ngIf="!FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && !checkBtnDetail">
+                   *ngIf="!FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && FormObjectSurvey.controls['SoDienThoai'].hasError('pattern') && !checkBtnDetail">
               Vui lòng nhập Số điện thoại
             </small>
           </div>
@@ -333,7 +338,8 @@
     <p-footer>
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
       <button pButton *ngIf="!checkBtnDetail" [disabled]="!FormObjectSurvey.valid && !FormRepresentative.valid"
-        type="submit" icon="pi pi-save" label="Lưu" class="custom-button"></button>
+              type="submit" icon="pi pi-save" label="Lưu" class="custom-button">
+      </button>
     </p-footer>
   </p-dialog>
 </form>

@@ -30,7 +30,8 @@ public class INguoiDaiDienDtoValidator : AbstractValidator<INguoiDaiDienDto>
             .NotNull()
             .MustAsync(async (model, token) =>
             {
-                var emailExists = await _NguoiDaiDienRepository.Exists(x => x.Email == model.Email && x.Id != model.Id && !x.Deleted);
+                var emailExists =
+                    await _NguoiDaiDienRepository.Exists(x => x.Email == model.Email && x.Id != model.Id && !x.Deleted);
                 return !emailExists;
             }).WithMessage("Email người đại diện đã tồn tại!");
 

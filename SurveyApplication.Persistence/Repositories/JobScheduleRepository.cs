@@ -1,18 +1,12 @@
-﻿using SurveyApplication.Domain.Interfaces.Persistence;
-using SurveyApplication.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SurveyApplication.Domain;
+using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Persistence.Repositories
+namespace SurveyApplication.Persistence.Repositories;
+
+public class JobScheduleRepository : GenericRepository<JobSchedule>, IJobScheduleRepository
 {
-    public class JobScheduleRepository : GenericRepository<JobSchedule>, IJobScheduleRepository
+    public JobScheduleRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
     {
-        public JobScheduleRepository(SurveyApplicationDbContext dbContext) : base(dbContext)
-        {
-            DbContext = dbContext;
-        }
+        DbContext = dbContext;
     }
 }

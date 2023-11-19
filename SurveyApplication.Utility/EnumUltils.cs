@@ -40,7 +40,9 @@ namespace SurveyApplication.Utility
             var enumType = typeof(T);
             return Enum.GetValues(typeof(T))
                 .Cast<object>()
-                .ToDictionary(k => (int)k, v => enumType.GetMember(v.ToString() ?? string.Empty).FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? v.ToString());
+                .ToDictionary(k => (int)k,
+                    v => enumType.GetMember(v.ToString() ?? string.Empty).FirstOrDefault()
+                        ?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? v.ToString());
         }
     }
 }

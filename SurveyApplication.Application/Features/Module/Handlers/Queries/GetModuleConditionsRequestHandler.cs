@@ -21,7 +21,9 @@ public class GetModuleConditionsRequestHandler : BaseMasterFeatures,
     public async Task<BaseQuerieResponse<ModuleDto>> Handle(GetModuleConditionsRequest request,
         CancellationToken cancellationToken)
     {
-        var Modules = await _surveyRepo.Module.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize, x => (string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.Name) && x.Name.Contains(request.Keyword)) && x.Deleted == false, "");
+        var Modules = await _surveyRepo.Module.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize,
+            x => (string.IsNullOrEmpty(request.Keyword) ||
+                  (!string.IsNullOrEmpty(x.Name) && x.Name.Contains(request.Keyword))) && x.Deleted == false, "");
         var result = _mapper.Map<List<ModuleDto>>(Modules);
         return new BaseQuerieResponse<ModuleDto>
         {

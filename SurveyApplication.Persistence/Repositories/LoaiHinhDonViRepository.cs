@@ -15,13 +15,15 @@ public class LoaiHinhDonViRepository : GenericRepository<LoaiHinhDonVi>, ILoaiHi
 
     public async Task<bool> ExistsByMaLoaiHinh(string MaLoaiHinh)
     {
-        var entity = await _dbContext.LoaiHinhDonVi.AsNoTracking().FirstOrDefaultAsync(x => x.MaLoaiHinh == MaLoaiHinh && !x.Deleted);
+        var entity = await _dbContext.LoaiHinhDonVi.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.MaLoaiHinh == MaLoaiHinh && !x.Deleted);
         return entity != null;
     }
 
     public async Task<bool> ExistsByName(string tenLoaiHinh)
     {
-        var entity = await _dbContext.LoaiHinhDonVi.AsNoTracking().FirstOrDefaultAsync(x => x.TenLoaiHinh == tenLoaiHinh && !x.Deleted);
+        var entity = await _dbContext.LoaiHinhDonVi.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.TenLoaiHinh == tenLoaiHinh && !x.Deleted);
         return entity != null;
     }
 }

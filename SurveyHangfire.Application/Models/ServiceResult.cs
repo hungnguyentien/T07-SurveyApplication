@@ -1,67 +1,70 @@
 ﻿using Hangfire.Application.Constants;
 
-namespace Hangfire.Application.Models
+namespace Hangfire.Application.Models;
+
+public class ServiceResult
 {
-    public class ServiceResult
+    public string Code { get; set; }
+    public string Message { get; set; }
+    public object Data { get; set; }
+}
+
+public class ServiceResultSuccess : ServiceResult
+{
+    public ServiceResultSuccess()
     {
-        public string Code { get; set; }
-        public string Message { get; set; }
-        public object Data { get; set; }
+        Code = CommonConst.Success;
     }
 
-    public class ServiceResultSuccess : ServiceResult
+    public ServiceResultSuccess(string msg)
     {
-        public ServiceResultSuccess()
-        {
-            Code = CommonConst.Success;
-        }
-        public ServiceResultSuccess(string msg)
-        {
-            Code = CommonConst.Success;
-            Message = msg;
-        }
-        public ServiceResultSuccess(string msg, object data)
-        {
-            Code = CommonConst.Success;
-            Message = msg;
-            Data = data;
-        }
-        public ServiceResultSuccess(object data)
-        {
-            Code = CommonConst.Success;
-            Data = data;
-        }
+        Code = CommonConst.Success;
+        Message = msg;
     }
 
-    public class ServiceResultError : ServiceResult
+    public ServiceResultSuccess(string msg, object data)
     {
-        public ServiceResultError()
-        {
-            Code = CommonConst.Error;
-        }
-        public ServiceResultError(string msg)
-        {
-            Code = CommonConst.Error;
-            Message = msg;
-        }
+        Code = CommonConst.Success;
+        Message = msg;
+        Data = data;
+    }
 
-        /// <summary>
-        /// Show error inline
-        /// </summary>
-        /// <param name="msg"></param>
-        /// <param name="field"></param>
-        public ServiceResultError(string msg, string field)
-        {
-            Code = CommonConst.Error;
-            Message = msg;
-            Data = new[] { new { Field = field, Mss = msg } };
-        }
+    public ServiceResultSuccess(object data)
+    {
+        Code = CommonConst.Success;
+        Data = data;
+    }
+}
 
-        public ServiceResultError(string msg, object data)
-        {
-            Code = CommonConst.Error;
-            Message = msg;
-            Data = data;
-        }
+public class ServiceResultError : ServiceResult
+{
+    public ServiceResultError()
+    {
+        Code = CommonConst.Error;
+    }
+
+    public ServiceResultError(string msg)
+    {
+        Code = CommonConst.Error;
+        Message = msg;
+    }
+
+    /// <summary>
+    ///     Show error inline
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="field"></param>
+    public ServiceResultError(string msg, string field)
+    {
+        Code = CommonConst.Error;
+        Message = msg;
+        Data = new[] { new { Field = field, Mss = msg } };
+    }
+
+    public ServiceResultError(string msg, object data)
+    {
+        Code = CommonConst.Error;
+        Message = msg;
+        Data = data;
     }
 }

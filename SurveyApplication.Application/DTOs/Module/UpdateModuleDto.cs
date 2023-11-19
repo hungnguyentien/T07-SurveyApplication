@@ -1,5 +1,4 @@
 ﻿using SurveyApplication.Application.DTOs.Common;
-using System.ComponentModel.DataAnnotations;
 
 namespace SurveyApplication.Application.DTOs.Module;
 

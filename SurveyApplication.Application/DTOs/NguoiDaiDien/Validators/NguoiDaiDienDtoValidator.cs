@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.NguoiDaiDien.Validators;
 

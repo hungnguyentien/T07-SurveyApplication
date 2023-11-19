@@ -1,241 +1,252 @@
 <p-confirmDialog #cd [style]="{ width: '30vw' }">
-    <ng-template pTemplate="header">
-        <h3>Xác nhận xoá tài khoản</h3>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
+  <ng-template pTemplate="header">
+    <h3>Xác nhận xoá tài khoản</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
             (click)="cd.reject()">
-        </button>
-        <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
+    </button>
+    <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
             label="Xóa" (click)="cd.accept()">
-        </button>
-    </ng-template>
+    </button>
+  </ng-template>
 </p-confirmDialog>
 
 <div>
-    <h5>Danh sách tài khoản</h5>
-    <div class="d-flex mt-3">
-        <div>
-            <button pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"
-                (click)="createDialog()">
-            </button>
-        </div>
-        <div class="ml-3">
-            <button *ngIf="selectedAccount && selectedAccount.length > 0" pButton type="button"
-                (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
-                style="background-color: #ea5c5c">
-            </button>
-        </div>
+  <h5>Danh sách tài khoản</h5>
+  <div class="d-flex mt-3">
+    <div>
+      <button pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button"
+              (click)="createDialog()">
+      </button>
     </div>
-    <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
-        <div class="form-group mb-2">
-            <label for="keyWord" class="sr-only">Search</label>
-            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
-                [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
-        </div>
-        <button type="submit" class="btn btn-primary ml-2 mb-2">
-            <i class="pi pi-search"></i>
-        </button>
-    </form>
+    <div class="ml-3">
+      <button *ngIf="selectedAccount && selectedAccount.length > 0" pButton type="button"
+              (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá" class="custom-button"
+              style="background-color: #ea5c5c">
+      </button>
+    </div>
+  </div>
+  <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
+    <div class="form-group mb-2">
+      <label for="keyWord" class="sr-only">Search</label>
+      <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+             [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá "/>
+    </div>
+    <button type="submit" class="btn btn-primary ml-2 mb-2">
+      <i class="pi pi-search"></i>
+    </button>
+  </form>
 </div>
 
 <div class="card mt-3">
-    <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
-        [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedAccount" dataKey="id"
-        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
-        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
-        [totalRecords]="dataTotalRecords"
-        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
-        [resizableColumns]="true">
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 40px;">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                  </th>
-                <th style="width: 60px;text-align: center;">
-                    STT
-                </th>
-                <th pResizableColumn>
-                    Tài khoản
-                </th>
-                <th pResizableColumn>
-                    Tên
-                </th>
-                <th pResizableColumn>
-                    Email
-                </th>
-                <th pResizableColumn>
-                    Địa chỉ
-                </th>
-                <th style="width: 120px;text-align: center;">
-                    <div>
-                        Chức năng
-                    </div>
-                </th>
+  <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
+           [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedAccount" dataKey="id"
+           styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+           [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+           [totalRecords]="dataTotalRecords"
+           currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+           [resizableColumns]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 40px;">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th style="width: 60px;text-align: center;">
+          STT
+        </th>
+        <th pResizableColumn>
+          Tài khoản
+        </th>
+        <th pResizableColumn>
+          Tên
+        </th>
+        <th pResizableColumn>
+          Email
+        </th>
+        <th pResizableColumn>
+          Địa chỉ
+        </th>
+        <th style="width: 120px;text-align: center;">
+          <div>
+            Chức năng
+          </div>
+        </th>
 
-            </tr>
-        </ng-template>
+      </tr>
+    </ng-template>
 
-        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-            <tr class="p-selectable-row">
-                <td>
-                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                </td>
-                <td class="vertical-align-middle text-center">
-                    <span class="p-column-title">STT</span>
-                    {{ rowIndex + 1}}
-                </td>
-                <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.userName }}</span>
-                </td>
-                <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.name }}</span>
-                </td>
-                <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.email }}</span>
-                </td>
-                <td>
-                    <span class="ml-1 vertical-align-middle">{{ rowData.address }}</span>
-                </td>
-                <td>
-                    <a class="m-3"><span (click)="updateDialog(rowData)" class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span></a>
-                    <a class="m-3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)"   style="color: red;"
-                        aria-hidden="true"></span></a>
-                </td>
-            </tr>
-        </ng-template>
+    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+      <tr class="p-selectable-row">
+        <td>
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </td>
+        <td class="vertical-align-middle text-center">
+          <span class="p-column-title">STT</span>
+          {{ rowIndex + 1}}
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle">{{ rowData.userName }}</span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle">{{ rowData.name }}</span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle">{{ rowData.email }}</span>
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle">{{ rowData.address }}</span>
+        </td>
+        <td>
+          <a class="m-3">
+            <span (click)="updateDialog(rowData)" class="pi pi-pencil" title="Cập nhật" aria-hidden="true"></span>
+          </a>
+          <a class="m-3">
+            <span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;"
+                  aria-hidden="true">
+            </span>
+          </a>
+        </td>
+      </tr>
+    </ng-template>
 
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="6" class="text-center">Không có bản ghi nào</td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6" class="text-center">Không có bản ghi nào</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
 
 
 <form *ngIf="frmAccount" #accountForm="ngForm" [formGroup]="frmAccount" (ngSubmit)="onSubmit(accountForm)">
-    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"[dynamic]="true"
-        [resizable]="true" [maximizable]="true">
-        <ng-template pTemplate="header">
-            <h5 class="modal-title">
-                {{ isCreate === true ? "Thêm mới tài khoản" : "Cập nhật tài khoản" }}
-            </h5>
-        </ng-template>
-        <ng-template pTemplate="body">
-            <div class="row">
-                <div class="form-group col-md-6"*ngIf="isCreate">
-                    <label for="userName" class="col-form-label">Tài khoản: <span style="color: red">*</span></label>
-                    <input type="text" pInputText class="form-control" id="userName" formControlName="userName"
-                        [ngClass]="{ 'is-invalid': submitted && f('userName').errors }" />
-                    <small style="color: #e24c4c;" class="ml-2"
-                        *ngIf="!frmAccount.controls['userName'].valid && frmAccount.controls['userName'].dirty && f('userName').errors?.['required']">
-                        Vui lòng nhập tên tài khoản
-                    </small>
-                    <small style="color: #e24c4c;" class="ml-2"
-                        *ngIf="!frmAccount.controls['userName'].valid && frmAccount.controls['userName'].dirty && f('userName').errors?.['minlength']">
-                        Tên tài khoản ít nhất phải có {{f('userName').errors?.['minlength'].requiredLength}}
-                    </small>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="email" class="col-form-label">Email: <span style="color: red">*</span></label>
-                    <input type="text" pInputText class="form-control" id="email" formControlName="email"
-                        [ngClass]="{ 'is-invalid': submitted && f('email').errors }" />
-                    <small style="color: #e24c4c;" class="ml-2"
-                        *ngIf="!frmAccount.controls['email'].valid && frmAccount.controls['email'].dirty && f('email').errors?.['required']">
-                        Vui lòng nhập email
-                    </small>
-                    <small style="color: #e24c4c;" class="ml-2"
-                        *ngIf="!frmAccount.controls['email'].valid && frmAccount.controls['email'].dirty && f('email').errors?.['email']">
-                        Email không đúng định dạng
-                    </small>
-                </div>
-            </div>
-            <div class="row" *ngIf="isCreate">
-                <div class="form-group col-md-6">
-                    <label for="password" class="col-form-label">Mật khẩu: <span style="color: red">*</span></label>
-                    <!-- <div class="">
-                        <p-password formControlName="password" id="password" [toggleMask]="true"
-                            [ngClass]="{ 'is-invalid': submitted && f('password').errors }"
-                            [feedback]="false"></p-password>
-                    </div> -->
-                    <input type="text" pInputText class="form-control" id="password" formControlName="password"
-                        [ngClass]="{ 'is-invalid': submitted && f('password').errors }" />
-                    <small style="color: #e24c4c;" class="ml-2"
-                        *ngIf="!frmAccount.controls['password'].valid && frmAccount.controls['password'].dirty">
-                        Vui lòng nhập mật khẩu
-                    </small>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="passwordConfirmed" class="col-form-label">Nhập lại mật khẩu:</label>
-                    <!-- <div class="">
-                        <p-password formControlName="passwordConfirmed" id="passwordConfirmed" [toggleMask]="true"
-                            [ngClass]="{ 'is-invalid': submitted && f('passwordConfirmed').errors }"
-                            [feedback]="false"></p-password>
-                    </div> -->
-                    <input type="text" pInputText class="form-control" id="passwordConfirmed"
-                        formControlName="passwordConfirmed"
-                        [ngClass]="{ 'is-invalid': submitted && f('passwordConfirmed').errors }" />
-                    <small style="color: #e24c4c;" class="ml-2"
-                        *ngIf="frmAccount.controls['email'].dirty && frmAccount.hasError('notSame')">
-                        Mật khẩu không phù hợp
-                    </small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-9">
-                    <label for="lstRoleName" class="col-form-label">Nhóm quyền:</label>
-                    <p-multiSelect [options]="lstRole" [(ngModel)]="selectedRole"  defaultLabel="-- Chọn nhóm quyền --"
-                    [filter]="true"  appendTo="body" optionLabel="name"  display="chip" id="lstRoleName"
-                        emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
-                        [ngModelOptions]="{standalone: true}" class="form-select-custom"></p-multiSelect>
-                </div>
-                <div class="form-group col-md-3" style="margin-top: 36px;">
-                    <button pButton type="button" icon="pi pi-plus" label="Thêm quyền"  (click)="addRole()" class="custom-button"   ></button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="name" class="col-form-label">Tên:</label>
-                    <input type="text" pInputText class="form-control" id="name" formControlName="name" />
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="address" class="col-form-label">Địa chỉ:</label>
-                    <input type="text" pInputText class="form-control" id="address" formControlName="address" />
-                </div>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <input type="hidden" formControlName="id">
-            <button pButton (click)="visible = false" type="button" label="Đóng"
-                class="custom-button surface-600"></button>
-            <button pButton   type="submit" icon="pi pi-save" label="Lưu"
-                class="custom-button"></button>
-        </ng-template>
-    </p-dialog>
+  <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"[dynamic]="true"
+            [resizable]="true" [maximizable]="true">
+    <ng-template pTemplate="header">
+      <h5 class="modal-title">
+        {{ isCreate === true ? "Thêm mới tài khoản" : "Cập nhật tài khoản" }}
+      </h5>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <div class="row">
+        <div class="form-group col-md-6"*ngIf="isCreate">
+          <label for="userName" class="col-form-label">Tài khoản: <span style="color: red">*</span></label>
+          <input type="text" pInputText class="form-control" id="userName" formControlName="userName"
+                 [ngClass]="{ 'is-invalid': submitted && f('userName').errors }"/>
+          <small style="color: #e24c4c;" class="ml-2"
+                 *ngIf="!frmAccount.controls['userName'].valid && frmAccount.controls['userName'].dirty && f('userName').errors?.['required']">
+            Vui lòng nhập tên tài khoản
+          </small>
+          <small style="color: #e24c4c;" class="ml-2"
+                 *ngIf="!frmAccount.controls['userName'].valid && frmAccount.controls['userName'].dirty && f('userName').errors?.['minlength']">
+            Tên tài khoản ít nhất phải có {{f('userName').errors?.['minlength'].requiredLength}}
+          </small>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="email" class="col-form-label">Email: <span style="color: red">*</span></label>
+          <input type="text" pInputText class="form-control" id="email" formControlName="email"
+                 [ngClass]="{ 'is-invalid': submitted && f('email').errors }"/>
+          <small style="color: #e24c4c;" class="ml-2"
+                 *ngIf="!frmAccount.controls['email'].valid && frmAccount.controls['email'].dirty && f('email').errors?.['required']">
+            Vui lòng nhập email
+          </small>
+          <small style="color: #e24c4c;" class="ml-2"
+                 *ngIf="!frmAccount.controls['email'].valid && frmAccount.controls['email'].dirty && f('email').errors?.['email']">
+            Email không đúng định dạng
+          </small>
+        </div>
+      </div>
+      <div class="row" *ngIf="isCreate">
+        <div class="form-group col-md-6">
+          <label for="password" class="col-form-label">Mật khẩu: <span style="color: red">*</span></label>
+          <!-- <div class="">
+            <p-password formControlName="password" id="password" [toggleMask]="true"
+                        [ngClass]="{ 'is-invalid': submitted && f('password').errors }"
+                        [feedback]="false"></p-password>
+          </div> -->
+          <input type="text" pInputText class="form-control" id="password" formControlName="password"
+                 [ngClass]="{ 'is-invalid': submitted && f('password').errors }"/>
+          <small style="color: #e24c4c;" class="ml-2"
+                 *ngIf="!frmAccount.controls['password'].valid && frmAccount.controls['password'].dirty">
+            Vui lòng nhập mật khẩu
+          </small>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="passwordConfirmed" class="col-form-label">Nhập lại mật khẩu:</label>
+          <!-- <div class="">
+            <p-password formControlName="passwordConfirmed" id="passwordConfirmed" [toggleMask]="true"
+                        [ngClass]="{ 'is-invalid': submitted && f('passwordConfirmed').errors }"
+                        [feedback]="false"></p-password>
+          </div> -->
+          <input type="text" pInputText class="form-control" id="passwordConfirmed"
+                 formControlName="passwordConfirmed"
+                 [ngClass]="{ 'is-invalid': submitted && f('passwordConfirmed').errors }"/>
+          <small style="color: #e24c4c;" class="ml-2"
+                 *ngIf="frmAccount.controls['email'].dirty && frmAccount.hasError('notSame')">
+            Mật khẩu không phù hợp
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-9">
+          <label for="lstRoleName" class="col-form-label">Nhóm quyền:</label>
+          <p-multiSelect [options]="lstRole" [(ngModel)]="selectedRole" defaultLabel="-- Chọn nhóm quyền --"
+                         [filter]="true" appendTo="body" optionLabel="name" display="chip" id="lstRoleName"
+                         emptyMessage="Không có kết quả nào" emptyFilterMessage="Không tìm thấy kết quả"
+                         [ngModelOptions]="{standalone: true}" class="form-select-custom">
+          </p-multiSelect>
+        </div>
+        <div class="form-group col-md-3" style="margin-top: 36px;">
+          <button pButton type="button" icon="pi pi-plus" label="Thêm quyền" (click)="addRole()" class="custom-button"></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="name" class="col-form-label">Tên:</label>
+          <input type="text" pInputText class="form-control" id="name" formControlName="name"/>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="address" class="col-form-label">Địa chỉ:</label>
+          <input type="text" pInputText class="form-control" id="address" formControlName="address"/>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <input type="hidden" formControlName="id">
+      <button pButton (click)="visible = false" type="button" label="Đóng"
+              class="custom-button surface-600">
+      </button>
+      <button pButton type="submit" icon="pi pi-save" label="Lưu"
+              class="custom-button">
+      </button>
+    </ng-template>
+  </p-dialog>
 </form>
 
 
 <!-- form quyền -->
 <form (ngSubmit)="createSubmitRole($event)">
-    <p-dialog [(visible)]="visibleRole" [style]="{ width: '30vw' }">
-        <ng-template pTemplate="header">
-            <h5 class="modal-title">
-              Chọn thêm quyền
-            </h5>
-        </ng-template>
-        <ng-template pTemplate="body">
-            <div class="row">
-                <p-tree [value]="treeData" [value]="" selectionMode="checkbox" class="w-full"
-                    [(selection)]="selectedTreeData"></p-tree>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <input type="hidden" formControlName="id">
-            <button pButton (click)="visibleRole = false" type="button" label="Đóng"
-                class="custom-button surface-600" ></button>
-            <button pButton type="submit" icon="pi pi-save" label="Lưu"
-                class="custom-button"  ></button>
-        </ng-template>
-    </p-dialog>
+  <p-dialog [(visible)]="visibleRole" [style]="{ width: '30vw' }">
+    <ng-template pTemplate="header">
+      <h5 class="modal-title">
+        Chọn thêm quyền
+      </h5>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <div class="row">
+        <p-tree [value]="treeData" [value]="" selectionMode="checkbox" class="w-full"
+                [(selection)]="selectedTreeData">
+        </p-tree>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <input type="hidden" formControlName="id">
+      <button pButton (click)="visibleRole = false" type="button" label="Đóng"
+              class="custom-button surface-600">
+      </button>
+      <button pButton type="submit" icon="pi pi-save" label="Lưu"
+              class="custom-button">
+      </button>
+    </ng-template>
+  </p-dialog>
 </form>

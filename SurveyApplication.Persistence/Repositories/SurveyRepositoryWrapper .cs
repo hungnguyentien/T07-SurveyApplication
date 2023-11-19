@@ -4,6 +4,12 @@ namespace SurveyApplication.Persistence.Repositories;
 
 public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
 {
+    //RenderHere
+    public async Task SaveAync()
+    {
+        await _repoContext.SaveChangesAsync();
+    }
+
     #region Ctor
 
     private readonly SurveyApplicationDbContext _repoContext;
@@ -84,16 +90,12 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IModuleRepository Module => _moduleRepository ??= new ModuleRepository(_repoContext);
 
     public IReleaseHistoryRepository _releaseHistoryRepository;
-    public IReleaseHistoryRepository ReleaseHistory => _releaseHistoryRepository ??= new ReleaseHistoryRepository(_repoContext);
+
+    public IReleaseHistoryRepository ReleaseHistory =>
+        _releaseHistoryRepository ??= new ReleaseHistoryRepository(_repoContext);
 
     public IStgFileRepository _stgFileRepository;
     public IStgFileRepository StgFile => _stgFileRepository ??= new StgFileRepository(_repoContext);
 
     #endregion
-
-    //RenderHere
-    public async Task SaveAync()
-    {
-        await _repoContext.SaveChangesAsync();
-    }
 }

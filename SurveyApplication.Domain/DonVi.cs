@@ -5,7 +5,7 @@ namespace SurveyApplication.Domain;
 
 public class DonVi : BaseDomainEntity
 {
-    [Required][MaxLength(250)] public string MaDonVi { get; set; }
+    [Required] [MaxLength(250)] public string MaDonVi { get; set; }
 
     public int? IdLoaiHinh { get; set; }
 
@@ -17,8 +17,7 @@ public class DonVi : BaseDomainEntity
 
     public int IdXaPhuong { get; set; }
 
-    [Required]
-    public string TenDonVi { get; set; }
+    [Required] public string TenDonVi { get; set; }
 
     public string? DiaChi { get; set; }
 

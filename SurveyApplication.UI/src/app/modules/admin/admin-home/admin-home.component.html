@@ -7,7 +7,8 @@
       </div>
       <div class="col-8">
         <p-calendar formControlName="NgayBatDau" value="valueNgayBatDau" id="ngayBatDau" dateFormat="dd/mm/yy"
-          [showIcon]="true" class="input-date-custom"></p-calendar>
+                    [showIcon]="true" class="input-date-custom">
+        </p-calendar>
       </div>
     </div>
     <div class="form-group form-inline col-3 my-0">
@@ -16,15 +17,16 @@
       </div>
       <div class="col-8">
         <p-calendar formControlName="NgayKetThuc" value="valueNgayKetThuc" id="ngayKetThuc" dateFormat="dd/mm/yy"
-          [showIcon]="true" class="input-date-custom"></p-calendar>
+                    [showIcon]="true" class="input-date-custom">
+        </p-calendar>
       </div>
     </div>
     <div class="form-group form-inline col-4 my-0">
       <button pButton type="submit" icon="pi pi-search" label="Tìm Kiếm" class="btn btn-primary custom-button ml-3"
-        style="padding: 9.25px 20px;">
+              style="padding: 9.25px 20px;">
       </button>
       <button pButton type="button" icon="pi pi-refresh" label="Cài lại" (click)="reset()"
-        class="btn btn-primary custom-button ml-3" style="padding: 9.25px 20px;">
+              class="btn btn-primary custom-button ml-3" style="padding: 9.25px 20px;">
       </button>
     </div>
   </form>
@@ -85,7 +87,8 @@
   <div class="card mt-3">
     <div class="row">
       <div class="col-md-12">
-        <h6 class="flex mt-4 mb-4 ml-4">Số đơn vị tham gia khảo sát theo Tỉnh/Thành phố
+        <h6 class="flex mt-4 mb-4 ml-4">
+          Số đơn vị tham gia khảo sát theo Tỉnh/Thành phố
           <span class="ml-4">
             <!-- <a class="text-primary" (click)="handlerClick('admin/thong-ke-khao-sat')"><i class="pi pi-eye"></i>Xem
               thêm</a> -->
@@ -100,14 +103,14 @@
 
 </div>
 <p-dialog header=" h5" [(visible)]="visibleDetail" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
-  [resizable]="true" [maximizable]="true">
+          [resizable]="true" [maximizable]="true">
   <ng-template pTemplate="header">
     <h5 class="modal-title">
       {{title}}
     </h5>
   </ng-template>
   <p-table [value]="datas" styleClass="p-datatable-striped" [rows]="5" [showCurrentPageReport]="true"
-    [tableStyle]="{ 'min-width': '50rem' }">
+           [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th>STT</th>
@@ -127,11 +130,10 @@
   <ng-template pTemplate="footer">
     <input type="hidden" formControlName="id">
     <button pButton (click)="visibleDetail = false" type="button" label="Đóng"
-      class="custom-button surface-600"></button>
+            class="custom-button surface-600">
+    </button>
 
   </ng-template>
-
-
 
 
 </p-dialog>

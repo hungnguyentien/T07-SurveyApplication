@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Hangfire.Application.Interfaces
+namespace Hangfire.Application.Interfaces;
+
+public interface IClientServices
 {
-    public interface IClientServices
-    {
-        Task<bool> RecurringJobAsync(string service, string apiUrl);
-    }
+    Task<bool> RecurringJobAsync(string service, string apiUrl);
 }

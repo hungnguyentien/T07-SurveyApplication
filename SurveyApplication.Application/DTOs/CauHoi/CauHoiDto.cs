@@ -46,8 +46,8 @@ public class CauHoiDto : BaseDto
     public string Noidung { get; set; }
 
     [NotMapped] public bool? BatBuoc { get; set; }
-    [NotMapped]
-    public string PanelTitle { get; set; } = "";
+
+    [NotMapped] public string PanelTitle { get; set; } = "";
 
     [NotMapped] public List<CotDto>? LstCot { get; set; }
 

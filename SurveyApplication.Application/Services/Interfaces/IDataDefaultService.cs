@@ -1,7 +1,6 @@
-﻿namespace SurveyApplication.Application.Services.Interfaces
+﻿namespace SurveyApplication.Application.Services.Interfaces;
+
+public interface IDataDefaultService
 {
-    public interface IDataDefaultService
-    {
-        Task DataAdmin();
-    }
+    Task DataAdmin();
 }

@@ -27,4 +27,3 @@ namespace SurveyApplication.Utility.Enums
         }
     }
 }
-

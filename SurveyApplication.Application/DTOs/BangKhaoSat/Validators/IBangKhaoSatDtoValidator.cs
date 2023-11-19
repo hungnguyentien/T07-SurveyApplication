@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
 
@@ -25,7 +24,8 @@ public class IBangKhaoSatDtoValidator : AbstractValidator<IBangKhaoSatDto>
             .NotNull()
             .MustAsync(async (model, token) =>
             {
-                var nameExists = await _bangKhaoSatRepository.Exists(x => x.TenBangKhaoSat == model.TenBangKhaoSat && x.MaBangKhaoSat != model.MaBangKhaoSat && !x.Deleted);
+                var nameExists = await _bangKhaoSatRepository.Exists(x =>
+                    x.TenBangKhaoSat == model.TenBangKhaoSat && x.MaBangKhaoSat != model.MaBangKhaoSat && !x.Deleted);
                 return !nameExists;
             }).WithMessage("Tên bảng khảo sát đã tồn tại!");
 

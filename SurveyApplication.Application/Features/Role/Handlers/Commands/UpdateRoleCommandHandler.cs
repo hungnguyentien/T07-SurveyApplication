@@ -1,54 +1,44 @@
-﻿using MediatR;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.Features.Role.Requests.Commands;
-using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using SurveyApplication.Utility.Constants;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SurveyApplication.Application.Features.Role.Handlers.Commands
+namespace SurveyApplication.Application.Features.Role.Handlers.Commands;
+
+public class UpdateRoleCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateRoleCommand, BaseCommandResponse>
 {
-    public class UpdateRoleCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateRoleCommand, BaseCommandResponse>
-    {
-        private readonly RoleManager<Domain.Role> _roleManager;
+    private readonly RoleManager<Domain.Role> _roleManager;
 
-        public UpdateRoleCommandHandler(ISurveyRepositoryWrapper surveyRepository, RoleManager<Domain.Role> roleManager) : base(
+    public UpdateRoleCommandHandler(ISurveyRepositoryWrapper surveyRepository, RoleManager<Domain.Role> roleManager) :
+        base(
             surveyRepository)
+    {
+        _roleManager = roleManager;
+    }
+
+    public async Task<BaseCommandResponse> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
+    {
+        var role = await _roleManager.FindByIdAsync(request.UpdateRoleDto.Id);
+
+        if (role != null)
         {
-            _roleManager = roleManager;
+            // Lấy danh sách quyền cũ của vai trò
+            var existingClaims = await _roleManager.GetClaimsAsync(role);
+
+            // Xóa tất cả các quyền cũ
+            foreach (var claim in existingClaims) await _roleManager.RemoveClaimAsync(role, claim);
+
+            // Thêm các quyền mới
+            foreach (var claimModule in request.UpdateRoleDto.MatrixPermission)
+                await _roleManager.AddClaimAsync(role,
+                    new Claim(claimModule.Module.ToString(),
+                        JsonExtensions.SerializeToJson(claimModule.LstPermission.Select(x => x.Value)),
+                        JsonClaimValueTypes.JsonArray));
         }
 
-        public async Task<BaseCommandResponse> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
-        {
-            var role = await _roleManager.FindByIdAsync(request.UpdateRoleDto.Id);
-
-            if (role != null)
-            {
-                // Lấy danh sách quyền cũ của vai trò
-                var existingClaims = await _roleManager.GetClaimsAsync(role);
-
-                // Xóa tất cả các quyền cũ
-                foreach (var claim in existingClaims)
-                {
-                    await _roleManager.RemoveClaimAsync(role, claim);
-                }
-
-                // Thêm các quyền mới
-                foreach (var claimModule in request.UpdateRoleDto.MatrixPermission)
-                {
-                    await _roleManager.AddClaimAsync(role, new Claim(claimModule.Module.ToString(), JsonExtensions.SerializeToJson(claimModule.LstPermission.Select(x => x.Value)), JsonClaimValueTypes.JsonArray));
-                }
-            }
-
-            return new BaseCommandResponse("Sửa thành công!");
-        }
+        return new BaseCommandResponse("Sửa thành công!");
     }
 }

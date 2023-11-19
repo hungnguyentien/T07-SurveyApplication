@@ -1,13 +1,12 @@
-﻿namespace SurveyApplication.Application.DTOs.Common
+﻿namespace SurveyApplication.Application.DTOs.Common;
+
+public abstract class BaseDto
 {
-    public abstract class BaseDto
-    {
-        public int? Id { get; set; }
-        public int? ActiveFlag { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? Created { get; set; }
-        public int? ModifiedBy { get; set; }
-        public DateTime? Modified { get; set; }
-        public bool? Deleted { get; set; }
-    }
+    public int? Id { get; set; }
+    public int? ActiveFlag { get; set; }
+    public int? CreatedBy { get; set; }
+    public DateTime? Created { get; set; }
+    public int? ModifiedBy { get; set; }
+    public DateTime? Modified { get; set; }
+    public bool? Deleted { get; set; }
 }

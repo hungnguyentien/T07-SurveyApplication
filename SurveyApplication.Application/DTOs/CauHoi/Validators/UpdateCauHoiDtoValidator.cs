@@ -11,7 +11,10 @@ public class UpdateCauHoiDtoValidator : AbstractValidator<UpdateCauHoiDto>
         Include(new CauHoiDtoValidator(surveyRepository, idCauHoi));
         RuleFor(x => x.LstCot).Custom((list, context) =>
         {
-            var errorName = context.InstanceToValidate.LoaiCauHoi is (int)EnumCauHoi.Type.Radio or (int)EnumCauHoi.Type.CheckBox ? "đá án" : "cột";
+            var errorName =
+                context.InstanceToValidate.LoaiCauHoi is (int)EnumCauHoi.Type.Radio or (int)EnumCauHoi.Type.CheckBox
+                    ? "đá án"
+                    : "cột";
             if (list == null) return;
             var checkList = list.GroupBy(x => x.MaCot).Select(x => new { x.Key, Count = x.Count() }).ToList();
             if (checkList.Any(x => x.Count > 1))
@@ -19,7 +22,10 @@ public class UpdateCauHoiDtoValidator : AbstractValidator<UpdateCauHoiDto>
         });
         RuleFor(x => x.LstHang).Custom((list, context) =>
         {
-            var errorName = context.InstanceToValidate.LoaiCauHoi is (int)EnumCauHoi.Type.Radio or (int)EnumCauHoi.Type.CheckBox ? "đá án" : "hàng";
+            var errorName =
+                context.InstanceToValidate.LoaiCauHoi is (int)EnumCauHoi.Type.Radio or (int)EnumCauHoi.Type.CheckBox
+                    ? "đá án"
+                    : "hàng";
             if (list == null) return;
             var checkList = list.GroupBy(x => x.MaHang).Select(x => new { x.Key, Count = x.Count() }).ToList();
             if (checkList.Any(x => x.Count > 1))

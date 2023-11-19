@@ -1,6 +1,5 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface IReleaseHistoryRepository : IGenericRepository<ReleaseHistory>
 {
-    public interface IReleaseHistoryRepository : IGenericRepository<ReleaseHistory>
-    {
-    }
 }

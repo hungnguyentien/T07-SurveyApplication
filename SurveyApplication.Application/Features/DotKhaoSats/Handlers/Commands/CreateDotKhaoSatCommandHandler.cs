@@ -7,7 +7,6 @@ using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Utility.Enums;
-using System.Globalization;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands;
 
@@ -27,8 +26,10 @@ public class CreateDotKhaoSatCommandHandler : BaseMasterFeatures,
         if (request.DotKhaoSatDto.NgayBatDau.Date == request.DotKhaoSatDto.NgayKetThuc.Date)
         {
             request.DotKhaoSatDto.NgayBatDau = request.DotKhaoSatDto.NgayBatDau.Date;
-            request.DotKhaoSatDto.NgayKetThuc = request.DotKhaoSatDto.NgayKetThuc.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+            request.DotKhaoSatDto.NgayKetThuc =
+                request.DotKhaoSatDto.NgayKetThuc.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
         }
+
         var response = new BaseCommandResponse();
         var validator = new CreateDotKhaoSatDtoValidator(_surveyRepo.DotKhaoSat);
         var validatorResult = await validator.ValidateAsync(request.DotKhaoSatDto);

@@ -10,9 +10,9 @@
             </div>
             <div class="col-9">
               <p-dropdown id="idDotKhaoSat" formControlName="idDotKhaoSat" [options]="LstDotKhaoSat"optionLabel="tenDotKhaoSat" optionValue="id"
-                [filter]="true" filterBy="tenDotKhaoSat" emptyMessage="Không có kết quả nào"
-                emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                placeholder="-- Chọn đợt khảo sát --"  (onChange)="loadTableSurvey()">
+                          [filter]="true" filterBy="tenDotKhaoSat" emptyMessage="Không có kết quả nào"
+                          emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                          placeholder="-- Chọn đợt khảo sát --" (onChange)="loadTableSurvey()">
               </p-dropdown>
             </div>
           </div>
@@ -22,9 +22,9 @@
             </div>
             <div class="col-9">
               <p-dropdown id="idBangKhaoSat" formControlName="idBangKhaoSat"[options]="LstBangKhaoSat" optionLabel="tenBangKhaoSat" optionValue="id"
-                [filter]="true" filterBy="tenBangKhaoSat" emptyMessage="Không có kết quả nào"
-                emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                placeholder="-- Chọn bảng khảo sát --" >
+                          [filter]="true" filterBy="tenBangKhaoSat" emptyMessage="Không có kết quả nào"
+                          emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                          placeholder="-- Chọn bảng khảo sát --">
               </p-dropdown>
             </div>
           </div>
@@ -34,9 +34,9 @@
             </div>
             <div class="col-9">
               <p-dropdown id="idLoaiHinhDonVi"formControlName="idLoaiHinhDonVi" [options]="LstLoaiHinhDv" optionLabel="tenLoaiHinh" optionValue="id"
-                [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
-                emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
-                placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinhDonVi">
+                          [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
+                          emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                          placeholder="-- Chọn loại hình đơn vị --" formControlName="idLoaiHinhDonVi">
               </p-dropdown>
               <small style="color: #e24c4c;" class="ml-2" *ngIf="!frmStatiscal.controls['idLoaiHinhDonVi'].valid && 
                             frmStatiscal.controls['idLoaiHinhDonVi'].dirty">
@@ -52,7 +52,8 @@
             </div>
             <div class="col-9">
               <p-calendar formControlName="ngayBatDau" id="ngayBatDau" class="input-date-custom" dateFormat="dd/mm/yy"
-                [showIcon]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
+                          [showIcon]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
+              </p-calendar>
             </div>
           </div>
           <div class="form-group form-inline col-4 mb-0 pt-0">
@@ -61,15 +62,16 @@
             </div>
             <div class="col-9">
               <p-calendar formControlName="ngayKetThuc" id="ngayKetThuc" class="input-date-custom" dateFormat="dd/mm/yy"
-                [showIcon]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
+                          [showIcon]="true" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}">
+              </p-calendar>
             </div>
           </div>
           <div class="form-group form-inline col-4 mb-0 pt-0 pl-4">
             <button pButton type="submit" icon="pi pi-search" label="Tìm kiếm"
-              class="btn btn-primary custom-button mr-2" style="padding: 9.25px 20px;">
+                    class="btn btn-primary custom-button mr-2" style="padding: 9.25px 20px;">
             </button>
             <button pButton type="button" icon="pi pi-refresh" label="Cài lại" (click)="reset()"
-              class="btn btn-primary custom-button" style="padding: 9.25px 20px;">
+                    class="btn btn-primary custom-button" style="padding: 9.25px 20px;">
             </button>
           </div>
         </div>
@@ -101,14 +103,14 @@
         <div class="d-flex ml-3">
           <div class=" d-flex">
             <button pButton type="button" icon="pi pi-file-export" label="Xuất dữ liệu" class="custom-button"
-              style="background-color: green;" (click)="exportExcelSimple()">
+                    style="background-color: green;" (click)="exportExcelSimple()">
             </button>
           </div>
         </div>
         <div class="card mt-3">
           <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" [scrollable]="true"
-            scrollHeight="calc(250vh - 396px)" dataKey="id" styleClass="p-datatable-gridlines p-datatable-striped"
-            [rowHover]="true">
+                   scrollHeight="calc(250vh - 396px)" dataKey="id" styleClass="p-datatable-gridlines p-datatable-striped"
+                   [rowHover]="true">
             <ng-template pTemplate="header">
               <tr>
                 <th style="width: 60px;text-align: center;">
@@ -178,12 +180,12 @@
         <div class="d-flex mt-3">
           <div class="ml-3">
             <button pButton type="button" icon="pi pi-file-export" label="Xuất Excel" class="custom-button"
-              style="background-color: green;" (click)="exportExcelDetail()">
+                    style="background-color: green;" (click)="exportExcelDetail()">
             </button>
           </div>
           <div class="ml-3">
             <button pButton type="button" icon="pi pi-file-export" label="Xuất PDF" class="custom-button"
-              style="background-color: #ff7b00;" (click)="exportPDFDetail()">
+                    style="background-color: #ff7b00;" (click)="exportPDFDetail()">
             </button>
           </div>
           <div class="ml-3">
@@ -191,7 +193,7 @@
               <div class="form-group mb-2">
                 <label for="keyWord" class="sr-only">Search</label>
                 <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
-                  [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+                       [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá "/>
               </div>
               <button type="submit" class="btn btn-primary ml-2 mb-2">
                 <i class="pi pi-search"></i>
@@ -201,22 +203,22 @@
         </div>
         <div class="card mt-3">
           <p-table #dtCt ngClass="cust-tbl" [value]="dataChiTiet" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
-            [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedBaoCaoChiTiet" dataKey="id"
-            styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
-            [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
-            [totalRecords]="dataTotalRecords" [resizableColumns]="true"
-            currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
+                   [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedBaoCaoChiTiet" dataKey="id"
+                   styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+                   [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+                   [totalRecords]="dataTotalRecords" [resizableColumns]="true"
+                   currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0">
             <ng-template pTemplate="header">
               <tr>
                 <th style="min-width: 60px;text-align: center;max-width: 60px; width: 60px;" class="pFrozen top-0">
                   STT
                 </th>
                 <th [style]="lstTh.length > 0 ? 'width: 150px;text-align: center;' : 'width: auto;text-align: center;'"
-                  class="pFrozen pFrozen-1 top-0">
+                    class="pFrozen pFrozen-1 top-0">
                   Dấu thời gian
                 </th>
                 <th [style]="lstTh.length > 0 ? 'width: 150px;text-align: center;' : 'width: auto;text-align: center;'"
-                  class="pFrozen pFrozen-1 top-0">
+                    class="pFrozen pFrozen-1 top-0">
                   Tên đơn vị
                 </th>
                 <th pResizableColumn *ngFor="let col of lstTh; trackBy:trackByFn" class="text-ellipsis">

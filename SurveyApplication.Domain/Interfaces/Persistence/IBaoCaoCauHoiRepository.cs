@@ -1,6 +1,5 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface IBaoCaoCauHoiRepository : IGenericRepository<BaoCaoCauHoi>
 {
-    public interface IBaoCaoCauHoiRepository : IGenericRepository<BaoCaoCauHoi>
-    {
-    }
 }

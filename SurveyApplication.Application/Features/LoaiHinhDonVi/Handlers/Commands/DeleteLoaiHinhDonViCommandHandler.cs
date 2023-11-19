@@ -7,16 +7,19 @@ using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVi.Handlers.Commands;
 
-public class DeleteLoaiHinhDonViCommandHandler : BaseMasterFeatures, IRequestHandler<DeleteLoaiHinhDonViCommand, BaseCommandResponse>
+public class DeleteLoaiHinhDonViCommandHandler : BaseMasterFeatures,
+    IRequestHandler<DeleteLoaiHinhDonViCommand, BaseCommandResponse>
 {
     private readonly IMapper _mapper;
 
-    public DeleteLoaiHinhDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+    public DeleteLoaiHinhDonViCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
     {
         _mapper = mapper;
     }
 
-    public async Task<BaseCommandResponse> Handle(DeleteLoaiHinhDonViCommand request, CancellationToken cancellationToken)
+    public async Task<BaseCommandResponse> Handle(DeleteLoaiHinhDonViCommand request,
+        CancellationToken cancellationToken)
     {
         var response = new BaseCommandResponse();
 

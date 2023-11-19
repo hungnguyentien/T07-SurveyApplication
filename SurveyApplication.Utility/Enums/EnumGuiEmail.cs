@@ -12,5 +12,4 @@ namespace SurveyApplication.Utility.Enums
             [Description("Đang gửi")] DangGui = 3
         }
     }
-};
-
+}

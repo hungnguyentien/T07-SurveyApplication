@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SurveyApplication.Utility.Enums;
 
-namespace SurveyApplication.Domain
+namespace SurveyApplication.Domain;
+
+public class Role : IdentityRole
 {
-    public class Role : IdentityRole
-    {
-        public int? ActiveFlag { get; set; } = (int)EnumCommon.ActiveFlag.Active;
-        public int? CreatedBy { get; set; }
-        public DateTime? Created { get; set; }
-        public int? ModifiedBy { get; set; }
-        public DateTime? Modified { get; set; }
-        public bool Deleted { get; set; } = false;
-    }
+    public int? ActiveFlag { get; set; } = (int)EnumCommon.ActiveFlag.Active;
+    public int? CreatedBy { get; set; }
+    public DateTime? Created { get; set; }
+    public int? ModifiedBy { get; set; }
+    public DateTime? Modified { get; set; }
+    public bool Deleted { get; set; } = false;
 }

@@ -11,7 +11,8 @@ public class DeleteModuleCommandHandler : BaseMasterFeatures, IRequestHandler<De
 {
     private readonly IMapper _mapper;
 
-    public DeleteModuleCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
+    public DeleteModuleCommandHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
     {
         _mapper = mapper;
     }

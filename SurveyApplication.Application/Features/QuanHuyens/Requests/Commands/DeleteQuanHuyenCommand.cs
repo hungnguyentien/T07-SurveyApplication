@@ -1,15 +1,9 @@
 ﻿using MediatR;
 using SurveyApplication.Domain.Common.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SurveyApplication.Application.Features.QuanHuyens.Requests.Commands
+namespace SurveyApplication.Application.Features.QuanHuyens.Requests.Commands;
+
+public class DeleteQuanHuyenCommand : IRequest<BaseCommandResponse>
 {
-    public class DeleteQuanHuyenCommand : IRequest<BaseCommandResponse>
-    {
-        public List<int> Ids { get; set; }
-    }
+    public List<int> Ids { get; set; }
 }

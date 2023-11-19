@@ -11,7 +11,6 @@ using SurveyApplication.Domain.Common.Identity;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Domain.Models;
 using SurveyApplication.Utility.Constants;
-using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.Accounts.Handlers.Queries;
 
@@ -34,7 +33,8 @@ public class LoginRequestHandler : BaseMasterFeatures, IRequestHandler<LoginRequ
 
     public async Task<AuthResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByNameAsync(request.UserName) ?? throw new Exception($"Tài khoản {request.UserName} không tồn tại.");
+        var user = await _userManager.FindByNameAsync(request.UserName) ??
+                   throw new Exception($"Tài khoản {request.UserName} không tồn tại.");
         var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, false);
         if (!result.Succeeded) throw new Exception("Mật khẩu hoặc tài khoản không đúng");
         var jwtSecurityToken = await GenerateToken(user);

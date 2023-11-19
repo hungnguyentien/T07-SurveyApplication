@@ -1,15 +1,9 @@
 ﻿using MediatR;
 using SurveyApplication.Domain.Common.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Commands
+namespace SurveyApplication.Application.Features.LinhVucHoatDong.Requests.Commands;
+
+public class DeleteLinhVucHoatDongCommand : IRequest<BaseCommandResponse>
 {
-    public class DeleteLinhVucHoatDongCommand : IRequest<BaseCommandResponse>
-    {
-        public List<int> Ids { get; set; }
-    }
+    public List<int> Ids { get; set; }
 }

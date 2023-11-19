@@ -5,41 +5,43 @@ using SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Utility.LogUtils;
 
-namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Queries
+namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Queries;
+
+public class GetLastRecordDotKhaoSatRequestHandler : BaseMasterFeatures,
+    IRequestHandler<GetLastRecordDotKhaoSatRequest, string>
 {
-    public class GetLastRecordDotKhaoSatRequestHandler : BaseMasterFeatures, IRequestHandler<GetLastRecordDotKhaoSatRequest, string>
+    private readonly ILoggerManager _logger;
+    private readonly IMapper _mapper;
+
+    public GetLastRecordDotKhaoSatRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper,
+        ILoggerManager logger) : base(
+        surveyRepository)
     {
-        private readonly IMapper _mapper;
-        private readonly ILoggerManager _logger;
+        _mapper = mapper;
+        _logger = logger;
+    }
 
-        public GetLastRecordDotKhaoSatRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper, ILoggerManager logger) : base(
-            surveyRepository)
+    public async Task<string> Handle(GetLastRecordDotKhaoSatRequest request, CancellationToken cancellationToken)
+    {
+        var lastEntity = await _surveyRepo.DotKhaoSat.GetAllQueryable().OrderByDescending(e => e.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+        try
         {
-            _mapper = mapper;
-            _logger = logger;
+            if (lastEntity != null)
+            {
+                var prefix = lastEntity.MaDotKhaoSat.Substring(0, 3);
+                var currentNumber = int.Parse(lastEntity.MaDotKhaoSat.Substring(3));
+                currentNumber++;
+                var newNumber = currentNumber.ToString("D3");
+                return prefix + newNumber;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex);
         }
 
-        public async Task<string> Handle(GetLastRecordDotKhaoSatRequest request, CancellationToken cancellationToken)
-        {
-            var lastEntity = await _surveyRepo.DotKhaoSat.GetAllQueryable().OrderByDescending(e => e.Id).FirstOrDefaultAsync(cancellationToken: cancellationToken);
-            try
-            {
-                if (lastEntity != null)
-                {
-                    var prefix = lastEntity.MaDotKhaoSat.Substring(0, 3);
-                    var currentNumber = int.Parse(lastEntity.MaDotKhaoSat.Substring(3));
-                    currentNumber++;
-                    var newNumber = currentNumber.ToString("D3");
-                    return prefix + newNumber;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-            }
-            
 
-            return "DKS001";
-        }
+        return "DKS001";
     }
 }

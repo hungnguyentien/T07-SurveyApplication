@@ -6,7 +6,6 @@ using SurveyApplication.API.Models;
 using SurveyApplication.Application.DTOs.CauHoi;
 using SurveyApplication.Application.Features.CauHoi.Requests.Commands;
 using SurveyApplication.Application.Features.CauHoi.Requests.Queries;
-using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Utility;
 using SurveyApplication.Utility.Enums;

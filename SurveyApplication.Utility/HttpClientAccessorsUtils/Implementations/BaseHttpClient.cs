@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces;
 
 namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
@@ -13,6 +13,7 @@ namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
 
     {
         private readonly HttpClient _httpClient;
+
         public BaseHttpClient(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
@@ -20,23 +21,18 @@ namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
 
         #region Post
 
-        public async Task<bool> PostAsync(string domain, string apiEndpoint, object data = null, Dictionary<string, string> requestParams = null,
+        public async Task<bool> PostAsync(string domain, string apiEndpoint, object data = null,
+            Dictionary<string, string> requestParams = null,
             Dictionary<string, string> headers = null,
             string accessToken = "", AccessTokenType accessTokenType = AccessTokenType.Bearer)
         {
             var requestUri = $"{domain}";
-            if (!string.IsNullOrWhiteSpace(apiEndpoint))
-            {
-                requestUri += $"/{apiEndpoint}";
-            }
+            if (!string.IsNullOrWhiteSpace(apiEndpoint)) requestUri += $"/{apiEndpoint}";
             requestUri = PopulateRequestParam(requestParams, requestUri); //Thêm param
             var message = new HttpRequestMessage(HttpMethod.Post, requestUri);
             message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var dataStr = string.Empty;
-            if (data != null)
-            {
-                dataStr = !(data is string) ? JsonConvert.SerializeObject(data) : data.ToString();
-            }
+            if (data != null) dataStr = !(data is string) ? JsonConvert.SerializeObject(data) : data.ToString();
 
             AppendAccessToken(message, accessToken, accessTokenType);
             AddRequestHeader(message, headers);
@@ -57,7 +53,7 @@ namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
         #region Private
 
         /// <summary>
-        /// Thêm param vào URI
+        ///     Thêm param vào URI
         /// </summary>
         /// <param name="requestParams"></param>
         /// <param name="requestUri"></param>
@@ -68,15 +64,9 @@ namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
             {
                 requestUri += "?";
 
-                foreach (var item in requestParams)
-                {
-                    requestUri += $"{item.Key}={item.Value}&";
-                }
+                foreach (var item in requestParams) requestUri += $"{item.Key}={item.Value}&";
 
-                if (requestUri.EndsWith("&"))
-                {
-                    requestUri = requestUri.Substring(0, requestUri.Length - 1);
-                }
+                if (requestUri.EndsWith("&")) requestUri = requestUri.Substring(0, requestUri.Length - 1);
             }
 
             return requestUri;
@@ -86,29 +76,24 @@ namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
         {
             //client.Timeout = TimeSpan.FromSeconds(GetRequestTimeout());
             if (requestMessage != null && headers != null)
-            {
                 foreach (var item in headers)
-                {
                     requestMessage.Headers.Add(item.Key, item.Value);
-                }
-            }
         }
 
         private static void AppendHttpContent(HttpRequestMessage requestMessage, string httpContentStr)
         {
             if (requestMessage != null && !string.IsNullOrWhiteSpace(httpContentStr))
-            {
                 requestMessage.Content = new StringContent(httpContentStr, Encoding.UTF8, "application/json");
-            }
         }
 
         /// <summary>
-        /// Append Access Token vào HttpRequest
+        ///     Append Access Token vào HttpRequest
         /// </summary>
         /// <param name="requestMessage"></param>
         /// <param name="accessToken"></param>
         /// <param name="accessTokenType"></param>
-        private static void AppendAccessToken(HttpRequestMessage requestMessage, string accessToken, AccessTokenType accessTokenType)
+        private static void AppendAccessToken(HttpRequestMessage requestMessage, string accessToken,
+            AccessTokenType accessTokenType)
         {
             if (!string.IsNullOrWhiteSpace(accessToken))
             {
@@ -121,8 +106,10 @@ namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
                 {
                     var arr = accessToken.Split("@#$");
                     var authenticationString = $"{arr[0]}:{arr[1]}";
-                    var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
-                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
+                    var base64EncodedAuthenticationString =
+                        Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+                    requestMessage.Headers.Authorization =
+                        new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
                 }
                 else
                 {

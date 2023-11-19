@@ -20,7 +20,7 @@ public class BangKhaoSatDto : BaseDto
 
     public bool? IsRequired { get; set; }
     public string PanelTitle { get; set; }
-    public int IdBangKhaoSat { get;set; }
+    public int IdBangKhaoSat { get; set; }
 
     /// <summary>
     ///     Bảng n-n lưu thông tin câu hỏi và bảng khảo sát

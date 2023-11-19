@@ -13,6 +13,25 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
     {
     }
 
+    public DbSet<Module> Module { get; set; }
+    public DbSet<Role> Role { get; set; }
+    public DbSet<ApplicationUser> Account { get; set; }
+    public DbSet<LoaiHinhDonVi> LoaiHinhDonVi { get; set; }
+    public DbSet<LinhVucHoatDong> LinhVucHoatDong { get; set; }
+    public DbSet<GuiEmail> GuiEmail { get; set; }
+    public DbSet<DotKhaoSat> DotKhaoSat { get; set; }
+    public DbSet<BangKhaoSat> BangKhaoSat { get; set; }
+    public DbSet<NguoiDaiDien> NguoiDaiDien { get; set; }
+    public DbSet<DonVi> DonVi { get; set; }
+    public DbSet<BangKhaoSatCauHoi> BangKhaoSatCauHoi { get; set; }
+    public DbSet<XaPhuong> XaPhuong { get; set; }
+    public DbSet<QuanHuyen> QuanHuyen { get; set; }
+    public DbSet<TinhTp> TinhTp { get; set; }
+
+    public DbSet<JobSchedule> JobSchedule { get; set; }
+    public DbSet<ReleaseHistory> ReleaseHistory { get; set; }
+    public DbSet<StgFile> StgFile { get; set; }
+
     [Obsolete]
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,8 +39,8 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<StgFile>(e => { e.Property(o => o.Size).HasColumnType("decimal(18,4)"); });
         modelBuilder.HasDbFunction(typeof(JsonSqlExtensions).GetMethod(nameof(JsonSqlExtensions.JsonValue))!)
-                .HasTranslation(e => SqlFunctionExpression.Create(
-                    "JSON_VALUE", e, typeof(string), null));
+            .HasTranslation(e => SqlFunctionExpression.Create(
+                "JSON_VALUE", e, typeof(string), null));
 
         modelBuilder.HasDbFunction(typeof(JsonSqlExtensions).GetMethod(nameof(JsonSqlExtensions.IsJson))!)
             .HasTranslation(e => SqlFunctionExpression.Create(
@@ -53,21 +72,6 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    public DbSet<Module> Module { get; set; }
-    public DbSet<Role> Role { get; set; }
-    public DbSet<ApplicationUser> Account { get; set; }
-    public DbSet<LoaiHinhDonVi> LoaiHinhDonVi { get; set; }
-    public DbSet<LinhVucHoatDong> LinhVucHoatDong { get; set; }
-    public DbSet<GuiEmail> GuiEmail { get; set; }
-    public DbSet<DotKhaoSat> DotKhaoSat { get; set; }
-    public DbSet<BangKhaoSat> BangKhaoSat { get; set; }
-    public DbSet<NguoiDaiDien> NguoiDaiDien { get; set; }
-    public DbSet<DonVi> DonVi { get; set; }
-    public DbSet<BangKhaoSatCauHoi> BangKhaoSatCauHoi { get; set; }
-    public DbSet<XaPhuong> XaPhuong { get; set; }
-    public DbSet<QuanHuyen> QuanHuyen { get; set; }
-    public DbSet<TinhTp> TinhTp { get; set; }
-
     #region Câu hỏi
 
     public DbSet<CauHoi> CauHoi { get; set; }
@@ -77,8 +81,4 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
     public DbSet<BaoCaoCauHoi> BaoCaoCauHoi { get; set; }
 
     #endregion
-
-    public DbSet<JobSchedule> JobSchedule { get; set; }
-    public DbSet<ReleaseHistory> ReleaseHistory { get; set; }
-    public DbSet<StgFile> StgFile { get; set; }
 }

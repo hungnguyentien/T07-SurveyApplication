@@ -10,5 +10,4 @@ namespace SurveyApplication.Utility.Enums
             [Description("Hiệu lực")] Active = 1
         }
     }
-};
-
+}

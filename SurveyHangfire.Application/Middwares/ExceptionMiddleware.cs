@@ -1,43 +1,42 @@
-﻿using Microsoft.AspNetCore.Http;
-using SurveyApplication.Utility.LogUtils;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using SurveyApplication.Utility.LogUtils;
 
-namespace Hangfire.Application.Middwares
+namespace Hangfire.Application.Middwares;
+
+public class ExceptionMiddleware
 {
-    public class ExceptionMiddleware
+    private readonly ILoggerManager _logger;
+    private readonly RequestDelegate _next;
+
+    public ExceptionMiddleware(RequestDelegate next, ILoggerManager logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILoggerManager _logger;
+        _logger = logger;
+        _next = next;
+    }
 
-        public ExceptionMiddleware(RequestDelegate next, ILoggerManager logger)
+    public async Task InvokeAsync(HttpContext httpContext)
+    {
+        try
         {
-            _logger = logger;
-            _next = next;
+            await _next(httpContext);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex);
+            await Task.Run(() => { HandleExceptionAsync(httpContext, ex); });
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        if (httpContext.Response.StatusCode == StatusCodes.Status404NotFound)
         {
-            try
-            {
-                await _next(httpContext);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                await Task.Run(() => { HandleExceptionAsync(httpContext, ex); });
-            }
-            if (httpContext.Response.StatusCode == StatusCodes.Status404NotFound)
-            {
-                httpContext.Request.Path = "/Error/Error404";
-                await _next(httpContext);
-            }
+            httpContext.Request.Path = "/Error/Error404";
+            await _next(httpContext);
         }
+    }
 
-        private void HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            context.Response.Redirect("/Error/Error500");
-
-        }
+    private void HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.Redirect("/Error/Error500");
     }
 }

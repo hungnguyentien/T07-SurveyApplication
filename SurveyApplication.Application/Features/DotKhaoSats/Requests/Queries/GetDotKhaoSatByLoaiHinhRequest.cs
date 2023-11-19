@@ -1,15 +1,9 @@
 ﻿using MediatR;
 using SurveyApplication.Application.DTOs.DotKhaoSat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries
+namespace SurveyApplication.Application.Features.DotKhaoSats.Requests.Queries;
+
+public class GetDotKhaoSatByLoaiHinhRequest : IRequest<List<DotKhaoSatDto>>
 {
-    public class GetDotKhaoSatByLoaiHinhRequest : IRequest<List<DotKhaoSatDto>>
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

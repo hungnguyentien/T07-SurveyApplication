@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Application.DTOs.BangKhaoSat.Validators;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.BangKhaoSats.Requests.Commands;
@@ -11,7 +10,8 @@ using SurveyApplication.Utility.Enums;
 
 namespace SurveyApplication.Application.Features.BangKhaoSats.Handlers.Commands;
 
-public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<CreateBangKhaoSatCommand, BaseCommandResponse>
+public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures,
+    IRequestHandler<CreateBangKhaoSatCommand, BaseCommandResponse>
 {
     private readonly IMapper _mapper;
 
@@ -26,8 +26,10 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
         if (request.BangKhaoSatDto.NgayBatDau.Date == request.BangKhaoSatDto.NgayKetThuc.Date)
         {
             request.BangKhaoSatDto.NgayBatDau = request.BangKhaoSatDto.NgayBatDau.Date;
-            request.BangKhaoSatDto.NgayKetThuc = request.BangKhaoSatDto.NgayKetThuc.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+            request.BangKhaoSatDto.NgayKetThuc =
+                request.BangKhaoSatDto.NgayKetThuc.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
         }
+
         var response = new BaseCommandResponse();
         var validator = new CreateBangKhaoSatDtoValidator(_surveyRepo.BangKhaoSat);
         if (request.BangKhaoSatDto != null)
@@ -52,7 +54,8 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
 
         if (dotKhaoSat.NgayKetThuc.Date <
             request.BangKhaoSatDto.NgayKetThuc.Date)
-            throw new FluentValidation.ValidationException("Ngày kết thúc không được lớn hơn ngày kết thúc đợt khảo sát");
+            throw new FluentValidation.ValidationException(
+                "Ngày kết thúc không được lớn hơn ngày kết thúc đợt khảo sát");
 
         //TODO Gửi mail mới update trạng thái
         //if (dotKhaoSat.TrangThai == (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat)
@@ -68,21 +71,20 @@ public class CreateBangKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandl
         if (request.BangKhaoSatDto?.BangKhaoSatCauHoi != null)
         {
             if (request.BangKhaoSatDto?.BangKhaoSatCauHoi.Count == 0)
-            {
                 request.BangKhaoSatDto.BangKhaoSatCauHoiGroup?.ForEach(x =>
+                {
+                    x.BangKhaoSatCauHoi?.ForEach(bks =>
                     {
-                        x.BangKhaoSatCauHoi?.ForEach(bks =>
-                        {
-                            bks.PanelTitle = x.PanelTitle;
-                            request.BangKhaoSatDto.BangKhaoSatCauHoi.Add(bks);
-                        });
+                        bks.PanelTitle = x.PanelTitle;
+                        request.BangKhaoSatDto.BangKhaoSatCauHoi.Add(bks);
                     });
-            }
+                });
 
             var lstBangKhaoSatCauHoi = _mapper.Map<List<BangKhaoSatCauHoi>>(request.BangKhaoSatDto?.BangKhaoSatCauHoi);
             lstBangKhaoSatCauHoi.ForEach(x =>
             {
-                x.IdBangKhaoSat = bangKhaoSat.Id; x.Priority =
+                x.IdBangKhaoSat = bangKhaoSat.Id;
+                x.Priority =
                     lstBangKhaoSatCauHoi.FindIndex(iBks => iBks == x);
             });
             await _surveyRepo.BangKhaoSatCauHoi.Creates(lstBangKhaoSatCauHoi);

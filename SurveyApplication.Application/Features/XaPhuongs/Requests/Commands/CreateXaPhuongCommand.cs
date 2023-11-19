@@ -2,10 +2,9 @@
 using SurveyApplication.Application.DTOs.XaPhuong;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.Application.Features.XaPhuongs.Requests.Commands
+namespace SurveyApplication.Application.Features.XaPhuongs.Requests.Commands;
+
+public class CreateXaPhuongCommand : IRequest<BaseCommandResponse>
 {
-    public class CreateXaPhuongCommand : IRequest<BaseCommandResponse>
-    {
-        public CreateXaPhuongDto? XaPhuongDto { get; set; }
-    }
+    public CreateXaPhuongDto? XaPhuongDto { get; set; }
 }

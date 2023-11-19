@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using SurveyApplication.Domain.Common.Responses;
 
-namespace SurveyApplication.Application.Features.BackupRestore.Requests.Commands
+namespace SurveyApplication.Application.Features.BackupRestore.Requests.Commands;
+
+public class RestoreDataCommand : IRequest<BaseCommandResponse>
 {
-    public class RestoreDataCommand : IRequest<BaseCommandResponse>
-    {
-        public string[] FileNames { get; set; }
-    }
+    public string[] FileNames { get; set; }
 }

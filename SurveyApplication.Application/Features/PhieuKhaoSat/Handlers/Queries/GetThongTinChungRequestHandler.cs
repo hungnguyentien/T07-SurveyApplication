@@ -42,7 +42,7 @@ public class GetThongTinChungRequestHandler : BaseMasterFeatures,
         }
 
         var dotKs = await _surveyRepo.DotKhaoSat.GetById(bangKs.IdDotKhaoSat);
-        if(dotKs.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
+        if (dotKs.TrangThai == (int)EnumDotKhaoSat.TrangThai.HoanThanh)
             throw new ValidationException("Đợt khảo sát này đã hoàn thành");
 
         var donVi = await _surveyRepo.DonVi.GetById(guiEmail.IdDonVi);

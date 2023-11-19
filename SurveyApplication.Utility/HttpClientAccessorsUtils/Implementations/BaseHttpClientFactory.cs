@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces;
 
 namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
@@ -12,6 +12,7 @@ namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Implementations
         {
             _serviceProvider = serviceProvider;
         }
+
         public IBaseHttpClient Create()
         {
             return _serviceProvider.GetRequiredService<IBaseHttpClient>();

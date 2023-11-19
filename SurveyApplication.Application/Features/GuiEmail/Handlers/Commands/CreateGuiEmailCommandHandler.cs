@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using SurveyApplication.Application.DTOs.GuiEmail.Validators;
 using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
-using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 using SurveyApplication.Utility.Enums;
@@ -43,9 +42,10 @@ public class CreateGuiEmailCommandHandler : BaseMasterFeatures,
         guiEmail = await _surveyRepo.GuiEmail.Create(guiEmail);
         await _surveyRepo.SaveAync();
         var lstDotKhaoSat = await (from a in _surveyRepo.DotKhaoSat.GetAllQueryable()
-                                   join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.Id equals b.IdDotKhaoSat
-                                   where a.TrangThai == (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat && request.GuiEmailDto.LstBangKhaoSat.Contains(b.IdDotKhaoSat) && !a.Deleted && !b.Deleted
-                                   select a).ToListAsync(cancellationToken: cancellationToken);
+            join b in _surveyRepo.BangKhaoSat.GetAllQueryable() on a.Id equals b.IdDotKhaoSat
+            where a.TrangThai == (int)EnumDotKhaoSat.TrangThai.ChoKhaoSat &&
+                  request.GuiEmailDto.LstBangKhaoSat.Contains(b.IdDotKhaoSat) && !a.Deleted && !b.Deleted
+            select a).ToListAsync(cancellationToken);
 
         if (lstDotKhaoSat.Any())
         {

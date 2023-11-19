@@ -37,7 +37,7 @@ public class NguoiDaiDienController : ControllerBase
         [FromQuery] Paging paging)
     {
         var leaveAllocations = await _mediator.Send(new GetNguoiDaiDienConditionsRequest
-        { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+            { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
         return Ok(leaveAllocations);
     }
 

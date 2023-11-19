@@ -1,5 +1,4 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using SurveyApplication.Application.DTOs.BangKhaoSat;
 using SurveyApplication.Domain.Common.Responses;
 

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
-using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;

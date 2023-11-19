@@ -24,7 +24,9 @@ public class GetCauHoiConditionsRequestHandler : BaseMasterFeatures,
         CancellationToken cancellationToken)
     {
         var lstCauHoi = await _surveyRepo.CauHoi.GetByConditionsQueriesResponse(request.PageIndex, request.PageSize,
-            x => (string.IsNullOrEmpty(request.Keyword) || !string.IsNullOrEmpty(x.MaCauHoi) && x.MaCauHoi.Contains(request.Keyword) || x.TieuDe.Contains(request.Keyword)) &&
+            x => (string.IsNullOrEmpty(request.Keyword) ||
+                  (!string.IsNullOrEmpty(x.MaCauHoi) && x.MaCauHoi.Contains(request.Keyword)) ||
+                  x.TieuDe.Contains(request.Keyword)) &&
                  x.ActiveFlag == (int)EnumCommon.ActiveFlag.Active && !x.Deleted, request.OrderBy ?? "");
         var result = _mapper.Map<List<CauHoiDto>>(lstCauHoi);
         result.ForEach(x =>

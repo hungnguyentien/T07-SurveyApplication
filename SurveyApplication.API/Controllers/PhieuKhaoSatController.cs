@@ -20,8 +20,6 @@ using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Utility;
-using System.Net;
-using System.Net.Http.Headers;
 
 namespace SurveyApplication.API.Controllers;
 
@@ -30,13 +28,14 @@ namespace SurveyApplication.API.Controllers;
 public class PhieuKhaoSatController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private EmailSettings EmailSettings { get; }
 
     public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings)
     {
         _mediator = mediator;
         EmailSettings = emailSettings.Value;
     }
+
+    private EmailSettings EmailSettings { get; }
 
     [HttpGet("GetThongTinChung")]
     public async Task<ActionResult<ThongTinChungDto>> GetThongTinChung(string data)
@@ -69,31 +68,6 @@ public class PhieuKhaoSatController : ControllerBase
         return Ok(response);
     }
 
-    #region Tỉnh thành quận huyện
-
-    [HttpGet("GetTinh")]
-    public async Task<ActionResult> GetTinh()
-    {
-        var lstTinh = await _mediator.Send(new GetTinhTpListRequest());
-        return Ok(lstTinh);
-    }
-
-    [HttpGet("GetQuanHuyen")]
-    public async Task<ActionResult> GetQuanHuyen()
-    {
-        var quanHuyen = await _mediator.Send(new GetQuanHuyenListRequest());
-        return Ok(quanHuyen);
-    }
-
-    [HttpGet("GetPhuongXa")]
-    public async Task<ActionResult> GetPhuongXa()
-    {
-        var phuongXa = await _mediator.Send(new GetXaPhuongListRequest());
-        return Ok(phuongXa);
-    }
-
-    #endregion
-
     [HttpGet("GetAllLoaiHinhDonVi")]
     public async Task<ActionResult<List<LoaiHinhDonViDto>>> GetAllLoaiHinhDonVi()
     {
@@ -111,7 +85,8 @@ public class PhieuKhaoSatController : ControllerBase
     [HttpPost("DongBoBaoCaoCauHoi")]
     public async Task<ActionResult> DongBoBaoCaoCauHoi(CreateBaoCaoCauHoiCommand data)
     {
-        var command = new CreateBaoCaoCauHoiCommand { LstBaoCaoCauHoi = data.LstBaoCaoCauHoi, IdGuiEmail = data.IdGuiEmail };
+        var command = new CreateBaoCaoCauHoiCommand
+            { LstBaoCaoCauHoi = data.LstBaoCaoCauHoi, IdGuiEmail = data.IdGuiEmail };
         var response = await _mediator.Send(command);
         return Ok(response);
     }
@@ -137,7 +112,7 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     /// <summary>
-    /// Lấy chuỗi mã hóa gửi mail
+    ///     Lấy chuỗi mã hóa gửi mail
     /// </summary>
     /// <param name="idGuiMail"></param>
     /// <returns></returns>
@@ -150,7 +125,8 @@ public class PhieuKhaoSatController : ControllerBase
         {
             IdGuiEmail = idGuiMail
         };
-        var result = $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
+        var result =
+            $"\n {EmailSettings.LinkKhaoSat}{StringUltils.EncryptWithKey(JsonConvert.SerializeObject(thongTinChung), EmailSettings.SecretKey)}";
         return Ok(result);
     }
 
@@ -190,4 +166,29 @@ public class PhieuKhaoSatController : ControllerBase
     {
         return Ok(data.ConvertToCamelString());
     }
+
+    #region Tỉnh thành quận huyện
+
+    [HttpGet("GetTinh")]
+    public async Task<ActionResult> GetTinh()
+    {
+        var lstTinh = await _mediator.Send(new GetTinhTpListRequest());
+        return Ok(lstTinh);
+    }
+
+    [HttpGet("GetQuanHuyen")]
+    public async Task<ActionResult> GetQuanHuyen()
+    {
+        var quanHuyen = await _mediator.Send(new GetQuanHuyenListRequest());
+        return Ok(quanHuyen);
+    }
+
+    [HttpGet("GetPhuongXa")]
+    public async Task<ActionResult> GetPhuongXa()
+    {
+        var phuongXa = await _mediator.Send(new GetXaPhuongListRequest());
+        return Ok(phuongXa);
+    }
+
+    #endregion
 }

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using SurveyApplication.Domain.Interfaces.Persistence;
-using SurveyApplication.Persistence.Repositories;
 
 namespace SurveyApplication.Application.DTOs.DotKhaoSat.Validators;
 
@@ -19,7 +18,8 @@ public class IDotKhaoSatDtoValidator : AbstractValidator<IDotKhaoSatDto>
             .NotNull()
             .MustAsync(async (model, token) =>
             {
-                var nameExists = await _dotKhaoSatRepository.Exists(x => x.TenDotKhaoSat == model.MaDotKhaoSat && x.MaDotKhaoSat != model.MaDotKhaoSat && !x.Deleted);
+                var nameExists = await _dotKhaoSatRepository.Exists(x =>
+                    x.TenDotKhaoSat == model.MaDotKhaoSat && x.MaDotKhaoSat != model.MaDotKhaoSat && !x.Deleted);
                 return !nameExists;
             }).WithMessage("Tên đợt khảo sát đã tồn tại!");
 

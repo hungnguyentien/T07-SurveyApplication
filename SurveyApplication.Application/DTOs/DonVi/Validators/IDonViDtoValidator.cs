@@ -14,15 +14,16 @@ public class IDonViDtoValidator : AbstractValidator<IDonViDto>
         RuleFor(p => p.IdLoaiHinh).GreaterThan(0).WithMessage("{PropertyName} phải lớn hơn 0.");
 
         RuleFor(p => p.MaDonVi)
-               .NotEmpty().WithMessage("{PropertyName} is required.")
-               .NotNull();
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull();
 
         RuleFor(p => new { p.TenDonVi, p.MaDonVi })
             .NotEmpty().WithMessage("{PropertyName} is required.")
             .NotNull()
             .MustAsync(async (model, token) =>
             {
-                var nameExists = await _donViRepository.Exists(x => x.TenDonVi == model.TenDonVi && x.MaDonVi != model.MaDonVi);
+                var nameExists =
+                    await _donViRepository.Exists(x => x.TenDonVi == model.TenDonVi && x.MaDonVi != model.MaDonVi);
                 return !nameExists;
             }).WithMessage("Tên đơn vị đã tồn tại!");
 
@@ -31,7 +32,8 @@ public class IDonViDtoValidator : AbstractValidator<IDonViDto>
             .NotNull()
             .MustAsync(async (model, token) =>
             {
-                var emailExists = await _donViRepository.Exists(x => x.Email == model.Email && x.MaDonVi != model.MaDonVi);
+                var emailExists =
+                    await _donViRepository.Exists(x => x.Email == model.Email && x.MaDonVi != model.MaDonVi);
                 return !emailExists;
             }).WithMessage("Email đã tồn tại!");
 
@@ -44,11 +46,11 @@ public class IDonViDtoValidator : AbstractValidator<IDonViDto>
             .NotNull();
 
         RuleFor(p => p.IdQuanHuyen)
-        .NotEmpty().WithMessage("{PropertyName} is required.")
-        .NotNull();
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull();
 
         RuleFor(p => p.IdXaPhuong)
-        .NotEmpty().WithMessage("{PropertyName} is required.")
-        .NotNull();
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull();
     }
 }

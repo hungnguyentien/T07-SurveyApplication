@@ -1,7 +1,6 @@
-﻿namespace SurveyApplication.Domain.Interfaces.Persistence
+﻿namespace SurveyApplication.Domain.Interfaces.Persistence;
+
+public interface ILinhVucHoatDongRepository : IGenericRepository<LinhVucHoatDong>
 {
-    public interface ILinhVucHoatDongRepository : IGenericRepository<LinhVucHoatDong>
-    {
-        Task<bool> ExistsByMaLinhVuc(string maLinhVuc);
-    }
+    Task<bool> ExistsByMaLinhVuc(string maLinhVuc);
 }

@@ -4,22 +4,21 @@ using SurveyApplication.Application.DTOs.TinhTp;
 using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
-namespace SurveyApplication.Application.Features.TinhTps.Handlers.Queries
+namespace SurveyApplication.Application.Features.TinhTps.Handlers.Queries;
+
+public class GetTinhTpListRequestHandler : BaseMasterFeatures, IRequestHandler<GetTinhTpListRequest, List<TinhTpDto>>
 {
-   
-    public class GetTinhTpListRequestHandler : BaseMasterFeatures, IRequestHandler<GetTinhTpListRequest, List<TinhTpDto>>
+    private readonly IMapper _mapper;
+
+    public GetTinhTpListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
     {
-        private readonly IMapper _mapper;
+        _mapper = mapper;
+    }
 
-        public GetTinhTpListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(surveyRepository)
-        {
-            _mapper = mapper;
-        }
-
-        public async Task<List<TinhTpDto>> Handle(GetTinhTpListRequest request, CancellationToken cancellationToken)
-        {
-            var TinhTps = await _surveyRepo.TinhTp.GetAllListAsync(x => !x.Deleted);
-            return _mapper.Map<List<TinhTpDto>>(TinhTps);
-        }
+    public async Task<List<TinhTpDto>> Handle(GetTinhTpListRequest request, CancellationToken cancellationToken)
+    {
+        var TinhTps = await _surveyRepo.TinhTp.GetAllListAsync(x => !x.Deleted);
+        return _mapper.Map<List<TinhTpDto>>(TinhTps);
     }
 }

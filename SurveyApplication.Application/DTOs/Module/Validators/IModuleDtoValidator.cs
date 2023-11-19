@@ -17,7 +17,8 @@ public class IModuleDtoValidator : AbstractValidator<IModuleDto>
         RuleFor(p => new { p.Name, p.CodeModule })
             .MustAsync(async (model, token) =>
             {
-                var ModuleViExists = await _moduleRepository.Exists(x => x.Name == model.Name && x.CodeModule != model.CodeModule && !x.Deleted);
+                var ModuleViExists = await _moduleRepository.Exists(x =>
+                    x.Name == model.Name && x.CodeModule != model.CodeModule && !x.Deleted);
                 return !ModuleViExists;
             }).WithMessage("Tên Module đã tồn tại!");
 

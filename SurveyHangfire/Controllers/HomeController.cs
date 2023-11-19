@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Hangfire.Controllers
+namespace Hangfire.Controllers;
+
+public class HomeController : ControllerBase
 {
-    public class HomeController : ControllerBase
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return Redirect("/hangfire");
-        }
+        return Redirect("/hangfire");
     }
 }

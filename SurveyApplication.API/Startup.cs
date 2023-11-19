@@ -1,6 +1,8 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
+using NLog;
 using SurveyApplication.API.Middleware;
 using SurveyApplication.Application;
 using SurveyApplication.Application.Services.Interfaces;
@@ -8,23 +10,23 @@ using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Persistence;
 using SurveyApplication.Utility.LogUtils;
-using System.Reflection;
 
 namespace SurveyApplication.API;
 
 public class Startup
 {
-    private IConfiguration Configuration { get; }
-
     [Obsolete("Obsolete")]
     public Startup(IConfiguration configuration)
     {
         //Config NLog
         var appBasePath = Directory.GetCurrentDirectory();
-        NLog.GlobalDiagnosticsContext.Set("appbasepath", appBasePath);
-        NLog.LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config")).GetCurrentClassLogger();
+        GlobalDiagnosticsContext.Set("appbasepath", appBasePath);
+        LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"))
+            .GetCurrentClassLogger();
         Configuration = configuration;
     }
+
+    private IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -61,7 +63,8 @@ public class Startup
                     Description = "Survey Management Api",
                     Url = new Uri($"{httpReq.Scheme}://{httpReq.Host.Value}")
                 };
-                swaggerDoc.Servers = new List<OpenApiServer>() { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
+                swaggerDoc.Servers = new List<OpenApiServer>
+                    { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
             });
         });
 
@@ -169,15 +172,13 @@ public class Startup
                         var logManager = new LoggerManager();
                         logManager.LogInfo("Survey: MigrationId  List:");
                         for (var i = migrationIds.Count - 1; i >= 0; i--)
-                        {
                             logManager.LogInfo($"Survey: MigrationId => {migrationIds[i]}");
-                        }
                     }
                 }
             }
 
             // 1. Migration
-            if (settings.AutoMigration)   // automatic migrations: add migration + update database
+            if (settings.AutoMigration) // automatic migrations: add migration + update database
             {
                 context.Database.Migrate();
             }
@@ -189,7 +190,7 @@ public class Startup
                     var efVersion = $"{version.Major}.{version.Minor}.{version.Build}";
                     foreach (var mid in migrationIds)
                     {
-                        string sql =
+                        var sql =
                             $@" IF NOT EXISTS ( SELECT 1 FROM __EFMigrationsHistory WHERE MigrationId = '{mid}' )
                                 BEGIN
                                     INSERT INTO __EFMigrationsHistory(MigrationId,ProductVersion) VALUES ('{mid}','{efVersion}')
@@ -204,7 +205,9 @@ public class Startup
             if (string.IsNullOrEmpty(buildNumber) || buildNumber == "#{Octopus.Release.Number}" ||
                 string.IsNullOrEmpty(migrationId) || enviroment == "#{Octopus.Environment.Name}") return;
             {
-                var existed = context.ReleaseHistory.FirstOrDefault(x => x.BuildNumber == buildNumber && x.MigrationId == migrationId);
+                var existed =
+                    context.ReleaseHistory.FirstOrDefault(x =>
+                        x.BuildNumber == buildNumber && x.MigrationId == migrationId);
                 if (existed != null) return;
                 context.ReleaseHistory.Add(new ReleaseHistory
                 {

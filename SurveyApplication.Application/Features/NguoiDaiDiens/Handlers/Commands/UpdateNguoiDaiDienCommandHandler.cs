@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.NguoiDaiDien.Validators;
-using SurveyApplication.Application.DTOs.NguoiDaiDien.Validators;
-using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.NguoiDaiDiens.Requests.Commands;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.NguoiDaiDiens.Handlers.Commands;
 
-public class UpdateNguoiDaiDienCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateNguoiDaiDienCommand, BaseCommandResponse>
+public class UpdateNguoiDaiDienCommandHandler : BaseMasterFeatures,
+    IRequestHandler<UpdateNguoiDaiDienCommand, BaseCommandResponse>
 {
     private readonly IMapper _mapper;
 
@@ -19,7 +18,8 @@ public class UpdateNguoiDaiDienCommandHandler : BaseMasterFeatures, IRequestHand
         _mapper = mapper;
     }
 
-    public async Task<BaseCommandResponse> Handle(UpdateNguoiDaiDienCommand request, CancellationToken cancellationToken)
+    public async Task<BaseCommandResponse> Handle(UpdateNguoiDaiDienCommand request,
+        CancellationToken cancellationToken)
     {
         var response = new BaseCommandResponse();
         var validator = new UpdateNguoiDaiDienDtoValidator(_surveyRepo.NguoiDaiDien);

@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
@@ -76,16 +75,13 @@ namespace SurveyApplication.Utility
         }
 
         /// <summary>
-        /// Có dấu sang không dâu
+        ///     Có dấu sang không dâu
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         public static string ConvertToCamelString(this string str)
         {
-            if (str == null)
-            {
-                return null;
-            }
+            if (str == null) return null;
 
             // Creates a TextInfo based on the "en-US" culture.
             var textInfo = new CultureInfo("en-US", false).TextInfo;
@@ -96,20 +92,16 @@ namespace SurveyApplication.Utility
         }
 
         /// <summary>
-        /// Có dấu sang không dâu
+        ///     Có dấu sang không dâu
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         private static string ConvertToUnSign(this string str)
         {
-            if (str == null)
-            {
-                return null;
-            }
+            if (str == null) return null;
 
             var vietnameseSigns = new[]
             {
-
                 "aAeEoOuUiIdDyY",
 
                 "áàạảãâấầậẩẫăắằặẳẵ",
@@ -139,20 +131,14 @@ namespace SurveyApplication.Utility
                 "ýỳỵỷỹ",
 
                 "ÝỲỴỶỸ"
-
             };
             //Tiến hành thay thế , lọc bỏ dấu cho chuỗi
-            for (int i = 1; i < vietnameseSigns.Length; i++)
-            {
-                for (int j = 0; j < vietnameseSigns[i].Length; j++)
-                {
-                    str = str.Replace(vietnameseSigns[i][j], vietnameseSigns[0][i - 1]);
-                }
-            }
+            for (var i = 1; i < vietnameseSigns.Length; i++)
+            for (var j = 0; j < vietnameseSigns[i].Length; j++)
+                str = str.Replace(vietnameseSigns[i][j], vietnameseSigns[0][i - 1]);
 
             var reg = new Regex("[/*'\",_&#^@]");
             return reg.Replace(str, " ");
-
         }
 
         public static string ConvertDayOfWeekToTcvn(this DayOfWeek day)

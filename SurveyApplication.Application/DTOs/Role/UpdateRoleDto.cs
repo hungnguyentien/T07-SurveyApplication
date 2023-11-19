@@ -1,9 +1,8 @@
-﻿namespace SurveyApplication.Application.DTOs.Role
+﻿namespace SurveyApplication.Application.DTOs.Role;
+
+public class UpdateRoleDto
 {
-    public class UpdateRoleDto
-    {
-        public string? Id { get; set; }
-        public string? Name { get; set; }
-        public List<MatrixPermission>? MatrixPermission { get; set; }
-    }
+    public string? Id { get; set; }
+    public string? Name { get; set; }
+    public List<MatrixPermission>? MatrixPermission { get; set; }
 }

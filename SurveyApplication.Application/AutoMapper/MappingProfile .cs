@@ -1,12 +1,7 @@
-﻿using Profile = AutoMapper.Profile;
+﻿using AutoMapper;
 
-namespace DASHangfire.Application.AutoMapper
+namespace DASHangfire.Application.AutoMapper;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
-    {
-        public MappingProfile()
-        {
-
-        }
-    }
 }

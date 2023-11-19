@@ -50,7 +50,7 @@
   margin-top: 15px;
 }
 
-* :host {
+/* * :host {
   .sd-table__cell--header .sv-vue-title-additional-div,
   .sd-table__cell--header,
   .sd-table__cell {
@@ -61,8 +61,8 @@
 
   .sd-table__cell--header .sv-vue-title-additional-div input,
   .sd-table__cell--header input,
-  .sd-table__cell input{
-   background: #fff !important;
+  .sd-table__cell input {
+    background: #fff !important;
   }
 
   .sd-table__cell--header {
@@ -70,7 +70,7 @@
   }
 
   .sd-table__row .sd-table__cell--header:last-child,
-  .sd-table__row .sd-table__cell:last-child, 
+  .sd-table__row .sd-table__cell:last-child,
   .sd-table__cell--header:last-child {
     border-right: 1px solid rgba(0, 0, 0, 0.16) !important;
   }
@@ -79,6 +79,10 @@
     .sd-table__cell:not(.sd-table__cell--actions):not(
       .sd-table__cell--action
     ):not(.sd-table__cell--empty.sd-table__cell--error) {
-      width: max-content;
+    width: max-content;
   }
-}
+
+  td.sd-table__cell {
+    border-top-width: 0px;
+  }
+} */

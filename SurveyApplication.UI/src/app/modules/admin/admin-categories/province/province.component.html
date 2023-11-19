@@ -4,9 +4,11 @@
   </ng-template>
   <ng-template pTemplate="footer">
     <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
-      (click)="cd.reject()"></button>
+            (click)="cd.reject()">
+    </button>
     <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
-      label="Xóa" (click)="cd.accept()"></button>
+            label="Xóa" (click)="cd.accept()">
+    </button>
   </ng-template>
 </p-confirmDialog>
 
@@ -15,24 +17,26 @@
   <div class="d-flex mt-3">
     <div>
       <button (click)=" Add()" data-toggle="modal" data-target="#createForm" pButton type="button" icon="pi pi-plus"
-        label="Thêm mới" class="custom-button"></button>
+              label="Thêm mới" class="custom-button">
+      </button>
     </div>
     <div class="ml-3">
       <button pButton (click)=" Import()" data-toggle="modal" data-target="#importForm" type="button" icon="pi pi-file-import" label="Import" class="custom-button"
-        style="background-color: green;">
+              style="background-color: green;">
       </button>
     </div>
     <div class="ml-3">
       <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
-        *ngIf="selectedTinhThanh && selectedTinhThanh.length > 0" class="custom-button"
-        style="background-color: #ea5c5c;"></button>
+              *ngIf="selectedTinhThanh && selectedTinhThanh.length > 0" class="custom-button"
+              style="background-color: #ea5c5c;">
+      </button>
     </div>
   </div>
   <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
     <div class="form-group mb-2">
       <label for="keyWord" class="sr-only">Search</label>
       <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"(ngModelChange)="onSubmitSearch()"
-        [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+             [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá "/>
     </div>
     <button type="submit" class="btn btn-primary ml-2 mb-2">
       <i class="pi pi-search"></i>
@@ -41,11 +45,11 @@
 </div>
 <div class="card mt-3">
   <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)" [scrollable]="true"
-    scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTinhThanh" dataKey="id"
-    styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
-    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
-    [resizableColumns]="true">
+           scrollHeight="calc(100vh - 396px)" [(selection)]="selectedTinhThanh" dataKey="id"
+           styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [totalRecords]="dataTotalRecords"
+           currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0"
+           [resizableColumns]="true">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 40px;">
@@ -99,10 +103,16 @@
           <span class="ml-1 vertical-align-middle">{{ rowData.type }}</span>
         </td>
         <td>
-          <a class="m-3" (click)="Edit(rowData)"><span class="pi pi-pencil" title="Cập nhật"
-              aria-hidden="true"></span></a>
-          <a class="m-3" title="Xoá" (click)="Delete(rowData)"><span class="pi pi-trash" style="color: red;"
-              aria-hidden="true"></span></a>
+          <a class="m-3" (click)="Edit(rowData)">
+            <span class="pi pi-pencil" title="Cập nhật"
+                  aria-hidden="true">
+            </span>
+          </a>
+          <a class="m-3" title="Xoá" (click)="Delete(rowData)">
+            <span class="pi pi-trash" style="color: red;"
+                  aria-hidden="true">
+            </span>
+          </a>
         </td>
       </tr>
     </ng-template>
@@ -141,7 +151,7 @@
 <!-- modal -->
 <form *ngIf="FormTinhThanh" #form="ngForm" [formGroup]="FormTinhThanh" (ngSubmit)="onSubmit()">
   <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '40vw'}" [draggable]="false" [resizable]="true"
-    [maximizable]="true">
+            [maximizable]="true">
     <ng-template pTemplate="header">
       <h5 class="modal-title">
         {{ showadd === true ? "Thêm mới tỉnh thành phố " : "Cập nhật tỉnh thành phố " }}
@@ -170,7 +180,7 @@
         <div class="form-group">
           <label for="type" class="col-form-label">Cấp Tỉnh/Thành Phố: <span style="color: red;">*</span></label>
           <input type="text" formControlName="type" class="form-control" id="type" pInputText placeholder="Nhập Cấp Tỉnh/Thành Phố"
-            [ngClass]="{
+                 [ngClass]="{
                 'is-invalid': submitted && f('type').errors
               }">
           <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormTinhThanh.controls['type'].valid && 
@@ -183,7 +193,8 @@
     <ng-template pTemplate="footer">
       <button pButton (click)="visible = false" type="button" label="Đóng" class="custom-button surface-600"></button>
       <button pButton *ngIf="!checkBtnDetail==true" [disabled]="!FormTinhThanh.valid" type="submit" icon="pi pi-save" label="Lưu"
-        class="custom-button"></button>
+              class="custom-button">
+      </button>
     </ng-template>
   </p-dialog>
 </form>

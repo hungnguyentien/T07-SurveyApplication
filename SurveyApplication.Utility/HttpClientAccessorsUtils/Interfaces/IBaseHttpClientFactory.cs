@@ -1,5 +1,4 @@
-﻿
-namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces
+﻿namespace SurveyApplication.Utility.HttpClientAccessorsUtils.Interfaces
 {
     public interface IBaseHttpClientFactory
     {

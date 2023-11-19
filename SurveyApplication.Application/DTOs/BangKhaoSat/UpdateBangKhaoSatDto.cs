@@ -11,8 +11,7 @@ public class UpdateBangKhaoSatDto : BaseDto, IBangKhaoSatDto
     [NotMapped]
     public List<BangKhaoSatCauHoiDto>? BangKhaoSatCauHoi { get; set; }
 
-    [NotMapped]
-    public List<BangKhaoSatCauHoiGroup>? BangKhaoSatCauHoiGroup { get; set; }
+    [NotMapped] public List<BangKhaoSatCauHoiGroup>? BangKhaoSatCauHoiGroup { get; set; }
 
     public string MaBangKhaoSat { get; set; }
     public int? IdLoaiHinh { get; set; }

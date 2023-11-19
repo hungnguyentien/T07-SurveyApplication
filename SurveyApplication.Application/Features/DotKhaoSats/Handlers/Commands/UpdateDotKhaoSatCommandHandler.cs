@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using SurveyApplication.Application.DTOs.DotKhaoSat.Validators;
-using SurveyApplication.Application.DTOs.DotKhaoSat.Validators;
-using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.DotKhaoSats.Requests.Commands;
-using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.DotKhaoSats.Handlers.Commands;
 
-public class UpdateDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateDotKhaoSatCommand, BaseCommandResponse>
+public class UpdateDotKhaoSatCommandHandler : BaseMasterFeatures,
+    IRequestHandler<UpdateDotKhaoSatCommand, BaseCommandResponse>
 {
     private readonly IMapper _mapper;
 
@@ -22,8 +21,9 @@ public class UpdateDotKhaoSatCommandHandler : BaseMasterFeatures, IRequestHandle
 
     public async Task<BaseCommandResponse> Handle(UpdateDotKhaoSatCommand request, CancellationToken cancellationToken)
     {
-        if(await _surveyRepo.BangKhaoSat.Exists(x => x.IdDotKhaoSat == request.DotKhaoSatDto.Id)) throw new FluentValidation.ValidationException("Đợt khảo sát đã được sử dụng");
-        
+        if (await _surveyRepo.BangKhaoSat.Exists(x => x.IdDotKhaoSat == request.DotKhaoSatDto.Id))
+            throw new ValidationException("Đợt khảo sát đã được sử dụng");
+
         var response = new BaseCommandResponse();
         var validator = new UpdateDotKhaoSatDtoValidator(_surveyRepo.DotKhaoSat);
         var validatorResult = await validator.ValidateAsync(request.DotKhaoSatDto, cancellationToken);

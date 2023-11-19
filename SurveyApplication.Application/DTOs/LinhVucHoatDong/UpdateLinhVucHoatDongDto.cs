@@ -1,18 +1,10 @@
-﻿using SurveyApplication.Application.DTOs.LinhVucHoatDong;
-using SurveyApplication.Application.DTOs.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using SurveyApplication.Application.DTOs.Common;
 
-namespace SurveyApplication.Application.DTOs.LinhVucHoatDong
+namespace SurveyApplication.Application.DTOs.LinhVucHoatDong;
+
+public class UpdateLinhVucHoatDongDto : BaseDto, ILinhVucHoatDongDto
 {
-    public class UpdateLinhVucHoatDongDto : BaseDto, ILinhVucHoatDongDto
-    {
-        public string MaLinhVuc { get; set; }
-        public string? TenLinhVuc { get; set; }
-        public string? MoTa { get; set; }
-    }
+    public string MaLinhVuc { get; set; }
+    public string? TenLinhVuc { get; set; }
+    public string? MoTa { get; set; }
 }

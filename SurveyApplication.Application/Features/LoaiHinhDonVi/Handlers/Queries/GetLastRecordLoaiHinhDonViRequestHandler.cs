@@ -19,7 +19,8 @@ public class GetLastRecordLoaiHinhDonViRequestHandler : BaseMasterFeatures,
 
     public async Task<string> Handle(GetLastRecordLoaiHinhDonViRequest request, CancellationToken cancellationToken)
     {
-        var lastEntity = await _surveyRepo.LoaiHinhDonVi.GetAllQueryable().OrderByDescending(e => e.Id).FirstOrDefaultAsync();
+        var lastEntity = await _surveyRepo.LoaiHinhDonVi.GetAllQueryable().OrderByDescending(e => e.Id)
+            .FirstOrDefaultAsync();
 
         if (lastEntity != null)
         {

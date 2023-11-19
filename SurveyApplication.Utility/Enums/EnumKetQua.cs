@@ -11,5 +11,4 @@ namespace SurveyApplication.Utility.Enums
             [Description("Hoàn thành")] HoanThanh = 2
         }
     }
-};
-
+}

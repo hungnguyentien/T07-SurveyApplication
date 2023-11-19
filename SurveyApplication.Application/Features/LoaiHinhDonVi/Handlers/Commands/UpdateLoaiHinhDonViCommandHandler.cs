@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
-using SurveyApplication.Application.DTOs.LoaiHinhDonVi.Validators;
-using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Commands;
-using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.LoaiHinhDonVi.Handlers.Commands;
 
-public class UpdateLoaiHinhDonViCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateLoaiHinhDonViCommand, BaseCommandResponse>
+public class UpdateLoaiHinhDonViCommandHandler : BaseMasterFeatures,
+    IRequestHandler<UpdateLoaiHinhDonViCommand, BaseCommandResponse>
 {
     private readonly IMapper _mapper;
 
@@ -20,10 +19,12 @@ public class UpdateLoaiHinhDonViCommandHandler : BaseMasterFeatures, IRequestHan
         _mapper = mapper;
     }
 
-    public async Task<BaseCommandResponse> Handle(UpdateLoaiHinhDonViCommand request, CancellationToken cancellationToken)
+    public async Task<BaseCommandResponse> Handle(UpdateLoaiHinhDonViCommand request,
+        CancellationToken cancellationToken)
     {
-        if (await _surveyRepo.DonVi.Exists(x => request.LoaiHinhDonViDto != null && !x.Deleted && x.IdLoaiHinh == request.LoaiHinhDonViDto.Id))
-            throw new FluentValidation.ValidationException("Loại hình đơn vị đã được sử dụng");
+        if (await _surveyRepo.DonVi.Exists(x =>
+                request.LoaiHinhDonViDto != null && !x.Deleted && x.IdLoaiHinh == request.LoaiHinhDonViDto.Id))
+            throw new ValidationException("Loại hình đơn vị đã được sử dụng");
 
         var response = new BaseCommandResponse();
         var validator = new UpdateLoaiHinhDonViDtoValidator(_surveyRepo.LoaiHinhDonVi);

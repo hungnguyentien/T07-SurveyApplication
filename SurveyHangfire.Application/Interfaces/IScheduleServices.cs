@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Hangfire.Application.Models;
 
-namespace Hangfire.Application.Interfaces
+namespace Hangfire.Application.Interfaces;
+
+public interface IScheduleServices
 {
-    public interface IScheduleServices
-    {
-        Task<ServiceResult> UpdateOrAddJob(string jobName, string service, string apiUrl, string cronString);
-    }
+    Task<ServiceResult> UpdateOrAddJob(string jobName, string service, string apiUrl, string cronString);
 }

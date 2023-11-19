@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
 using SurveyApplication.Application.DTOs.GuiEmail.Validators;
-using SurveyApplication.Application.DTOs.GuiEmail.Validators;
-using SurveyApplication.Application.Exceptions;
 using SurveyApplication.Application.Features.GuiEmail.Requests.Commands;
-using SurveyApplication.Domain;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Persistence;
 
 namespace SurveyApplication.Application.Features.GuiEmail.Handlers.Commands;
 
-public class UpdateGuiEmailCommandHandler : BaseMasterFeatures, IRequestHandler<UpdateGuiEmailCommand, BaseCommandResponse>
+public class UpdateGuiEmailCommandHandler : BaseMasterFeatures,
+    IRequestHandler<UpdateGuiEmailCommand, BaseCommandResponse>
 {
     private readonly IMapper _mapper;
 
