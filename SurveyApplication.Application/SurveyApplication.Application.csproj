@@ -35,4 +35,10 @@
     <Folder Include="Features\LinhVucHoatDong\Requests\Commands\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="GemBox.Document">
+      <HintPath>..\packges\GemBox.Bundle\net6.0-windows7.0\GemBox.Document.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

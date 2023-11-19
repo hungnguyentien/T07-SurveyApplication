@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Globalization;
 using FluentValidation;
+using GemBox.Document;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -19,7 +20,8 @@ namespace SurveyApplication.Application.Features.PhieuKhaoSat.Handlers.Queries;
 public class DownloadPhieuRequestHandler : BaseMasterFeatures,
     IRequestHandler<DownloadPhieuRequest, DownloadPhieuDto>
 {
-    private const string PathJson = @"TempData\MAU_PKS_DOANH_NGHIEP.docx";
+    private const string PathDocx = @"TempData\MAU_PKS_DOANH_NGHIEP.docx";
+    private const string PathPdf = @"TempData\MAU_PKS_DOANH_NGHIEP.pdf";
 
     public DownloadPhieuRequestHandler(ISurveyRepositoryWrapper surveyRepository, IOptions<EmailSettings> emailSettings)
         : base(
@@ -57,7 +59,8 @@ public class DownloadPhieuRequestHandler : BaseMasterFeatures,
                         new TinhTp();
         var diaChi = new List<string> { donVi.DiaChi ?? "", xaPhuong.Name, quanHuyen.Name, tinhThanh.Name };
         byte[] content;
-        var fileName = $"PKS_{bks?.TenBangKhaoSat}_{donVi.TenDonVi}_MST_{donVi.MaSoThue}.docx";
+        //var fileName = $"PKS_{bks?.TenBangKhaoSat}_{donVi.TenDonVi}_MST_{donVi.MaSoThue}.docx";
+        var fileName = $"PKS_{bks?.TenBangKhaoSat}_{donVi.TenDonVi}_MST_{donVi.MaSoThue}_{DateTime.Now:dd-MM-yyyy_HH:mm:ss}.pdf";
         var dict = new Dictionary<string, string>
         {
             { "HO_TEN", nguoiDaiDien.HoTen },
@@ -68,9 +71,9 @@ public class DownloadPhieuRequestHandler : BaseMasterFeatures,
             { "DIA_CHI", string.Join(",", diaChi.Where(x => !string.IsNullOrEmpty(x))) },
             { "DIEN_THOAI_2", donVi.SoDienThoai },
             { "EMAIL_2", donVi.Email },
-            { "DayOfWeek", DateTime.Now.DayOfWeek.ConvertDayOfWeekToTcvn() },
-            //{ "Day", DateTime.Now.Day.ToString(CultureInfo.InvariantCulture) },
-            { "Day", "" },
+            //{ "DayOfWeek", DateTime.Now.DayOfWeek.ConvertDayOfWeekToTcvn() },
+            { "DayOfWeek", "" },
+            { "Day", DateTime.Now.Day.ToString(CultureInfo.InvariantCulture) },
             { "Month", DateTime.Now.Month.ToString(CultureInfo.InvariantCulture) }
         };
         var dictLongText = new Dictionary<string, string>();
@@ -92,84 +95,86 @@ public class DownloadPhieuRequestHandler : BaseMasterFeatures,
                     switch (cauHoi.LoaiCauHoi)
                     {
                         case (int)EnumCauHoi.Type.Radio:
-                        {
-                            dictSymbolChar.Add(
-                                $"{cauHoi.MaCauHoi}_{dictKq[cauHoi.MaCauHoi]?.ToString().ConvertToCamelString()}",
-                                "F09C");
-                            if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
-                                dict.Add($"{cauHoi.MaCauHoi}_Comment",
-                                    dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
+                            {
+                                dictSymbolChar.Add(
+                                    $"{cauHoi.MaCauHoi}_{dictKq[cauHoi.MaCauHoi]?.ToString().ConvertToCamelString()}",
+                                    "F09C");
+                                if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
+                                    dict.Add($"{cauHoi.MaCauHoi}_Comment",
+                                        dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
 
-                            break;
-                        }
+                                break;
+                            }
                         case (int)EnumCauHoi.Type.CheckBox:
-                        {
-                            var lstCauTraLoi =
-                                JsonConvert.DeserializeObject<List<string>>(dictKq[cauHoi.MaCauHoi]?.ToString() ??
-                                                                            "") ?? new List<string>();
-                            foreach (var cauTraLoi in lstCauTraLoi)
-                                dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{cauTraLoi.ConvertToCamelString()}", "F052");
+                            {
+                                var lstCauTraLoi =
+                                    JsonConvert.DeserializeObject<List<string>>(dictKq[cauHoi.MaCauHoi]?.ToString() ??
+                                                                                "") ?? new List<string>();
+                                foreach (var cauTraLoi in lstCauTraLoi)
+                                    dictSymbolChar.Add($"{cauHoi.MaCauHoi}_{cauTraLoi.ConvertToCamelString()}", "F052");
 
-                            if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
-                                dict.Add($"{cauHoi.MaCauHoi}_Comment",
-                                    dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
+                                if (!dict.ContainsKey($"{cauHoi.MaCauHoi}_Comment"))
+                                    dict.Add($"{cauHoi.MaCauHoi}_Comment",
+                                        dictKq[$"{cauHoi.MaCauHoi}-Comment"]?.ToString() ?? "");
 
-                            break;
-                        }
+                                break;
+                            }
                         case (int)EnumCauHoi.Type.MultiTextMatrix:
-                        {
-                            var objCauTraLoi =
-                                JsonConvert.DeserializeObject<Hashtable>(dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
-                            foreach (var hang in lstHang.Where(x => x.IdCauHoi == cauHoi.Id))
                             {
-                                var objCauTraLoiHang =
-                                    JsonConvert.DeserializeObject<Hashtable>(objCauTraLoi?[hang.MaHang]?.ToString() ??
-                                                                             "");
-                                foreach (var cot in lstCot.Where(x => x.IdCauHoi == cauHoi.Id))
-                                    dict.Add($"{cauHoi.MaCauHoi}_{hang.MaHang}_{cot.MaCot}",
-                                        objCauTraLoiHang?[cot.MaCot]?.ToString() ?? "");
-                            }
+                                var objCauTraLoi =
+                                    JsonConvert.DeserializeObject<Hashtable>(dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
+                                foreach (var hang in lstHang.Where(x => x.IdCauHoi == cauHoi.Id))
+                                {
+                                    var objCauTraLoiHang =
+                                        JsonConvert.DeserializeObject<Hashtable>(objCauTraLoi?[hang.MaHang]?.ToString() ??
+                                                                                 "");
+                                    foreach (var cot in lstCot.Where(x => x.IdCauHoi == cauHoi.Id))
+                                        dict.Add($"{cauHoi.MaCauHoi}_{hang.MaHang}_{cot.MaCot}",
+                                            objCauTraLoiHang?[cot.MaCot]?.ToString() ?? "");
+                                }
 
-                            break;
-                        }
+                                break;
+                            }
                         case (int)EnumCauHoi.Type.LongText:
-                        {
-                            var lstCauTraLoi = (dictKq[cauHoi.MaCauHoi]?.ToString() ?? "").Split("\n");
-                            for (var i = 0; i < 5; i++)
                             {
-                                dictLongText.Add($"{cauHoi.MaCauHoi}_{i}", lstCauTraLoi.ElementAtOrDefault(i) ?? "");
-                            }
+                                var lstCauTraLoi = (dictKq[cauHoi.MaCauHoi]?.ToString() ?? "").Split("\n");
+                                for (var i = 0; i < 5; i++)
+                                {
+                                    dictLongText.Add($"{cauHoi.MaCauHoi}_{i}", lstCauTraLoi.ElementAtOrDefault(i) ?? "");
+                                }
 
-                            break;
-                        }
+                                break;
+                            }
                         default:
                             dict.Add($"{cauHoi.MaCauHoi}", dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
                             break;
                     }
         }
 
-        using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PathJson));
+        using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PathDocx));
         using (var ms = new MemoryStream())
         {
             await r.BaseStream.CopyToAsync(ms, cancellationToken);
             content = await Ultils.ReplaceDocxFile(ms.ToArray(), dict, dictSymbolChar, dictLongText);
         }
 
-        //Document document = new Document();
-        //document.LoadFromFile(@"E:\work\documents\TestSample.docx");
-
-        ////Convert Word to PDF
-        //document.SaveToFile("toPDF.PDF", FileFormat.PDF);
-
-        //var document = WordprocessingDocument.Open(Path.Combine(Directory.GetCurrentDirectory(), PathJson), false);
-        //HtmlConverterSettings settings = new HtmlConverterSettings();
-        //XElement html = HtmlConverter.ConvertToHtml(document, settings);
-
         return new DownloadPhieuDto
         {
             FileName = fileName,
-            ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            FileContents = content
+            ContentType = "application/pdf",
+            //ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            FileContents = await ConvertToPdf(content, cancellationToken)
         };
+    }
+
+    private static async Task<byte[]> ConvertToPdf(byte[] content, CancellationToken cancellationToken)
+    {
+        ComponentInfo.SetLicense("DH5L-ED6Q-R7O0-DY0H");
+        var document = DocumentModel.Load(new MemoryStream(content));
+        document.Save(Path.Combine(Directory.GetCurrentDirectory(), PathPdf));
+        using var r2 = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PathPdf));
+        using var ms = new MemoryStream();
+        await r2.BaseStream.CopyToAsync(ms, cancellationToken);
+        return ms.ToArray();
     }
 }

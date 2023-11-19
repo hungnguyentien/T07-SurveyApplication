@@ -578,29 +578,48 @@ $baby-blue: #f8faff;
   margin: auto;
 }
 
-.sd-table__cell--header .sv-vue-title-additional-div,
-.sd-table__cell--header,
-.sd-table__cell {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.16);
-  background-color: #fff !important;
-  border-left: 1px solid rgba(0, 0, 0, 0.16);
-}
+.sd-table {
+  &__cell {
+    border-bottom: 1px solid #e7e6e6;
+    background-color: #fff !important;
+    border-left: 1px solid #e7e6e6;
+    input {
+      background: #fff !important;
+      box-shadow: none;
+    }
 
-.sd-table__cell--header .sv-vue-title-additional-div input,
-.sd-table__cell--header input,
-.sd-table__cell input {
-  background: #fff !important;
-  box-shadow: none;
-}
+    &----header {
+      border-bottom: 1px solid #e7e6e6;
+      background-color: #fff !important;
+      border-left: 1px solid #e7e6e6;
+      border-top: 1px solid #e7e6e6;
+      .sv-vue-title-additional-div {
+        border-bottom: 1px solid #e7e6e6;
+        background-color: #fff !important;
+        border-left: 1px solid #e7e6e6;
+      }
 
-.sd-table__cell--header {
-  border-top: 1px solid rgba(0, 0, 0, 0.16);
-}
+      &:last-child {
+        border-right: 1px solid #e7e6e6 !important;
+      }
+    }
+  }
 
-.sd-table__row .sd-table__cell--header:last-child,
-.sd-table__row .sd-table__cell:last-child,
-.sd-table__cell--header:last-child {
-  border-right: 1px solid rgba(0, 0, 0, 0.16) !important;
+  &__row {
+    .sd-table {
+      &__cell {
+        &:last-child {
+          border-right: 1px solid #e7e6e6 !important;
+        }
+
+        &--header {
+          &:last-child {
+            border-right: 1px solid #e7e6e6 !important;
+          }
+        }
+      }
+    }
+  }
 }
 
 .sd-root-modern:not(.sd-root-modern--mobile)
@@ -611,14 +630,14 @@ $baby-blue: #f8faff;
 }
 
 td.sd-table__cell--empty {
-  background-color: #eee !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.16) !important;
+  background-color: #e7e6e6 !important;
+  border-top: 1px solid #e7e6e6 !important;
 }
 
 th.sd-table__cell {
-  background-color: #eee !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.16) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.16) !important;
+  background-color: #e7e6e6 !important;
+  border-top: 1px solid #e7e6e6 !important;
+  border-bottom: 1px solid #e7e6e6 !important;
 }
 
 td.sd-table__cell {
@@ -628,7 +647,7 @@ td.sd-table__cell {
 tr:last-child {
   td {
     &.sd-table__cell {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.16) !important;
+      border-bottom: 1px solid #e7e6e6 !important;
     }
   }
 }
