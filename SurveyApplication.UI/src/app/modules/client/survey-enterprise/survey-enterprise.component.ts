@@ -85,6 +85,7 @@ export class SurveyEnterpriseComponent {
                   );
               //TODO đồng bộ kết quả sau khi hoàn thành khảo sát
               if (res.success && status === KqTrangThai.HoanThanh) {
+                this.note = false;
                 Utils.downloadPhieu(
                   this.phieuKhaoSatService,
                   this.generalInfo.data
@@ -109,7 +110,6 @@ export class SurveyEnterpriseComponent {
             },
             complete: () => {
               this.spinner.hide();
-              this.note = false;
             },
           });
         },

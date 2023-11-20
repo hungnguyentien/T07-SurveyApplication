@@ -348,32 +348,17 @@ export default class Utils {
     });
 
     let dataGuiMail = data;
+    let allowComlepte = false;
     survey.onCompleting.add((sender, options) => {
       if (status === KqTrangThai.HoanThanh) {
-        options.allow = false;
-        options.allowComplete = false;
+        if (!allowComlepte) options.allow = false;
         confirmationService?.confirm({
           message: `Sau khi hoàn thành khảo sát bạn sẽ không thể chỉnh sửa lại thông tin!`,
           header: 'info',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
-            survey.onComplete.add((sender, options) => {
-              // Hoàn thành khảo sát
-              let data = sender.data;
-              survey.completedHtml = `<div class="custom-complete">
-                                          <h3>Cảm ơn phản hồi của bạn!</h3>
-                                          <p class="note-complete">Vui lòng tải phiếu, in ký, đóng dấu và gửi về địa chỉ: Công ty Cổ phần tư vấn giải pháp Trí tuệ nhân tạo, Số 15 Lô 1E, Trung Yên 11C, phường Trung Hòa, quận Cầu Giấy, thành phố Hà Nội</p>
-                                          <a class="btn btn-tai-phieu" href="${environment.apiUrl}/PhieuKhaoSat/DownloadTemplateSurvey/${dataGuiMail}">Tải phiếu</a>
-                                        </div>`;
-
-              Object.keys(data).length !== 0 &&
-                subscribe &&
-                subscribe(sender, status);
-            });
-          },
-          reject: () => {
-            options.allow = false;
-            options.allowComplete = false;
+            allowComlepte = true;
+            survey.doComplete();
           },
         });
       }

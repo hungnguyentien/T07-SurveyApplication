@@ -140,13 +140,13 @@ public class DownloadPhieuRequestHandler : BaseMasterFeatures,
                                 var lstCauTraLoi = (dictKq[cauHoi.MaCauHoi]?.ToString() ?? "").Split("\n");
                                 for (var i = 0; i < 5; i++)
                                 {
-                                    dictLongText.Add($"{cauHoi.MaCauHoi}_{i}", lstCauTraLoi.ElementAtOrDefault(i) ?? "");
+                                    dictLongText.Add($"{cauHoi.MaCauHoi}_{i}", lstCauTraLoi.ElementAtOrDefault(i) ?? "……………………………………………………………………………………......");
                                 }
 
                                 break;
                             }
                         default:
-                            dict.Add($"{cauHoi.MaCauHoi}", dictKq[cauHoi.MaCauHoi]?.ToString() ?? "");
+                            dict.Add($"{cauHoi.MaCauHoi}", dictKq[cauHoi.MaCauHoi]?.ToString() ?? "……………………………………………………………………………………......");
                             break;
                     }
         }
