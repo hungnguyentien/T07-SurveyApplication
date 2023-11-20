@@ -1,4 +1,5 @@
 using System.Reflection;
+using AspNetCoreRateLimit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
@@ -43,6 +44,19 @@ public class Startup
                     .AllowAnyHeader());
         });
         services.AddSingleton<ILoggerManager, LoggerManager>();
+
+        #region Configurations RateLimited
+
+        services.AddMemoryCache();
+        services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+        services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+        services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+
+        #endregion
+
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,13 +93,16 @@ public class Startup
         app.UseAuthorization();
 
         app.UseCors("CorsPolicy");
+        // Configurations RateLimited
+        app.UseIpRateLimiting();
 
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
         // Auto Migration
         AutoMigration(Configuration, app);
         //TODO BUG
         UpdatePermissionTable(serviceProvider);
+        //Configurations IpRateLimitPolicies
+        IpPolicyStore(serviceProvider);
     }
 
     private static void AddSwaggerDoc(IServiceCollection services)
@@ -226,5 +243,11 @@ public class Startup
             logManager.LogError(ex, $"AutoMigration StackTrace: {ex.StackTrace}");
             logManager.LogError(ex, $"AutoMigration Message: {ex.Message}");
         }
+    }
+
+    private static void IpPolicyStore(IServiceProvider serviceProvider)
+    {
+        var ipPolicyStore = serviceProvider.GetRequiredService<IIpPolicyStore>();
+        ipPolicyStore.SeedAsync().GetAwaiter().GetResult();
     }
 }
