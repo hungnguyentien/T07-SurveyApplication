@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Model } from 'survey-core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 
 import { PhieuKhaoSatService } from '@app/services';
@@ -31,7 +31,8 @@ export class SurveyEnterpriseComponent {
     private router: Router,
     private spinner: NgxSpinnerService,
     private messageService: MessageService,
-    private phieuKhaoSatService: PhieuKhaoSatService
+    private phieuKhaoSatService: PhieuKhaoSatService,
+    private confirmationService: ConfirmationService
   ) {}
 
   async ngOnInit() {
@@ -118,7 +119,8 @@ export class SurveyEnterpriseComponent {
         this.messageService,
         this.phieuKhaoSatService,
         'phieu/khao-sat-thong-tin-chung',
-        'phieu/khao-sat-doanh-nghiep'
+        'phieu/khao-sat-doanh-nghiep',
+        this.confirmationService
       );
     };
 

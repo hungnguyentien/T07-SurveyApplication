@@ -1,5 +1,9 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import {
+  ConfirmationService,
+  MessageService,
+  PrimeNGConfig,
+} from 'primeng/api';
 import { Model } from 'survey-core';
 import { Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
@@ -132,6 +136,12 @@ export default class Utils {
     return frm?.reset();
   };
 
+  static configSurveyRemoveIcons = (firstChild: HTMLElement) => {
+    const classListArray = Array.from(firstChild?.classList || []);
+    const iconsIndex = classListArray.indexOf('icons');
+    if (firstChild && iconsIndex !== -1) firstChild.remove();
+  };
+
   static configSurvey = (
     configJson: any,
     router: Router | undefined,
@@ -142,7 +152,8 @@ export default class Utils {
     messageService: MessageService | undefined = undefined,
     phieuKhaoSatService: PhieuKhaoSatService | undefined = undefined,
     linkBackPage: string = 'phieu/thong-tin-chung',
-    linkKsLai: string = 'phieu/thong-tin-khao-sat'
+    linkKsLai: string = 'phieu/thong-tin-khao-sat',
+    confirmationService: ConfirmationService | undefined = undefined
   ) => {
     let status = KqTrangThai.HoanThanh;
     const survey = new Model(configJson);
@@ -168,23 +179,32 @@ export default class Utils {
           '#sv-nav-back-page, #sv-nav-clear-page, #sv-nav-complete'
         )
         .forEach((el, i) => {
-          el.id === 'sv-nav-back-page' &&
-            el.insertAdjacentHTML(
-              'afterbegin',
-              '<i class="icons icon-quay-lai"></i>'
-            );
-
-          el.id === 'sv-nav-clear-page' &&
-            el.insertAdjacentHTML(
-              'afterbegin',
-              '<i class="icons icon-khai-lai-tu-dau"></i>'
-            );
-
-          el.id === 'sv-nav-complete' &&
-            el.insertAdjacentHTML(
-              'afterbegin',
-              '<i class="icons icon-gui-thong-tin"></i>'
-            );
+          let id = el.id;
+          switch (id) {
+            case 'sv-nav-back-page':
+              this.configSurveyRemoveIcons(el.firstChild as HTMLElement);
+              el.insertAdjacentHTML(
+                'afterbegin',
+                '<i class="icons icon-quay-lai"></i>'
+              );
+              break;
+            case 'sv-nav-clear-page':
+              this.configSurveyRemoveIcons(el.firstChild as HTMLElement);
+              el.insertAdjacentHTML(
+                'afterbegin',
+                '<i class="icons icon-khai-lai-tu-dau"></i>'
+              );
+              break;
+            case 'sv-nav-complete':
+              this.configSurveyRemoveIcons(el.firstChild as HTMLElement);
+              el.insertAdjacentHTML(
+                'afterbegin',
+                '<i class="icons icon-gui-thong-tin"></i>'
+              );
+              break;
+            default:
+              break;
+          }
 
           if (
             trangThai === KqTrangThai.HoanThanh &&
@@ -230,6 +250,11 @@ export default class Utils {
               question.commentElements.forEach(
                 (comment: any) => (comment.value = '')
               );
+          });
+          window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
           });
         },
         css: 'nav-button',
@@ -322,15 +347,38 @@ export default class Utils {
       }
     });
 
-    // survey.onValidateQuestion.add((survey, options) => {
-    //   if (options.name === "memo") {
-    //     if (options.value.indexOf("survey") === -1) {
-    //       options.error = 'Your answer must contain the word "survey"'
-    //     }
-    //   }
-    // });
-
     let dataGuiMail = data;
+    survey.onCompleting.add((sender, options) => {
+      if (status === KqTrangThai.HoanThanh) {
+        options.allow = false;
+        options.allowComplete = false;
+        confirmationService?.confirm({
+          message: `Sau khi hoàn thành khảo sát bạn sẽ không thể chỉnh sửa lại thông tin!`,
+          header: 'info',
+          icon: 'pi pi-exclamation-triangle',
+          accept: () => {
+            survey.onComplete.add((sender, options) => {
+              // Hoàn thành khảo sát
+              let data = sender.data;
+              survey.completedHtml = `<div class="custom-complete">
+                                          <h3>Cảm ơn phản hồi của bạn!</h3>
+                                          <p class="note-complete">Vui lòng tải phiếu, in ký, đóng dấu và gửi về địa chỉ: Công ty Cổ phần tư vấn giải pháp Trí tuệ nhân tạo, Số 15 Lô 1E, Trung Yên 11C, phường Trung Hòa, quận Cầu Giấy, thành phố Hà Nội</p>
+                                          <a class="btn btn-tai-phieu" href="${environment.apiUrl}/PhieuKhaoSat/DownloadTemplateSurvey/${dataGuiMail}">Tải phiếu</a>
+                                        </div>`;
+
+              Object.keys(data).length !== 0 &&
+                subscribe &&
+                subscribe(sender, status);
+            });
+          },
+          reject: () => {
+            options.allow = false;
+            options.allowComplete = false;
+          },
+        });
+      }
+    });
+
     survey.onComplete.add((sender, options) => {
       // Hoàn thành khảo sát
       let data = sender.data;
@@ -402,9 +450,9 @@ export default class Utils {
   }
   /**
    * Validate độ dài câu trả lời (Matrix)
-   * @param _ 
-   * @param param1 
-   * @returns 
+   * @param _
+   * @param param1
+   * @returns
    */
   static validateLength(_: any, { data, errors, complete }: any) {
     const dataCh03 = data?.['CH003'];
