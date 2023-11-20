@@ -45,3 +45,4 @@
 *.png
 *.jpg
 /SurveyApplication.API/published
+/SurveyApplication.API/TempData/MAU_PKS_DOANH_NGHIEP.pdf

@@ -320,7 +320,7 @@
     &__decorator {
       opacity: 0.6;
       &.sd-radio__decorator {
-        border: 1px solid #000;
+        border: 1px solid #000 !important;
         background: white !important;
       }
     }
