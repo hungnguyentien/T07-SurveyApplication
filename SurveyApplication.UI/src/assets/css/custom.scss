@@ -567,6 +567,18 @@ $baby-blue: #f8faff;
   }
 }
 
+.note-new {
+  text-align: center;
+  margin-top: 1rem;
+  small {
+    font-size: 14px;
+    color: red;
+    // text-transform: inherit;
+    text-align: start;
+    font-weight: 600;
+  }
+}
+
 @keyframes textclip {
   to {
     background-position: 200% center;

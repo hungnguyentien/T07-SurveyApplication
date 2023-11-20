@@ -152,6 +152,7 @@ export default class Utils {
     survey.locale = 'vi';
     // Set label for btn Complete
     survey.completeText = 'Gửi thông tin và tải phiếu khảo sát';
+    survey.onServerValidateQuestions.add(this.validateLength);
     survey.onErrorCustomText.add((sender, options) => {
       if (options.name === 'exceedsize') {
         options.text = options.text.replaceAll(
@@ -400,6 +401,36 @@ export default class Utils {
     };
   }
   /**
+   * Validate độ dài câu trả lời (Matrix)
+   * @param _ 
+   * @param param1 
+   * @returns 
+   */
+  static validateLength(_: any, { data, errors, complete }: any) {
+    const dataCh03 = data?.['CH003'];
+    if (dataCh03) {
+      for (let index = 1; index <= 10; index++) {
+        const hang = dataCh03[`CH003_Hang${index}`];
+        if (hang) {
+          for (let index = 1; index <= 2; index++) {
+            const cot = hang[`CH003_Cot${index}`];
+            if (cot && cot.length > 250) {
+              errors['CH003'] = 'Câu trả lời không được vượt quá 250 ký tự!';
+              complete();
+              return;
+            }
+          }
+        }
+      }
+
+      complete();
+      return;
+    } else {
+      complete();
+      return;
+    }
+  }
+  /**
    * configCauHoiEl
    * @param el
    * @param readOnly
@@ -429,7 +460,7 @@ export default class Utils {
     //   {
     //     type: 'expression',
     //     text: 'Câu trả lời không được vượt quá 250 ký tự!',
-    //     expression: /^.{250}$/,
+    //     expression: "validateLength() >= 0",
     //   },
     // ];
     let choicesRadio = new Array();
