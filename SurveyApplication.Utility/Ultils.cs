@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Newtonsoft.Json;
 
@@ -47,7 +44,7 @@ namespace SurveyApplication.Utility
                     var body = wordDoc.MainDocumentPart?.Document.Body;
                     if (body != null)
                     {
-                        var t = body.Descendants<Text>();
+                        //var t = body.Descendants<Text>();
                         foreach (var text in body.Descendants<Text>())
                         {
                             foreach (var item in dict.Where(item => text.Text.Trim().Equals(item.Key)))
