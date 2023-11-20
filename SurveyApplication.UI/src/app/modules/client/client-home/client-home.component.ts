@@ -115,12 +115,10 @@ export class ClientHomeComponent {
       }),
       nguoiDaiDien: this.formBuilder.group({
         hoTen: ['', Validators.required],
-        chucVu: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        chucVu: [''],
+        email: ['', [ Validators.email]],
         soDienThoai: [
-          '',
-          [Validators.required, Validators.pattern(lstRegExp.soDienThoai)],
-        ],
+          '', [],],
       }),
       idGuiEmail: [''],
     });
