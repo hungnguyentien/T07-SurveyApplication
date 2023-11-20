@@ -57,81 +57,79 @@
             nguồn gốc sản phẩm, hàng hóa
           </a>
 
-          <div style="text-align: start;margin-top: 20px;">
-            Quý Doanh nghiệp, Quý Đơn vị có thể thực hiện khảo sát theo phiếu đơn vị tư vấn đã gửi cho doanh
-            nghiệp hoặc thực hiện online trên hệ thống theo các bước như sau:
-            <ol>
-              <li>
-                Nhập mã số doanh nghiệp hoặc mã số thuế vào ô bên dưới và bấm xác nhận
-              </li>
-              <li>
-                Nhập thông tin trả lời phiếu khảo sát sau đó bấm Gửi phiếu
-              </li>
-              <li>
-                Tải file, in ký, đóng dấu và gửi về địa chỉ: Công ty Cổ phần tư vấn giải pháp Trí tuệ
-                nhân tạo, Số
-                15 Lô 1E, Trung Yên 11C, phường Trung Hòa, quận Cầu Giấy, thành phố Hà Nội
-              </li>
-            </ol>
-          </div>
+                    <div class="fw-medium" style="text-align: start;margin-top: 20px;">
+                        Quý Doanh nghiệp, Quý Đơn vị có thể thực hiện khảo sát theo phiếu đơn vị tư vấn đã gửi cho doanh
+                        nghiệp hoặc thực hiện online trên hệ thống theo các bước như sau:
+                        <ol>
+                            <li>
+                                Nhập mã số doanh nghiệp hoặc mã số thuế vào ô bên dưới và bấm xác nhận
+                            </li>
+                            <li>
+                                Nhập thông tin trả lời phiếu khảo sát sau đó bấm Gửi phiếu
+                            </li>
+                            <li>
+                                Tải file, in ký, đóng dấu và gửi về địa chỉ: Công ty Cổ phần tư vấn giải pháp Trí tuệ
+                                nhân tạo, Số
+                                15 Lô 1E, Trung Yên 11C, phường Trung Hòa, quận Cầu Giấy, thành phố Hà Nội
+                            </li>
+                        </ol>
+                    </div>
 
-          <div style="text-align: start">
-            Mọi thắc mắc xin vui lòng liên hệ bộ phận chăm sóc kỹ thuật:
-            <ul>
-              <li>Đỗ Thị Tâm – Số điện thoại: 0378.937.568</li>
-              <li>Nguyễn Thuỳ Dung – Số điện thoại: 0936.407.792</li>
-              <li>Hoàng Mạnh Cường</li>
-              <li>Đỗ Thanh Linh</li>
-              <li>Phí Đức Thanh</li>
-              <li>Đinh Hoàng Anh</li>
-            </ul>
-          </div>
+                    <div style="text-align: start">
+                        <span class="fw-medium">Mọi thắc mắc xin vui lòng liên hệ qua số điện thoại/zalo:</span><a href="tel:+8437893756">0378.937.56</a> - <a href="tel:+8437893756">0936.407.792</a>
+                        <!-- <ul>
+                            <li>Đỗ Thị Tâm – Số điện thoại: 0378.937.568</li>
+                            <li>Nguyễn Thuỳ Dung – Số điện thoại: 0936.407.792</li>
+                            <li>Hoàng Mạnh Cường – Số điện thoại: 0328.845.084</li>
+                            <li>Đỗ Thanh Linh – Số điện thoại: 0339.257.682</li>
+                            <li>Phí Đức Thanh – Số điện thoại: 0366.441.086</li>
+                            <li>Đinh Hoàng Anh – Số điện thoại: 0964.197.848</li>
+                            <li>Nguyễn Ngọc Trà My – Số điện thoại: 0392.093.456</li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form (ngSubmit)="onSubmitSearch()">
+                    <div class="mb-3 row">
+                        <div class="col-md-10 col-sm-10">
+                            <label for="keyWord" class="text-danger fw-medium ms-2">Nhập mã số doanh nghiệp hoặc mã số thuế để tham gia khảo sát *</label>
+                            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
+                                [ngModelOptions]="{ standalone: true }"
+                                placeholder="Nhập mã số doanh nghiệp hoặc mã số thuế để tham gia khảo sát" />
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <button type="submit" class="btn btn-block btn-tra-cuu">
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <table class="table" *ngIf="datas && datas.length > 0">
+                    <thead>
+                        <th>Tiêu đề</th>
+                        <th>Địa chỉ nhận</th>
+                        <!-- <th>Tên bảng khảo sát</th> -->
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th>Khảo sát</th>
+                    </thead>
+                    <tr *ngFor="let item of datas">
+                        <td class="text-break" style="width: 35%;">{{ item.tieuDe }}</td>
+                        <td>{{ item.diaChiNhan }}</td>
+                        <!-- <td>{{ item.tenBangKhaoSat }}</td> -->
+                        <td>{{ item.ngayBatDau | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ item.ngayKetThuc | date:'dd/MM/yyyy' }}</td>
+                        <td><a class="link" (click)="khaoSat(item.linkKhaoSat)" title="{{item.tieuDe}}">Chi tiết khảo
+                                sát</a></td>
+                    </tr>
+                </table>
+            </div>
         </div>
-      </div>
-      <div>
-        <form (ngSubmit)="onSubmitSearch()">
-          <div class="mb-3 row">
-            <div class="col-md-10 col-sm-10">
-              <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"
-                     [ngModelOptions]="{ standalone: true }"
-                     placeholder="Mã số doanh nghiệp hoặc mã số thuế để tham gia khảo sát"/>
-            </div>
-            <div class="col-md-2 col-sm-2">
-              <button type="submit" class="btn btn-block btn-tra-cuu">
-                Xác nhận
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div>
-        <table class="table" *ngIf="datas && datas.length > 0">
-          <thead>
-          <th>Tiêu đề</th>
-          <th>Địa chỉ nhận</th>
-          <!-- <th>Tên bảng khảo sát</th> -->
-          <th>Ngày bắt đầu</th>
-          <th>Ngày kết thúc</th>
-          <th>Khảo sát</th>
-          </thead>
-          <tr *ngFor="let item of datas">
-            <td>{{ item.tieuDe }}</td>
-            <td>{{ item.diaChiNhan }}</td>
-            <!-- <td>{{ item.tenBangKhaoSat }}</td> -->
-            <td>{{ item.ngayBatDau | date:'dd/MM/yyyy' }}</td>
-            <td>{{ item.ngayKetThuc | date:'dd/MM/yyyy' }}</td>
-            <td>
-              <a class="link" (click)="khaoSat(item.linkKhaoSat)" title="{{item.tieuDe}}">
-                Chi tiết khảo
-                sát
-              </a>
-            </td>
-          </tr>
-        </table>
-      </div>
     </div>
-  </div>
-  <app-footer-client></app-footer-client>
+    <app-footer-client></app-footer-client>
 </div>
 <p-toast></p-toast>
 <!-- Scroll to Top Button-->
