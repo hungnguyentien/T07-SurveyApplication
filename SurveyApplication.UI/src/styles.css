@@ -248,4 +248,17 @@ input:disabled {
   #sv-nav-clear-page {
     margin-left: unset;
   }
+
+  .khao-sat .p-dialog {
+    width: 100% !important;
+    height: 100%;
+  }
+
+  .khao-sat .p-dialog-footer {
+    padding: 20px 20px 20px 20px;
+  }
+
+  .sd-root-modern.sd-root-modern--mobile .sd-table__cell {
+    padding-left: 10px;
+  }
 }
