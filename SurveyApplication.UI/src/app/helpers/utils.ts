@@ -448,10 +448,16 @@ export default class Utils {
           for (let index = 1; index <= 2; index++) {
             const cot = hang[`CH003_Cot${index}`];
             if (cot && cot.length > 250) {
-              errors['CH003'] = 'Câu trả lời không được vượt quá 250 ký tự!';
+              errors['CH003'] = 'Câu trả lời không được vượt quá 250 ký tự';
               complete();
               return;
             }
+          }
+          debugger;
+          if (hang[`CH003_Cot1`] && !hang[`CH003_Cot2`]) {
+            errors['CH003'] = 'Vui lòng nhập số người';
+            complete();
+            return;
           }
         }
       }

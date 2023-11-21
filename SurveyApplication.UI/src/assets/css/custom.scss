@@ -592,12 +592,18 @@ $baby-blue: #f8faff;
 
 .sd-table {
   &__cell {
+    &:not(th) {
+      padding: 1px;
+      padding-right: 1px !important;
+    }
+
     border-bottom: 1px solid #e7e6e6;
     background-color: #fff !important;
     border-left: 1px solid #e7e6e6;
     input {
       background: #fff !important;
       box-shadow: none;
+      height: 40px;
     }
 
     &----header {
@@ -660,6 +666,21 @@ tr:last-child {
   td {
     &.sd-table__cell {
       border-bottom: 1px solid #e7e6e6 !important;
+    }
+  }
+}
+
+#box-phieu-khao-sat {
+  input {
+    &:disabled {
+      background-color: #fafafa !important;
+      color: #a1a4a9 !important;
+    }
+  }
+
+  .form-select-custom {
+    .p-dropdown.p-disabled {
+      background-color: #fafafa;
     }
   }
 }
