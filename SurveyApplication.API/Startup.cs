@@ -172,12 +172,12 @@ public class Startup
             var migrationId = string.Empty;
             List<string> migrationIds = new();
             var buildNumber = settings.BuildNumber;
-            var enviroment = settings.Env;
+            var environment = settings.Env;
             var customerCode = settings.CustomerCode;
-            var dbAssebmly = Assembly.GetAssembly(context.GetType());
-            if (dbAssebmly != null)
+            var dbAssembly = Assembly.GetAssembly(context.GetType());
+            if (dbAssembly != null)
             {
-                var types = dbAssebmly.GetTypes();
+                var types = dbAssembly.GetTypes();
                 if (types.Any())
                 {
                     migrationIds = types.Where(x => x.BaseType == typeof(Migration))
@@ -220,7 +220,7 @@ public class Startup
 
             // 2. Release History
             if (string.IsNullOrEmpty(buildNumber) || buildNumber == "#{Octopus.Release.Number}" ||
-                string.IsNullOrEmpty(migrationId) || enviroment == "#{Octopus.Environment.Name}") return;
+                string.IsNullOrEmpty(migrationId) || environment == "#{Octopus.Environment.Name}") return;
             {
                 var existed =
                     context.ReleaseHistory.FirstOrDefault(x =>
@@ -232,7 +232,7 @@ public class Startup
                     MigrationId = migrationId,
                     ReleaseDate = DateTime.Now,
                     CustomerCode = customerCode,
-                    Env = enviroment
+                    Env = environment
                 });
                 context.SaveChanges();
             }

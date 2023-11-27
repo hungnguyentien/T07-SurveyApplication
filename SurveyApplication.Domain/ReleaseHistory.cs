@@ -11,9 +11,9 @@ public class ReleaseHistory
     [Required]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Description("Khóa chính")]
-    public int ID { get; set; }
+    public int Id { get; set; }
 
-    public int IDChannel { get; set; } = 0;
+    public int IdChannel { get; set; } = 0;
 
     [Required]
     [MaxLength(250)]
