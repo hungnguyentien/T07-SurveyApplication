@@ -1,0 +1,57 @@
+.custom-button {
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.custom-button:hover {
+  background-color: #4e73df;
+}
+.custom-button1 {
+  background-color: #616265;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.custom-button:hover {
+  background-color: #4e73df;
+}
+.custom-small-button {
+  font-size: 15px;
+  padding: 6px 12px;
+}
+
+.button-container {
+  display: flex; /* Sử dụng Flexbox */
+  justify-content: flex-end; /* Căn cấp độ sang bên trái */
+}
+
+input {
+  height: 40px; /* Đặt chiều cao mong muốn */
+}
+.custom-large-icon {
+  font-size: 20px; /* Đặt kích thước mới cho biểu tượng */
+}
+.ui-button {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+::ng-deep .p-calendar {
+  height: 35px;
+  width: 100%;
+}
+
+::ng-deep .p-disabled {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important; 
+  background-color: inherit !important;
+
+}

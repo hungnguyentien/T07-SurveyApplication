@@ -1,0 +1,88 @@
+.sidebar {
+  background-color: rgba(255, 255, 255, 1);
+  border-right: 1px solid rgba(196, 196, 196, 0.6);
+}
+
+.sidebar .nav-item > .nav-link {
+  color: rgba(0, 0, 0, 1);
+}
+
+.sidebar-dark .nav-item .nav-link i,
+.sidebar-dark .nav-item .nav-link[data-toggle="collapse"]::after {
+  color: rgba(0, 0, 0, 1);
+}
+
+.sidebar-dark .nav-item.active .nav-link i {
+  color: rgba(0, 0, 0, 1);
+}
+
+.sidebar .nav-item.active > .nav-link {
+  background-color: rgba(184, 222, 238, 1);
+  color: rgba(0, 0, 0, 1);
+  cursor: pointer;
+  width: 100%;
+  padding: 16px 40px 16px 16px;
+}
+.sidebar .arrow::before {
+  content: "\f078"; /* Mũi tên xuống */
+  font-family: "FontAwesome";
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar .nav-item.active > .arrow::before {
+  transform: translateY(-50%) rotate(-180deg);
+}
+
+.sidebar .nav-item.active > .collapse-inner .collapse-item {
+  color: rgba(184, 222, 238, 1);
+}
+
+.sidebar[_ngcontent-ng-c3157372814]
+  .nav-item.active[_ngcontent-ng-c3157372814]
+  > .nav-link[_ngcontent-ng-c3157372814] {
+  background-color: rgba(184, 222, 238, 1);
+  color: #ffff;
+  padding: 16px 40px 16px 16px;
+  width: 100%;
+}
+
+/* Hiệu ứng animation cho dropdown */
+.collapse-inner {
+  transition: 0.3s all;
+}
+
+.collapse.show .collapse-inner {
+  max-height: 500px; /* Điều chỉnh chiều cao tùy theo nội dung thực tế */
+}
+.collapse-inner > a {
+  cursor: pointer;
+}
+.nav-item > a {
+  cursor: pointer;
+}
+
+.nav-item.active {
+  background-color: rgba(184, 222, 238, 1);
+}
+
+.sidebar .sidebar-brand .sidebar-brand-text {
+  color: #3e67b8;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.sidebar-dark .sidebar-brand {
+  border-bottom: 1px solid rgba(196, 196, 196, 0.6);
+}
+
+.sidebar .nav-item .collapse .collapse-inner .collapse-item.active, .sidebar .nav-item .collapsing .collapse-inner .collapse-item.active{
+  color: rgba(0, 0, 0, 1);
+    font-weight: 600;
+}

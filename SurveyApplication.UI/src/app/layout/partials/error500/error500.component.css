@@ -1,0 +1,6 @@
+:host {
+  .error-client {
+    font-size: 3rem;
+    width: fit-content;
+  }
+}

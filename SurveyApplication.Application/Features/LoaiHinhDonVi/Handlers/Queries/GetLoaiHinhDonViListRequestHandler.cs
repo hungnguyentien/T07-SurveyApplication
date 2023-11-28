@@ -1,0 +1,26 @@
+﻿using AutoMapper;
+using MediatR;
+using SurveyApplication.Application.DTOs.LoaiHinhDonVi;
+using SurveyApplication.Application.Features.LoaiHinhDonVi.Requests.Queries;
+using SurveyApplication.Domain.Interfaces.Persistence;
+
+namespace SurveyApplication.Application.Features.LoaiHinhDonVi.Handlers.Queries;
+
+public class GetLoaiHinhDonViListRequestHandler : BaseMasterFeatures,
+    IRequestHandler<GetLoaiHinhDonViListRequest, List<LoaiHinhDonViDto>>
+{
+    private readonly IMapper _mapper;
+
+    public GetLoaiHinhDonViListRequestHandler(ISurveyRepositoryWrapper surveyRepository, IMapper mapper) : base(
+        surveyRepository)
+    {
+        _mapper = mapper;
+    }
+
+    public async Task<List<LoaiHinhDonViDto>> Handle(GetLoaiHinhDonViListRequest request,
+        CancellationToken cancellationToken)
+    {
+        var LoaiHinhDonVis = await _surveyRepo.LoaiHinhDonVi.GetAllListAsync(x => !x.Deleted);
+        return _mapper.Map<List<LoaiHinhDonViDto>>(LoaiHinhDonVis);
+    }
+}

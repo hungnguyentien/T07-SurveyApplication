@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.angular": true,
+			"**/.vscode": true,
+			"SurveyApplication.UI.code-workspace": true,
+			"**/.gitignore": true
+		}
+	}
+}

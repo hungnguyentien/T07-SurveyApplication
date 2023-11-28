@@ -1,0 +1,336 @@
+<p-confirmDialog #cd [style]="{width: '30vw'}">
+    <ng-template pTemplate="header">
+        <h3>Xác nhận xoá đợt khảo sát</h3>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" class="custom-small-button btn btn-secondary" label="Đóng"
+            (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-trash" class="custom-small-button" style="background-color: #ea5c5c"
+            label="Xóa" (click)="cd.accept()"></button>
+    </ng-template>
+</p-confirmDialog>
+
+<div>
+    <h5>Danh sách đợt khảo sát</h5>
+    <div class="d-flex mt-3">
+        <div>
+            <button (click)=" Add()" pButton type="button" icon="pi pi-plus" label="Thêm mới" class="custom-button">
+            </button>
+        </div>
+        <div class="ml-3">
+            <button pButton type="button" (click)="confirmDeleteMultiple()" icon="pi pi-trash" label="Xoá"
+                *ngIf="selectedPeriodSurvey && selectedPeriodSurvey.length > 0" class="custom-button"
+                style="background-color: #ea5c5c;"></button>
+        </div>
+    </div>
+    <form (ngSubmit)="onSubmitSearch()" class="form-inline mt-4">
+        <div class="form-group mb-2">
+            <label for="keyWord" class="sr-only">Search</label>
+            <input type="search" class="form-control" id="keyWord" [(ngModel)]="keyWord"(ngModelChange)="searchOnChange($event)"
+                [ngModelOptions]="{ standalone: true }" placeholder="Nhập từ khoá " />
+        </div>
+        <button type="submit" class="btn btn-primary ml-2 mb-2">
+            <i class="pi pi-search"></i>
+        </button>
+    </form>
+</div>
+
+<div class="card mt-3">
+    <p-table #dt ngClass="cust-tbl" [value]="datas" [lazy]="true" (onLazyLoad)="loadListLazy($event)"
+        [scrollable]="true" scrollHeight="calc(100vh - 396px)" [(selection)]="selectedPeriodSurvey" dataKey="id"
+        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+        [totalRecords]="dataTotalRecords" [resizableColumns]="true"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} bản ghi" [filterDelay]="0" 
+        [globalFilterFields]="['MaDotKhaoSat', 'tenDotKhaoSat', 'tenLoaiHinh', 'ngayBatDau']"
+        >
+        
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 40px;">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th style="width: 60px;text-align: center;">
+                    STT
+                </th>
+                <th pResizableColumn>
+                    <div class="flex justify-content-between align-items-center">
+                        Mã đợt
+                        <p-columnFilter type="text" field="MaDotKhaoSat" display="menu"[showOperator]="false"[showAddButton]="false" [showMatchModes]="false"></p-columnFilter>
+                    </div>
+                </th>
+                <th pResizableColumn pSortableColumn="tenDotKhaoSat">
+                    <div class="flex justify-content-between align-items-center">
+                        Tên đợt
+                        <p-columnFilter type="text" field="tenDotKhaoSat" display="menu"[showOperator]="false"[showAddButton]="false" [showMatchModes]="false"></p-columnFilter>
+                    </div>
+                </th>
+                <th pResizableColumn pSortableColumn="tenLoaiHinh">
+                    <div class="flex justify-content-between align-items-center">
+                        Loại hình đơn vị khảo sát
+                        <p-columnFilter type="text" field="tenLoaiHinh" display="menu"[showOperator]="false"[showAddButton]="false" [showMatchModes]="false"></p-columnFilter>
+                    </div>
+                </th>
+                <th pResizableColumn pSortableColumn="ngayBatDau">
+                    <div class="flex justify-content-between align-items-center">
+                        Thời gian
+                        <!-- <p-columnFilter type="text" field="ngayBatDau" display="menu"[showOperator]="false"[showAddButton]="false" [showMatchModes]="false"></p-columnFilter> -->
+                    </div>
+                </th>
+                <th  >
+                    <div class="flex justify-content-between align-items-center">
+                        Trạng thái
+                    </div>
+                </th>
+
+                <th style="width: 120px;text-align: center;">
+                    <div>
+                        Chức năng
+                    </div>
+                </th>
+
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+            <tr class="p-selectable-row">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td style="text-align: center;">
+                    <span class="p-column-title">STT</span>
+                    {{ rowIndex + 1}}
+                </td>
+                <td (click)="detail(rowData)" class="color_Hover">
+                    <span class="ml-1 vertical-align-middle ">{{ rowData.maDotKhaoSat }}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.tenDotKhaoSat }}</span>
+                </td>
+
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{rowData.tenLoaiHinh}}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau|
+                        date:'dd/MM/yyyy'}} - {{rowData.ngayKetThuc| date:'dd/MM/yyyy'}}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 0"
+                        style="color:rgb(84, 84, 226)">Chờ khảo sát</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 1"
+                        style="color: rgb(218, 159, 82);">Đang khảo sát</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 2" 
+                    style="color: green;">Hoàn
+                        thành</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 3"
+                     style="color: #e24c4c">Tạm
+                        dừng</span>
+                </td>
+                <td >
+                    <a class="m-3" *ngIf="rowData.trangThai == 0 || rowData.trangThai == 3"><span (click)="Edit(rowData)" class="pi pi-pencil" title="Cập nhật" 
+                            aria-hidden="true"></span></a>
+                    <a class="m-3" *ngIf="rowData.trangThai == 1 || rowData.trangThai == 2" >
+                        <span (click)="getDetailBangKhaoSat(rowData.id)" class="pi pi-eye " title="Xem" aria-hidden="true"></span>
+                    </a>
+
+                    <a class="m-3"*ngIf="rowData.trangThai == 0 || rowData.trangThai == 3"><span class="pi pi-trash" title="Xoá" (click)="Delete(rowData)" style="color: red;"
+                            aria-hidden="true"></span></a>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8" class="text-center">Không có bản ghi nào</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+
+<!-- modal -->
+<form *ngIf="FormPeriodSurvey" [formGroup]="FormPeriodSurvey" (ngSubmit)="Save()">
+    <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+        [resizable]="true" [maximizable]="true">
+        <ng-template pTemplate="header">
+            <h5 class="modal-title" >
+                {{modalTitle }}
+            </h5>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="recipient-name" class="col-form-label">Mã đợt: <span
+                            style="color: red;">*</span></label>
+                    <input type="text" formControlName="MaDotKhaoSat" class="form-control" id="recipient-name">
+                    <!-- <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['MaDotKhaoSat'].valid && 
+                         FormPeriodSurvey.controls['MaDotKhaoSat'].dirty&&!checkBtnDetail == true">
+                        Vui lòng nhập mã đợt
+                    </small> -->
+                </div>
+                
+                <div class="form-group col-md-6">
+                    <label for="loaihinhdonvi" class="col-form-label">Loại hình đơn vị khảo sát: <span
+                            style="color: red;">*</span> </label>
+                    <p-dropdown  id="loaicauhoi" [options]="DSLoaiHinh" optionLabel="tenLoaiHinh" optionValue="id" appendTo="body"
+                        [filter]="true" filterBy="tenLoaiHinh" emptyMessage="Không có kết quả nào"
+                        emptyFilterMessage="Không tìm thấy kết quả" [showClear]="true" class="form-select-custom"
+                        placeholder="-- Chọn loại hình đơn vị --" formControlName="IdLoaiHinh">
+                    </p-dropdown>
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['IdLoaiHinh'].valid && 
+                         FormPeriodSurvey.controls['IdLoaiHinh'].dirty&&!checkBtnDetail == true">
+                        Vui lòng chọn Loại hình đơn vị
+                    </small>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Tên đợt: <span style="color: red;">*</span></label>
+                <input type="text" formControlName="TenDotKhaoSat" class="form-control" id="recipient-name" pInputText
+                    placeholder="Nhập tên đợt khảo sát">
+                <small style="color: #e24c4c;" class="ml-2" *ngIf="!FormPeriodSurvey.controls['TenDotKhaoSat'].valid && 
+                        FormPeriodSurvey.controls['TenDotKhaoSat'].dirty&&!checkBtnDetail == true">
+                    Vui lòng nhập Tên đợt
+                </small>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="recipient-name" class="col-form-label">Ngày bắt đầu: <span
+                            style="color: red;">*</span></label>
+                    <p-calendar formControlName="NgayBatDau" id="NgayBatDau" appendTo="body" 
+                         dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom"></p-calendar>
+                         
+                    <small style="color: #e24c4c;" class="ml-2"
+                        *ngIf="!FormPeriodSurvey.get('NgayBatDau')?.valid && FormPeriodSurvey.get('NgayBatDau')?.dirty &&!checkBtnDetail == true">
+                        Vui lòng nhập Ngày bắt đầu
+                    </small>
+                    <small style="color: #e24c4c;" class="ml-2" *ngIf="FormPeriodSurvey.hasError('dateRangeError')">
+                        Ngày bắt đầu phải nhỏ hơn ngày kết thúc
+                    </small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="recipient-name" class="col-form-label">Ngày kết thúc: <span
+                            style="color: red;">*</span></label>
+                    <p-calendar formControlName="NgayKetThuc" id="NgayKetThuc" appendTo="body" 
+                         dateFormat="dd/mm/yy" [showIcon]="true" class="input-date-custom" [minDate]="currentDate" ></p-calendar>
+                    <small style="color: #e24c4c;" class="ml-2"
+                        *ngIf="!FormPeriodSurvey.get('NgayKetThuc')?.valid && FormPeriodSurvey.get('NgayKetThuc')?.dirty &&!checkBtnDetail == true">
+                        Vui lòng nhập Ngày kết thúc
+                    </small>
+                </div>
+            </div>
+
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton (click)="visible = false" type="button" label="Đóng"
+                class="custom-button surface-600"></button>
+            <button pButton *ngIf="!checkBtnDetail == true" [disabled]="!FormPeriodSurvey.valid" type="submit" icon="pi pi-save" label="Lưu"
+                class="custom-button"></button>
+        </ng-template>
+    </p-dialog>
+</form>
+
+
+<!-- Modal chi tiết đợt khảo sát-->
+<p-dialog header="Header" [(visible)]="visibleDetail" [modal]="true" [style]="{ width: '80vw' }" [draggable]="false"
+    [resizable]="true" [maximizable]="true">
+    <ng-template pTemplate="header">
+        <h5 class="modal-title" >
+            Danh sách bảng khảo sát theo đợt
+        </h5>
+    </ng-template>
+    <ng-template pTemplate="body">
+        <p-table ngClass="cust-tbl" [value]="datasDetail" [lazy]="true" 
+        [scrollable]="true" scrollHeight="calc(100vh - 396px)" dataKey="id"
+        styleClass="p-datatable-gridlines p-datatable-striped" [rowHover]="true"
+        [showCurrentPageReport]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                
+                <th style="width: 60px;text-align: center;">
+                    STT
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Đợt khảo sát
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Mã bảng khảo sát
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Tên bảng khảo sát
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Loại hình đơn vị khảo sát
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Thời gian
+                    </div>
+                </th>
+                <th  >
+                    <div class="flex justify-content-between align-items-center">
+                        Trạng thái
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+            <tr class="p-selectable-row">
+                
+                <td style="text-align: center;">
+                    <span class="p-column-title">STT</span>
+                    {{ rowIndex + 1}}
+                </td>
+                <td >
+                    <span class="ml-1 vertical-align-middle ">{{ rowData.tenDotKhaoSat }}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.maBangKhaoSat }}</span>
+                </td>
+
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{rowData.tenBangKhaoSat}}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.tenLoaiHinh }}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{ rowData.ngayBatDau|
+                        date:'dd/MM/yyyy'}} - {{rowData.ngayKetThuc| date:'dd/MM/yyyy'}}</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 0"
+                        style="color:rgb(84, 84, 226)">Chờ khảo sát</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 1"
+                        style="color: rgb(218, 159, 82);">Đang khảo sát</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 2" 
+                    style="color: green;">Hoàn
+                        thành</span>
+                    <span class="ml-1 vertical-align-middle" *ngIf="rowData.trangThai == 3"
+                     style="color: #e24c4c">Tạm
+                        dừng</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8" class="text-center">Không có bản ghi nào</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton (click)="visibleDetail = false" type="button" label="Đóng" class="custom-button surface-600"></button>
+       
+    </ng-template>
+</p-dialog>

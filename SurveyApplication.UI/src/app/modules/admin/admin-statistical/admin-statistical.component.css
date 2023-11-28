@@ -1,0 +1,31 @@
+.custom-button {
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  padding: 9.25px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.custom-button:hover {
+  background-color: #4e73df;
+}
+
+::ng-deep .p-calendar {
+  height: 35px;
+}
+
+:host {
+  .pFrozen {
+    position: sticky;
+    z-index: 10;
+    background-color: white;
+  }
+}
+
+.text-ellipsis {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

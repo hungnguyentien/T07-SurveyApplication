@@ -1,0 +1,70 @@
+.container {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+}
+
+.divider {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #333;
+  position: absolute;
+  top: 20%;
+  left: 0;
+  z-index: 1;
+}
+
+.over-line {
+  position: relative;
+  z-index: 2;
+  background-color: white; /* Đảm bảo văn bản không bị che bởi kẻ ngang */
+  padding: 0 10px;
+}
+.custom-button {
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.custom-button:hover {
+  background-color: #4e73df;
+}
+
+.style_sum {
+  box-sizing: border-box;
+  height: auto;
+  line-height: 15vh;
+  color: #ffffff;
+}
+
+.style_sum > div > p {
+  font-size: 22px;
+}
+
+.style_sum > div {
+  margin: 20px 0;
+  border-radius: 12px;
+  padding: 0 12px;
+}
+
+.style_sum > div h5 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.style_sum > div p {
+  margin: 0;
+  font-size: 3.6rem;
+  text-align: center;
+}
+
+::ng-deep .p-calendar {
+  height: 35px;
+}
+
+a {
+  cursor: pointer;
+}

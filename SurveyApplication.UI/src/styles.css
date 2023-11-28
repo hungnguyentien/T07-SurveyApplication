@@ -1,0 +1,251 @@
+/* You can add global styles to this file, and also import other style files */
+/* @import "primeng/resources/themes/lara-light-blue/theme.css"; */
+@import "primeflex/primeflex.css";
+@import "assets/css/custom.css";
+
+img {
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.sd-body.sd-body--responsive {
+  background: white !important;
+  border: 1px solid #000000;
+  padding-top: 24px;
+}
+
+.sd-root-modern .sd-container-modern__title {
+  border: 1px solid #000000;
+  border-bottom: none;
+  padding: 1px !important;
+}
+
+.sd-header__text .sd-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: black !important;
+}
+
+.sd-completedpage.sv-components-column {
+  background-color: white;
+  border: 1px solid;
+}
+
+.sd-completedpage:before {
+  height: 36px !important;
+}
+
+.sd-root-modern .sd-container-modern__title {
+  background: rgba(124, 195, 225, 1);
+}
+
+.sd-page__title.sd-title span.sv-string-viewer {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+input[type="button"].sd-btn {
+  max-width: 100%;
+  max-height: 100%;
+  padding: 8px 12px 8px 0;
+  border-radius: 5px;
+  border: none;
+  box-shadow: none;
+}
+
+input[type="button"].sd-btn:focus {
+  box-shadow: none;
+}
+
+#sv-nav-clear-page {
+  margin-left: calc(100% - 46rem);
+}
+
+#sv-nav-download-survey + .ng-star-inserted + #sv-nav-clear-page {
+  margin-left: calc(100% - 52rem);
+}
+
+#sv-nav-complete input {
+  background: rgba(36, 119, 69, 1);
+}
+
+#sv-nav-clear-page input {
+  background: rgba(239, 123, 58, 1);
+  color: white;
+}
+
+#sv-nav-back-page input {
+  background: rgba(126, 126, 126, 1);
+  color: white;
+}
+
+#sv-nav-back-page,
+#sv-nav-clear-page,
+#sv-nav-complete {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 12px;
+  background: rgba(126, 126, 126, 1);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#sv-nav-clear-page {
+  background: rgba(239, 123, 58, 1);
+}
+
+#sv-nav-complete {
+  background: rgba(36, 119, 69, 1);
+}
+
+.icons {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
+  vertical-align: top;
+  object-fit: contain;
+  margin-right: 5px;
+}
+
+.icon-quay-lai {
+  background-image: url("/assets/img/icons/quay-lai.svg");
+  width: 10px;
+  height: 15px;
+  background-size: 15px 10px;
+}
+
+.icon-khai-lai-tu-dau {
+  background-image: url("/assets/img/icons/khai-lai-tu-dau.svg");
+}
+
+.icon-gui-thong-tin {
+  background-image: url("/assets/img/icons/gui-thong-tin.svg");
+}
+
+.btn.btn-primary {
+  background-color: #4e73df;
+}
+
+.btn.btn-primary:hover {
+  background-color: #4e73df;
+}
+
+.color_Hover {
+  color: #0d6efd;
+}
+
+input:disabled {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important;
+  background-color: inherit !important;
+}
+::ng-deep .p-disabled {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important;
+  background-color: inherit !important;
+}
+::ng-deep input {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important;
+}
+
+#MoTa {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: inherit !important;
+  background-color: white !important;
+}
+
+@media screen and (max-width: 1366px) {
+  #box-content {
+    padding: 10px !important;
+  }
+
+  .b-white {
+    padding: 0 10px 15px 10px !important;
+  }
+
+  .box-info {
+    margin-bottom: 15px;
+  }
+
+  .btn-tra-cuu {
+    margin-top: 9px;
+  }
+
+  footer {
+    flex-direction: column;
+    height: 90px !important;
+    max-height: max-content;
+  }
+
+  footer > div:first-child,
+  footer > div:last-child {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    font-size: 0.8rem !important;
+    text-align: center !important;
+  }
+
+  footer > div:last-child {
+    max-width: 350px !important;
+  }
+
+  #sv-nav-download-survey + .ng-star-inserted + #sv-nav-clear-page {
+    margin-left: unset;
+  }
+
+  .scroll-to-top {
+    z-index: 100;
+  }
+
+  .icons {
+    display: none;
+  }
+
+  .box-header-phieu {
+    height: 150px !important;
+  }
+
+  .sd-root-modern--mobile .sd-body__navigation .sd-btn {
+    padding: 8px;
+  }
+
+  #sv-nav-back-page,
+  #sv-nav-clear-page,
+  #sv-nav-complete {
+    padding-left: 0;
+  }
+
+  .fix-diachi {
+    flex-direction: column;
+  }
+
+  .fix-diachi .col-3 {
+    width: 100%;
+  }
+
+  .flex-direction {
+    flex-direction: column;
+  }
+
+  .sd-body__navigation.sd-action-bar {
+    gap: calc(2 * (var(--sjs-base-unit, var(--base-unit, 8px))));
+    flex-wrap: wrap;
+  }
+
+  #sv-nav-clear-page {
+    margin-left: unset;
+  }
+}
