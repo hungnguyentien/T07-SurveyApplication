@@ -106,8 +106,8 @@ public class ScheduleSendMailCommandHandler : BaseMasterFeatures,
 
     private async Task DoWork(Domain.GuiEmail guiEmail, IList<byte[]?> lstAttachment, IList<string> lstAttachmentName)
     {
-        var resultSend = await _emailSender.SendEmail(guiEmail.NoiDung, guiEmail.TieuDe, guiEmail.DiaChiNhan,
-            lstAttachment, lstAttachmentName);
+        //var resultSend = await _emailSender.SendEmail(guiEmail.NoiDung, guiEmail.TieuDe, guiEmail.DiaChiNhan, lstAttachment, lstAttachmentName);
+        var resultSend = await _emailSender.SendEmailOutlook(guiEmail.NoiDung, guiEmail.TieuDe, guiEmail.DiaChiNhan, lstAttachment, lstAttachmentName);
         if (!resultSend.IsSuccess)
             _logger.LogError($"----- Địa chỉ nhận {guiEmail.DiaChiNhan} \n {JsonConvert.SerializeObject(resultSend)}");
 

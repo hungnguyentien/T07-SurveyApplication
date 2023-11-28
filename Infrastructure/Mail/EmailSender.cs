@@ -1,9 +1,12 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Options;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Infrastructure;
+using Attachment = System.Net.Mail.Attachment;
+using Task = System.Threading.Tasks.Task;
 
 namespace SurveyApplication.Infrastructure.Mail;
 
@@ -36,6 +39,7 @@ public class EmailSender : IEmailSender
             {
                 var userEmail = EmailSettings.Username;
                 var passwordEmail = EmailSettings.Password;
+                var smtpClient = new SmtpClient(EmailSettings.Host, EmailSettings.Port);
                 if (toEmail != null)
                 {
                     var mailMessage = new MailMessage(userEmail, toEmail, title, body)
@@ -60,12 +64,67 @@ public class EmailSender : IEmailSender
                         }
 
                     var netCred = new NetworkCredential(userEmail, passwordEmail);
-                    var smtpClient = new SmtpClient(EmailSettings.Host, EmailSettings.Port);
-                    smtpClient.EnableSsl = true;
+                    smtpClient.EnableSsl = false;
                     smtpClient.UseDefaultCredentials = false;
                     smtpClient.Credentials = netCred;
                     smtpClient.Timeout = 200000;
                     smtpClient.Send(mailMessage);
+                }
+
+                result.IsSuccess = true;
+                result.Message = "Gửi mail thành công";
+            });
+        }
+        catch (Exception ex)
+        {
+            result.IsSuccess = false;
+            result.Message = ex.Message;
+            result.Trace = ex.StackTrace ?? "";
+        }
+
+        return result;
+    }
+
+    public async Task<EmailRespose> SendEmailOutlook(string body, string? title, string? toEmail,
+        IList<byte[]?>? lstAttachment = null,
+        IList<string>? lstAttachmentName = null)
+    {
+        var result = new EmailRespose();
+        try
+        {
+            await Task.Run(() =>
+            {
+                var userEmail = EmailSettings.Username;
+                var passwordEmail = EmailSettings.Password;
+                var service = new ExchangeService(ExchangeVersion.Exchange2010_SP1)
+                {
+                    Credentials = new NetworkCredential(userEmail, passwordEmail)
+                };
+                if (toEmail != null)
+                {
+                    service.AutodiscoverUrl(userEmail);
+                    var emailMessage = new EmailMessage(service)
+                    {
+                        Subject = title,
+                        Body = new MessageBody(body),
+                        ToRecipients = { toEmail }
+                    };
+
+                    //Add attachment
+                    if (lstAttachment != null)
+                        foreach (var attachment in lstAttachment)
+                        {
+                            var index = lstAttachment.ToList().FindIndex(x => x == attachment);
+                            var attachmentName = lstAttachmentName?.ElementAt(index);
+                            if (attachment == null) continue;
+                            var fileName = string.IsNullOrWhiteSpace(attachmentName)
+                                ? "FileDefault"
+                                : attachmentName;
+                            var stream = new MemoryStream(attachment);
+                            emailMessage.Attachments.AddFileAttachment(fileName, stream);
+                        }
+
+                    emailMessage.SendAndSaveCopy();
                 }
 
                 result.IsSuccess = true;
