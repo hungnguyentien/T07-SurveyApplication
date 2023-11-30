@@ -34,7 +34,7 @@ public class ImportDonViCommandhandler : BaseMasterFeatures, IRequestHandler<Imp
                     var codetinh = "";
                     var codehuyen = "";
 
-                    var tenDonVi = worksheet.Cells[row, 2].Text;
+                    var tenDonVi = worksheet.Cells[row, 1].Text;
                     var madonvi = worksheet.Cells[row, 4].Text;
                     var masothue = worksheet.Cells[row, 5].Text;
                     var diaChi = worksheet.Cells[row, 6].Text;

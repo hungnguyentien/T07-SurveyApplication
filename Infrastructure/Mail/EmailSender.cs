@@ -107,8 +107,12 @@ public class EmailSender : IEmailSender
                     {
                         Subject = title,
                         Body = new MessageBody(body),
-                        ToRecipients = { toEmail }
+                        ToRecipients = { toEmail },
+                        CcRecipients = { EmailSettings.CcMail }
                     };
+
+                    if (!string.IsNullOrEmpty(EmailSettings.CcMail))
+                        emailMessage.CcRecipients.Add(EmailSettings.CcMail);
 
                     //Add attachment
                     if (lstAttachment != null)
