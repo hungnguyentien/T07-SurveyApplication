@@ -57,15 +57,14 @@ public class ScheduleSendMailCommandHandler : BaseMasterFeatures,
         };
         foreach (var attachmentName in lstAttachmentName)
         {
-            using var r =
-                new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), @$"{PathCv}\{attachmentName}"));
+            using var r = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), @$"{PathCv}\{attachmentName}"));
             using var ms = new MemoryStream();
             await r.BaseStream.CopyToAsync(ms, cancellationToken);
             lstAttachment.Add(ms.ToArray());
         }
 
         foreach (var guiEmail in lstGuiEmail)
-            if (string.IsNullOrEmpty(guiEmail.NoiDung))
+            if (string.IsNullOrEmpty(guiEmail.NoiDung) || guiEmail.TrangThai == (int)EnumGuiEmail.TrangThai.GuiLoi)
             {
                 var mdv = lstDonVi.FirstOrDefault(x => x.Id == guiEmail.IdDonVi)?.MaDonVi ?? "";
                 var bodyHtml = externalHtmlContent.Replace("{{LINK_SEND_MAIL}}",
@@ -84,7 +83,7 @@ public class ScheduleSendMailCommandHandler : BaseMasterFeatures,
             }
 
         const int pageSize = 5;
-        var subscriberCount = lstGuiEmail.Count();
+        var subscriberCount = lstGuiEmail.Count;
         var amountOfPages = (int)Math.Ceiling((double)subscriberCount / pageSize);
         for (var pageIndex = 0; pageIndex < amountOfPages; pageIndex++)
             await RunTasks(lstGuiEmail.Skip(pageIndex * pageSize).Take(pageSize).ToList(), lstAttachment,
