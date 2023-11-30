@@ -107,8 +107,7 @@ public class EmailSender : IEmailSender
                     {
                         Subject = title,
                         Body = new MessageBody(body),
-                        ToRecipients = { toEmail },
-                        CcRecipients = { EmailSettings.CcMail }
+                        ToRecipients = { toEmail }
                     };
 
                     if (!string.IsNullOrEmpty(EmailSettings.CcMail))
