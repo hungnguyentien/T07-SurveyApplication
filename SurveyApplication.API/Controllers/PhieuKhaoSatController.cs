@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.Application.DTOs.CauHoi;
@@ -20,6 +21,7 @@ using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Utility;
+using SurveyApplication.Utility.LogUtils;
 
 namespace SurveyApplication.API.Controllers;
 
@@ -28,9 +30,11 @@ namespace SurveyApplication.API.Controllers;
 public class PhieuKhaoSatController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ILoggerManager _logger;
 
-    public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings)
+    public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings, ILoggerManager logger)
     {
+        _logger = logger;
         _mediator = mediator;
         EmailSettings = emailSettings.Value;
     }
@@ -86,7 +90,7 @@ public class PhieuKhaoSatController : ControllerBase
     public async Task<ActionResult> DongBoBaoCaoCauHoi(CreateBaoCaoCauHoiCommand data)
     {
         var command = new CreateBaoCaoCauHoiCommand
-            { LstBaoCaoCauHoi = data.LstBaoCaoCauHoi, IdGuiEmail = data.IdGuiEmail };
+        { LstBaoCaoCauHoi = data.LstBaoCaoCauHoi, IdGuiEmail = data.IdGuiEmail };
         var response = await _mediator.Send(command);
         return Ok(response);
     }
@@ -165,6 +169,17 @@ public class PhieuKhaoSatController : ControllerBase
     public ActionResult ConvertToCamelString(string data)
     {
         return Ok(data.ConvertToCamelString());
+    }
+
+    [HttpPost("LogNhanMail")]
+    public async Task<ActionResult> LogNhanMail(LogNhanMailDto logNhanMail)
+    {
+        if (!string.IsNullOrEmpty(logNhanMail.MaDoanhNghiep))
+            _logger.LogInfo(JsonConvert.SerializeObject(logNhanMail));
+
+        var command = new CreateLogNhanMailCommand { LogNhanMailDto = logNhanMail };
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
 
     #region Tỉnh thành quận huyện

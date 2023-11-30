@@ -24,6 +24,7 @@ public interface ISurveyRepositoryWrapper
     IModuleRepository Module { get; }
     IReleaseHistoryRepository ReleaseHistory { get; }
     IStgFileRepository StgFile { get; }
+    ILogNhanMailRepository LogNhanMail { get; }
 
     //RenderHere
     Task SaveAync();

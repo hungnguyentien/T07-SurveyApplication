@@ -14,6 +14,7 @@ import {
   PhieuKhaoSatDoanhNghiep,
   BaseQuerieResponse,
   UpdateDoanhNghiep,
+  LogNhanMail,
 } from '@app/models';
 import { environment } from '@environments/environment';
 import Utils from '@app/helpers/utils';
@@ -113,6 +114,13 @@ export class PhieuKhaoSatService {
   updateDoanhNghiep(data: UpdateDoanhNghiep) {
     return this.http.post<BaseCommandResponse>(
       `${environment.apiUrl}/PhieuKhaoSat/UpdateDoanhNghiep`,
+      data
+    );
+  }
+
+  logNhanMail(data: LogNhanMail) {
+    return this.http.post<boolean>(
+      `${environment.apiUrl}/PhieuKhaoSat/LogNhanMail`,
       data
     );
   }

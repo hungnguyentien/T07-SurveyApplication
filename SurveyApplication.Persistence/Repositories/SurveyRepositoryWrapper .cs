@@ -97,5 +97,8 @@ public class SurveyRepositoryWrapper : ISurveyRepositoryWrapper
     public IStgFileRepository _stgFileRepository;
     public IStgFileRepository StgFile => _stgFileRepository ??= new StgFileRepository(_repoContext);
 
+    public ILogNhanMailRepository _logNhanMailRepository;
+    public ILogNhanMailRepository LogNhanMail => _logNhanMailRepository ??= new LogNhanMailRepository(_repoContext);
+
     #endregion
 }

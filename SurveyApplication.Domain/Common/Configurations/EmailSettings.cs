@@ -11,4 +11,5 @@ public class EmailSettings
     public string Host { get; set; }
     public int Port { get; set; }
     public string CcMail { get; set; }
+    public bool IsSendMailBo { get; set; }
 }

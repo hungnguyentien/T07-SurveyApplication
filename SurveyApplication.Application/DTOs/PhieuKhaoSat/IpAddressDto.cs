@@ -11,3 +11,9 @@ public class IpAddressDto
     public string postal { get; set; }
     public string timezone { get; set; }
 }
+
+public class LogNhanMailDto
+{
+    public string MaDoanhNghiep { get; set; }
+    public string Data { get; set; }
+}

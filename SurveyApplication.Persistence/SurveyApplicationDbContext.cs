@@ -31,6 +31,7 @@ public class SurveyApplicationDbContext : IdentityDbContext<ApplicationUser, Rol
     public DbSet<JobSchedule> JobSchedule { get; set; }
     public DbSet<ReleaseHistory> ReleaseHistory { get; set; }
     public DbSet<StgFile> StgFile { get; set; }
+    public DbSet<LogNhanMail> LogNhanMail { get; set; }
 
     [Obsolete]
     protected override void OnModelCreating(ModelBuilder modelBuilder)

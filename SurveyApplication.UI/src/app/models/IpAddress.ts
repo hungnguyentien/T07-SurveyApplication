@@ -8,3 +8,8 @@ export interface IpAddress {
     postal: string;
     timezone: string;
 }
+
+export interface LogNhanMail {
+    maDoanhNghiep: string;
+    data: string;
+}

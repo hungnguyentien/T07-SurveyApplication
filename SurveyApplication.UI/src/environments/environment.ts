@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUrlImage:'https://localhost:7270/Images/',
   apiUrl: 'https://localhost:7270/api',
-  apiIp: 'https://ipinfo.io/json?token=a4f2fcddf28a9a',
+  apiIp: 'https://ipinfo.io/json?token=fd8662b7f72701',
   secretKey: 'T0aNnCk2o2e',
   fakeApiUrl: 'http://localhost:3001/api',
 };

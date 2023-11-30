@@ -64,7 +64,7 @@ public class EmailSender : IEmailSender
                         }
 
                     var netCred = new NetworkCredential(userEmail, passwordEmail);
-                    smtpClient.EnableSsl = false;
+                    smtpClient.EnableSsl = true;
                     smtpClient.UseDefaultCredentials = false;
                     smtpClient.Credentials = netCred;
                     smtpClient.Timeout = 200000;
