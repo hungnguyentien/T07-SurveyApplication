@@ -112,4 +112,12 @@ public class DonViController : ControllerBase
         var response = await _mediator.Send(command);
         return Ok(response);
     }
+
+    [HttpGet("GetAllNotSendMail")]
+    [HasPermission(new[] { (int)EnumModule.Code.QlDv }, new[] { (int)EnumPermission.Type.Read })]
+    public async Task<ActionResult<List<DonViDto>>> GetAllNotSendMail()
+    {
+        var lstDv = await _mediator.Send(new GetDonViNotSendMailRequest());
+        return Ok(lstDv);
+    }
 }

@@ -14,6 +14,10 @@ export abstract class BaseService<T> {
     return this._http.get<T[]>(`${this.actionUrl}/GetAll`).pipe(first());
   }
 
+  getAllDvNotSendMail<T>(): Observable<T[]> {
+    return this._http.get<T[]>(`${this.actionUrl}/GetAllNotSendMail`).pipe(first());
+  }
+
   getById<T>(id: number): Observable<T> {
     return this._http.get<T>(`${this.actionUrl}/GetById/${id}`).pipe(first());
   }

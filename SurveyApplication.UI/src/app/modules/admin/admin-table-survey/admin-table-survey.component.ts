@@ -921,7 +921,7 @@ export class AdminTableSurveyComponent {
       ),
     });
 
-    this.objectSurveyService.getAllByObj<DonVi>().subscribe((res) => {
+    this.objectSurveyService.getAllDvNotSendMail<DonVi>().subscribe((res) => {
       this.lstDonVi = res;
     });
   };
