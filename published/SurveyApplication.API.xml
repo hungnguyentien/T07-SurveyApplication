@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SurveyApplication.API</name>
+    </assembly>
+    <members>
+        <member name="F:SurveyApplication.API.Attributes.HasPermissionAttribute._codeModules">
+            <summary>
+                Code modules string to get from controller
+            </summary>
+        </member>
+        <member name="F:SurveyApplication.API.Attributes.HasPermissionAttribute._permissions">
+            <summary>
+                Permission string to get from controller
+            </summary>
+        </member>
+        <member name="M:SurveyApplication.API.Attributes.HasPermissionAttribute.#ctor(System.Int32[],System.Int32[])">
+            <summary>
+                Constructor
+            </summary>
+            <param name="codeModules"></param>
+            <param name="permission"></param>
+        </member>
+        <member name="M:SurveyApplication.API.Controllers.PhieuKhaoSatController.GetKeyGuiMail(System.Int32)">
+            <summary>
+                Lấy chuỗi mã hóa gửi mail
+            </summary>
+            <param name="idGuiMail"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
