@@ -165,7 +165,9 @@ public class EmailSender : IEmailSender
             var emails = findResults.Items.Take(pageSize).Cast<EmailMessage>().ToList();
             foreach (var emailMessage in emails)
             {
-                await emailMessage.SendAndSaveCopy();
+                var emailAddressTo = emailMessage.ToRecipients.FirstOrDefault()?.Address;
+                if (!string.IsNullOrEmpty(emailAddressTo) && emailAddressTo.ToUpperInvariant() != "NULL")
+                    await emailMessage.SendAndSaveCopy();
             }
 
             result.IsSuccess = true;
