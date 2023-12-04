@@ -20,6 +20,7 @@ using SurveyApplication.Application.Features.QuanHuyens.Requests.Queries;
 using SurveyApplication.Application.Features.TinhTps.Requests.Queries;
 using SurveyApplication.Application.Features.XaPhuongs.Requests.Queries;
 using SurveyApplication.Domain.Common.Configurations;
+using SurveyApplication.Domain.Interfaces.Infrastructure;
 using SurveyApplication.Utility;
 using SurveyApplication.Utility.LogUtils;
 
@@ -31,11 +32,13 @@ public class PhieuKhaoSatController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly ILoggerManager _logger;
+    private readonly IEmailSender _emailSender;
 
-    public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings, ILoggerManager logger)
+    public PhieuKhaoSatController(IMediator mediator, IOptions<EmailSettings> emailSettings, ILoggerManager logger, IEmailSender emailSender)
     {
         _logger = logger;
         _mediator = mediator;
+        _emailSender = emailSender;
         EmailSettings = emailSettings.Value;
     }
 
@@ -206,4 +209,19 @@ public class PhieuKhaoSatController : ControllerBase
     }
 
     #endregion
+
+    /// <summary>
+    /// Gửi lại mail nháp Outlook
+    /// </summary>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [ValidSecretKey]
+    [HttpGet("ReSendEmailOutlook")]
+    public async Task<ActionResult> ReSendEmailOutlook(int pageSize)
+    {
+        if (!EmailSettings.IsSendMailBo) return Ok("Chưa cấu hình mail bộ");
+        var result = await _emailSender.ReSendEmailOutlook(pageSize);
+        return Ok(result);
+    }
 }

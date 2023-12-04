@@ -143,4 +143,41 @@ public class EmailSender : IEmailSender
 
         return result;
     }
+
+    public async Task<EmailRespose> ReSendEmailOutlook(int pageSize)
+    {
+        var result = new EmailRespose();
+        try
+        {
+            const int offset = 0;
+            var userEmail = EmailSettings.Username;
+            var passwordEmail = EmailSettings.Password;
+            var service = new ExchangeService(ExchangeVersion.Exchange2010_SP1)
+            {
+                Credentials = new NetworkCredential(userEmail, passwordEmail)
+            };
+            service.AutodiscoverUrl(userEmail);
+            var view = new ItemView(pageSize, offset, OffsetBasePoint.Beginning)
+            {
+                PropertySet = PropertySet.IdOnly
+            };
+            FindItemsResults<Item> findResults = await service.FindItems(WellKnownFolderName.Drafts, view);
+            var emails = findResults.Items.Take(pageSize).Cast<EmailMessage>().ToList();
+            foreach (var emailMessage in emails)
+            {
+                await emailMessage.SendAndSaveCopy();
+            }
+
+            result.IsSuccess = true;
+            result.Message = "Gửi mail thành công";
+        }
+        catch (Exception ex)
+        {
+            result.IsSuccess = false;
+            result.Message = ex.Message;
+            result.Trace = ex.StackTrace ?? "";
+        }
+
+        return result;
+    }
 }
