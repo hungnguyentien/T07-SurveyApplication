@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using SurveyApplication.Domain.Common.Configurations;
 using SurveyApplication.Domain.Common.Responses;
 using SurveyApplication.Domain.Interfaces.Infrastructure;
@@ -165,11 +166,43 @@ public class EmailSender : IEmailSender
             var emails = findResults.Items.Take(pageSize).Cast<EmailMessage>().ToList();
             foreach (var emailMessage in emails)
             {
-                var emailAddressTo = emailMessage.ToRecipients.FirstOrDefault()?.Address;
-                if (!string.IsNullOrEmpty(emailAddressTo) && emailAddressTo.ToUpperInvariant() != "NULL")
-                    await emailMessage.SendAndSaveCopy();
+                await emailMessage.SendAndSaveCopy();
             }
 
+            result.IsSuccess = true;
+            result.Message = "Gửi mail thành công";
+        }
+        catch (Exception ex)
+        {
+            result.IsSuccess = false;
+            result.Message = ex.Message;
+            result.Trace = ex.StackTrace ?? "";
+        }
+
+        return result;
+    }
+
+    public async Task<EmailRespose> GetSendEmailOutlook()
+    {
+        var result = new EmailRespose();
+        try
+        {
+            const int offset = 0;
+            var userEmail = EmailSettings.Username;
+            var passwordEmail = EmailSettings.Password;
+            var service = new ExchangeService(ExchangeVersion.Exchange2010_SP1)
+            {
+                Credentials = new NetworkCredential(userEmail, passwordEmail)
+            };
+            service.AutodiscoverUrl(userEmail);
+            var view = new ItemView(1000, offset, OffsetBasePoint.Beginning)
+            {
+                PropertySet = PropertySet.FirstClassProperties
+            };
+            var findResults = await service.FindItems(WellKnownFolderName.Drafts, view);
+            var emails = findResults.Items.Cast<EmailMessage>().ToList();
+            var t = emails.Select(x => x.DisplayTo).ToList();
+            result.Message = JsonConvert.SerializeObject(emails.Take(10));
             result.IsSuccess = true;
             result.Message = "Gửi mail thành công";
         }

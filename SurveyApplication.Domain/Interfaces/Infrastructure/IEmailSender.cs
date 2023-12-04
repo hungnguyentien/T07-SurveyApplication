@@ -12,4 +12,5 @@ public interface IEmailSender
         IList<string>? lstAttachmentName = null);
 
     Task<EmailRespose> ReSendEmailOutlook(int pageSize);
+    Task<EmailRespose> GetSendEmailOutlook();
 }

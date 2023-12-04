@@ -224,4 +224,19 @@ public class PhieuKhaoSatController : ControllerBase
         var result = await _emailSender.ReSendEmailOutlook(pageSize);
         return Ok(result);
     }
+
+    /// <summary>
+    /// Lấy mail nháp Outlook
+    /// </summary>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [ValidSecretKey]
+    [HttpGet("GetSendEmailOutlook")]
+    public async Task<ActionResult> GetSendEmailOutlook()
+    {
+        if (!EmailSettings.IsSendMailBo) return Ok("Chưa cấu hình mail bộ");
+        var result = await _emailSender.GetSendEmailOutlook();
+        return Ok(result);
+    }
 }
