@@ -182,9 +182,8 @@ public class EmailSender : IEmailSender
         return result;
     }
 
-    public async Task<EmailRespose> GetSendEmailOutlook()
+    public async Task<List<string>> GetSendEmailOutlook()
     {
-        var result = new EmailRespose();
         try
         {
             const int offset = 0;
@@ -201,18 +200,11 @@ public class EmailSender : IEmailSender
             };
             var findResults = await service.FindItems(WellKnownFolderName.Drafts, view);
             var emails = findResults.Items.Cast<EmailMessage>().ToList();
-            var t = emails.Select(x => x.DisplayTo).ToList();
-            result.Message = JsonConvert.SerializeObject(emails.Take(10));
-            result.IsSuccess = true;
-            result.Message = "Gửi mail thành công";
+            return emails.Select(x => x.DisplayTo).ToList();
         }
         catch (Exception ex)
         {
-            result.IsSuccess = false;
-            result.Message = ex.Message;
-            result.Trace = ex.StackTrace ?? "";
+            return new List<string>();
         }
-
-        return result;
     }
 }

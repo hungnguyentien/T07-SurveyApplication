@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SurveyApplication.API.Attributes;
 using SurveyApplication.Application.DTOs.CauHoi;
@@ -228,7 +228,6 @@ public class PhieuKhaoSatController : ControllerBase
     /// <summary>
     /// Lấy mail nháp Outlook
     /// </summary>
-    /// <param name="pageSize"></param>
     /// <returns></returns>
     [AllowAnonymous]
     [ValidSecretKey]
@@ -237,6 +236,14 @@ public class PhieuKhaoSatController : ControllerBase
     {
         if (!EmailSettings.IsSendMailBo) return Ok("Chưa cấu hình mail bộ");
         var result = await _emailSender.GetSendEmailOutlook();
-        return Ok(result);
+        await using (var outputFile = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), @"TempData\email.text")))
+        {
+            outputFile.NewLine = null;
+            outputFile.AutoFlush = false;
+            foreach (var line in result)
+                await outputFile.WriteLineAsync($"N'{line}',");
+        }
+
+        return Ok("Done!");
     }
 }
