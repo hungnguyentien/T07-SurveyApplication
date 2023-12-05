@@ -198,8 +198,10 @@ public class EmailSender : IEmailSender
             {
                 PropertySet = PropertySet.FirstClassProperties
             };
-            var findResults = await service.FindItems(WellKnownFolderName.Drafts, view);
-            var emails = findResults.Items.Cast<EmailMessage>().ToList();
+            var findResults = await service.FindItems(WellKnownFolderName.SentItems, view);
+            var yesterDays = DateTime.Now.AddDays(-2);
+            var now = DateTime.Now;
+            var emails = findResults.Items.Cast<EmailMessage>().Where(x => x.DateTimeReceived > yesterDays && x.DateTimeReceived < now).ToList();
             return emails.Select(x => x.DisplayTo).ToList();
         }
         catch (Exception ex)
