@@ -45,8 +45,11 @@ public class EmailSender : IEmailSender
                 {
                     var mailMessage = new MailMessage(userEmail, toEmail, title, body)
                     {
-                        IsBodyHtml = true
+                        IsBodyHtml = true,
                     };
+
+                    if (!string.IsNullOrEmpty(EmailSettings.CcMail))
+                        mailMessage.CC.Add(EmailSettings.CcMail);
 
                     //Add attachment
                     if (lstAttachment != null)
