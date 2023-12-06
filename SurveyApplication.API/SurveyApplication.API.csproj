@@ -10,9 +10,11 @@
 
   <ItemGroup>
     <None Remove="TempData\email.text" />
+    <None Remove="TempData\email_06_12_2023.text" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TempData\email_06_12_2023.text" />
     <Content Include="TempData\email.text" />
   </ItemGroup>
 

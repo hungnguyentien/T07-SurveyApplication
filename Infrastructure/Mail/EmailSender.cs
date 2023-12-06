@@ -202,9 +202,18 @@ public class EmailSender : IEmailSender
                 PropertySet = PropertySet.FirstClassProperties
             };
             var findResults = await service.FindItems(WellKnownFolderName.SentItems, view);
-            var yesterDays = DateTime.Now.AddDays(-2);
-            var now = DateTime.Now;
-            var emails = findResults.Items.Cast<EmailMessage>().Where(x => x.DateTimeReceived > yesterDays && x.DateTimeReceived < now).ToList();
+
+            var viewError = new ItemView(1000, offset, OffsetBasePoint.Beginning)
+            {
+                PropertySet = PropertySet.FirstClassProperties
+            };
+            var findResultsError = await service.FindItems(WellKnownFolderName.Inbox, view);
+
+            var yesterDays = DateTime.Now.AddDays(-1);
+            var now = DateTime.Now.AddDays(1);
+            var emailsError = findResultsError.Items.Cast<EmailMessage>().Where(x => x.DateTimeReceived > yesterDays && x.DateTimeReceived < now && x.Subject.Contains("Undeliverable:")).ToList();
+            var emails = findResults.Items.Cast<EmailMessage>().Where(x => x.DateTimeReceived > yesterDays && x.DateTimeReceived < now && !emailsError.Select(e => e.DisplayTo).Contains(x.DisplayTo)).ToList();
+
             return emails.Select(x => x.DisplayTo).ToList();
         }
         catch (Exception ex)

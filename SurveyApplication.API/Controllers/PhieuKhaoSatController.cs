@@ -236,7 +236,7 @@ public class PhieuKhaoSatController : ControllerBase
     {
         if (!EmailSettings.IsSendMailBo) return Ok("Chưa cấu hình mail bộ");
         var result = await _emailSender.GetSendEmailOutlook();
-        await using (var outputFile = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), @"TempData\email.text")))
+        await using (var outputFile = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), @"TempData\email_06_12_2023.text")))
         {
             outputFile.NewLine = null;
             outputFile.AutoFlush = false;
