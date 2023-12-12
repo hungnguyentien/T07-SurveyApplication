@@ -38,7 +38,6 @@ public class UpdateCauHoiCommandHandler : BaseMasterFeatures, IRequestHandler<Up
         var cauHoi = await _surveyRepo.CauHoi.GetById(request.CauHoiDto.Id);
         _mapper.Map(request.CauHoiDto, cauHoi);
         await _surveyRepo.CauHoi.UpdateAsync(cauHoi);
-
         if (request.CauHoiDto.LstCot != null && request.CauHoiDto.LstCot.Any())
         {
             var lstCot = _mapper.Map<List<Cot>>(request.CauHoiDto.LstCot);
@@ -53,7 +52,7 @@ public class UpdateCauHoiCommandHandler : BaseMasterFeatures, IRequestHandler<Up
         {
             var lstHang = _mapper.Map<List<Hang>>(request.CauHoiDto.LstHang);
             lstHang.ForEach(x => x.IdCauHoi = cauHoi.Id);
-            await _surveyRepo.Hang.InsertAsync(lstHang.Where(x => x.Id > 0));
+            await _surveyRepo.Hang.UpdateAsync(lstHang.Where(x => x.Id > 0));
             await _surveyRepo.Hang.InsertAsync(lstHang.Where(x => x.Id == 0));
             await _surveyRepo.Hang.DeleteAsync(await _surveyRepo.Hang.GetAllListAsync(x =>
                 x.IdCauHoi == cauHoi.Id && !lstHang.Select(c => c.Id).Contains(x.Id) && !x.Deleted));

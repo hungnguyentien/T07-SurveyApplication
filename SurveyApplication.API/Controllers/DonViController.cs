@@ -21,10 +21,12 @@ namespace SurveyApplication.API.Controllers;
 public class DonViController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IConfiguration _configuration;
 
-    public DonViController(IMediator mediator)
+    public DonViController(IMediator mediator, IConfiguration configuration)
     {
         _mediator = mediator;
+        _configuration = configuration;
     }
 
     [HttpGet("GetAll")]
@@ -40,7 +42,7 @@ public class DonViController : ControllerBase
     public async Task<ActionResult<BaseQuerieResponse<DonViDto>>> GetByConditionDonVi([FromQuery] Paging paging)
     {
         var leaveAllocations = await _mediator.Send(new GetDonViConditionsRequest
-            { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
+        { PageIndex = paging.PageIndex, PageSize = paging.PageSize, Keyword = paging.Keyword });
         return leaveAllocations;
     }
 
@@ -117,7 +119,17 @@ public class DonViController : ControllerBase
     [HasPermission(new[] { (int)EnumModule.Code.QlDv }, new[] { (int)EnumPermission.Type.Read })]
     public async Task<ActionResult<List<DonViDto>>> GetAllNotSendMail()
     {
-        var lstDv = await _mediator.Send(new GetDonViNotSendMailRequest());
-        return Ok(lstDv);
+        var isTest = Convert.ToBoolean(_configuration.GetSection("IsTest")?.Value ?? "False");
+        if (isTest)
+        {
+            var lstDv = await _mediator.Send(new GetDonViListRequest());
+            return Ok(lstDv);
+        }
+        else
+        {
+            var lstDv = await _mediator.Send(new GetDonViNotSendMailRequest());
+            return Ok(lstDv);
+        }
+
     }
 }
